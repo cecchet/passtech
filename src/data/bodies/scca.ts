@@ -262,6 +262,7 @@ const roadRacing: Ruleset = {
       requirement: "conditional",
       condition:
         "Required unless the driving suit itself is rated FIA 1986 Standard, FIA 8856-2000, or SFI 3.2A/5 or higher — in which case fire-resistant underwear becomes optional.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "GCR just says 'underwear of fire resistant material' when required — no specific SFI/FIA certification number cited, though SFI 3.3 or FIA 8856 obviously qualifies.",

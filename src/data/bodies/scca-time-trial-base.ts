@@ -90,6 +90,7 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
   undergarment: {
     requirement: "conditional",
     condition: "Required only if the driving suit itself carries an SFI 3-2A/1 label; suits rated FIA 1986/8856-2000/8856-2018 or SFI 3-2A/5-or-higher don't require it separately.",
+    undergarmentTriggerStandards: ["sfi-3.2a-1"],
     materialOnlyAccepted: true,
     acceptedStandards: GENERIC_APPAREL_STANDARDS,
     materialNote: "No specific certification number cited for the underwear itself.",

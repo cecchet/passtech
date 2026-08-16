@@ -80,6 +80,7 @@ const timeTrialHillclimb: Ruleset = {
       requirement: "conditional",
       condition:
         "Required unless the driving suit itself carries an FIA 1986 Standard, FIA 8856-2000, or SFI 3-2A/5-or-higher (3.2A/10, /15, /20) label — in which case fire-resistant underwear becomes optional. Also: balaclavas (or a full fire-resistant helmet skirt) are required for drivers with beards/mustaches, and for open-face helmets generally — not separately modeled here.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "PHA just says 'underwear of fire resistant material' when required — no specific certification number cited.",

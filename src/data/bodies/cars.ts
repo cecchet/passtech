@@ -76,6 +76,7 @@ const performanceRally: Ruleset = {
     undergarment: {
       requirement: "conditional",
       condition: "Required only as a substitute when the driving suit itself is SFI 3.2A/1 (not addressed as a standalone recommendation otherwise).",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "CARS just says 'approved fire-resistant underwear' when required — no standard number attached in the rulebook.",
@@ -141,6 +142,7 @@ const rallySprint: Ruleset = {
     undergarment: {
       requirement: "conditional",
       condition: "Same as Performance Rally: required only as a substitute when the suit itself is SFI 3.2A/1.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "Same as Performance Rally — 'approved fire-resistant underwear,' no standard number attached.",

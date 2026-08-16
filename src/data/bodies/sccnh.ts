@@ -73,6 +73,7 @@ const gravelTrials: Ruleset = {
     undergarment: {
       requirement: "conditional",
       condition: "Required only if using an SFI 3.2A/1 driving suit (no specific standard number given for the underwear itself in this document).",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "Document just says 'approved fire resistant underwear' when required — no standard number attached.",

@@ -155,13 +155,27 @@ export default function Home() {
             )}
           </div>
         </div>
-        <p className="mt-2 rounded-lg border border-amber-700 bg-amber-950 p-3 text-sm text-amber-200">
-          <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
-          you enter against each sanctioning body&apos;s published rules as of the &quot;last reviewed&quot; date shown
-          per result. A tech inspector/scrutineer still makes the final call at the event — always verify against the
-          current official rulebook before you rely on this. Entries are saved only in this browser (nothing is sent
-          anywhere).
-        </p>
+        <div className="mt-2 rounded-lg border border-amber-700 bg-amber-950 p-3 text-sm text-amber-200">
+          <p>
+            <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
+            you enter against each sanctioning body&apos;s published rules as of the &quot;last reviewed&quot; date shown
+            per result. A tech inspector/scrutineer still makes the final call at the event — always verify against the
+            current official rulebook before you rely on this. Entries are saved only in this browser (nothing is sent
+            anywhere).
+          </p>
+          <p className="mt-2">
+            Learn more about safety gear at{" "}
+            <a
+              href="https://www.frogracing.us/tech/safety-gear"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-amber-100"
+            >
+              frogracing.us/tech/safety-gear
+            </a>
+            .
+          </p>
+        </div>
       </header>
 
       {mode === "landing" && (

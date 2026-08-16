@@ -85,6 +85,7 @@ const endurance: Ruleset = {
       requirement: "conditional",
       condition:
         "Required (fire-resistant base layer, top and bottom) only if the driving suit is a single-layer SFI 3.2A/1 suit. Not required if the suit is rated SFI 3.2A/5 or FIA 8856-2000 or higher.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: false,
       acceptedStandards: [
         ...SFI_3_3_IDS.map((standardId) => ({ standardId })),

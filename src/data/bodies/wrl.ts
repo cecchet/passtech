@@ -95,6 +95,7 @@ const endurance: Ruleset = {
       requirement: "conditional",
       condition:
         "Required (SFI 3.3-rated underwear, top and bottom) only if the driving suit is a single-layer SFI 3.2A/1 suit. Not required with SFI 3.2A/5-or-higher or FIA 8856-2000/2018-rated suits.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: false,
       acceptedStandards: SFI_3_3_IDS.map((standardId) => ({ standardId })),
       materialNote: "Rulebook just says 'SFI 3.3 rated underwear' when required — no specific tier named, but a certified item is required, not just fire-resistant material.",

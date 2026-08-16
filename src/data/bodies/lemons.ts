@@ -97,6 +97,7 @@ const endurance: Ruleset = {
       requirement: "conditional",
       condition:
         "Required only when wearing a single-layer SFI 3.2A/1 or 3.2A/3 firesuit — fire-retardant SFI- or FIA-certified long underwear is then mandatory. Multilayer suits rated SFI 3.2A/5 or higher (including SFI 3.4/5) are highly recommended and may be worn without long underwear.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1", "sfi-3.2a-3"],
       materialOnlyAccepted: false,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote:

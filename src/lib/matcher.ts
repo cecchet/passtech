@@ -42,6 +42,8 @@ interface CertResult {
   status: ItemStatus;
   reason: string;
   label: string;
+  /** The registry standardId this cert resolved to, when recognized — used to cross-reference against other categories (e.g. undergarment's dependence on the firesuit's tier). */
+  standardId?: string;
 }
 
 export interface CategoryResult {
@@ -55,6 +57,8 @@ export interface CategoryResult {
   certBreakdown?: CertResult[];
   /** Two-piece firesuit only: jacket/pants evaluated independently — both must pass. */
   pieceBreakdown?: { label: string; status: ItemStatus; reason: string }[];
+  /** standardIds currently accepted/valid for this item (not rejected/expired) — lets other categories cross-reference this one (e.g. undergarment's dependence on the firesuit's tier). */
+  resolvedStandardIds?: string[];
 }
 
 function findAcceptance(rule: CategoryRule, standardId?: string): StandardAcceptance | undefined {
@@ -98,20 +102,26 @@ function evaluateSingleCert(rule: CategoryRule, cert: CertificationEntry, asOf: 
       status: rule.requirement === "recommended" ? "recommended_only" : "rejected",
       reason: `${label} is not on this discipline's accepted list.`,
       label,
+      standardId: cert.standardId,
     };
   }
 
   if (cert.tagExpirationDate) {
     const tagExp = new Date(cert.tagExpirationDate);
     if (asOf > tagExp) {
-      return { status: "rejected", reason: `${label}'s printed expiration date (${cert.tagExpirationDate}) has passed.`, label };
+      return { status: "rejected", reason: `${label}'s printed expiration date (${cert.tagExpirationDate}) has passed.`, label, standardId: cert.standardId };
     }
   }
 
   if (acceptance.expiresOn) {
     const cutoff = new Date(acceptance.expiresOn);
     if (asOf > cutoff) {
-      return { status: "rejected", reason: `${label} is no longer accepted by this discipline after ${acceptance.expiresOn}.`, label };
+      return {
+        status: "rejected",
+        reason: `${label} is no longer accepted by this discipline after ${acceptance.expiresOn}.`,
+        label,
+        standardId: cert.standardId,
+      };
     }
   }
 
@@ -121,6 +131,7 @@ function evaluateSingleCert(rule: CategoryRule, cert: CertificationEntry, asOf: 
         status: "needs_info",
         reason: `${label} requires a label/conformance date less than ${acceptance.validityYearsFromLabel} years old — enter the date on the tag.`,
         label,
+        standardId: cert.standardId,
       };
     }
     const labelDate = new Date(cert.labelDate);
@@ -131,6 +142,7 @@ function evaluateSingleCert(rule: CategoryRule, cert: CertificationEntry, asOf: 
         status: "rejected",
         reason: `${label}'s label is more than ${acceptance.validityYearsFromLabel} years old (dated ${cert.labelDate}).`,
         label,
+        standardId: cert.standardId,
       };
     }
   }
@@ -142,7 +154,7 @@ function evaluateSingleCert(rule: CategoryRule, cert: CertificationEntry, asOf: 
     cutoff && cutoff.getFullYear() === asOf.getFullYear()
       ? ` ⚠️ This equipment will expire on ${cutoff.toISOString().slice(0, 10)}.`
       : "";
-  return { status, reason: `${label} is accepted.${acceptanceNote}${expiryWarning}`, label };
+  return { status, reason: `${label} is accepted.${acceptanceNote}${expiryWarning}`, label, standardId: cert.standardId };
 }
 
 const STATUS_RANK: Record<ItemStatus, number> = {
@@ -158,23 +170,32 @@ interface PieceEvaluation {
   status: ItemStatus;
   reason: string;
   certBreakdown?: CertResult[];
+  /** standardIds among this piece's certs that are currently accepted/valid (ok or recommended_only). */
+  validStandardIds: string[];
 }
 
 /** Evaluates one physical piece's certifications: the piece passes if ANY currently-valid certification exists on it. */
 function evaluatePieceCerts(rule: CategoryRule, certs: CertificationEntry[], asOf: Date): PieceEvaluation {
   if (certs.length === 0) {
-    return { status: "needs_info", reason: "Add at least one certification shown on the tag." };
+    return { status: "needs_info", reason: "Add at least one certification shown on the tag.", validStandardIds: [] };
   }
   const results = certs.map((c) => evaluateSingleCert(rule, c, asOf));
   const best = results.reduce((a, b) => (STATUS_RANK[a.status] <= STATUS_RANK[b.status] ? a : b));
-  return { status: best.status, reason: best.reason, certBreakdown: results.length > 1 ? results : undefined };
+  const validStandardIds = results.filter((r) => r.status === "ok" || r.status === "recommended_only").map((r) => r.standardId!);
+  return { status: best.status, reason: best.reason, certBreakdown: results.length > 1 ? results : undefined, validStandardIds };
+}
+
+export interface EvaluationContext {
+  /** Undergarment only: standardIds currently valid on the driver's entered firesuit, if resolvable. */
+  firesuitStandardIds?: string[];
 }
 
 export function evaluateCategory(
   category: EquipmentCategory,
   rule: CategoryRule | undefined,
   entry: EquipmentEntry | undefined,
-  asOf: Date = new Date()
+  asOf: Date = new Date(),
+  context?: EvaluationContext
 ): CategoryResult | null {
   if (!rule) return null;
 
@@ -207,6 +228,20 @@ export function evaluateCategory(
       return { ...base, status: "needs_info", reason: "Required, but you indicated you don't have this item." };
     }
     if (effectiveRequirement === "conditional") {
+      // Undergarment's condition usually hinges on the firesuit's own tier (e.g. only required
+      // under a minimum-tier SFI 3.2A/1 suit) — if we already know the driver's firesuit
+      // standard and it's not one of the triggering tiers, this resolves automatically instead
+      // of sitting as an unresolved "conditional" forever.
+      if (category === "undergarment" && rule.undergarmentTriggerStandards && context?.firesuitStandardIds?.length) {
+        const suitTriggersRequirement = context.firesuitStandardIds.some((id) => rule.undergarmentTriggerStandards!.includes(id));
+        if (!suitTriggersRequirement) {
+          return {
+            ...base,
+            status: "not_required",
+            reason: `Not required — your firesuit's certification doesn't fall under the tier that triggers this. ${rule.condition ?? ""}`.trim(),
+          };
+        }
+      }
       const reason =
         rule.requirement === "conditional"
           ? `Conditionally required — ${rule.condition ?? "check the condition against your setup"}. Nothing entered yet.`
@@ -251,6 +286,7 @@ export function evaluateCategory(
         { label: "Jacket", status: jacket.status, reason: jacket.reason },
         { label: "Pants", status: pants.status, reason: pants.reason },
       ],
+      resolvedStandardIds: [...jacket.validStandardIds, ...pants.validStandardIds],
     };
   }
 
@@ -267,6 +303,7 @@ export function evaluateCategory(
         status: "rejected",
         reason: `Open-face helmets aren't permitted — this discipline requires a full-face (integrated chin bar) helmet.${faceNote}`,
         certBreakdown: result.certBreakdown,
+        resolvedStandardIds: result.validStandardIds,
       };
     }
 
@@ -277,21 +314,35 @@ export function evaluateCategory(
         status,
         reason: `${result.reason}${conditionNote} Also specify whether your helmet is full-face or open-face — this discipline requires full-face.${faceNote}`,
         certBreakdown: result.certBreakdown,
+        resolvedStandardIds: result.validStandardIds,
       };
     }
 
-    return { ...base, status: result.status, reason: result.reason + conditionNote + faceNote, certBreakdown: result.certBreakdown };
+    return {
+      ...base,
+      status: result.status,
+      reason: result.reason + conditionNote + faceNote,
+      certBreakdown: result.certBreakdown,
+      resolvedStandardIds: result.validStandardIds,
+    };
   }
 
-  return { ...base, status: result.status, reason: result.reason + conditionNote, certBreakdown: result.certBreakdown };
+  return { ...base, status: result.status, reason: result.reason + conditionNote, certBreakdown: result.certBreakdown, resolvedStandardIds: result.validStandardIds };
 }
 
 export type CategoryResults = Partial<Record<EquipmentCategory, CategoryResult>>;
 
 export function evaluateRuleset(ruleset: Ruleset, entries: Partial<Record<EquipmentCategory, EquipmentEntry>>, asOf: Date = new Date()): CategoryResults {
   const results: CategoryResults = {};
+  // Firesuit first — undergarment's condition can depend on the firesuit's resolved tier.
+  const firesuitResult = evaluateCategory("firesuit", ruleset.categories.firesuit, entries.firesuit, asOf);
+  if (firesuitResult) results.firesuit = firesuitResult;
+
   (Object.keys(ruleset.categories) as EquipmentCategory[]).forEach((category) => {
-    const result = evaluateCategory(category, ruleset.categories[category], entries[category], asOf);
+    if (category === "firesuit") return;
+    const context: EvaluationContext | undefined =
+      category === "undergarment" ? { firesuitStandardIds: firesuitResult?.resolvedStandardIds } : undefined;
+    const result = evaluateCategory(category, ruleset.categories[category], entries[category], asOf, context);
     if (result) results[category] = result;
   });
   return results;

@@ -46,6 +46,14 @@ export interface CategoryRule {
   /** Helmet only: whether a full-face (integrated chin bar) helmet specifically is required, separate from the base helmet requirement above. "required" blocks an open-face helmet outright; "conditional" only applies in some cars (see fullFaceCondition) and is shown as a caveat rather than a hard block. */
   fullFaceRequirement?: "required" | "conditional";
   fullFaceCondition?: string;
+  /**
+   * Undergarment only: firesuit standardIds that trigger this conditional requirement (typically
+   * the minimum-tier suit spec, e.g. SFI 3.2A/1). If the driver's currently-valid firesuit
+   * certification is entered and is NOT one of these, the condition doesn't apply — the matcher
+   * resolves this to "not required" automatically instead of leaving it pending. Omit when the
+   * trigger can't be expressed as specific standard IDs (e.g. it depends on suit layer count).
+   */
+  undergarmentTriggerStandards?: string[];
   citation: SourceDocument;
   confidence: Confidence;
   notes?: string;

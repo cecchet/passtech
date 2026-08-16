@@ -143,6 +143,7 @@ const hillclimbCompetitive: Ruleset = {
     undergarment: {
       requirement: "conditional",
       condition: "Mandatory if using an SFI 3.2A/1 suit, or (new in 2026) an FIA 1986-standard suit.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1", "fia-1986"],
       materialOnlyAccepted: false,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "NEHA names the standard explicitly here: '(FIA Standard 8856-2000 or SFI 3.3 Specification)' — a certified item is required when this condition applies, not just any fire-resistant material.",

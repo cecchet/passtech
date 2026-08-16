@@ -84,6 +84,7 @@ const roadRacing: Ruleset = {
       requirement: "conditional",
       condition:
         "Required unless the driving suit is already rated SFI 3.2A/5 or higher, or FIA 8856-2000/2018 — in which case it's 'strongly recommended' but not mandatory. Diesel/diesel-mix vehicles require it if suit rating is below 3.2A/10.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "CCR: 'Long underwear made of fire-resistant material.' Certification to SFI 3.3 or FIA 8856-2000 is 'strongly recommended in all cases' but plain fire-resistant material satisfies the base requirement.",
@@ -174,6 +175,7 @@ const rallySport: Ruleset = {
     undergarment: {
       requirement: "conditional",
       condition: "Required only if the suit worn is the minimum-tier SFI 3.2A/1; not addressed (not even recommended) for higher-rated suits.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: false,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "GRR requires underwear 'meeting an FIA or SFI specification' — a certified item, not just generic fire-resistant material. No exact spec number named; mapped here to SFI 3.3 / FIA 8856-2000/2018.",

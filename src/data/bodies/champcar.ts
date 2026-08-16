@@ -104,6 +104,7 @@ const endurance: Ruleset = {
       requirement: "conditional",
       condition:
         "Required only when wearing a single-layer SFI 3.2/A1 or 3.2/A3 suit — fire-retardant SFI- or FIA-certified undergarments are then mandatory. Multilayer suits rated SFI 3.2/A5 or higher are highly recommended and may be worn without undergarments.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1", "sfi-3.2a-3"],
       materialOnlyAccepted: false,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote:
