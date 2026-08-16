@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { NOT_LISTED, standardLabel } from "@/data/standards";
@@ -28,6 +28,23 @@ export function PhotoScan({ category, onAdd }: Props) {
   const [candidates, setCandidates] = useState<Candidate[] | null>(null);
   const [notes, setNotes] = useState<string | null>(null);
   const [added, setAdded] = useState<Set<number>>(new Set());
+  // Defaults to true so SSR/first paint doesn't flash the offline state before hydration checks the real value.
+  const [online, setOnline] = useState(true);
+
+  // Reads the real navigator.onLine state once mounted client-side (unavailable during SSR).
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    setOnline(navigator.onLine);
+    const goOnline = () => setOnline(true);
+    const goOffline = () => setOnline(false);
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleFile = async (file: File) => {
     setStatus("loading");
@@ -84,12 +101,16 @@ export function PhotoScan({ category, onAdd }: Props) {
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        disabled={status === "loading"}
+        disabled={status === "loading" || !online}
         className="rounded border border-neutral-600 px-2 py-1 text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
       >
         {status === "loading" ? "Analyzing photo…" : "📷 Scan tag photo"}
       </button>
-      <span className="ml-2 text-neutral-500">Suggests values — nothing is added until you confirm.</span>
+      {online ? (
+        <span className="ml-2 text-neutral-500">Suggests values — nothing is added until you confirm.</span>
+      ) : (
+        <span className="ml-2 text-amber-400">Offline — photo scan needs a connection. Enter the certification manually below.</span>
+      )}
 
       {error && <p className="mt-2 text-red-400">{error}</p>}
 
