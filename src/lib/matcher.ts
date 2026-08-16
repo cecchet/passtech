@@ -178,27 +178,40 @@ export function evaluateCategory(
 ): CategoryResult | null {
   if (!rule) return null;
 
+  if (rule.requirement === "not_addressed") {
+    return {
+      category,
+      requirement: rule.requirement,
+      citation: rule.citation,
+      confidence: rule.confidence,
+      status: "not_required",
+      reason: "Not addressed by this sanctioning body's rules for this discipline.",
+    };
+  }
+
+  // Shoes satisfiable with plain non-flammable material (no certification needed) are a much
+  // softer bar than a certified item — treat them as conditional rather than a hard "required"
+  // failure when nothing's been entered yet, since any ordinary closed-toe shoe qualifies.
+  const effectiveRequirement =
+    category === "shoes" && rule.requirement === "required" && rule.materialOnlyAccepted ? "conditional" : rule.requirement;
+
   const base = {
     category,
-    requirement: rule.requirement,
+    requirement: effectiveRequirement,
     citation: rule.citation,
     confidence: rule.confidence,
   };
 
-  if (rule.requirement === "not_addressed") {
-    return { ...base, status: "not_required", reason: "Not addressed by this sanctioning body's rules for this discipline." };
-  }
-
   if (!entry || entry.skipped) {
-    if (rule.requirement === "required") {
-      return { ...base, status: "needs_info", reason: "Required, but no equipment was entered for this category." };
+    if (effectiveRequirement === "required") {
+      return { ...base, status: "needs_info", reason: "Required, but you indicated you don't have this item." };
     }
-    if (rule.requirement === "conditional") {
-      return {
-        ...base,
-        status: "needs_info",
-        reason: `Conditionally required — ${rule.condition ?? "check the condition against your setup"}. Nothing entered yet.`,
-      };
+    if (effectiveRequirement === "conditional") {
+      const reason =
+        rule.requirement === "conditional"
+          ? `Conditionally required — ${rule.condition ?? "check the condition against your setup"}. Nothing entered yet.`
+          : "Any closed-toe, non-flammable/fire-resistant shoes qualify — no certification required. Not specified yet.";
+      return { ...base, status: "needs_info", reason };
     }
     return { ...base, status: "not_required", reason: "Recommended, not required — nothing entered." };
   }
@@ -284,14 +297,23 @@ export function evaluateRuleset(ruleset: Ruleset, entries: Partial<Record<Equipm
   return results;
 }
 
-export type EligibilityStatus = "eligible" | "not_eligible" | "incomplete";
+/** A required (or applicable conditional) item that's rejected, unrecognized, or still needs_info while required counts as a real tech-inspection failure. */
+export function isViolation(result: Pick<CategoryResult, "status" | "requirement">): boolean {
+  if (result.requirement !== "required" && result.requirement !== "conditional") return false;
+  if (result.status === "rejected" || result.status === "unrecognized") return true;
+  return result.status === "needs_info" && result.requirement === "required";
+}
+
+/** A conditional item that simply hasn't been resolved yet — not a violation, just unknown whether it applies. */
+export function isPendingConditional(result: Pick<CategoryResult, "status" | "requirement">): boolean {
+  return result.requirement === "conditional" && result.status === "needs_info";
+}
+
+export type EligibilityStatus = "eligible" | "eligible_conditional" | "not_eligible";
 
 export function overallEligibility(results: CategoryResults): EligibilityStatus {
   const values = Object.values(results) as CategoryResult[];
-  const blockingRequirements = new Set(["required", "conditional"]);
-  const hasRejected = values.some((r) => blockingRequirements.has(r.requirement) && (r.status === "rejected" || r.status === "unrecognized"));
-  if (hasRejected) return "not_eligible";
-  const hasMissing = values.some((r) => blockingRequirements.has(r.requirement) && r.status === "needs_info");
-  if (hasMissing) return "incomplete";
+  if (values.some(isViolation)) return "not_eligible";
+  if (values.some(isPendingConditional)) return "eligible_conditional";
   return "eligible";
 }

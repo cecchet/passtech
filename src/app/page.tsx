@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset, getRuleset } from "@/data";
-import { CATEGORY_ORDER } from "@/data/categoryMeta";
+import { CATEGORY_META, CATEGORY_ORDER } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
-import { EquipmentEntry, evaluateRuleset, overallEligibility } from "@/lib/matcher";
+import { CategoryResults, EquipmentEntry, evaluateRuleset, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TutorialModal } from "@/components/TutorialModal";
 
@@ -117,7 +117,7 @@ export default function Home() {
   );
 
   const eligible = allResults.filter((r) => r.status === "eligible");
-  const incomplete = allResults.filter((r) => r.status === "incomplete");
+  const eligibleConditional = allResults.filter((r) => r.status === "eligible_conditional");
   const notEligible = allResults.filter((r) => r.status === "not_eligible");
 
   return (
@@ -169,19 +169,19 @@ export default function Home() {
           <LandingCard
             number={1}
             title="What does a sanctioning body require?"
-            description="Browse every equipment category a body covers — what's required, what's accepted, and any conditions — without entering your own gear."
+            description="Check the rulebook and see what is required for each safety gear category based on the current rules."
             onClick={() => setMode("reference")}
           />
           <LandingCard
             number={2}
             title="Will my equipment pass tech?"
-            description="Enter what you have and check it against one sanctioning body's rules."
+            description="Enter your current safety gear and check it against the current rules of a sanctioning body."
             onClick={() => setMode("body-first")}
           />
           <LandingCard
             number={3}
             title="Where can my equipment race?"
-            description="Enter what you have once and see which sanctioning bodies it's eligible, incomplete, or rejected for."
+            description="Enter your current safety gear once and see which sanctioning bodies it's eligible, incomplete, or rejected for."
             onClick={() => setMode("equipment-first")}
           />
         </section>
@@ -199,32 +199,40 @@ export default function Home() {
 
       {mode === "reference" && (
         <section>
+          <h2 className="mb-4 text-lg font-semibold text-amber-400">Sanctioning body requirements</h2>
+
           <RulesetPicker value={rulesetId} onChange={setRulesetId} />
 
-          {ruleset && <ReferenceView ruleset={ruleset} />}
-
           {ruleset && <SourceLine ruleset={ruleset} />}
+
+          {ruleset && <ReferenceView ruleset={ruleset} />}
         </section>
       )}
 
       {mode === "body-first" && (
         <section>
+          <h2 className="mb-4 text-lg font-semibold text-amber-400">Will my equipment pass tech?</h2>
+
+          {ruleset && <PassTechVerdict results={resultsForSelected} />}
+
           <RulesetPicker value={rulesetId} onChange={setRulesetId} />
 
-          <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} results={resultsForSelected} />
-
           {ruleset && <SourceLine ruleset={ruleset} />}
+
+          <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} results={resultsForSelected} />
         </section>
       )}
 
       {mode === "equipment-first" && (
         <section>
+          <h2 className="mb-4 text-lg font-semibold text-amber-400">Where can my equipment race?</h2>
+
           <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} />
 
           <div className="mt-6 space-y-6">
             <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" />
-            <ResultGroup title={`Incomplete — need more info (${incomplete.length})`} items={incomplete} accent="border-amber-700" />
-            <ResultGroup title={`Not eligible (${notEligible.length})`} items={notEligible} accent="border-red-700" />
+            <ResultGroup title={`Eligible under condition (${eligibleConditional.length})`} items={eligibleConditional} accent="border-yellow-700" />
+            <ResultGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-700" />
           </div>
         </section>
       )}
@@ -295,6 +303,22 @@ export default function Home() {
           </a>
           .
         </p>
+
+        <div className="mt-6 flex flex-col items-center gap-2 border-t border-neutral-800 pt-6">
+          <a href="https://www.anrdoezrs.net/click-101708275-10376887" target="_blank" rel="noopener noreferrer sponsored">
+            {/* eslint-disable-next-line @next/next/no-img-element -- affiliate network banner, must be served from their domain for click tracking */}
+            <img
+              src="https://www.awltovhc.com/image-101708275-10376887"
+              width={88}
+              height={31}
+              alt="Tirerack.com - Revolutionizing Tire Buying"
+              className="border-0"
+            />
+          </a>
+          <p className="max-w-md text-center text-[11px] text-neutral-600">
+            Frog Racing is an affiliate of TireRack.com and earns a commission on sales made through the link above.
+          </p>
+        </div>
       </footer>
 
       <TutorialModal open={showTutorial} onClose={closeTutorial} />
@@ -328,15 +352,76 @@ function LandingCard({
   );
 }
 
+type VerdictState = "pass" | "conditional" | "fail";
+
+const VERDICT_FLAG: Record<VerdictState, string> = {
+  pass: "/frog-green-flag.jpg",
+  conditional: "/frog-yellow-flag.jpg",
+  fail: "/frog-red-flag.jpg",
+};
+
+const VERDICT_LABEL: Record<VerdictState, string> = {
+  pass: "Pass",
+  conditional: "Conditional",
+  fail: "Fail",
+};
+
+const VERDICT_BOX_STYLE: Record<VerdictState, string> = {
+  pass: "border-emerald-700 bg-emerald-950",
+  conditional: "border-yellow-700 bg-yellow-950",
+  fail: "border-red-700 bg-red-950",
+};
+
+const VERDICT_LABEL_STYLE: Record<VerdictState, string> = {
+  pass: "text-emerald-300",
+  conditional: "text-yellow-300",
+  fail: "text-red-300",
+};
+
+const VERDICT_LIST_STYLE: Record<VerdictState, string> = {
+  pass: "",
+  conditional: "text-yellow-200",
+  fail: "text-red-200",
+};
+
+function PassTechVerdict({ results }: { results: CategoryResults }) {
+  const entries = (Object.keys(results) as EquipmentCategory[]).map((category) => ({ category, result: results[category]! }));
+  const violations = entries.filter(({ result }) => isViolation(result)).map(({ category, result }) => `${CATEGORY_META[category].label}: ${result.reason}`);
+  const pendingConditionals = entries
+    .filter(({ result }) => isPendingConditional(result))
+    .map(({ category, result }) => `${CATEGORY_META[category].label}: ${result.reason}`);
+
+  const state: VerdictState = violations.length > 0 ? "fail" : pendingConditionals.length > 0 ? "conditional" : "pass";
+  const list = state === "fail" ? violations : state === "conditional" ? pendingConditionals : [];
+
+  return (
+    <div className={`mb-4 rounded-lg border p-4 ${VERDICT_BOX_STYLE[state]}`}>
+      <div className="flex items-center gap-2">
+        {/* eslint-disable-next-line @next/next/no-img-element -- small static flag icon */}
+        <img src={VERDICT_FLAG[state]} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+        <span className="font-bold">PassTech</span>
+        <span className={`text-sm font-semibold ${VERDICT_LABEL_STYLE[state]}`}>{VERDICT_LABEL[state]}</span>
+      </div>
+      {list.length > 0 && (
+        <ul className={`mt-2 space-y-1 text-sm ${VERDICT_LIST_STYLE[state]}`}>
+          {list.map((v, i) => (
+            <li key={i}>• {v}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function SourceLine({ ruleset }: { ruleset: Ruleset }) {
   return (
-    <p className="mt-4 text-xs text-neutral-500">
+    <p className="mb-6 mt-4 rounded-lg border border-sky-900 bg-sky-950/40 p-3 text-sm text-sky-200">
       Source:{" "}
       {ruleset.sourceDocuments.map((d, i) => (
         <span key={i}>
           {i > 0 && "; "}
           {d.url ? (
-            <a href={d.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-300">
+            <a href={d.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">
               {d.title}
               {d.version ? ` (${d.version})` : ""}
             </a>
@@ -356,7 +441,7 @@ function SourceLine({ ruleset }: { ruleset: Ruleset }) {
 function RulesetPicker({ value, onChange }: { value: string; onChange: (id: string) => void }) {
   return (
     <label className="mb-4 block">
-      <span className="mb-1 block text-sm font-medium">Sanctioning body / discipline</span>
+      <span className="mb-1 block text-sm font-medium">Select a sanctioning body / discipline</span>
       <select
         className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
         value={value}

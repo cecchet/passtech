@@ -1,11 +1,12 @@
 "use client";
 
+import { useRef } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER } from "@/data/categoryMeta";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, newCertification } from "@/lib/matcher";
 import { PhotoScan } from "@/components/PhotoScan";
-import { ResultRow, STATUS_LABEL, STATUS_STYLE } from "@/components/ResultRow";
+import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryResult } from "@/lib/matcher";
 
@@ -160,10 +161,10 @@ function CertificationList({
   );
 }
 
-function StatusPill({ status }: { status: CategoryResult["status"] }) {
+function StatusPill({ status, requirement }: { status: CategoryResult["status"]; requirement: CategoryResult["requirement"] }) {
   return (
-    <span className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${STATUS_STYLE[status]}`}>
-      {STATUS_LABEL[status]}
+    <span className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusStyle(status, requirement)}`}>
+      {statusLabel(status, requirement)}
     </span>
   );
 }
@@ -187,6 +188,8 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results }: P
       })
     : CATEGORY_ORDER;
 
+  const detailsRefs = useRef<Partial<Record<EquipmentCategory, HTMLDetailsElement | null>>>({});
+
   return (
     <div className="flex flex-col gap-3">
       {orderedCategories.map((category) => {
@@ -198,20 +201,48 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results }: P
         const Icon = CATEGORY_ICONS[category];
 
         return (
-          <details key={category} className="rounded-lg border border-neutral-700 p-4">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
-              <span className="flex items-center gap-3">
+          <details
+            key={category}
+            ref={(el) => {
+              detailsRefs.current[category] = el;
+            }}
+            className="rounded-lg border border-neutral-700 p-4"
+          >
+            <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
+              <span className="flex flex-1 items-center gap-3">
                 <Icon />
                 {meta.label}
               </span>
-              {result && <StatusPill status={result.status} />}
+              <div
+                className="flex shrink-0 items-center gap-3 text-xs font-normal"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <label className="flex cursor-pointer items-center gap-1">
+                  <input
+                    type="radio"
+                    name={`has-${category}`}
+                    checked={!entry.skipped}
+                    onChange={() => {
+                      update({ skipped: false });
+                      const el = detailsRefs.current[category];
+                      if (el) el.open = true;
+                    }}
+                  />
+                  I have this item
+                </label>
+                <label className="flex cursor-pointer items-center gap-1">
+                  <input
+                    type="radio"
+                    name={`has-${category}`}
+                    checked={!!entry.skipped}
+                    onChange={() => update({ skipped: true })}
+                  />
+                  I don&apos;t have this item
+                </label>
+              </div>
+              {result && <StatusPill status={result.status} requirement={result.requirement} />}
             </summary>
             <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
-
-            <label className="mb-2 flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={!entry.skipped} onChange={(e) => update({ skipped: !e.target.checked })} />
-              I have this item
-            </label>
 
             {!entry.skipped && (
               <div className="flex flex-col gap-2">

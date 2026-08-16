@@ -20,12 +20,33 @@ export const STATUS_LABEL: Record<CategoryResult["status"], string> = {
   unrecognized: "Unrecognized",
 };
 
+const CONDITIONAL_STYLE = "bg-yellow-950 text-yellow-300 border-yellow-700";
+
+/**
+ * A required item that's still "needs_info" (nothing entered, or explicitly marked as not
+ * owned) is a real tech-inspection failure, not just missing paperwork — surface it with the
+ * same red "Required" treatment as an outright rejection instead of the neutral amber default.
+ * A conditional item that's still "needs_info" isn't a failure (it may not even apply), but it's
+ * also not just generic missing info — call it out as "Conditional" (yellow) instead.
+ */
+export function statusLabel(status: CategoryResult["status"], requirement: CategoryResult["requirement"]): string {
+  if (status === "needs_info" && requirement === "required") return "Required";
+  if (status === "needs_info" && requirement === "conditional") return "Conditional";
+  return STATUS_LABEL[status];
+}
+
+export function statusStyle(status: CategoryResult["status"], requirement: CategoryResult["requirement"]): string {
+  if (status === "needs_info" && requirement === "required") return STATUS_STYLE.rejected;
+  if (status === "needs_info" && requirement === "conditional") return CONDITIONAL_STYLE;
+  return STATUS_STYLE[status];
+}
+
 export function ResultRow({ result }: { result: CategoryResult }) {
   return (
-    <div className={`rounded-lg border p-3 text-sm ${STATUS_STYLE[result.status]}`}>
+    <div className={`rounded-lg border p-3 text-sm ${statusStyle(result.status, result.requirement)}`}>
       <div className="flex items-center justify-between gap-2">
         <span className="font-semibold">{CATEGORY_META[result.category].label}</span>
-        <span className="rounded-full border px-2 py-0.5 text-xs">{STATUS_LABEL[result.status]}</span>
+        <span className="rounded-full border px-2 py-0.5 text-xs">{statusLabel(result.status, result.requirement)}</span>
       </div>
       <p className="mt-1 text-xs opacity-90">{result.reason}</p>
       {result.certBreakdown && (
