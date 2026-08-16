@@ -9,6 +9,7 @@ import { ResultRow } from "@/components/ResultRow";
 import { CategoryResults, EquipmentEntry, evaluateRuleset, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TutorialModal } from "@/components/TutorialModal";
+import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first";
 
@@ -177,6 +178,8 @@ export default function Home() {
           </p>
         </div>
       </header>
+
+      {mode === "landing" && <InstallPrompt />}
 
       {mode === "landing" && (
         <section className="grid gap-4 sm:grid-cols-3">
