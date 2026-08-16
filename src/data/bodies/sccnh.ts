@@ -34,6 +34,12 @@ const gravelTrials: Ruleset = {
       notes:
         "Required for both driver and co-driver. New this year (2026 rulebook): Snell SA2025 and FIA 8859-2024 added to the accepted list, and FIA-homologated helmets now carry an explicit 10-years-from-manufacture-date validity window (§13.1.2) — previously undated in the app. Rule 13.1.3: for helmets with dual FIA/Snell certification, the later expiration date takes precedence — enter whichever certification is more favorable if the helmet has both.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the 2026 rulebook, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [
@@ -89,4 +95,108 @@ const gravelTrials: Ruleset = {
   },
 };
 
-export const sccnhRulesets: Ruleset[] = [gravelTrials];
+const climbToTheClouds: Ruleset = {
+  id: "sccnh-climb-to-the-clouds",
+  bodyId: "sccnh",
+  bodyName: "SCCNH",
+  disciplineName: "Climb to the Clouds (Mount Washington Hillclimb)",
+  disciplineGroup: "Hillclimb",
+  lastReviewed: "2026-08-16",
+  sourceDocuments: [
+    {
+      title: "2026 Climb to the Clouds Competition Classes & Safety Rules",
+      version: "Last updated 7/12/2026",
+      url: "https://sccnh.org/wp-content/uploads/2026/07/2026-Climb-to-the-Clouds-Competition-Classes-Safety-Rules.pdf",
+      section: "2. Driver Safety Equipment",
+    },
+  ],
+  categories: {
+    helmet: {
+      requirement: "required",
+      acceptedStandards: [
+        { standardId: "snell-sa2015", noExpiration: true },
+        { standardId: "snell-sa2020", noExpiration: true },
+        { standardId: "snell-sa2025", noExpiration: true },
+        { standardId: "fia-8860-2000", validityYearsFromLabel: 10 },
+        { standardId: "fia-8860-2004", validityYearsFromLabel: 10 },
+        { standardId: "fia-8860-2010", validityYearsFromLabel: 10 },
+        { standardId: "fia-8860-2018", validityYearsFromLabel: 10 },
+        { standardId: "fia-8860-2024", validityYearsFromLabel: 10 },
+        { standardId: "fia-8859-2015", validityYearsFromLabel: 10 },
+        { standardId: "fia-8859-2020", validityYearsFromLabel: 10 },
+        { standardId: "fia-8859-2024", validityYearsFromLabel: 10 },
+      ],
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.1" },
+      confidence: "high",
+      notes: "Rule 2.3.1: Snell SA2015 or newer, or FIA 8860-20XX/8859-20XX with a manufacture date less than 10 years old.",
+    },
+    balaclava: {
+      requirement: "conditional",
+      condition: "Required for competitors with facial hair (SFI or FIA rated balaclava).",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.2" },
+      confidence: "high",
+      notes: "Rule 2.3.8 separately requires a fire-retardant hood/helmet skirt for open-engine vehicles — a related but distinct item, not modeled here.",
+    },
+    hnr: {
+      requirement: "required",
+      acceptedStandards: [
+        { standardId: "fia-8858-2002", noExpiration: true },
+        { standardId: "fia-8858-2010", noExpiration: true },
+        { standardId: "sfi-38.1", validityYearsFromLabel: 5 },
+      ],
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.3" },
+      confidence: "high",
+    },
+    firesuit: {
+      requirement: "required",
+      acceptedStandards: [
+        { standardId: "fia-8856-2000" },
+        { standardId: "fia-8856-2018" },
+        { standardId: "fia-1986" },
+        { standardId: "sfi-3.2a-5" },
+        { standardId: "sfi-3.4-5", note: "Rule 2.3.3.4: 'SFI 3.2A/5 or 3.4/5.'" },
+        { standardId: "sfi-3.2a-1", note: "Acceptable only when paired with fire-resistant underwear — see undergarment." },
+      ],
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.3" },
+      confidence: "high",
+    },
+    undergarment: {
+      requirement: "conditional",
+      condition: "Required only if using an SFI 3.2A/1 driving suit.",
+      undergarmentTriggerStandards: ["sfi-3.2a-1"],
+      materialOnlyAccepted: false,
+      acceptedStandards: [{ standardId: "fia-8856-2000" }, ...GENERIC_APPAREL_STANDARDS.filter((s) => s.standardId !== "fia-8856-2000")],
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.3.4" },
+      confidence: "high",
+      notes: "Unlike most bodies, this rulebook names specific standards (FIA 8856-2000 or SFI 3.3) rather than allowing plain fire-resistant material.",
+    },
+    gloves: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.5" },
+      confidence: "high",
+      notes: "Rule 2.3.5: 'SFI or FIA rated gloves... in good condition' — no plain-material allowance.",
+    },
+    shoes: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      materialNote: "Leather or nonflammable material, must cover the instep — no certification cited.",
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.7" },
+      confidence: "high",
+    },
+    arm_restraint: {
+      requirement: "conditional",
+      condition: "Either an SFI/FIA window net with a labeled expiration date, or SFI/FIA arm restraints, are required for each occupant.",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "1.4.1" },
+      confidence: "medium",
+      notes: "General Vehicle Rules 1.4.1 frames this as a window-net-or-arm-restraints choice per occupant, not scoped to open cars specifically — the window-net alternative isn't modeled here, only the arm-restraint path.",
+    },
+  },
+};
+
+export const sccnhRulesets: Ruleset[] = [gravelTrials, climbToTheClouds];

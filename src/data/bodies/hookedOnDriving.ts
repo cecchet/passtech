@@ -39,6 +39,12 @@ const hpde: Ruleset = {
       notes:
         "'HOD requires auto racing helmets with a Snell Foundation SA rating that is within 10 years of the event date... A DOT rating does not qualify.' Any SA generation qualifies as long as it's within the 10-year window from its manufacture date — HOD does not restrict to only the most recent generations the way SCDA/PCA do. M-rated Snell helmets are explicitly treated by HOD's FAQ as motorcycle helmets and are NOT accepted ('If it says M, it is a motorcycle helmet') — unlike most other bodies in this app, which treat Snell M as a distinct valid auto-racing spec. No SFI, FIA, ECE, or BS alternative is mentioned anywhere in HOD's public materials, so none are listed as accepted here. No full-face requirement is stated; for open cars (e.g. Boxster) HOD requires 'some form of eye protection' and says 'an enclosed helmet with a visor is highly recommended' but does not mandate full-face — goggles or another form of eye protection would satisfy the letter of this rule.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...faq },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from HOD's public materials, just not yet re-checked.",
+    },
     hnr: {
       requirement: "conditional",
       condition:

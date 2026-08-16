@@ -50,6 +50,12 @@ const hpde: Ruleset = {
       notes:
         "M-rated (motorcycle) Snell helmets are explicitly NOT accepted, even though they are Snell-certified: 'The primary difference between SA (Special Application) and M (Motorcycle) helmets are a Nomex (fire resistant) lining... M rated helmets are not allowed.' Not required at NEQ's separate winter (frozen-lake) driving schools. Full-face helmets (or effective eye protection with an open-face helmet) are only 'strongly recommended,' not mandated, for open-top cars/convertibles driven with the top down (see Open Top Cars page) — not modeled as fullFaceRequirement since it isn't stated as compulsory.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from NEQ's public materials, just not yet re-checked.",
+    },
     hnr: {
       requirement: "not_addressed",
       citation: { ...techForms },

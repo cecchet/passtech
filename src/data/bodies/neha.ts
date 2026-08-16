@@ -52,6 +52,12 @@ const hillclimbX: Ruleset = {
       citation: { ...sourceDoc, section: "1.3.3.1-1.3.3.3" },
       confidence: "high",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "1.3" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the rulebook, just not yet re-checked.",
+    },
     hnr: {
       requirement: "not_addressed",
       citation: { ...sourceDoc, section: "1.3" },
@@ -106,6 +112,12 @@ const hillclimbCompetitive: Ruleset = {
       acceptedStandards: helmetStandards,
       citation: { ...sourceDoc, section: "1.3.3.1-1.3.3.3 (applies to all entrants)" },
       confidence: "high",
+    },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "1.4" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the rulebook, just not yet re-checked.",
     },
     hnr: {
       requirement: "required",

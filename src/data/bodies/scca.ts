@@ -39,6 +39,12 @@ const solo: Ruleset = {
       notes:
         "Solo core rules state no expiration/sunset for any listed helmet rating — unusually permissive (still accepts Snell SA2010).",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA National Solo Rules", version: "2026 Edition" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from core Solo rules, just not yet re-checked.",
+    },
     hnr: {
       requirement: "not_addressed",
       citation: { title: "SCCA National Solo Rules", version: "2026 Edition" },
@@ -138,6 +144,12 @@ const rallycross: Ruleset = {
       confidence: "high",
       notes: "Required for all drivers and passengers. No DOT-only allowance.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA RallyCross Rules", version: "RX2026" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from RX2026, just not yet re-checked.",
+    },
     hnr: {
       requirement: "not_addressed",
       citation: { title: "SCCA RallyCross Rules", version: "RX2026" },
@@ -214,6 +226,12 @@ const roadRacing: Ruleset = {
       confidence: "high",
       notes:
         "Annual scrutineer sticker process applies (9.3.19.A). 'or newer' generations beyond what's listed here should also qualify — verify against current GCR if unsure.",
+    },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA GCR", version: "2026, TB 26-08" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the GCR, just not yet re-checked.",
     },
     hnr: {
       requirement: "required",

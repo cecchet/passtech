@@ -14,6 +14,7 @@ function CategoryIcon({ src, objectPosition }: { src: string; objectPosition: st
 }
 
 const HelmetIcon = () => <CategoryIcon src="/frog-helmet.jpg" objectPosition="62% 42%" />;
+const BalaclavaIcon = () => <CategoryIcon src="/frog-balaclava.jpg" objectPosition="50% 45%" />;
 const HnrIcon = () => <CategoryIcon src="/frog-hans.png" objectPosition="50% 45%" />;
 const FiresuitIcon = () => <CategoryIcon src="/frog-firesuit.png" objectPosition="50% 45%" />;
 const GlovesIcon = () => <CategoryIcon src="/frog-gloves.png" objectPosition="50% 38%" />;
@@ -23,6 +24,7 @@ const ArmRestraintIcon = () => <CategoryIcon src="/frog-arm-restraints.png" obje
 
 export const CATEGORY_ICONS: Record<EquipmentCategory, () => React.JSX.Element> = {
   helmet: HelmetIcon,
+  balaclava: BalaclavaIcon,
   hnr: HnrIcon,
   firesuit: FiresuitIcon,
   gloves: GlovesIcon,

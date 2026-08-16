@@ -38,6 +38,12 @@ const endurance: Ruleset = {
       notes:
         "Rule text: 'Undamaged, full-face Type SA helmet, Snell SA2015 or newer, mandatory... No open-face or hybrid helmets allowed.' Type M (motorcycle) helmets and other non-SA helmets explicitly barred as not fire-rated. Visor must be complete, closable, and intact. See notes on the FIA 8860-2000 citation above.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the rules page, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [

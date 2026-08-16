@@ -34,6 +34,12 @@ const performanceRally: Ruleset = {
       notes:
         "CARS does NOT accept Snell SA2015 for Performance Rally (unlike ARA, which does with a 12/31/2026 cutoff) — a real cross-body difference, so don't assume equivalence with ARA. CARS also non-bindingly recommends discarding any helmet after 5 years of regular use or after a serious accident — this is a recommendation, not a hard rule, so it is not encoded as an expiration here.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 11.1" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the CARS rulebook, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [
@@ -111,6 +117,12 @@ const rallySprint: Ruleset = {
       confidence: "high",
       notes: "Lower bar than Performance Rally: 'Helmets meeting CARS NRR 11.1.6 or meeting the Snell SA 2005 standard.'",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 28.3.3" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the CARS rulebook, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: performanceRally.categories.hnr!.acceptedStandards,
@@ -182,6 +194,12 @@ const rallyCross: Ruleset = {
       ],
       citation: { ...sourceDoc, section: "NRR 27.3.3.1-27.3.3.2" },
       confidence: "high",
+    },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 27.3.3" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the CARS rulebook, just not yet re-checked.",
     },
     hnr: {
       requirement: "not_addressed",

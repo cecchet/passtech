@@ -39,6 +39,12 @@ const hillClimb: Ruleset = {
       notes:
         "No full-face requirement found — §114.2.2 explicitly allows an open-face helmet paired with goggles ('Helmets should be equipped with a face shield; if not, the use of goggles is required'), so helmet style is left to the driver's choice. Confidence is medium: read from a single copy of the rule book rather than cross-verified against a second source. Name/blood-type lettering on the helmet and safety-glass corrective lenses are also required by this rule but aren't modeled here.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the Rule Book, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [

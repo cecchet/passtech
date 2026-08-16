@@ -67,6 +67,15 @@ const raceGear: Ruleset = {
       notes:
         "SEE FILE-LEVEL NOTE AT TOP: this is a competitive wheel-to-wheel racing org, not an HPDE club. Requirement itself (some current Snell SA / FIA / SFI helmet) is reasonably confident; the exact accepted-standards list is this app's interpretation of a short marketing-page summary, not a verbatim enumeration from the rulebook — spot-check recommended.",
     },
+    balaclava: {
+      requirement: "recommended",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      citation: { ...eventListing, section: "Safety Gear" },
+      confidence: "medium",
+      notes:
+        "Event listing: 'HNR for drivers and balaclava (required for fueling crew, recommended for all).' Mandatory only for fueling crew (out of scope for this app, which models the driver); recommended, not required, for drivers.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [

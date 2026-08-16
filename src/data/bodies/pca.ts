@@ -42,6 +42,12 @@ const de: Ruleset = {
       notes:
         "'Helmets with a printed manufacture date expire at the end of the 10th year following the year of manufacture' — applied uniformly above as a 10-year validity window from the label date. Snell M-rated helmets are explicitly permitted only for novice run groups per this document ('Snell M-rated helmets are permitted for HPDE Events novice run groups, however, participants are encouraged to upgrade to a Snell SA helmet when moving into higher run groups') — that's a soft encouragement rather than a hard rule for higher groups, so it isn't modeled as a separate ruleset; some regional programs may enforce SA-only for higher groups more strictly. The SFI/FIA/BS entries above are reasonable representative generations for those generically-named specs, not verified name-for-name against the document. 'Other helmets may also be acceptable if they are approved for PCA Club Racing (SFI, FIA)' per the Club Racing rulebook — not modeled here as Club Racing is a separate wheel-to-wheel program out of scope for this app.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the national Minimum Standards document, just not yet re-checked.",
+    },
     hnr: {
       requirement: "conditional",
       condition:

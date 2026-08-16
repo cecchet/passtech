@@ -2,6 +2,7 @@ import { EquipmentCategory } from "./types";
 
 export const CATEGORY_ORDER: EquipmentCategory[] = [
   "helmet",
+  "balaclava",
   "hnr",
   "firesuit",
   "gloves",
@@ -19,6 +20,7 @@ interface CategoryMeta {
 
 export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
   helmet: { label: "Helmet", hybrid: false, hint: "Standard printed on the certification sticker inside the helmet." },
+  balaclava: { label: "Balaclava", hybrid: true, hint: "Often required for open-cockpit/open-wheel cars, or conditional if the driver has facial hair. Some bodies accept plain fire-resistant material; others require SFI or FIA certification." },
   hnr: { label: "Head & Neck Restraint (HANS/HNR)", hybrid: false, hint: "Standard printed on the device's conformance label." },
   firesuit: { label: "Firesuit / Driving Suit", hybrid: true, hint: "Standard printed on the suit's homologation label — most bodies require a certified suit, but a few accept plain fire-resistant clothing at lower tiers." },
   gloves: { label: "Gloves", hybrid: true, hint: "Some bodies accept plain fire-resistant material; others require SFI or FIA certification." },

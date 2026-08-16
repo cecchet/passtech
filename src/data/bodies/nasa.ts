@@ -36,6 +36,12 @@ const roadRacing: Ruleset = {
       notes:
         "Snell M-rated (motorcycle) helmets — M2015, M2020, CMR2007, etc. — are explicitly NOT acceptable for NASA road racing competition (they are allowed for HPDE/Time Trial under a separate, more lenient CCR §11.3.1 rule, which this app does not cover). 'Strongly recommended' to replace after any substantial impact, though that is not a hard rule.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "NASA CCR", version: "2026.3" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the CCR, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [
@@ -135,6 +141,12 @@ const rallySport: Ruleset = {
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.36.1.1" },
       confidence: "high",
       notes: "Helmets must also be unmodified. Applies to all crew (driver and navigator).",
+    },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the current GRR Section 3, just not yet re-checked.",
     },
     hnr: {
       requirement: "required",

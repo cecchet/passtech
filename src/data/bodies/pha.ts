@@ -32,6 +32,16 @@ const timeTrialHillclimb: Ruleset = {
       confidence: "high",
       notes: "Snell M-rated helmets are explicitly NOT allowed for PHA Time Trial/Hillclimb events (only allowed for HPDE-style events elsewhere, not modeled here).",
     },
+    balaclava: {
+      requirement: "conditional",
+      condition: "Required for drivers with beards/mustaches, and for open-face helmets generally (a full fire-resistant helmet skirt is accepted as an alternative, not modeled separately here).",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "PHA does not cite a specific certification number for the balaclava itself.",
+      citation: { ...sourceDoc, section: "9.20.A" },
+      confidence: "medium",
+      notes: "Carried over from the original PHA research pass, which surfaced this rule as an aside under the underwear section rather than a dedicated clause — worth a re-check against the source PDF if precision matters.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [
@@ -79,7 +89,7 @@ const timeTrialHillclimb: Ruleset = {
     undergarment: {
       requirement: "conditional",
       condition:
-        "Required unless the driving suit itself carries an FIA 1986 Standard, FIA 8856-2000, or SFI 3-2A/5-or-higher (3.2A/10, /15, /20) label — in which case fire-resistant underwear becomes optional. Also: balaclavas (or a full fire-resistant helmet skirt) are required for drivers with beards/mustaches, and for open-face helmets generally — not separately modeled here.",
+        "Required unless the driving suit itself carries an FIA 1986 Standard, FIA 8856-2000, or SFI 3-2A/5-or-higher (3.2A/10, /15, /20) label — in which case fire-resistant underwear becomes optional.",
       undergarmentTriggerStandards: ["sfi-3.2a-1"],
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,

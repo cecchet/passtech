@@ -44,6 +44,15 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
     confidence: "high",
     notes: "Rule text names only FIA 8859-2015 (not 2020/2024) but '8860-2010 or newer' for the 8860 family — transcribed literally even though it reads like an odd asymmetry.",
   },
+  balaclava: {
+    requirement: "conditional",
+    condition: "Required for drivers with beards/mustaches.",
+    materialOnlyAccepted: true,
+    acceptedStandards: GENERIC_APPAREL_STANDARDS,
+    materialNote: "No certification number cited for the balaclava itself.",
+    citation: SCCA_TT_LEVEL2_SOURCE,
+    confidence: "high",
+  },
   hnr: {
     requirement: "recommended",
     acceptedStandards: [
@@ -83,7 +92,7 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
     materialOnlyAccepted: true,
     acceptedStandards: GENERIC_APPAREL_STANDARDS,
     materialNote:
-      "'Shoes, with uppers of leather and/or nonflammable material that, at a minimum, cover the instep' — no certification number required. Separately, socks of accepted fire-resistant material are required — not modeled as its own category here since this app's undergarment category covers body underwear, not socks. Balaclavas of fire-resistant material are also required for drivers with beards/mustaches — not modeled.",
+      "'Shoes, with uppers of leather and/or nonflammable material that, at a minimum, cover the instep' — no certification number required. Separately, socks of accepted fire-resistant material are required — not modeled as its own category here since this app's undergarment category covers body underwear, not socks.",
     citation: SCCA_TT_LEVEL2_SOURCE,
     confidence: "high",
   },

@@ -34,6 +34,12 @@ const performanceRally: Ruleset = {
       notes:
         "Applies identically to driver and co-driver. Confidence is medium: the fullest available 2026 text was a third-party-hosted combined rulebook, cross-verified against ARA's own 2025 CDN document and Bulletin 2025-6 (content matched apart from expected year deltas). Recommend spot-checking the live ARA/Sportity app before treating as final. Helmet may not be modified from factory spec.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition" },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the rulebook, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [

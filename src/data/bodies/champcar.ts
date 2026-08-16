@@ -37,6 +37,12 @@ const endurance: Ruleset = {
       notes:
         "Rule text: 'An undamaged full-face helmet, displaying Snell Type SA2015, SA2020, SA2025, or FIA certification is required... All helmets expire 11 years after the date of certification.' Snell Type M (motorcycle) and other non-SA helmets explicitly barred as not fire-rated. Altered/counterfeit Snell stickers result in an event ban. An annual ChampCar helmet inspection decal is also required (§3.13.2) but isn't modeled here. Confidence is medium because the FIA helmet standard/spec number isn't named explicitly.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the BCCR, just not yet re-checked.",
+    },
     hnr: {
       requirement: "required",
       acceptedStandards: [

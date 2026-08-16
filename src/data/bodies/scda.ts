@@ -34,6 +34,13 @@ const helmetRule = {
   notes: "'Any other helmet ratings are not acceptable' per the tech form — this excludes Snell SA2015 and earlier, SFI-rated, DOT-only, and ECE helmets outright, a noticeably stricter list than most bodies in this app.",
 };
 
+const notAddressedBalaclava = {
+  requirement: "not_addressed" as const,
+  citation: { title: "SCDA Tech Inspection Form / SCDA FAQ" },
+  confidence: "medium" as const,
+  notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the tech form/FAQ, just not yet re-checked.",
+};
+
 const notAddressedUndergarment = {
   requirement: "not_addressed" as const,
   citation: { title: "SCDA Tech Inspection Form / SCDA FAQ" },
@@ -59,6 +66,7 @@ const hpdeStreet: Ruleset = {
   sourceDocuments: [techForm, faq],
   categories: {
     helmet: helmetRule,
+    balaclava: notAddressedBalaclava,
     hnr: {
       requirement: "recommended",
       citation: { ...faq, section: "Dress Code" },
@@ -105,6 +113,7 @@ const hpdeCaged: Ruleset = {
   sourceDocuments: [techForm, faq],
   categories: {
     helmet: helmetRule,
+    balaclava: notAddressedBalaclava,
     hnr: {
       requirement: "recommended",
       acceptedStandards: [

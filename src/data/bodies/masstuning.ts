@@ -42,6 +42,12 @@ const trackfest: Ruleset = {
       notes:
         "The tech/waiver form's entire stated requirement is 'Snell certified helmet' — no generation/year, no SA-vs-M distinction, and no expiration window is given anywhere in MassTuning's public materials (unlike, e.g., NEQ which explicitly requires SA and excludes M). The accepted-standards list above is this app's own reasonable interpretation of 'Snell certified,' not something MassTuning itself enumerates — confidence is medium for that reason, though it is high that some current Snell certification is required. Optional helmet rental ($25/day) is offered at some events. Worth a direct spot-check/onsite confirmation if a borderline (older or M-rated) helmet is in play.",
     },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "medium",
+      notes: "Balaclava wasn't a tracked category when this ruleset was researched — not confirmed absent from the tech/waiver form, just not yet re-checked.",
+    },
     hnr: {
       requirement: "not_addressed",
       citation: { ...techForm },

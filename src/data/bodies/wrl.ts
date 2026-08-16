@@ -30,7 +30,14 @@ const endurance: Ruleset = {
       citation: { ...sourceDoc, section: "B.2.a" },
       confidence: "medium",
       notes:
-        "Rulebook: 'Full-face with visor (face shield). No structural damage. Rated Snell SA/SAH-2015 or 2020 for drivers... Helmets meeting current FIA standards are permitted.' Two ambiguities: (1) the 'SAH' reference has no matching SAH2015/SAH2020 entries in this app's standards registry (only 'snell-sah2010' exists) — possibly a rulebook holdover/typo, flagged for the maintainer; (2) 'current FIA standards' isn't itemized, so the current FIA 8859 (auto racing helmet) generations are assumed — FIA 8860 (higher-spec) generations were not added since WRL doesn't reference them. Notably WRL does NOT list Snell SA2025, unlike most other bodies in this app — confirmed from the current 2026.1.2 rulebook text, not an oversight. Crew members (not drivers) may substitute an open-face helmet with a full-face balaclava and goggles when not directly fueling (D.3.d/e) — not applicable to driver equipment. Balaclava and eye protection requirements are not modeled since they aren't tracked categories in this app.",
+        "Rulebook: 'Full-face with visor (face shield). No structural damage. Rated Snell SA/SAH-2015 or 2020 for drivers... Helmets meeting current FIA standards are permitted.' Two ambiguities: (1) the 'SAH' reference has no matching SAH2015/SAH2020 entries in this app's standards registry (only 'snell-sah2010' exists) — possibly a rulebook holdover/typo, flagged for the maintainer; (2) 'current FIA standards' isn't itemized, so the current FIA 8859 (auto racing helmet) generations are assumed — FIA 8860 (higher-spec) generations were not added since WRL doesn't reference them. Notably WRL does NOT list Snell SA2025, unlike most other bodies in this app — confirmed from the current 2026.1.2 rulebook text, not an oversight.",
+    },
+    balaclava: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "D.3" },
+      confidence: "high",
+      notes:
+        "No balaclava requirement for drivers. Rule D.3.d/e allows crew members (not drivers) to substitute an open-face helmet with a full-face balaclava and goggles when not directly fueling — a crew-only allowance, not a driver requirement.",
     },
     hnr: {
       requirement: "required",

@@ -2,7 +2,7 @@ import { EquipmentCategory, StandardAcceptance, StandardDef } from "./types";
 
 export const NOT_LISTED = "__not_listed__";
 
-const APPAREL: EquipmentCategory[] = ["gloves", "shoes", "undergarment", "arm_restraint"];
+const APPAREL: EquipmentCategory[] = ["gloves", "shoes", "undergarment", "arm_restraint", "balaclava"];
 
 /**
  * Master registry of certification standards a user can select when entering equipment.

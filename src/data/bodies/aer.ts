@@ -32,7 +32,16 @@ const endurance: Ruleset = {
       citation: { ...sourceDoc, section: "1.4.4" },
       confidence: "high",
       notes:
-        "Rulebook: 'A full-face helmet with a rating of SA2015 or later, or FIA 8860-2004. No open-face helmets will be allowed under any circumstances.' No stated expiration/sunset for the helmet rating itself. Separately, §1.4.3 requires an SFI 3.3 or FIA 8856-2000-or-better balaclava for any driver with hair or facial hair protruding from the helmet — not modeled here since balaclava isn't one of this app's tracked categories.",
+        "Rulebook: 'A full-face helmet with a rating of SA2015 or later, or FIA 8860-2004. No open-face helmets will be allowed under any circumstances.' No stated expiration/sunset for the helmet rating itself.",
+    },
+    balaclava: {
+      requirement: "conditional",
+      condition: "Required for any driver with hair or facial hair protruding from the helmet.",
+      materialOnlyAccepted: false,
+      acceptedStandards: [...SFI_3_3_IDS.map((standardId) => ({ standardId })), { standardId: "fia-8856-2000" }, { standardId: "fia-8856-2018", note: "Not explicitly named by AER's rule text (which only cites FIA 8856-2000), but assumed acceptable as the current FIA suit-family standard, matching this app's convention for other AER categories with the same gap." }],
+      materialNote: "Rulebook §1.4.3: 'SFI 3.3 or FIA 8856-2000 or better' — a certified item, not just fire-resistant material.",
+      citation: { ...sourceDoc, section: "1.4.3" },
+      confidence: "high",
     },
     hnr: {
       requirement: "required",

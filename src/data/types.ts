@@ -1,5 +1,6 @@
 export type EquipmentCategory =
   | "helmet"
+  | "balaclava"
   | "hnr"
   | "firesuit"
   | "gloves"
