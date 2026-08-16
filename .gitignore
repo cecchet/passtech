@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# personal test photos used to exercise the photo-scan feature, not project source
+/Safety gear tags/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
