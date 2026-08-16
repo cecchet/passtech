@@ -8,6 +8,7 @@ import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
 import { EquipmentEntry, evaluateRuleset, overallEligibility } from "@/lib/matcher";
 import { BrandLogo } from "@/components/BrandLogo";
+import { TutorialModal } from "@/components/TutorialModal";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first";
 
@@ -33,6 +34,7 @@ interface MissingReport {
 }
 
 const STORAGE_KEY = "safety-gear-check:v2";
+const TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("landing");
@@ -41,6 +43,7 @@ export default function Home() {
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   // One-time hydration from localStorage on mount (must run client-side only, after SSR's default-state render).
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -54,12 +57,18 @@ export default function Home() {
         if (saved.mode) setMode(saved.mode);
         if (saved.missingReports) setMissingReports(saved.missingReports);
       }
+      if (!window.localStorage.getItem(TUTORIAL_SEEN_KEY)) setShowTutorial(true);
     } catch {
       // ignore corrupt/unavailable storage
     }
     setHydrated(true);
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
+
+  const closeTutorial = () => {
+    setShowTutorial(false);
+    window.localStorage.setItem(TUTORIAL_SEEN_KEY, "1");
+  };
 
   useEffect(() => {
     if (!hydrated) return;
@@ -119,18 +128,32 @@ export default function Home() {
             <BrandLogo />
             <div>
               <h1 className="flex items-center gap-2 text-2xl font-bold">PassTech</h1>
-              <p className="text-xs text-neutral-400">Racer Personal Safety Equipment Checker — by Frog Racing</p>
+              <p className="text-xs text-neutral-400">
+                Racer Personal Safety Equipment Checker — by{" "}
+                <a href="https://www.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-300">
+                  Frog Racing
+                </a>
+              </p>
             </div>
           </div>
-          {(mode === "body-first" || mode === "equipment-first") && (
+          <div className="flex shrink-0 gap-2">
             <button
               type="button"
-              onClick={clearAll}
-              className="shrink-0 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+              onClick={() => setShowTutorial(true)}
+              className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
             >
-              Clear all entries
+              How it works
             </button>
-          )}
+            {(mode === "body-first" || mode === "equipment-first") && (
+              <button
+                type="button"
+                onClick={clearAll}
+                className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+              >
+                Clear all entries
+              </button>
+            )}
+          </div>
         </div>
         <p className="mt-2 rounded-lg border border-amber-700 bg-amber-950 p-3 text-sm text-amber-200">
           <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
@@ -265,8 +288,16 @@ export default function Home() {
           </a>
           .
         </p>
-        <p className="mt-2">PassTech is provided by Frog Racing.</p>
+        <p className="mt-2">
+          PassTech is provided by{" "}
+          <a href="https://www.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-300">
+            Frog Racing
+          </a>
+          .
+        </p>
       </footer>
+
+      <TutorialModal open={showTutorial} onClose={closeTutorial} />
     </div>
   );
 }
