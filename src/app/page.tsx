@@ -308,7 +308,7 @@ export default function Home() {
         <p>
           Covers {DISCIPLINE_GROUPS.length} disciplines across {ALL_RULESETS.length} rulesets: SCCA (Solo, RallyCross,
           Road Racing), NASA (Road Racing, RallySport), American Rally Association, CARS (Canadian Rally Championship),
-          SCCNH Gravel Trials, NEHA, Pikes Peak, SCCA Time Trial (PHA, Appalachian HillClimb Series), 24 Hours of
+          SCCNH (Gravel Trials, Climb to the Clouds), NEHA, Pikes Peak, SCCA Time Trial (PHA, Appalachian HillClimb Series), 24 Hours of
           Lemons, ChampCar, American Endurance Racing, World Racing League, SCDA, PCA, Hooked on Driving, NEQ,
           MassTuning, and Northeast GT.
         </p>
