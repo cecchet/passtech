@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+/*
+ * This app has one deliberate dark theme — every card, alert box, and text color
+ * throughout the codebase is a hardcoded Tailwind neutral-900/amber-950/red-950-style
+ * dark value with no `dark:` variants anywhere. Letting `body` alone follow the OS
+ * light/dark preference (the create-next-app default below) put a white page behind
+ * those dark-designed colors for light-mode users, making most text and alert boxes
+ * nearly unreadable. Forcing dark keeps body consistent with everything else.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -10,13 +19,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

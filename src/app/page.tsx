@@ -140,7 +140,10 @@ export default function Home() {
           <div className="flex shrink-0 gap-2">
             <button
               type="button"
-              onClick={() => setShowTutorial(true)}
+              onClick={() => {
+                setMode("landing");
+                setShowTutorial(true);
+              }}
               className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
             >
               How it works
@@ -182,26 +185,29 @@ export default function Home() {
       {mode === "landing" && <InstallPrompt />}
 
       {mode === "landing" && (
-        <section className="grid gap-4 sm:grid-cols-3">
-          <LandingCard
-            number={1}
-            title="What does a sanctioning body require?"
-            description="Check the rulebook and see what is required for each safety gear category based on the current rules."
-            onClick={() => setMode("reference")}
-          />
-          <LandingCard
-            number={2}
-            title="Will my equipment pass tech?"
-            description="Enter your current safety gear and check it against the current rules of a sanctioning body."
-            onClick={() => setMode("body-first")}
-          />
-          <LandingCard
-            number={3}
-            title="Where can my equipment race?"
-            description="Enter your current safety gear once and see which sanctioning bodies it's eligible, incomplete, or rejected for."
-            onClick={() => setMode("equipment-first")}
-          />
-        </section>
+        <>
+          <p className="mb-3 text-sm font-semibold text-neutral-200">Click on one of the 3 following options:</p>
+          <section className="grid gap-4 sm:grid-cols-3">
+            <LandingCard
+              number={1}
+              title="Check the rules"
+              description="Check the rulebook and see what is required for each safety gear category based on the current rules."
+              onClick={() => setMode("reference")}
+            />
+            <LandingCard
+              number={2}
+              title="Will my equipment pass tech?"
+              description="Enter your current safety gear and check it against the current rules of a sanctioning body."
+              onClick={() => setMode("body-first")}
+            />
+            <LandingCard
+              number={3}
+              title="Where can my equipment race?"
+              description="Enter your current safety gear once and see which sanctioning bodies it's eligible, incomplete, or rejected for."
+              onClick={() => setMode("equipment-first")}
+            />
+          </section>
+        </>
       )}
 
       {mode !== "landing" && (
@@ -357,6 +363,7 @@ function LandingCard({
   return (
     <button
       type="button"
+      id={`tutorial-option-${number}`}
       onClick={onClick}
       className="flex flex-col items-start gap-2 rounded-lg border border-neutral-700 p-5 text-left hover:border-neutral-400 hover:bg-neutral-900"
     >
