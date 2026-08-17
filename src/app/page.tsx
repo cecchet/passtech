@@ -322,6 +322,13 @@ export default function Home() {
           .
         </p>
         <p className="mt-2">
+          Want to advertise on this webpage? Contact us at{" "}
+          <a href="mailto:sales@frogracing.us" className="underline hover:text-neutral-300">
+            sales@frogracing.us
+          </a>
+          .
+        </p>
+        <p className="mt-2">
           PassTech is provided by{" "}
           <a href="https://www.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-300">
             Frog Racing
