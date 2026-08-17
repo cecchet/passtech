@@ -3,9 +3,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { ALL_RULESETS } from "@/data";
 
-const BODY_COUNT = new Set(ALL_RULESETS.map((r) => r.bodyId)).size;
-
-const INTRO_TEXT = `PassTech checks your racer safety equipment (helmet, balaclava, HANS/HNR, firesuit, gloves, shoes, undergarment, arm restraint) against the published rules of ${BODY_COUNT} sanctioning bodies.`;
+const INTRO_TEXT = `PassTech checks your racer safety equipment (helmet, balaclava, HANS/HNR, firesuit, gloves, shoes, undergarment, arm restraint) against the published rules of ${ALL_RULESETS.length} rulesets.`;
 
 interface PointerStep {
   targetId: string;
