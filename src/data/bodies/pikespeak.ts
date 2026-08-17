@@ -4,7 +4,8 @@ import { GENERIC_APPAREL_STANDARDS } from "../standards";
 const sourceDoc = {
   title: "Pikes Peak International Hill Climb (PPIHC) Rule Book",
   version: "2026 Rule Book, effective Dec 5, 2025",
-  url: "http://www.ppihc.org",
+  // If this direct PDF link breaks, https://ppihc.org/competitors/ at least gets users close.
+  url: "https://ppihc.org/wp-content/uploads/2026-Rule-Book.pdf",
 };
 
 const hillClimb: Ruleset = {
