@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
+import { ALL_RULESETS } from "@/data";
 
-const INTRO_TEXT =
-  "PassTech checks your racer safety equipment (helmet, balaclava, HANS/HNR, firesuit, gloves, shoes, undergarment, arm restraint) against the published rules of ~20 sanctioning bodies.";
+const BODY_COUNT = new Set(ALL_RULESETS.map((r) => r.bodyId)).size;
+
+const INTRO_TEXT = `PassTech checks your racer safety equipment (helmet, balaclava, HANS/HNR, firesuit, gloves, shoes, undergarment, arm restraint) against the published rules of ${BODY_COUNT} sanctioning bodies.`;
 
 interface PointerStep {
   targetId: string;
