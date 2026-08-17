@@ -18,6 +18,7 @@ import { hookedOnDrivingRulesets } from "./bodies/hookedOnDriving";
 import { neqRulesets } from "./bodies/neq";
 import { masstuningRulesets } from "./bodies/masstuning";
 import { northeastGTRulesets } from "./bodies/northeastGT";
+import { amecRulesets } from "./bodies/amec";
 
 export const ALL_RULESETS: Ruleset[] = [
   ...sccaRulesets,
@@ -39,6 +40,7 @@ export const ALL_RULESETS: Ruleset[] = [
   ...hookedOnDrivingRulesets,
   ...neqRulesets,
   ...masstuningRulesets,
+  ...amecRulesets,
 ];
 
 export function getRuleset(id: string): Ruleset | undefined {

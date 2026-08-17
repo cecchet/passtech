@@ -19,6 +19,7 @@ const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Rally",
   "Road Racing",
   "Hillclimb",
+  "Ice Racing",
   "Endurance Racing",
   "HPDE / Track Day",
 ];
@@ -310,7 +311,7 @@ export default function Home() {
           Road Racing), NASA (Road Racing, RallySport), American Rally Association, CARS (Canadian Rally Championship),
           SCCNH (Gravel Trials, Climb to the Clouds), NEHA, Pikes Peak, SCCA Time Trial (PHA, Appalachian HillClimb Series), 24 Hours of
           Lemons, ChampCar, American Endurance Racing, World Racing League, SCDA, PCA, Hooked on Driving, NEQ,
-          MassTuning, and Northeast GT.
+          MassTuning, Northeast GT, and AMEC Ice Racing.
         </p>
         <p className="mt-2">
           Know a ruleset we should add, or spot a missing certification or an error in one we already cover? Email{" "}

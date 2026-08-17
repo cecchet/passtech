@@ -67,6 +67,7 @@ export type DisciplineGroup =
   | "Rally"
   | "Road Racing"
   | "Hillclimb"
+  | "Ice Racing"
   | "Endurance Racing"
   | "HPDE / Track Day";
 
