@@ -19,6 +19,7 @@ import { neqRulesets } from "./bodies/neq";
 import { masstuningRulesets } from "./bodies/masstuning";
 import { northeastGTRulesets } from "./bodies/northeastGT";
 import { amecRulesets } from "./bodies/amec";
+import { gridlifeRulesets } from "./bodies/gridlife";
 
 export const ALL_RULESETS: Ruleset[] = [
   ...sccaRulesets,
@@ -41,6 +42,7 @@ export const ALL_RULESETS: Ruleset[] = [
   ...neqRulesets,
   ...masstuningRulesets,
   ...amecRulesets,
+  ...gridlifeRulesets,
 ];
 
 export function getRuleset(id: string): Ruleset | undefined {
