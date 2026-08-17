@@ -209,12 +209,12 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results }: P
             className="rounded-lg border border-neutral-700 p-4"
           >
             <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
-              <span className="flex flex-1 items-center gap-3">
+              <span className="flex min-w-0 flex-1 items-center gap-3">
                 <Icon />
-                {meta.label}
+                <span className="min-w-0">{meta.label}</span>
               </span>
               <div
-                className="flex shrink-0 items-center gap-3 text-xs font-normal"
+                className="flex w-full shrink-0 items-center gap-3 text-xs font-normal sm:w-auto"
                 onClick={(e) => e.stopPropagation()}
               >
                 <label className="flex cursor-pointer items-center gap-1">
