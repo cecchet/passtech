@@ -20,6 +20,7 @@ import { masstuningRulesets } from "./bodies/masstuning";
 import { northeastGTRulesets } from "./bodies/northeastGT";
 import { amecRulesets } from "./bodies/amec";
 import { gridlifeRulesets } from "./bodies/gridlife";
+import { bmwccaRulesets } from "./bodies/bmwcca";
 
 export const ALL_RULESETS: Ruleset[] = [
   ...sccaRulesets,
@@ -43,6 +44,7 @@ export const ALL_RULESETS: Ruleset[] = [
   ...masstuningRulesets,
   ...amecRulesets,
   ...gridlifeRulesets,
+  ...bmwccaRulesets,
 ];
 
 export function getRuleset(id: string): Ruleset | undefined {
