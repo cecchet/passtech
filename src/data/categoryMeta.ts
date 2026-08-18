@@ -5,10 +5,10 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "balaclava",
   "hnr",
   "firesuit",
-  "gloves",
-  "shoes",
   "undergarment",
+  "gloves",
   "arm_restraint",
+  "shoes",
 ];
 
 interface CategoryMeta {
