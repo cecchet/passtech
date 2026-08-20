@@ -180,3 +180,7 @@ export function standardLabel(id: string): string {
   if (id === NOT_LISTED) return "Not listed / other";
   return STANDARDS.find((s) => s.id === id)?.label ?? id;
 }
+
+export function standardFamily(id: string): StandardDef["family"] | undefined {
+  return STANDARDS.find((s) => s.id === id)?.family;
+}
