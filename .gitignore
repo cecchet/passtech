@@ -28,11 +28,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# rulebook PDF/text/HTML reference cache — large binaries, not application code, kept locally
-# only as a research convenience (see rulebooks/README.md, which stays tracked)
-rulebooks/*
-!rulebooks/README.md
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
