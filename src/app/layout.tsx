@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PassTech — Racer Personal Safety Equipment Checker",
+  title: "PassTech — Racer Safety Gear Checker",
   description: "Check your racer safety equipment against sanctioning body rules, even offline. By Frog Racing.",
   icons: {
     icon: [{ url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" }],

@@ -96,6 +96,121 @@ const performanceRally: Ruleset = {
       notes:
         "No dedicated arm-restraint requirement found anywhere in the ARA rulebook (checked GCR/RCR/RTR for 'arm restraint,' 'restraint,' 'sleeve,' 'window net,' 'convertible,' 'open car/top' — no hits define a driver-worn arm restraint). Window nets (FIA Article 253 or SFI 27.1) are the closest related control, but that's vehicle equipment, not driver-worn PPE.",
     },
+    seat: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: [{ standardId: "fia-8855-1999" }, { standardId: "fia-8862-2009" }],
+      materialNote:
+        "RTR 2.3.1.a: 'The use of hinged-back and OEM seats is prohibited.' This is an explicit, unambiguous ban — unlike some other bodies where a stock seat is merely implied-out by a belt-routing or construction requirement, ARA names OEM seats outright as disallowed. materialOnlyAccepted is false for that reason: there is no stock/OEM path here. RTR 2.3.1.b: 'All the occupants' seats must be homologated by FIA Standards 8855-1999 or 8862-2009, or be specifically designed for motor racing. All non-FIA seats are subject to acceptance by the Chief Scrutineer.' So the accepted paths are (1) FIA-homologated, or (2) a purpose-built racing seat without FIA homologation, admitted at the Chief Scrutineer's discretion — not modeled as a separate standards entry since it's a discretionary call rather than a named certification.",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.1" },
+      confidence: "high",
+      notes:
+        "Seat mounting (RTR 2.3.2): seats must be securely attached to the vehicle structure to prevent movement in an accident — sliders are explicitly prohibited ('Seats may not be mounted with sliders'), a fixed mount is required. Confidence raised to high: directly confirmed against the locally cached full text of the 2023 RTR Edition (through Bulletin 2023-8, saved at rulebooks/ara-rally-technical-rules.txt/.pdf) — RTR 2.3.1.a/b and 2.3.2 quoted verbatim above. The '2026 Edition, through Bulletin 2026-8' cited elsewhere in this file is still only distributed via the ARA/Sportity app, not as a downloadable PDF, but section 2.3 numbering matches the already-verified 2026 driver-gear sections in this file exactly (2.2.5 master switch, 2.2.9 tow hooks, 2.3.5 fire extinguishers, 2.3.6 first aid kit, 2.3.10 belt cutters all match precisely), so no renumbering is expected between the 2023 and 2026 editions for this clause either.",
+    },
+    belts_harness: {
+      requirement: "required",
+      acceptedStandards: [
+        { standardId: "fia-8853-98" },
+        { standardId: "fia-8853-2016" },
+        { standardId: "sfi-16.1" },
+        { standardId: "sfi-16.5" },
+      ],
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.3" },
+      confidence: "medium",
+      notes:
+        "A five-, six-, or seven-point unmodified harness of proprietary manufacture is required for both crew members — stock/OEM belts are not an accepted alternative. Standard must currently appear as valid on the applicable FIA Technical List or SFI manufacturer list (sfi-16.6 is not cited by ARA and is omitted here). RTR 2.3.3.e: 'Safety harnesses may not be used after their expiration date' — this refers to whatever date is printed on the label itself (ARA doesn't impose a separate numeric validity window); for dual FIA/SFI-certified harnesses the later of the two dates governs. Installation requirements (anchorage points, reinforcement plates, etc.) are in RTR 2.3.4.",
+    },
+    window_net: {
+      requirement: "required",
+      acceptedStandards: [
+        {
+          standardId: "fia-8863-2015",
+          note: "RTR text cites 'FIA article 253' rather than a numbered net standard. FIA's window-net homologation spec under Article 253 is FIA Standard 8863-2015 — mapped here since that's the only FIA window-net standard in this app's registry.",
+        },
+        { standardId: "sfi-27.1" },
+      ],
+      materialNote:
+        "RTR 2.2.6.d: 'Window safety nets must be used in lieu of having windows rolled-up during stages... All window nets must meet FIA article 253 or SFI 27.1 certification.' A plain, uncertified net is not offered as an accepted alternative — certification is mandatory.",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.2.6.c, 2.2.6.d" },
+      confidence: "medium",
+      notes:
+        "RTR 2.2.6.c: side windows in the driver's and co-driver's doors may not be rolled down more than 1 inch during stages; 2.2.6.d then requires a certified window net over those same door openings 'in lieu of having windows rolled-up' during stages. Read together, the net is standard fitment for any car with roll-up door glass while on stage, not an optional/alternative piece of equipment. Distinct from — NOT interchangeable with — the driver-worn arm restraint: ARA's arm_restraint category is 'not_addressed' (no rulebook language anywhere defines a driver-worn arm restraint), so satisfiedByAlternative is intentionally omitted on both categories here. ARA's window net is purely vehicle-fitted safety equipment, never offered as a substitute for something the driver wears — this matches the existing arm_restraint note, which already flags window nets as 'the closest related control, but... vehicle equipment, not driver-worn PPE.' Sourced from the full text of the 2023 Edition RTR PDF (through Bulletin 2023-8) — the fullest downloadable RTR text found; the current '2026 Edition, through Bulletin 2026-8' is distributed only via the ARA/Sportity app (see the helmet/seat notes elsewhere in this file for the same caveat). Section 2.2.6 numbering matches sections already relied on elsewhere in this file from the same source (2.2.5 master switch, 2.2.9 tow hooks, 2.3.5 fire extinguishers, 2.3.6 first aid kit all match exactly), suggesting no renumbering since 2023. Saved locally at rulebooks/ara-rally-technical-rules.pdf.",
+    },
+    fire_extinguisher: {
+      requirement: "required",
+      fireExtinguisherOptions: [
+        { quantity: 2, minBcRating: 10 },
+        { quantity: 1, minBcRating: 20 },
+      ],
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.5" },
+      confidence: "medium",
+      notes:
+        "RTR 2.3.5.a).ii): two hand-held extinguishers rated at least 10-B:C each, or one rated at least 20-B:C. Listed clean-agent equivalents for one 10-B:C unit: AFFF 2.4L, FX G-TEC 2.0kg, Viro3 2.0kg, Novec 1230 2.0kg, or 4Fire 2.0L. Units must be secured with a metal strap, show a visible fill/charge gauge, be DOT/US Coast Guard/SFI/FIA-approved, and bear service certification (annual or per FIA/SFI requirements) from a certified inspector; one extinguisher must be within easy reach of the driver or co-driver when seated, and an exterior label must mark the nearest access point. This is in addition to — not a substitute for — the mandatory on-board fire suppression system (see fire_suppression, RTR 2.3.5.a).i)).",
+    },
+    fire_suppression: {
+      requirement: "required",
+      acceptedStandards: [{ standardId: "sfi-17.1" }, { standardId: "fia-8865-2015" }],
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.5" },
+      confidence: "medium",
+      notes:
+        "RTR 2.3.5.a).i): an on-board fire suppression system (manual or automatic activation) is mandatory for all competition vehicles, with nozzles discharging into both the engine compartment and cockpit. Accepted standards are SFI 17.1, FIA 8865-2015, or a system currently listed as homologated for Rally on FIA Technical List n°16 (not a distinct standard ID, so not separately modeled). Bottles must be secured with a metal strap, show a visible fill gauge, have an activation point within easy reach of both crew members, and be identified with 2 circular 'E' decals (at the release point and on the exterior bodywork).",
+    },
+    fuel_cell: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: [
+        { standardId: "sfi-28.1" },
+        { standardId: "sfi-28.3" },
+        { standardId: "fia-ft3-1999" },
+        { standardId: "fia-ft3.5-1999" },
+        { standardId: "fia-ft5-1999" },
+      ],
+      materialNote:
+        "RTR 2.2.8.c: the original/OEM fuel tank may be used provided it remains in the OEM location, secured by the original mounting systems. RTR 2.2.8.d: if replaced, only an FIA- or SFI-approved fuel cell may be used, vented to outside the vehicle, with a spill outlet if located in the luggage compartment. Supplementary fuel tanks are prohibited (2.2.8.e); there's no restriction on tank size. ARA doesn't cite a specific FIA/SFI fuel-cell spec number — all currently registered SFI/FIA fuel-cell standards are offered here so drivers can match their tag.",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.2.8" },
+      confidence: "medium",
+    },
+    kill_switch: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.2.5" },
+      confidence: "medium",
+      notes:
+        "A spark-proof master electrical disconnect switch capable of killing all electrical circuits (including alternator and engine) must be mounted in the passenger compartment, operable by either crew member or by persons outside the vehicle through either front door. Must be marked with a label showing a red spark in a white-edged blue triangle with a base length of at least 4 inches.",
+    },
+    tow_hook: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.2.9" },
+      confidence: "medium",
+      notes:
+        "Towing eyes required at front and rear, painted yellow, red, or orange; if mounted under the car, the location must be identified with a fluorescent arrow. It is 'highly recommended' (not mandatory) that tow points be rated to double the car's weight, since they may be used to recover the vehicle.",
+    },
+    tow_rope: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.8" },
+      confidence: "medium",
+      notes: "A tow rope or winch with cable must be carried; all parts of the tow rope must remain inside the competition vehicle at all times while not in use.",
+    },
+    emergency_triangle: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.7" },
+      confidence: "medium",
+      notes:
+        "Three self-supporting, light-reflecting, daylight-visible triangular warning devices, minimum 12 inches per side, must be carried; one must be located within easy reach of the driver or co-driver when seated. Devices must be permanently marked with the crew's assigned car number.",
+    },
+    first_aid_kit: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.6" },
+      confidence: "medium",
+      notes:
+        "A comprehensive first aid kit must be carried in the passenger compartment — easily accessible, clearly identified, and quickly removable by hand (recommended accessible from both sides and from the seated position). An exterior label marking the nearest access point is required.",
+    },
+    window_breaker: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.10" },
+      confidence: "medium",
+      notes:
+        "One or more belt cutters and glass breakers must be carried within reach of both driver and co-driver while harnesses are worn; the seat belt cutter must be designed specifically for cutting seat belts. Related: RTR 2.2.6.b requires one or more window-breakers accessible to driver and co-driver for vehicles with glass side windows, and 2.2.6.d requires window nets (FIA Art. 253 or SFI 27.1) in lieu of rolled-up windows during stages.",
+    },
   },
 };
 

@@ -1,8 +1,18 @@
-import { CategoryRule, EquipmentCategory, Ruleset, StandardAcceptance } from "@/data/types";
+import { CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, Ruleset, StandardAcceptance } from "@/data/types";
 import { NOT_LISTED, standardLabel } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 
 export type ItemStatus = "ok" | "rejected" | "not_required" | "recommended_only" | "needs_info" | "unrecognized";
+
+/**
+ * Hybrid categories whose plain-material/stock option is trivially met by default — a driver
+ * almost certainly already has it without needing to buy anything (any ordinary closed-toe shoe;
+ * the OEM seat and belts the car shipped with). Softens an unanswered "required" rule to
+ * "conditional" so it doesn't read as a hard tech-inspection failure before the driver even says
+ * whether they have it. Not applied to every hybrid category — fire-resistant gloves/undergarment/
+ * firesuit material, for instance, aren't something a driver has by default the way OEM parts are.
+ */
+const SOFT_MATERIAL_ONLY_CATEGORIES = new Set<EquipmentCategory>(["shoes", "seat", "belts_harness"]);
 
 /** One certification printed on the item's tag. An item can carry more than one (e.g. a helmet with both a Snell and an FIA sticker) — it only takes one currently-valid certification for the item to pass. */
 export interface CertificationEntry {
@@ -18,9 +28,17 @@ export interface CertificationEntry {
   tagExpirationDate?: string;
 }
 
+/** Fire extinguisher only: one physical unit in the car. Rating fields are the numbers printed before each UL class, e.g. "10-B:C" → bcRating 10. */
+export interface ExtinguisherUnit {
+  key: string;
+  bcRating?: number;
+  classARating?: number;
+  weightLbs?: number;
+}
+
 export interface EquipmentEntry {
   category: EquipmentCategory;
-  /** For hybrid categories (firesuit/gloves/shoes/undergarment/arm_restraint): whether the user is entering plain material or certification(s). */
+  /** For hybrid categories (firesuit/gloves/shoes/undergarment/arm_restraint/belts_harness/fuel_cell): whether the user is entering plain material/stock equipment or certification(s). */
   mode?: "material_only" | "certified";
   /** Firesuit only: FIA suits are always one-piece; SFI suits can be a separate jacket + pants (not required to match). */
   pieceType?: "one_piece" | "two_piece";
@@ -30,11 +48,17 @@ export interface EquipmentEntry {
   pantsCertifications?: CertificationEntry[];
   /** Helmet only: whether it has an integrated chin bar (full-face) or not (open-face). */
   helmetType?: "open_face" | "full_face";
+  /** Fire extinguisher only: one entry per physical unit carried in the car. */
+  extinguisherUnits?: ExtinguisherUnit[];
   /** User indicates they don't have / aren't entering this item at all. */
   skipped?: boolean;
 }
 
 export function newCertification(): CertificationEntry {
+  return { key: Math.random().toString(36).slice(2) };
+}
+
+export function newExtinguisherUnit(): ExtinguisherUnit {
   return { key: Math.random().toString(36).slice(2) };
 }
 
@@ -190,6 +214,50 @@ export interface EvaluationContext {
   firesuitStandardIds?: string[];
 }
 
+function optionLabel(option: ExtinguisherOption): string {
+  const specs: string[] = [];
+  if (option.minClassARating) specs.push(`${option.minClassARating}-A`);
+  if (option.minBcRating) specs.push(`${option.minBcRating}-B:C`);
+  if (option.minWeightLbs) specs.push(`${option.minWeightLbs} lb`);
+  const spec = specs.length > 0 ? `rated at least ${specs.join(":")}` : "of any rating";
+  return option.quantity === 1 ? `1 extinguisher ${spec}` : `${option.quantity} extinguishers ${spec} each`;
+}
+
+export function describeExtinguisherOptions(options: ExtinguisherOption[]): string {
+  return options.map(optionLabel).join(", or ");
+}
+
+function unitMeetsOption(unit: ExtinguisherUnit, option: ExtinguisherOption): boolean {
+  if (option.minBcRating && (unit.bcRating ?? 0) < option.minBcRating) return false;
+  if (option.minClassARating && (unit.classARating ?? 0) < option.minClassARating) return false;
+  if (option.minWeightLbs && (unit.weightLbs ?? 0) < option.minWeightLbs) return false;
+  return true;
+}
+
+/** Fire extinguisher only: satisfied if the entered units satisfy ANY one of the body's accepted (quantity, minimum rating) combinations. */
+function evaluateExtinguishers(rule: CategoryRule, units: ExtinguisherUnit[], base: Omit<CategoryResult, "status" | "reason">): CategoryResult {
+  const options = rule.fireExtinguisherOptions!;
+
+  if (units.length === 0) {
+    return { ...base, status: "needs_info", reason: "Add at least one extinguisher and its rating." };
+  }
+  const unrated = units.every((u) => u.bcRating === undefined && u.classARating === undefined && u.weightLbs === undefined);
+  if (unrated) {
+    return { ...base, status: "needs_info", reason: "Enter each extinguisher's rating (or weight) shown on its label." };
+  }
+
+  const satisfiedOption = options.find((option) => units.filter((u) => unitMeetsOption(u, option)).length >= option.quantity);
+  if (satisfiedOption) {
+    const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
+    return { ...base, status, reason: `Meets the requirement — ${optionLabel(satisfiedOption)}.` };
+  }
+  return {
+    ...base,
+    status: base.requirement === "recommended" ? "recommended_only" : "rejected",
+    reason: `Doesn't meet any accepted combination — needs ${describeExtinguisherOptions(options)}.`,
+  };
+}
+
 export function evaluateCategory(
   category: EquipmentCategory,
   rule: CategoryRule | undefined,
@@ -210,11 +278,14 @@ export function evaluateCategory(
     };
   }
 
-  // Shoes satisfiable with plain non-flammable material (no certification needed) are a much
-  // softer bar than a certified item — treat them as conditional rather than a hard "required"
-  // failure when nothing's been entered yet, since any ordinary closed-toe shoe qualifies.
+  // Categories satisfiable with plain stock/OEM equipment (no certification needed) are a much
+  // softer bar than a certified item — treated as conditional rather than a hard "required"
+  // failure when nothing's been entered yet, since the bar is trivially met by default: any
+  // ordinary closed-toe shoe qualifies, and cars already ship with an OEM seat and belts fitted.
   const effectiveRequirement =
-    category === "shoes" && rule.requirement === "required" && rule.materialOnlyAccepted ? "conditional" : rule.requirement;
+    SOFT_MATERIAL_ONLY_CATEGORIES.has(category) && rule.requirement === "required" && rule.materialOnlyAccepted
+      ? "conditional"
+      : rule.requirement;
 
   const base = {
     category,
@@ -245,10 +316,19 @@ export function evaluateCategory(
       const reason =
         rule.requirement === "conditional"
           ? `Conditionally required — ${rule.condition ?? "check the condition against your setup"}. Nothing entered yet.`
-          : "Any closed-toe, non-flammable/fire-resistant shoes qualify — no certification required. Not specified yet.";
+          : `${rule.materialNote ?? CATEGORY_META[category].materialOnlyDescription ?? "No certification required for the base requirement."} Not specified yet.`;
       return { ...base, status: "needs_info", reason };
     }
     return { ...base, status: "not_required", reason: "Recommended, not required — nothing entered." };
+  }
+
+  if (category === "fire_extinguisher" && rule.fireExtinguisherOptions) {
+    return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base);
+  }
+
+  if (CATEGORY_META[category].presenceOnly) {
+    const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
+    return { ...base, status, reason: rule.materialNote ?? "Present." };
   }
 
   const hybrid = CATEGORY_META[category].hybrid;
@@ -332,20 +412,64 @@ export function evaluateCategory(
 
 export type CategoryResults = Partial<Record<EquipmentCategory, CategoryResult>>;
 
-export function evaluateRuleset(ruleset: Ruleset, entries: Partial<Record<EquipmentCategory, EquipmentEntry>>, asOf: Date = new Date()): CategoryResults {
+/**
+ * The rules actually in effect for a ruleset once a class is (or isn't) selected: the base
+ * `categories` with any `classOverrides[classId]` entries layered on top, category by category.
+ * With no classId (or a class that has no overrides configured), this is just `ruleset.categories`.
+ */
+export function effectiveCategories(ruleset: Ruleset, classId?: string): Partial<Record<EquipmentCategory, CategoryRule>> {
+  const overrides = classId ? ruleset.classOverrides?.[classId] : undefined;
+  if (!overrides) return ruleset.categories;
+  return { ...ruleset.categories, ...overrides };
+}
+
+export function evaluateRuleset(
+  ruleset: Ruleset,
+  entries: Partial<Record<EquipmentCategory, EquipmentEntry>>,
+  asOf: Date = new Date(),
+  classId?: string
+): CategoryResults {
+  const categories = effectiveCategories(ruleset, classId);
   const results: CategoryResults = {};
   // Firesuit first — undergarment's condition can depend on the firesuit's resolved tier.
-  const firesuitResult = evaluateCategory("firesuit", ruleset.categories.firesuit, entries.firesuit, asOf);
+  const firesuitResult = evaluateCategory("firesuit", categories.firesuit, entries.firesuit, asOf);
   if (firesuitResult) results.firesuit = firesuitResult;
 
-  (Object.keys(ruleset.categories) as EquipmentCategory[]).forEach((category) => {
+  (Object.keys(categories) as EquipmentCategory[]).forEach((category) => {
     if (category === "firesuit") return;
     const context: EvaluationContext | undefined =
       category === "undergarment" ? { firesuitStandardIds: firesuitResult?.resolvedStandardIds } : undefined;
-    const result = evaluateCategory(category, ruleset.categories[category], entries[category], asOf, context);
+    const result = evaluateCategory(category, categories[category], entries[category], asOf, context);
     if (result) results[category] = result;
   });
+
+  // Interchangeable categories (e.g. arm restraint OR window net): if the driver has a
+  // currently-valid entry for either side, the other side's own unresolved/rejected result is
+  // superseded — the body's actual requirement (one of the two) is already satisfied.
+  (Object.keys(results) as EquipmentCategory[]).forEach((category) => {
+    const current = results[category]!;
+    if (current.status === "ok" || current.status === "not_required" || current.status === "recommended_only") return;
+    const altCategory = categories[category]?.satisfiedByAlternative;
+    const altResult = altCategory ? results[altCategory] : undefined;
+    if (altResult && (altResult.status === "ok" || altResult.status === "recommended_only")) {
+      results[category] = {
+        ...current,
+        status: "not_required",
+        reason: `Not required — satisfied via ${CATEGORY_META[altCategory!].label} instead.`,
+      };
+    }
+  });
+
   return results;
+}
+
+/** Keeps only the results for categories whose group is currently selected (e.g. hides car-gear violations when only Driver Safety Gear is checked). */
+export function filterResultsByGroups(results: CategoryResults, activeGroups: ReadonlySet<CategoryGroup>): CategoryResults {
+  const filtered: CategoryResults = {};
+  (Object.keys(results) as EquipmentCategory[]).forEach((category) => {
+    if (activeGroups.has(CATEGORY_META[category].group)) filtered[category] = results[category];
+  });
+  return filtered;
 }
 
 /** A required (or applicable conditional) item that's rejected, unrecognized, or still needs_info while required counts as a real tech-inspection failure. */

@@ -85,6 +85,90 @@ const trackfest: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the tech/waiver form, including for convertibles/open cars.",
     },
+
+    // Car safety gear
+    seat: {
+      requirement: "not_addressed",
+      materialOnlyAccepted: true,
+      materialNote:
+        "No seat construction or certification requirement of any kind. The tech form's 10-item checklist — the entire published safety-equipment requirement for every TrackFest run group (Novice/Intermediate/Advanced/Expert) — never mentions seat type, construction, or certification; the only checklist line containing the word 'seat' is 'Seat belts or appropriate aftermarket harnesses must be secured correctly' (belts_harness), which is about the belts, not the seat itself. A stock/OEM seat is therefore accepted for every run group.",
+      citation: { ...techForm },
+      confidence: "high",
+      notes:
+        "Re-verified directly against the cached tech form PDF (rulebooks/masstuning-trackfest-tech-form.pdf) for this pass — same 10-item checklist as before, re-read in full: 'All loose items must be removed...', 'Windows must be able to be lowered completely on both sides', 'Seat belts or appropriate aftermarket harnesses must be secured correctly', 'Battery must be securely tied down...', 'Brake pads, fluid and lights...', 'Tires must be in good condition...', 'Lug nuts must all be present...', 'Steering and suspension components must not exhibit play', 'Fluids must be filled to minimum levels...', 'Snell certified helmet, closed toe shoes and valid driver's license'. No seat item exists, and nothing is said about sliders/rails vs. a fixed mount either. Consistent with TrackFest being a member's-own-car, run-what-you-brung HPDE program with no roll-cage/harness-tier equipment requirement.",
+    },
+    belts_harness: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      materialNote: "The checklist item reads 'Seat belts or appropriate aftermarket harnesses must be secured correctly' — stock/OEM seat belts are explicitly accepted as an alternative to an aftermarket harness. No certification standard (SFI/FIA), no expiration window, and no minimum harness spec (e.g. point count) is named.",
+      citation: {
+        ...techForm,
+        section:
+          "'PLEASE READ AND SIGN ENTIRELY!' checklist, item: 'Seat belts or appropriate aftermarket harnesses must be secured correctly'",
+      },
+      confidence: "high",
+    },
+    window_net: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes:
+        "Full document search of the tech/waiver form's 10-item checklist (verbatim, re-fetched from the current TrackFest Tech Form PDF linked off individual MotorsportReg event listings) found no mention of a window net requirement, and no mention of arm restraints either — so there's no interchangeable-alternative relationship to model here (unlike bodies such as PHA where the two trade off). The checklist's only window-related item is 'Windows must be able to be lowered completely on both sides' — a window-lowering/emergency-egress requirement, distinct from a window net (see the same note under window_breaker). Consistent with TrackFest being a non-competitive, run-what-you-brung HPDE program with no roll-cage/harness-tier equipment requirement.",
+    },
+    fire_extinguisher: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the tech form's 10-item checklist — no extinguisher requirement, recommendation, size, or rating is stated.",
+    },
+    fire_suppression: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned. Consistent with TrackFest being a novice-friendly, run-what-you-brung HPDE program with no onboard fire-suppression-system requirement.",
+    },
+    fuel_cell: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned — no fuel cell/tank requirement of any kind; stock/OEM fuel tanks are unaddressed rather than explicitly approved.",
+    },
+    window_breaker: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned. The checklist separately requires 'Windows must be able to be lowered completely on both sides' — a window-lowering requirement, distinct from a window net/breaker or seatbelt-cutter tool, which isn't addressed.",
+    },
+    kill_switch: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned. The checklist separately requires 'Battery must be securely tied down with correct hardware' — a tie-down requirement, distinct from a kill switch/master battery cutoff, which isn't addressed.",
+    },
+    tow_hook: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the tech form's 10-item checklist.",
+    },
+    tow_rope: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the tech form's 10-item checklist.",
+    },
+    emergency_triangle: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the tech form's 10-item checklist.",
+    },
+    first_aid_kit: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the tech form's 10-item checklist.",
+    },
   },
 };
 
