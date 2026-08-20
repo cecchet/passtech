@@ -64,6 +64,12 @@ export interface ExtinguisherOption {
   minClassARating?: number;
   /** Minimum weight per unit in lbs, for bodies that spec by weight instead of/alongside a UL rating. */
   minWeightLbs?: number;
+  /**
+   * Some bodies require either a currently-in-date certification/service tag, or (failing that) a
+   * manufacture date less than FRESH_EXTINGUISHER_YEARS old. Omit for bodies that only check the
+   * rating, not the date.
+   */
+  requireCurrentDate?: boolean;
 }
 
 export interface CategoryRule {
@@ -101,6 +107,12 @@ export interface CategoryRule {
    * matcher resolves whichever one the driver actually has and treats the other as not required.
    */
   satisfiedByAlternative?: EquipmentCategory;
+  /**
+   * Fire suppression system only: if the body requires the entered system's next-service date to
+   * still be current (not passed). When unset, an expired next-service date is a caveat/warning
+   * rather than an outright rejection, since most bodies don't check ongoing service currency.
+   */
+  fireSuppressionRequiresCurrentService?: boolean;
   citation: SourceDocument;
   confidence: Confidence;
   notes?: string;

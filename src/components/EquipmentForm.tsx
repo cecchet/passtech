@@ -94,7 +94,7 @@ function CertificationRow({
       {cert.standardId && !notListed && (
         <div className="mt-2 flex flex-col gap-2 sm:flex-row">
           <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
-            Date on tag/label (if any)
+            Manufacturing date on tag/label (if any)
             <input
               type="date"
               className={dateClass}
@@ -102,15 +102,38 @@ function CertificationRow({
               onChange={(e) => onChange({ labelDate: e.target.value || undefined })}
             />
           </label>
-          <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
-            Expiration date on tag (if printed)
-            <input
-              type="date"
-              className={dateClass}
-              value={cert.tagExpirationDate ?? ""}
-              onChange={(e) => onChange({ tagExpirationDate: e.target.value || undefined })}
-            />
-          </label>
+          {category === "fire_suppression" ? (
+            <>
+              <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
+                Next service date (month/year)
+                <input
+                  type="month"
+                  className={dateClass}
+                  value={cert.nextServiceDate ?? ""}
+                  onChange={(e) => onChange({ nextServiceDate: e.target.value || undefined })}
+                />
+              </label>
+              <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
+                Last service date (optional)
+                <input
+                  type="month"
+                  className={dateClass}
+                  value={cert.lastServiceDate ?? ""}
+                  onChange={(e) => onChange({ lastServiceDate: e.target.value || undefined })}
+                />
+              </label>
+            </>
+          ) : (
+            <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
+              Expiration date on tag (if printed)
+              <input
+                type="date"
+                className={dateClass}
+                value={cert.tagExpirationDate ?? ""}
+                onChange={(e) => onChange({ tagExpirationDate: e.target.value || undefined })}
+              />
+            </label>
+          )}
         </div>
       )}
     </div>
@@ -171,17 +194,6 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
   return (
     <div className="flex flex-wrap items-end gap-2 rounded border border-neutral-700 p-2">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
-        B:C rating
-        <input
-          type="number"
-          min={0}
-          placeholder="e.g. 10"
-          className={`${numberInputClass} w-24`}
-          value={unit.bcRating ?? ""}
-          onChange={(e) => onChange({ bcRating: numeric(e.target.value) })}
-        />
-      </label>
-      <label className="flex flex-col gap-1 text-xs text-neutral-400">
         Class A rating (if any)
         <input
           type="number"
@@ -190,6 +202,17 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           className={`${numberInputClass} w-28`}
           value={unit.classARating ?? ""}
           onChange={(e) => onChange({ classARating: numeric(e.target.value) })}
+        />
+      </label>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        B:C rating
+        <input
+          type="number"
+          min={0}
+          placeholder="e.g. 10"
+          className={`${numberInputClass} w-24`}
+          value={unit.bcRating ?? ""}
+          onChange={(e) => onChange({ bcRating: numeric(e.target.value) })}
         />
       </label>
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
@@ -202,6 +225,33 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           className={`${numberInputClass} w-24`}
           value={unit.weightLbs ?? ""}
           onChange={(e) => onChange({ weightLbs: numeric(e.target.value) })}
+        />
+      </label>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        Manufacture date (on cylinder)
+        <input
+          type="date"
+          className={`${dateClass} w-40`}
+          value={unit.manufactureDate ?? ""}
+          onChange={(e) => onChange({ manufactureDate: e.target.value || undefined })}
+        />
+      </label>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        Certification/service date (if separate)
+        <input
+          type="date"
+          className={`${dateClass} w-40`}
+          value={unit.certificationDate ?? ""}
+          onChange={(e) => onChange({ certificationDate: e.target.value || undefined })}
+        />
+      </label>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        Service due date (if printed)
+        <input
+          type="date"
+          className={`${dateClass} w-40`}
+          value={unit.certificationDueDate ?? ""}
+          onChange={(e) => onChange({ certificationDueDate: e.target.value || undefined })}
         />
       </label>
       <button type="button" onClick={onRemove} aria-label="Remove this extinguisher" className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">

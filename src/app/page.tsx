@@ -45,6 +45,7 @@ export default function Home() {
   const [entries, setEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
   const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
+  const [onlyHaveEquipment, setOnlyHaveEquipment] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
@@ -62,6 +63,7 @@ export default function Home() {
         if (saved.classId) setClassId(saved.classId);
         if (saved.mode) setMode(saved.mode);
         if (saved.missingReports) setMissingReports(saved.missingReports);
+        if (typeof saved.onlyHaveEquipment === "boolean") setOnlyHaveEquipment(saved.onlyHaveEquipment);
       }
       if (!window.localStorage.getItem(TUTORIAL_SEEN_KEY)) setShowTutorial(true);
     } catch {
@@ -80,9 +82,9 @@ export default function Home() {
     if (!hydrated) return;
     window.localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ entries, rulesetId, classId, mode, missingReports, activeGroups: Array.from(activeGroups) })
+      JSON.stringify({ entries, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups: Array.from(activeGroups) })
     );
-  }, [entries, rulesetId, classId, mode, missingReports, activeGroups, hydrated]);
+  }, [entries, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups, hydrated]);
 
   const handleRulesetChange = (id: string) => {
     setRulesetId(id);
@@ -137,9 +139,29 @@ export default function Home() {
   const allResults = useMemo(
     () => ALL_RULESETS.map((rs) => {
       const results = filterResultsByGroups(evaluateRuleset(rs, entries), activeGroups);
-      return { rs, results, status: overallEligibility(results) };
+
+      if (!onlyHaveEquipment) {
+        return { rs, results, status: overallEligibility(results), needsMoreGear: false };
+      }
+
+      // "Only check the equipment I have": drop categories the driver hasn't told us about (no
+      // entry, or explicitly "I don't have this item") from eligibility entirely, instead of
+      // letting them fail the ruleset outright. Missing *required* categories are flagged
+      // separately below, as a caveat rather than a hard failure.
+      const haveResults: CategoryResults = {};
+      let missingRequired = false;
+      (Object.keys(results) as EquipmentCategory[]).forEach((category) => {
+        const entry = entries[category];
+        if (!entry || entry.skipped) {
+          if (results[category]!.requirement === "required") missingRequired = true;
+          return;
+        }
+        haveResults[category] = results[category];
+      });
+      const status = overallEligibility(haveResults);
+      return { rs, results, status, needsMoreGear: missingRequired && status !== "not_eligible" };
     }),
-    [entries, activeGroups]
+    [entries, activeGroups, onlyHaveEquipment]
   );
 
   const eligible = allResults.filter((r) => r.status === "eligible");
@@ -286,6 +308,11 @@ export default function Home() {
       {mode === "equipment-first" && (
         <section>
           <h2 className="mb-4 text-lg font-semibold text-amber-400">Where can my equipment race?</h2>
+
+          <label className="mb-4 flex items-center gap-2 text-sm text-neutral-300">
+            <input type="checkbox" checked={onlyHaveEquipment} onChange={(e) => setOnlyHaveEquipment(e.target.checked)} />
+            Only check the equipment I have
+          </label>
 
           <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} activeGroups={activeGroups} />
 
@@ -615,7 +642,7 @@ function ResultGroup({
   accent,
 }: {
   title: string;
-  items: { rs: (typeof ALL_RULESETS)[number]; results: ReturnType<typeof evaluateRuleset> }[];
+  items: { rs: (typeof ALL_RULESETS)[number]; results: ReturnType<typeof evaluateRuleset>; needsMoreGear?: boolean }[];
   accent: string;
 }) {
   if (items.length === 0) return null;
@@ -623,10 +650,15 @@ function ResultGroup({
     <div>
       <h2 className="mb-2 text-sm font-semibold">{title}</h2>
       <div className="space-y-3">
-        {items.map(({ rs, results }) => (
+        {items.map(({ rs, results, needsMoreGear }) => (
           <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
             <summary className="cursor-pointer text-sm font-medium">
               {rs.bodyName} — {rs.disciplineName}
+              {needsMoreGear && (
+                <span className="ml-2 rounded border border-amber-700 bg-amber-950 px-1.5 py-0.5 text-xs font-normal text-amber-300">
+                  Additional equipment required to compete
+                </span>
+              )}
             </summary>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               {CATEGORY_ORDER.map((category) => {

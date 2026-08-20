@@ -1,5 +1,5 @@
-import { CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, Ruleset, StandardAcceptance } from "@/data/types";
-import { NOT_LISTED, standardLabel } from "@/data/standards";
+import { CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
+import { NOT_LISTED, standardFamily, standardLabel } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 
 export type ItemStatus = "ok" | "rejected" | "not_required" | "recommended_only" | "needs_info" | "unrecognized";
@@ -26,6 +26,10 @@ export interface CertificationEntry {
   labelDate?: string;
   /** Explicit expiration date printed on the tag itself, if any. Always binding when present. */
   tagExpirationDate?: string;
+  /** Fire suppression system only: date (month/year) of the next scheduled service, per the system's tag. */
+  nextServiceDate?: string;
+  /** Fire suppression system only: date (month/year) of the last completed service, if known — informational only, not used in eligibility. */
+  lastServiceDate?: string;
 }
 
 /** Fire extinguisher only: one physical unit in the car. Rating fields are the numbers printed before each UL class, e.g. "10-B:C" → bcRating 10. */
@@ -34,6 +38,12 @@ export interface ExtinguisherUnit {
   bcRating?: number;
   classARating?: number;
   weightLbs?: number;
+  /** Date of manufacture printed on the cylinder, if that's what's available. */
+  manufactureDate?: string;
+  /** Date of certification/inspection/service printed on the cylinder's tag, if separate from manufacture. */
+  certificationDate?: string;
+  /** Explicit "service due by" date printed on the tag, if any — takes priority over a manufacture/certification-date-based freshness check when present. */
+  certificationDueDate?: string;
 }
 
 export interface EquipmentEntry {
@@ -90,9 +100,27 @@ function findAcceptance(rule: CategoryRule, standardId?: string): StandardAccept
   return rule.acceptedStandards?.find((a) => a.standardId === standardId);
 }
 
-/** Earliest of the cutoffs actually configured for this cert (tag's own expiration, the body's cutoff date, or a label-date-relative cutoff) — whichever binds first. */
-function earliestUpcomingCutoff(cert: CertificationEntry, acceptance: StandardAcceptance): Date | undefined {
+/**
+ * FIA/SFI equipment has an inherent age limit even when a sanctioning body's own rules don't spell
+ * it out — most bodies just don't restate what's already true of the certification itself. Used
+ * only as a fallback when the ruleset's own `StandardAcceptance` entry doesn't already configure
+ * its own validityYearsFromLabel/expiresOn/noExpiration; when it applies, an item past this age is
+ * flagged with a warning rather than rejected outright, since the body hasn't actually said it
+ * enforces this cutoff. See evaluateSingleCert.
+ */
+function intrinsicValidityYears(category: EquipmentCategory, family: StandardDef["family"]): number | undefined {
+  if (category === "seat") return family === "fia" ? 5 : undefined;
+  if (category === "belts_harness") return family === "fia" ? 5 : family === "sfi" ? 2 : undefined;
+  if (category === "fuel_cell") return family === "fia" || family === "sfi" ? 5 : undefined;
+  if (category === "fire_suppression") return family === "fia" || family === "sfi" ? 10 : undefined;
+  if (CATEGORY_META[category].group === "driver") return family === "fia" ? 10 : undefined;
+  return undefined;
+}
+
+/** Earliest of the cutoffs actually configured for this cert (tag's own expiration, the body's cutoff date, a label-date-relative cutoff, or an extra candidate like an intrinsic-default cutoff) — whichever binds first. */
+function earliestUpcomingCutoff(cert: CertificationEntry, acceptance: StandardAcceptance, extraCandidate?: Date): Date | undefined {
   const candidates: Date[] = [];
+  if (extraCandidate) candidates.push(extraCandidate);
   if (cert.tagExpirationDate) candidates.push(new Date(cert.tagExpirationDate));
   if (acceptance.expiresOn) candidates.push(new Date(acceptance.expiresOn));
   if (acceptance.validityYearsFromLabel && cert.labelDate) {
@@ -104,7 +132,7 @@ function earliestUpcomingCutoff(cert: CertificationEntry, acceptance: StandardAc
   return candidates.reduce((a, b) => (a < b ? a : b));
 }
 
-function evaluateSingleCert(rule: CategoryRule, cert: CertificationEntry, asOf: Date): CertResult {
+function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cert: CertificationEntry, asOf: Date): CertResult {
   const label = cert.standardId ? standardLabel(cert.standardId) : "(no standard selected)";
 
   if (!cert.standardId) {
@@ -171,14 +199,40 @@ function evaluateSingleCert(rule: CategoryRule, cert: CertificationEntry, asOf: 
     }
   }
 
+  // Fallback age check for FIA/SFI equipment that's intrinsically time-limited even when this
+  // body's own rule doesn't say so: flagged as a warning, not a rejection, since the body hasn't
+  // actually said it enforces it.
+  let intrinsicCutoff: Date | undefined;
+  let intrinsicExpiredWarning = "";
+  const explicitlyConfigured =
+    acceptance.validityYearsFromLabel !== undefined || acceptance.expiresOn !== undefined || acceptance.noExpiration === true;
+  if (!explicitlyConfigured && !cert.tagExpirationDate && cert.labelDate) {
+    const family = standardFamily(cert.standardId);
+    const years = family ? intrinsicValidityYears(category, family) : undefined;
+    if (years) {
+      const cutoff = new Date(cert.labelDate);
+      cutoff.setFullYear(cutoff.getFullYear() + years);
+      intrinsicCutoff = cutoff;
+      if (asOf > cutoff) {
+        const familyLabel = family === "fia" ? "FIA" : "SFI";
+        intrinsicExpiredWarning = ` ⚠️ This equipment is expired by ${familyLabel} standards (more than ${years} years since manufacture) but might still be accepted by this sanctioning body.`;
+      }
+    }
+  }
+
   const acceptanceNote = acceptance.note ? ` (${acceptance.note})` : "";
   const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
-  const cutoff = earliestUpcomingCutoff(cert, acceptance);
+  const cutoff = earliestUpcomingCutoff(cert, acceptance, intrinsicExpiredWarning ? undefined : intrinsicCutoff);
   const expiryWarning =
-    cutoff && cutoff.getFullYear() === asOf.getFullYear()
+    cutoff && cutoff.getFullYear() === asOf.getFullYear() && !intrinsicExpiredWarning
       ? ` ⚠️ This equipment will expire on ${cutoff.toISOString().slice(0, 10)}.`
       : "";
-  return { status, reason: `${label} is accepted.${acceptanceNote}${expiryWarning}`, label, standardId: cert.standardId };
+  return {
+    status,
+    reason: `${label} is accepted.${acceptanceNote}${expiryWarning}${intrinsicExpiredWarning}`,
+    label,
+    standardId: cert.standardId,
+  };
 }
 
 const STATUS_RANK: Record<ItemStatus, number> = {
@@ -199,11 +253,11 @@ interface PieceEvaluation {
 }
 
 /** Evaluates one physical piece's certifications: the piece passes if ANY currently-valid certification exists on it. */
-function evaluatePieceCerts(rule: CategoryRule, certs: CertificationEntry[], asOf: Date): PieceEvaluation {
+function evaluatePieceCerts(category: EquipmentCategory, rule: CategoryRule, certs: CertificationEntry[], asOf: Date): PieceEvaluation {
   if (certs.length === 0) {
     return { status: "needs_info", reason: "Add at least one certification shown on the tag.", validStandardIds: [] };
   }
-  const results = certs.map((c) => evaluateSingleCert(rule, c, asOf));
+  const results = certs.map((c) => evaluateSingleCert(category, rule, c, asOf));
   const best = results.reduce((a, b) => (STATUS_RANK[a.status] <= STATUS_RANK[b.status] ? a : b));
   const validStandardIds = results.filter((r) => r.status === "ok" || r.status === "recommended_only").map((r) => r.standardId!);
   return { status: best.status, reason: best.reason, certBreakdown: results.length > 1 ? results : undefined, validStandardIds };
@@ -214,28 +268,50 @@ export interface EvaluationContext {
   firesuitStandardIds?: string[];
 }
 
+/** How recent a manufacture/certification date must be, for options that require a current date, when no explicit due date is printed. */
+const FRESH_EXTINGUISHER_YEARS = 2;
+
 function optionLabel(option: ExtinguisherOption): string {
   const specs: string[] = [];
   if (option.minClassARating) specs.push(`${option.minClassARating}-A`);
   if (option.minBcRating) specs.push(`${option.minBcRating}-B:C`);
   if (option.minWeightLbs) specs.push(`${option.minWeightLbs} lb`);
   const spec = specs.length > 0 ? `rated at least ${specs.join(":")}` : "of any rating";
-  return option.quantity === 1 ? `1 extinguisher ${spec}` : `${option.quantity} extinguishers ${spec} each`;
+  const freshness = option.requireCurrentDate
+    ? `, with a current certification/service date or a manufacture date less than ${FRESH_EXTINGUISHER_YEARS} years old`
+    : "";
+  return option.quantity === 1 ? `1 extinguisher ${spec}${freshness}` : `${option.quantity} extinguishers ${spec}${freshness} each`;
 }
 
 export function describeExtinguisherOptions(options: ExtinguisherOption[]): string {
   return options.map(optionLabel).join(", or ");
 }
 
-function unitMeetsOption(unit: ExtinguisherUnit, option: ExtinguisherOption): boolean {
+/** True if the unit's certification/service tag isn't expired, or (absent an explicit due date) its manufacture/certification date is recent enough. */
+function unitHasCurrentDate(unit: ExtinguisherUnit, asOf: Date): boolean {
+  if (unit.certificationDueDate) return asOf <= new Date(unit.certificationDueDate);
+  const anchor = unit.certificationDate ?? unit.manufactureDate;
+  if (!anchor) return false;
+  const cutoff = new Date(anchor);
+  cutoff.setFullYear(cutoff.getFullYear() + FRESH_EXTINGUISHER_YEARS);
+  return asOf <= cutoff;
+}
+
+function unitMeetsOption(unit: ExtinguisherUnit, option: ExtinguisherOption, asOf: Date): boolean {
   if (option.minBcRating && (unit.bcRating ?? 0) < option.minBcRating) return false;
   if (option.minClassARating && (unit.classARating ?? 0) < option.minClassARating) return false;
   if (option.minWeightLbs && (unit.weightLbs ?? 0) < option.minWeightLbs) return false;
+  if (option.requireCurrentDate && !unitHasCurrentDate(unit, asOf)) return false;
   return true;
 }
 
 /** Fire extinguisher only: satisfied if the entered units satisfy ANY one of the body's accepted (quantity, minimum rating) combinations. */
-function evaluateExtinguishers(rule: CategoryRule, units: ExtinguisherUnit[], base: Omit<CategoryResult, "status" | "reason">): CategoryResult {
+function evaluateExtinguishers(
+  rule: CategoryRule,
+  units: ExtinguisherUnit[],
+  base: Omit<CategoryResult, "status" | "reason">,
+  asOf: Date
+): CategoryResult {
   const options = rule.fireExtinguisherOptions!;
 
   if (units.length === 0) {
@@ -246,7 +322,7 @@ function evaluateExtinguishers(rule: CategoryRule, units: ExtinguisherUnit[], ba
     return { ...base, status: "needs_info", reason: "Enter each extinguisher's rating (or weight) shown on its label." };
   }
 
-  const satisfiedOption = options.find((option) => units.filter((u) => unitMeetsOption(u, option)).length >= option.quantity);
+  const satisfiedOption = options.find((option) => units.filter((u) => unitMeetsOption(u, option, asOf)).length >= option.quantity);
   if (satisfiedOption) {
     const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
     return { ...base, status, reason: `Meets the requirement — ${optionLabel(satisfiedOption)}.` };
@@ -256,6 +332,50 @@ function evaluateExtinguishers(rule: CategoryRule, units: ExtinguisherUnit[], ba
     status: base.requirement === "recommended" ? "recommended_only" : "rejected",
     reason: `Doesn't meet any accepted combination — needs ${describeExtinguisherOptions(options)}.`,
   };
+}
+
+/**
+ * Fire suppression system only: layered on top of the standard's own cert check. A system whose
+ * underlying standard is already accepted can still be flagged (or rejected, if this body requires
+ * it) over its next-service date — separate from the standard's own manufacture-date-based
+ * intrinsic validity, which evaluateSingleCert already applied.
+ */
+function applyServiceDateCheck(
+  rule: CategoryRule,
+  cert: CertificationEntry | undefined,
+  asOf: Date,
+  result: PieceEvaluation,
+  base: Omit<CategoryResult, "status" | "reason">,
+  conditionNote: string
+): CategoryResult {
+  const ok = { ...base, status: result.status, certBreakdown: result.certBreakdown, resolvedStandardIds: result.validStandardIds };
+
+  if (!cert?.nextServiceDate) {
+    return { ...ok, reason: result.reason + conditionNote };
+  }
+
+  const nextService = new Date(cert.nextServiceDate);
+  const expired = asOf > nextService;
+
+  if (expired) {
+    if (rule.fireSuppressionRequiresCurrentService) {
+      return {
+        ...ok,
+        status: "rejected",
+        reason: `Next service date (${cert.nextServiceDate}) has passed — this sanctioning body requires a current fire suppression service date.${conditionNote}`,
+      };
+    }
+    return {
+      ...ok,
+      reason: `${result.reason} ⚠️ Next service date (${cert.nextServiceDate}) has passed — some sanctioning bodies require a current service date even if this one doesn't say so explicitly.${conditionNote}`,
+    };
+  }
+
+  if (nextService.getFullYear() === asOf.getFullYear()) {
+    return { ...ok, reason: `${result.reason} ⚠️ Next service due ${cert.nextServiceDate}.${conditionNote}` };
+  }
+
+  return { ...ok, reason: result.reason + conditionNote };
 }
 
 export function evaluateCategory(
@@ -323,7 +443,7 @@ export function evaluateCategory(
   }
 
   if (category === "fire_extinguisher" && rule.fireExtinguisherOptions) {
-    return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base);
+    return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base, asOf);
   }
 
   if (CATEGORY_META[category].presenceOnly) {
@@ -355,8 +475,8 @@ export function evaluateCategory(
   // Two-piece firesuit (SFI jacket + pants sold/certified separately): both pieces must
   // independently pass — unlike multiple stickers on one item, this is AND, not OR.
   if (category === "firesuit" && entry.pieceType === "two_piece") {
-    const jacket = evaluatePieceCerts(rule, entry.certifications ?? [], asOf);
-    const pants = evaluatePieceCerts(rule, entry.pantsCertifications ?? [], asOf);
+    const jacket = evaluatePieceCerts(category, rule, entry.certifications ?? [], asOf);
+    const pants = evaluatePieceCerts(category, rule, entry.pantsCertifications ?? [], asOf);
     const worst = STATUS_RANK[jacket.status] >= STATUS_RANK[pants.status] ? jacket : pants;
     return {
       ...base,
@@ -372,7 +492,11 @@ export function evaluateCategory(
 
   // Standard-based: pure categories (helmet, HNR) always, hybrid categories in "certified" mode.
   const certs = entry.certifications ?? [];
-  const result = evaluatePieceCerts(rule, certs, asOf);
+  const result = evaluatePieceCerts(category, rule, certs, asOf);
+
+  if (category === "fire_suppression" && (result.status === "ok" || result.status === "recommended_only")) {
+    return applyServiceDateCheck(rule, certs[0], asOf, result, base, conditionNote);
+  }
 
   if (category === "helmet" && rule.fullFaceRequirement) {
     const faceNote = rule.fullFaceCondition ? ` ${rule.fullFaceCondition}` : "";
