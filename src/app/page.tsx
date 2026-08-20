@@ -93,6 +93,7 @@ export default function Home() {
 
   const tutorialActions: TutorialActions = {
     goToReference: () => setMode("reference"),
+    goToLanding: () => setMode("landing"),
     selectRuleset: handleRulesetChange,
     selectClass: setClassId,
   };
@@ -239,18 +240,21 @@ export default function Home() {
               number={1}
               title="Check the rules"
               description="Check the rulebook and see what is required for each safety gear category based on the current rules."
+              icon="/frog-option1.jpg"
               onClick={() => setMode("reference")}
             />
             <LandingCard
               number={2}
               title="Will my equipment pass tech?"
               description="Enter your current safety gear and check it against the current rules of a sanctioning body."
+              icon="/frog-option2.jpg"
               onClick={() => setMode("body-first")}
             />
             <LandingCard
               number={3}
               title="Where can my equipment race?"
               description="Enter your current safety gear once and see which sanctioning bodies it's eligible, incomplete, or rejected for."
+              icon="/frog-option3.jpg"
               onClick={() => setMode("equipment-first")}
             />
           </section>
@@ -261,9 +265,9 @@ export default function Home() {
         <button
           type="button"
           onClick={() => setMode("landing")}
-          className="mb-4 text-xs text-neutral-400 hover:text-neutral-200"
+          className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300"
         >
-          ← Back to menu
+          ← Back to main menu
         </button>
       )}
 
@@ -458,11 +462,13 @@ function LandingCard({
   number,
   title,
   description,
+  icon,
   onClick,
 }: {
   number: number;
   title: string;
   description: string;
+  icon: string;
   onClick: () => void;
 }) {
   return (
@@ -472,10 +478,14 @@ function LandingCard({
       onClick={onClick}
       className="flex flex-col items-start gap-2 rounded-lg border border-neutral-700 p-5 text-left hover:border-neutral-400 hover:bg-neutral-900"
     >
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
-        {number}
+      {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, optimizer unreliable on these (see CategoryIcons.tsx) */}
+      <img src={icon} alt="" className="h-16 w-16 rounded-lg bg-neutral-800 object-cover" />
+      <span className="flex items-center gap-2">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
+          {number}
+        </span>
+        <span className="text-sm font-semibold">{title}</span>
       </span>
-      <span className="text-sm font-semibold">{title}</span>
       <span className="text-xs text-neutral-400">{description}</span>
     </button>
   );
