@@ -3,17 +3,44 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { ALL_RULESETS } from "@/data";
 
-const INTRO_TEXT = `PassTech checks your racer safety equipment (helmet, balaclava, HANS/HNR, firesuit, gloves, shoes, undergarment, arm restraint) against the published rules of ${ALL_RULESETS.length} rulesets.`;
+const INTRO_TEXT = `PassTech checks your safety equipment against the published rules of ${ALL_RULESETS.length} rulesets.`;
+
+export interface TutorialActions {
+  goToReference: () => void;
+  selectRuleset: (id: string) => void;
+  selectClass: (id: string | undefined) => void;
+}
 
 interface PointerStep {
   targetId: string;
   text: string;
+  /** Runs once, synchronously with the click that advances to this step, so its DOM changes land in the same render as the step change. */
+  onEnter?: (actions: TutorialActions) => void;
 }
 
 const POINTER_STEPS: PointerStep[] = [
   { targetId: "tutorial-option-1", text: "Click Option 1 if you want to check the rules of a sanctioning body." },
   { targetId: "tutorial-option-2", text: "Click Option 2 if you want to check whether your safety gear will pass tech with a specific sanctioning body." },
   { targetId: "tutorial-option-3", text: "Click Option 3 if you want to see where you can race with your safety gear!" },
+  {
+    targetId: "tutorial-group-filter",
+    text: "By default, PassTech checks both driver and car safety gear. If you're only interested in the driver safety gear, you can uncheck “Car safety gear.”",
+    onEnter: (actions) => actions.goToReference(),
+  },
+  {
+    targetId: "tutorial-ruleset-picker",
+    text: "Pick a sanctioning body and discipline from the dropdown. Here we've selected SCCA Solo as an example.",
+    onEnter: (actions) => actions.selectRuleset("scca-solo"),
+  },
+  {
+    targetId: "tutorial-class-picker",
+    text: "If a body defines its own competitor classes, refine by class here. We've picked SCCA Solo's Modified (AM / BM / CM / DM / EM / FM) class.",
+    onEnter: (actions) => actions.selectClass("modified"),
+  },
+  {
+    targetId: "tutorial-source-line",
+    text: "Click here to download the official rulebook for the selected body and class.",
+  },
 ];
 
 const TOTAL_STEPS = 1 + POINTER_STEPS.length;
@@ -50,7 +77,15 @@ function useTargetRect(targetId: string | null) {
   return rect;
 }
 
-export function TutorialModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function TutorialModal({
+  open,
+  onClose,
+  actions,
+}: {
+  open: boolean;
+  onClose: () => void;
+  actions: TutorialActions;
+}) {
   const [step, setStep] = useState(0);
 
   /* eslint-disable react-hooks/set-state-in-effect -- resets tour position when reopened, not derivable during render */
@@ -74,11 +109,16 @@ export function TutorialModal({ open, onClose }: { open: boolean; onClose: () =>
   if (!open) return null;
 
   const next = () => {
-    if (step + 1 >= TOTAL_STEPS) {
+    const newStep = step + 1;
+    if (newStep >= TOTAL_STEPS) {
       onClose();
-    } else {
-      setStep(step + 1);
+      return;
     }
+    // Run the upcoming step's side effects in this same click handler (not a later effect) so
+    // React batches them with setStep — the app's state (and DOM) is already updated by the time
+    // this step's target element is measured.
+    POINTER_STEPS[newStep - 1]?.onEnter?.(actions);
+    setStep(newStep);
   };
 
   if (!pointerStep) {
