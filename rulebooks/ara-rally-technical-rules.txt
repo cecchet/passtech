@@ -1,0 +1,2009 @@
+                                             Rally Technical Rules
+
+                                      American Rally Association
+
+                                                  2023 Edition
+                                          Through Bulletin 2023-8
+
+ARA reserves the right, upon written application, to grant specific, limited exemptions to
+      these regulations where it can be shown that the exemption is in the best interests
+     of the sport or in the interest of safe conduct of the sport. Granted exemptions shall
+          be communicated in writing by the ARA President or, in the case of an ARA
+      National Championship event, the ARA President or the Competition Director and
+        be included in the event's Supplementary Regulations or posted on the event's
+                                               Official Notice Board.
+
+2023 Edition  ii  ARA Rally Technical Rules
+                                              Table of Contents
+
+1. COMPETITOR PERSONAL SAFETY EQUIPMENT .................................................. 1
+   1.1 Helmets ................................................................................................................. 1
+   1.1.1 Helmet Standards ............................................................................................... 1
+   1.1.2 Scrutineering Failure........................................................................................... 1
+   1.2 Frontal Head Restraint........................................................................................... 1
+   1.2.1 Frontal Head Restraint Standards ...................................................................... 1
+   1.2.2 Tethers ............................................................................................................... 1
+   1.3 Driving Suits........................................................................................................... 2
+   1.3.1 Standards ........................................................................................................... 2
+   1.3.2 Usage ................................................................................................................. 2
+   1.3.3 Footwear............................................................................................................. 2
+
+2. ELIGIBILITY OF VEHICLES AND EQUIPMENT ........................................................ 3
+   2.1 Definitions .............................................................................................................. 3
+   2.2 Vehicle Safety Regulations .................................................................................... 4
+   2.2.1 Road worthiness ................................................................................................. 4
+   2.2.2 Roll Over Protection............................................................................................ 5
+   2.2.3 Protective Padding.............................................................................................. 6
+   2.2.4 Batteries.............................................................................................................. 6
+   2.2.5 Master Electrical Disconnect Switch ................................................................... 6
+   2.2.6 Windows ............................................................................................................. 6
+   2.2.7 Mud flaps ............................................................................................................ 7
+   2.2.8 Fuel, fuel tanks and lines .................................................................................... 7
+   2.2.9 Towing eyes........................................................................................................ 8
+   2.2.10 Loose articles.................................................................................................... 8
+   2.2.11 Door panels ...................................................................................................... 8
+   2.2.12 Roofs ................................................................................................................ 9
+   2.2.13 Supplemental & Passive Restraints.................................................................. 9
+   2.2.14 Ground Clearance ............................................................................................ 9
+   2.2.15 Power Door Locks ............................................................................................ 9
+   2.2.16 Steering Locking Device ................................................................................... 9
+   2.2.17 Exhaust System................................................................................................ 9
+   2.2.18 Engine Covers .................................................................................................. 9
+   2.3 Vehicle Safety Equipment...................................................................................... 9
+   2.3.1 Seats .................................................................................................................. 9
+   2.3.2 Seat Mounting................................................................................................... 10
+   2.3.3 Safety Harness ................................................................................................. 10
+   2.3.4 Safety Harness Installation ............................................................................... 10
+   2.3.5 Fire extinguishers ............................................................................................. 11
+   2.3.6 First Aid Kit ....................................................................................................... 12
+
+2023 Edition  iii  ARA Rally Technical Rules
+   2.3.7 Warning Devices............................................................................................... 12
+   2.3.8 Tow Rope ......................................................................................................... 12
+   2.3.9 Camera and Camera Mounts............................................................................ 12
+   2.3.10 Belt Cutters/Glass Breakers............................................................................ 12
+   2.3.11 Spill Kit............................................................................................................ 12
+
+3. GENERAL REGULATIONS...................................................................................... 13
+
+3.1 Bodywork ............................................................................................................... 13
+   3.1.1 Production-based.............................................................................................. 13
+   3.1.2 Factory Floor Pan and Firewall ......................................................................... 13
+   3.1.3 Good Appearance............................................................................................. 13
+   3.1.5 Paintwork .......................................................................................................... 14
+   3.2 Identification of Vehicles and Crew...................................................................... 14
+   3.2.1 Vehicle Graphics Standards ............................................................................. 14
+   3.2.2 Door Reserved Space ...................................................................................... 14
+   3.2.3 Competitor Identification ................................................................................... 14
+   3.2.4 Windscreen Banner .......................................................................................... 14
+   3.2.5 Hood Reserved Space...................................................................................... 14
+   3.3 Lights ................................................................................................................... 14
+   3.3.1 Compliance With State Requirements .............................................................. 14
+   3.3.2 Headlights......................................................................................................... 15
+   3.3.3 Manufacturer-fitted Fog Lights .......................................................................... 15
+   3.3.4 Reversing Lights ............................................................................................... 15
+   3.4 Tire studs ............................................................................................................. 15
+   3.5 Documentation..................................................................................................... 15
+   3.6 International Vehicles .......................................................................................... 15
+   3.6.1 Vehicle Class .................................................................................................... 15
+   3.6.2 Vehicle Eligibility ............................................................................................... 15
+   3.7 Restricted Driver Vehicle Requirements .............................................................. 15
+   3.7.1 Restrictors......................................................................................................... 15
+   3.7.2 Forced Induction Restrictor............................................................................... 16
+   3.7.3 Normally Aspirated Novice Restrictor ............................................................... 16
+   3.8 Other Equipment.................................................................................................. 16
+   3.8.1 Driveline Release.............................................................................................. 16
+   Table A National - Class, Engine Type, Maximum Displacement, Restrictor,
+   Minimum Weight ........................................................................................................ 17
+   Table A Regional (2023 only) - Class, Engine Type, Maximum Displacement,
+   Restrictor, Minimum Weight....................................................................................... 18
+
+4. VEHICLE CLASSES ................................................................................................. 19
+   4.1 All Open Classes (Open 4WD, Naturally Aspirated 4WD, Open 2WD) ............... 19
+
+2023 Edition  iv  ARA Rally Technical Rules
+4.1.1 Class Displacement and Weight Rules ............................................................. 19
+4.1.2 Exterior Bodywork............................................................................................. 19
+4.1.3 Wheelbase, Overhand, and Widths .................................................................. 20
+4.1.4 Engine Location ................................................................................................ 21
+4.1.5 Fuel................................................................................................................... 21
+4.1.6 Alternate Fuels.................................................................................................. 21
+4.1.7 Electronically Controlled or Actuated Components........................................... 21
+4.1.8 Damper Bushings ............................................................................................. 21
+4.1.9 Turbocharger and Exhaust Gasses .................................................................. 21
+4.1.10 Door Structure Bodywork................................................................................ 22
+4.1.11 Exceptions ...................................................................................................... 22
+4.2 Open 4WD Class ................................................................................................. 22
+4.2.1 Non-compliant Vehicles .................................................................................... 22
+4.2.2 Matching Engine, Transmission and Chassis ................................................... 22
+4.2.3 Restrictors......................................................................................................... 22
+4.2.4 Turbocharger/Supercharger Restrictions .......................................................... 23
+4.2.5 Fuel Sample Acquisition ................................................................................... 24
+4.3 Naturally Aspirated 4WD Class............................................................................ 24
+4.3.1 Engine and Transmission ................................................................................. 24
+4.3.2 Other Applicable Rules ..................................................................................... 24
+4.4 Limited 4WD Class .............................................................................................. 24
+4.4.1 Drive Configuration ........................................................................................... 24
+4.4.2 Bodywork .......................................................................................................... 24
+4.4.3 Hoods ............................................................................................................... 24
+4.4.4 Seam Welding and Strengthening .................................................................... 24
+4.4.5 Unibody............................................................................................................. 24
+4.4.6 Tunnel............................................................................................................... 24
+4.4.7 Rear Subframe ................................................................................................. 24
+4.4.8 Strut/Shock Towers .......................................................................................... 25
+4.4.9 Front Doors....................................................................................................... 25
+4.4.10 Wheel Tubs..................................................................................................... 25
+4.4.11 Front and Rear Subframes ............................................................................. 25
+4.4.12 Suspension Dampers ..................................................................................... 25
+4.4.13 Hubs ............................................................................................................... 25
+4.4.14 Control Arms................................................................................................... 25
+4.4.15 Engine and Manufacturer................................................................................ 25
+4.4.16 Cylinder Head ................................................................................................. 25
+4.4.17 Valve Train Components ................................................................................ 25
+4.4.18 Crankshaft ...................................................................................................... 25
+4.4.19 Turbocharger/Supercharger Restrictions ........................................................ 25
+
+2023 Edition  v  ARA Rally Technical Rules
+   4.4.20 Intercooler....................................................................................................... 26
+   4.4.21 Throttle Body and Manifold ............................................................................. 26
+   4.4.22 Exhaust System.............................................................................................. 26
+   4.4.23 Engine Cooling System .................................................................................. 26
+   4.4.24 Flywheel and Clutch ....................................................................................... 26
+   4.4.25 Transmissions/Transaxles .............................................................................. 26
+   4.4.26 Sequential Shift............................................................................................... 26
+   4.4.27 Limited Slip Differential ................................................................................... 26
+   4.4.28 Rear Drive System.......................................................................................... 27
+   4.4.29 Electronics ...................................................................................................... 27
+   4.4.30 Minimum Weight ............................................................................................. 27
+   4.4.31 Other Technical Rules .................................................................................... 27
+   4.4.32 Exceptions ...................................................................................................... 27
+   4.4.33 Water Injection................................................................................................ 27
+   4.4.34 Dry Sump........................................................................................................ 27
+   4.4.35 Rally3 Vehicles Exception............................................................................... 27
+   4.5 Open 2WD Class ................................................................................................. 27
+   4.5.1 Drive Configuration ........................................................................................... 27
+   4.6 Limited 2WD Class .............................................................................................. 27
+   4.6.1 Drive Configuration ........................................................................................... 27
+   4.6.2 OEM Bodywork................................................................................................. 27
+   4.6.3 Seam Welding and Strengthening .................................................................... 28
+   4.6.4 Unibody............................................................................................................. 28
+   4.6.5 Chassis Modifications ....................................................................................... 28
+   4.6.6 Cross-members ................................................................................................ 28
+   4.6.7 Suspension Dampers ....................................................................................... 28
+   4.6.8 Hubs ................................................................................................................. 28
+   4.6.9 Control Arms..................................................................................................... 28
+   4.6.10 Engine Limitations .......................................................................................... 28
+   4.6.11 Engine Components ....................................................................................... 28
+   4.6.12 Rear Wheel Drive System............................................................................... 29
+   4.6.13 Electronics ...................................................................................................... 29
+   4.6.14 Minimum Weight ............................................................................................. 29
+   4.6.15 Other Technical Rules .................................................................................... 29
+   4.6.16 Exceptions ...................................................................................................... 29
+   4.7 RC2 Class............................................................................................................ 30
+   4.7.1 Summary .......................................................................................................... 30
+   4.7.2 Homologation Paperwork.................................................................................. 30
+   4.7.3 Fuel Sample Acquisition ................................................................................... 30
+
+5. VEHICLE LOG BOOKS............................................................................................ 32
+
+2023 Edition  vi  ARA Rally Technical Rules
+5.1 Issuing Log Books ............................................................................................... 32
+5.1.1 Log Books Issued ............................................................................................. 32
+5.1.2 One Log Book Per Vehicle................................................................................ 32
+5.1.3 Log Book Issuer................................................................................................ 32
+5.1.4 Vehicle Description and Ownership History ...................................................... 32
+5.2 Log Book Administration ...................................................................................... 32
+5.2.1 Surrender At Scrutineering ............................................................................... 32
+5.2.2 Scrutineer Responsibilities................................................................................ 32
+5.2.3 Protests............................................................................................................. 32
+5.2.4 Damage To Be Noted in Log Book ................................................................... 32
+5.2.5 Collect Log Book At End Of Event .................................................................... 32
+5.2.6 Log Books Issued By Other Sanction Bodies ................................................... 32
+5.2.7 Failure To Present Log Book ............................................................................ 33
+
+2023 Edition  vii  ARA Rally Technical Rules
+1. COMPETITOR PERSONAL SAFETY EQUIPMENT
+
+1.1 Helmets
+
+1.1.1 Helmet Standards
+
+Only helmets meeting one of the following standards will be accepted for competition in
+any performance rally and must be worn by all competitors when travelling on special
+stages:
+
+     - FIA Standards - 8860-2010, 8859-2015, or 8860-2018
+
+     - Snell Foundation certification - SAH 2010, SA 2010, SA 2015, EA 2016, or SA
+       2020
+
+For helmets with dual FIA/SA certification, the later expiration date shall take
+precedence.
+
+Snell SAH 2010 and SA 2010 certified helmets will not be accepted after December 31,
+2023.
+
+1.1.2 Scrutineering Failure
+
+Helmets that do not pass Scrutineering will be confiscated and returned after the event.
+Helmets may fail Scrutineering due to non-compliance with the above standards or for
+not being in good condition as evidenced by cracks, frays, punctures or other defects.
+
+1.2 Frontal Head Restraint
+
+1.2.1 Frontal Head Restraint Standards
+
+Each competitor must wear a Frontal Head Restraint system (FHR) which meets the
+following standards:
+
+     - HANS® system: HANS devices shall be approved according to FIA standards
+          8858- 2002 or 8858-2010. Consult the FIA Technical List n° 29 to see which
+          HANS devices are approved by the FIA.
+
+     - Hybrid® system: Hybrid devices shall be approved according to FIA Standard
+          8858- 2010. Consult the FIA Technical List n° 29 to see which Hybrid devices
+          are approved by the FIA.
+
+     - Other systems certified to SFI 38.1: Such devices must bear a SFI 38.1
+          conformance label that is less than five years old.
+
+1.2.2 Tethers
+
+Tethers for FIA Certified devices must be FIA approved. The Frontal Head Restraint
+system should be considered as an ensemble which involves the seat, the harnesses,
+the frontal head restraint unit, its tethers and helmet. For more details, "Guide for the
+use of HANS in International Motor Sport" published by the FIA Institute for Motor Sport
+Safety, can be found on www.fia.com under the heading FIA Sport - Regulations -
+Drivers' Equipment.
+
+2023 Edition  1  ARA Rally Technical Rules
+1.3 Driving Suits
+
+1.3.1 Standards
+
+All competitors shall wear at all times during the event, a one- or two-piece driving suit
+conforming to:
+
+     - FIA Standard 8856-2000 or 8856-2018
+
+     - FIA 1986 Standard
+
+     - SFI 3.2A/5 or 3.4/5 Specification
+
+     - SFI 3.2A/1 Specification with approved fire resistant underwear (FIA Standard
+          8856-2000 or SFI 3.3 Specification)
+
+Suits that have had their homologation withdrawn may not be worn.
+
+1.3.2 Usage
+
+No other garments worn over driving suits are acceptable on special stages. The suit
+and applicable undergarments shall be presented at technical inspection in a clean and
+presentable condition. Driving suits must effectively cover the body from the neck to the
+ankles and wrists and be in good condition, free of defects, holes, cracks, frays, etc.
+
+1.3.3 Footwear
+
+All competitors must wear shoes and socks while on stage. The shoes must cover the
+entire foot and be of leather or approved fireproof material. Socks may not be
+manufactured of synthetic fiber except for Nomex or similar fire resistant material.
+
+2023 Edition  2  ARA Rally Technical Rules
+2. ELIGIBILITY OF VEHICLES AND EQUIPMENT
+
+These regulations shall apply to vehicles competing in rallies which contain special
+stages. Vehicles must comply with these regulations at all times during the competition.
+
+2.1 Definitions
+
+The following definitions shall apply to all vehicles and sections addressed in these
+Rally Technical Rules.
+
+Chassis
+The overall structure of the car around which are assembled the mechanical
+components and the bodywork including any structural part of the said structure.
+
+Exterior bodywork
+All the entirely suspended parts of the car licked by the airstream.
+
+Fascia
+The front body work forward of the front wheel openings and front hood cut line that
+integrates with the fenders.
+
+Front Air Dam
+The lowest 100mm of the front fascia/bumper/fender forward of the wheel openings.
+
+Front Bumper
+The front fascia furthest-forward projection between the headlights.
+
+Front Fender
+The body side forward of the front door front cut line and outboard of the hood side cut
+line.
+
+Front Bumper
+The front fascia furthest-forward projection between the headlights.
+
+Front Fender
+The body side forward of the front door front cut line and outboard of the hood side cut
+line.
+
+Generation
+A generation is a model's particular design offered during a specific year or number of
+consecutive years. After producing an original model (e.g., First Generation: 1993-2001
+Subaru Impreza, 1976-1979 Mitsubishi Lancer, 1998-2005 Ford Focus, etc.)
+manufacturers may develop significant changes or totally redesign the original model
+after producing it for a number of years. They classify this new/next design as the next
+generation of that model (e.g., 2nd. Generation: 2002-2007 Subaru Impreza, 1979-1987
+Lancer, 2005-2011 Ford Focus, etc.).
+
+Hood
+The bodywork forward of the base of the windshield between the front fenders and
+behind the front fascia.
+
+Interior bodywork
+Cockpit and trunk.
+
+2023 Edition  3  ARA Rally Technical Rules
+Manufacturer
+An automobile business currently or previously engaged in the manufacture and selling
+of vehicles for road use by the general public. "One off", kit builders, or custom builders
+do not qualify as a manufacturer.
+
+Model
+A model is a basic manufacturer's designation (e.g., Subaru Impreza, Volkswagen Golf,
+Ford Focus, Mitsubishi Lancer, etc.).
+
+Model variant
+A model may exist in several variants as to bodywork (i.e.: 2 door sedan, 4 door sedan,
+coupe, station wagon etc.) or with regard to mechanical components (e.g., WRX, WRX
+STI, etc.).
+
+Original equipment (OEM)
+Original equipment is defined as all items of standard or optional equipment that could
+have been ordered with any particular bodywork variant of the model, installed on the
+factory production line, and delivered through a dealer or manufacturer. This does not
+include special orders, "one-offs" or pre-production vehicles. Dealer installed options,
+except as required by manufacturer directives (no matter how common), are not
+included in this definition.
+
+Plan View
+Outline of vehicle as seen from directly overhead.
+
+Production (Based)
+A vehicle or components produced by a Manufacturer for public road use.
+
+Radiator Opening
+A recess and opening in the fascia or front bumper allowing air to access the forward-
+most engine compartment heat exchangers.
+
+Rear Diffuser
+Any underbody bodywork element rear of the centerline of the rear wheels.
+
+Rear Fender
+The body side rearward of the rear most door cut line and below the lower edge of the
+visible part of rear side window and rear window to where it meets the rear bumper.
+
+Vehicle Weight
+The real weight of the car without the occupants or their worn safety gear and only one
+(1) spare wheel. Vehicles may be weighed at any point during an event.
+
+Wheel
+The complete rim and tire as combined.
+
+2.2 Vehicle Safety Regulations
+
+2.2.1 Road worthiness
+
+All competing vehicles must be roadworthy and, the following items in particular must be
+adequate and functioning properly:
+
+     - Brakes
+
+2023 Edition  4  ARA Rally Technical Rules
+     - Horn
+     - Windshield wipers
+     - All legally required exterior lights
+     - Tires, including all spares
+     - Exhaust system
+     - Catalytic Converter (if required)
+
+2.2.2 Roll Over Protection
+
+a) Roll cages are mandatory for all vehicles.
+
+b) Specific roll over protection is subject to the approval of the scrutineer at each
+     event.
+
+c) Basic design considerations
+
+     1) The basic purpose of the roll over protection is to prevent serious body-shell
+          deformation, and so reduce the risk of injury to occupants, in the case of a
+          collision or of a car turning over. The essential features of safety cages are
+          sound construction designed to suit the particular vehicle, adequate mountings
+          and a close fit to the body-shell. The safety cage must not unduly impede the
+          entry or exit of the driver and co-driver.
+
+     2) All new vehicles with log books issued after January 1, 2009 must be fitted with
+          a safety cage built to FIA Article 253 specifications or be FIA homologated
+          under the latest international regulations and accompanied by original
+          certification documentation. See www.fia.com, under Sport, Regulations,
+          International Sporting Code and Appendices, Appendix J International Sporting
+          Code, documents Appendix J Articles 253 and 253.8.
+
+          a) New constructions of cages without windscreen supports, regardless of
+                homologation or certification, when Art. 253-15 "dimension A" exceeds
+                200mm, will not be accepted for log booking.
+
+          b) Each roll cage foot may be welded directly to the primary structure of the
+                vehicle.
+
+          c) Alternate material to CDS (Cold Drawn Seamless): Although FIA Article
+                253.8.3.3 specifies the safety cage material as CDS (Cold Drawn
+                Seamless), DOM (Drawn-Over-Mandrel) tubing may be used as an
+                alternate material in respect to the following: main roll bar, front roll bar,
+                lateral roll bars, lateral half roll bars, their connections (drawings 253-1-3)
+                and one continuous door bar per side will be at least 1.75"x 0.095". All other
+                parts of the safety cage will be at least 1.5" x 0.095".
+
+          d) Alternate material to CDS (Cold Drawn Seamless): Although FIA Article
+                253.8.3.3 specifies the safety cage material as CDS, DOCOL R8 tubing
+                may also be used as an alternate material in respect to the following: main
+                roll bar, front roll bar, lateral roll bars, lateral half roll bars, their connections
+                (drawings 253-1-3) and one continuous door bar per side will be at least
+                1.75" x 0.083". Diagonal members 253-7, additional door bars, windscreen
+                supports 253-15, roof X 253-12, or diagonals 253-13, or 253-14 will be at
+
+2023 Edition  5  ARA Rally Technical Rules
+                least 1.5" x 0.083. If a transverse bar 253-29 is used, it will be at least 1.75"
+                x 0.065". All other parts of the safety cage will be at least 1.5" x 0.065".
+
+     3) Existing log-booked rally vehicles that have roll cages built to 2006 Rally
+          America roll cage specifications will remain valid for competition use until further
+          notice.
+
+          Existing log booked rally vehicles with non-homologated roll cages built to the
+          2006 Rally America rules are subject to the following additional requirements:
+
+          i. A sill bar and at least one more door bar is required on each side.
+
+          ii. Diagonals to each corner of the top of the main hoop, whether in the plane
+                of the main hoop or the rear stays are required.
+
+          iii. A windscreen support from front cage foot (within 4 inches) to within 6
+                inches of the transverse windshield bar is required on each side.
+
+          iv. Minimum size for these added elements is 1.5" x 0.095".
+
+2.2.3 Protective Padding
+
+All tubing forward of the main hoop in the roofline must be padded. Any other tubing
+which may contact the helmet while seated must also be padded. Padding must comply
+with FIA Standard 8857 2001, type A (see technical list n° 23 "Roll Cage Padding
+Homologated by the FIA") or SFI 45.1 Specification.
+
+2.2.4 Batteries
+
+a) Batteries must be securely mounted.
+
+b) If removed from the original location, all lead-acid batteries shall be mounted inside
+     covered, non-conductive boxes and equipped with leak proof caps. The hot terminal
+     shall be insulated in all vehicles. All batteries must be securely attached to the
+     primary structure of the vehicle.
+
+2.2.5 Master Electrical Disconnect Switch
+
+a) A spark-proof master electrical disconnect switch with the capability of
+     disconnecting all electrical circuits shall be mounted in the passenger compartment.
+     (The integrity of a fuel injection computer may be protected by supplementary
+     wiring.)
+
+b) The location of the master electrical disconnect switch shall be that which makes it
+     easily operable by either crew member or by persons outside the vehicle through
+     either front door and shall be marked with a label showing a red spark in a white-
+     edged blue triangle with a base length of at least 4 inches.
+
+c) The switch must effectively shut down all systems including alternator and engine.
+
+2.2.6 Windows
+
+a) The windshield shall be laminated safety glass.
+
+b) The competitor must be able to describe to the satisfaction of the Chief Scrutineer
+     the ability to escape from the car with the doors closed. For vehicles equipped with
+
+2023 Edition  6  ARA Rally Technical Rules
+     glass side windows on or more window-breakers must be accessible to the driver
+     and co-driver.
+
+c) Windows in the driver and co-driver doors must not be rolled down more than 1 inch
+     during stages.
+
+d) Window safety nets must be used in lieu of having windows rolled-up during stages.
+     (See illustration for proper window net installation). All window nets must meet FIA
+     article 253 or SFI 27.1 certification.
+
+e) The use of translucent and colorless anti-shatter films is highly recommended in
+     side and rear windows. The use of silvered or tinted anti-shatter films is also
+     permitted. In all cases, the maximum tint shall be 50%.
+
+f) Glass side windows may be replaced with polycarbonate material of at least 3mm
+     thickness. However, competitors must be able to display to the satisfaction of the
+     Chief Scrutineer that the mounting of the substitute windows will allow both
+     emergency escape from inside the car and access by rescue from the outside of the
+     car.
+
+2.2.7 Mud flaps
+
+Required on all rear wheels and driving wheels.
+
+2.2.8 Fuel, fuel tanks and lines
+
+a) Only unleaded fuels are allowed. Leaded fuel and lead additives are expressly
+     prohibited.
+
+b) All fuel tanks and cells must be securely mounted to vehicle. Any fuel tank or fuel
+     cell surface exposed on the bottom of the vehicle shall be equipped with a shield
+     designed to prevent puncture or damage from stones, debris, and abrasion.
+
+     A fuel-resistant and fire-retardant plate or shield is required between the passenger
+     compartment and the compartment(s) or area(s) in which the fuel tank, filler tube
+     and fuel pump are located.
+
+c) The original fuel tank may be used provided it remains in the OEM location secured
+     by original systems.
+
+d) The original fuel tank may only be replaced by an FIA- or SFI-approved fuel cell
+     provided that:
+
+     i) The original fuel tank is removed.
+
+     ii) The fuel cell is properly vented to outside the vehicle from the compartment in
+          which it is located.
+
+     iii) Should the fuel cell and its filler be located in the luggage compartment, an
+          outlet must be provided for fuel spilled in the compartment.
+
+     iv) Where fuel cells are installed in the passenger compartment of vehicles such as
+          "hatchback" variants, RTR 2.2.8.b above applies if the fuel cell filler is located in
+          the passenger compartment.
+
+     v) There is no restriction on the size of the fuel tank.
+
+2023 Edition  7  ARA Rally Technical Rules
+e) Supplementary fuel tanks are not permitted.
+
+f) If fuel lines are routed through the passenger compartment, they shall be in
+     compliance with the following:
+
+     i) Shall incorporate a metallic casing. (If the metallic casing is not exterior to the
+          line, a verifiable sample must be presented at Scrutineering or be shown to
+          comply with FIA Appendix J Art. 253.3.)
+
+     ii) Shall have a minimum of 200 psi rating. If fuel lines are routed through the
+          passenger compartment by the manufacturer, they must be in compliance with
+          this section.
+
+     iii) Shall not be mounted where it could be possibly crushed between a roll cage
+          element and the body shell.
+
+g) Fuel pumps shall be isolated from the driver/co-driver by a fireproof metal bulkhead.
+
+h) All the fuel pumps must only operate when the engine is running, except during the
+     starting process.
+
+i) All entrants in O4WD and RC2 classes at all ARA National Championship events
+     shall run the official fuel specified by ARA. The fuel supplier and specification will be
+     announced by a bulletin before the start of each season. Entrants should pre order
+     fuel to make sure they have an adequate supply of the fuel available at the event.
+     Entrants should make sure whatever containers they use to transport fuel have
+     been thoroughly cleaned prior to being used to avoid any problems during fuel
+     testing.
+
+     Fuel will be tested for; color, specific gravity, dielectric constant, reagents, and
+     tested by any other method deemed appropriate by the Technical Director.
+
+     The fuel supplier may also conduct additional analysis on their own or at the request
+     of the Technical Director.
+
+     The use of any fuel other than the approved fuel is strictly prohibited. Additives are
+     not allowed. Fuel may be checked at any time during the event.
+
+2.2.9 Towing eyes
+
+Towing eyes shall be attached to the front and rear of the vehicle and painted in yellow,
+red or orange. If under the car, the location shall be identified by a fluorescent arrow. It
+is highly recommended the tow points be rated to double the car weight, since it may be
+used to recover the vehicle.
+
+2.2.10 Loose articles
+
+All articles, which could be dangerous if left loose, must be securely restrained.
+
+2.2.11 Door panels
+
+Inside front door panels or edge trim are required to provide protection from metal
+edges.
+
+2023 Edition  8  ARA Rally Technical Rules
+2.2.12 Roofs
+
+Movable metal sunroofs and/or roof panels must be fixed in the closed position.
+Sunroofs and/or roof panels of any other material must be replaced with metal of
+equivalent strength of the roof panel and must be fixed in the closed position by welding
+or steel fasteners.
+
+2.2.13 Supplemental & Passive Restraints
+
+Airbags and their associated equipment must be disabled or removed during
+competition in order to eliminate the possibility of the airbag inflating accidentally. It is
+recommended that passive restraint systems be disabled.
+
+2.2.14 Ground Clearance
+
+All parts of the vehicle, other than the tires, must have a minimum of 2 inches clearance
+from a level road surface.
+
+2.2.15 Power Door Locks
+
+For all classes, power door locks must be rendered inoperative.
+
+2.2.16 Steering Locking Device
+
+For all classes, steering locking devices must be rendered inoperative.
+
+2.2.17 Exhaust System
+
+a) The allowable sound level is 105 dB, on the A scale, as measured 18" from either
+     side of the exhaust outlet at an angle of 45 degrees from and at the same height of
+     the exhaust outlet. The engine shall be running at a minimum of 2500 RPM. The
+     area within a 50' radius shall be on level ground and clear of man-made
+     obstructions. Any anti-lag system should be turned off.
+
+b) Unless a car was manufactured before a catalytic converter was required in the
+     U.S.A., then a functioning catalytic converter must be retained or installed. (Burden
+     of proof that a catalytic converter is not required for a particular vehicle rests with
+     the competitor and should be furnished to the ARA Competition Director so that an
+     exemption waiver may be added to the Vehicle Log Book.)
+
+2.2.18 Engine Covers
+
+Engine covers Hoods shall be fixed closed with hood pins accessible from the outside
+and accessible without the use of tools. Other fastening devices (inside or outside) shall
+be rendered inoperative, except for the secondary catch, which may be retained.
+
+2.3 Vehicle Safety Equipment
+
+2.3.1 Seats
+
+a) The use of hinged-back and OEM seats is prohibited.
+
+b) All the occupants' seats must be homologated by FIA Standards 8855-1999 or
+     8862-2009, or be specifically designed for motor racing. All non-FIA seats are
+     subject to acceptance by the Chief Scrutineer.
+
+2023 Edition  9  ARA Rally Technical Rules
+2.3.2 Seat Mounting
+
+Seats must be securely attached to the structure of the vehicle in such a manner as to
+prevent the movement of the seat in case of an accident. Seats may not be mounted
+with sliders.
+
+2.3.3 Safety Harness
+
+a) A five-, six- or seven-point unmodified safety harness of proprietary manufacture,
+     meeting the specifications below, shall be fitted for both crew members.
+
+b) All harness systems must be capable of being released through one latch.
+
+c) The harness shall be worn at all times when the car is in motion on a special stage
+     and on all transits when legally required in the State being driven in.
+
+d) Safety harness will meet one of the following standards:
+
+     - FIA Standard 8853/98 or 8853/2016 and currently appear as valid on the current
+       respective FIA Technical List at www.FIA.com
+
+     - SFI 16.1 Specification and display a manufacturer appearing on the current
+       respective list of SFI 16.1 manufacturers at www.SFIfoundation.com
+
+     - SFI 16.5 Specification and display a manufacturer appearing on the current
+       respective list of SFI 16.1 manufacturers at www.SFIfoundation.com
+
+e) Safety harnesses may not be used after their expiration date. For harnesses with
+     dual FIA/SFI certification, the later expiration date shall take precedence.
+
+f) It is not permitted to mix parts of seat belts. Only complete sets may be used.
+
+g) The material of all straps shall be in new or perfect condition.
+
+h) The belts must be equipped with turnbuckle, push button or latch/link release
+     systems.
+
+2.3.4 Safety Harness Installation
+
+a) The locations of the safety harness anchorage points must be as shown in the SFI
+     Seatbelt Installation Guide (available from www.sfifoundation.com), section 6.2
+     (Installation) of FIA Appendix J, Article 253, or the harness manufacturer's
+     instructions. If the manufacturer's instructions are used, they must be provided upon
+     demand at scrutineering.
+
+b) It is prohibited for the seat belts to be anchored to the seats or their supports.
+
+c) If the manufacturer provides for safety wiring the locking bale to prevent accidental
+     unfastening of the belts from their anchorage points, then it shall be necessary for
+     the all such components to be safety wired.
+
+d) The straps may be attached by looping or by screws, but in the latter case an insert
+     must be welded for each mounting point. These inserts will be positioned in the
+     reinforcement tube and the straps will be attached to them using bolts of M12 8.8 or
+     7/16 inch UNF specification.
+
+e) For each new anchorage point created, a steel reinforcement plate with a surface
+     area of at least 6 square inches and a thickness of at least 1/8 inch must be used.
+
+2023 Edition  10  ARA Rally Technical Rules
+f) The effectiveness and longevity of safety belts are directly related to the manner in
+     which they are installed, used and maintained. The belts must be replaced after
+     every severe collision, and whenever the webbing is cut, frayed or weakened due to
+     the actions of chemicals or sunlight. They must also be replaced if metal parts or
+     buckles are bent, deformed or rusted. Any harness which does not function
+     perfectly must be replaced.
+
+2.3.5 Fire extinguishers
+
+a) All competition vehicles must be equipped with all of the following:
+
+i) An "on-board" system that uses either manual or automatic activation.
+
+1) All bottles will be secured using a metal strap and have a fill gauge that is
+     visible for Scrutineering. Activation point for the fire system must be located
+     within easy reach of the driver and co-driver when seated.
+
+2) All such systems will be installed and serviced in accordance with the
+     manufacturer's instructions.
+
+              Installed system must meet one of the following standards:
+
+              · SFI Spec 17.1 and display a manufacturer appearing on the current
+                 respective list of SFI Spec 17.1 manufacturers at sfifoundation.com
+
+              · FIA 8865-2015
+              · Currently listed as homologated for Rally on Technical List n° 16 of the
+
+                 FIA website (fia.com)
+
+3) The fire system cylinder shall be securely fastened, in such a manner that it
+     can be checked during a technical inspection and may be removed
+     periodically for weighing.
+
+4) All on-board systems shall be identified with 2 circle "E" decals one at the
+     release location and the second on the outside bodywork in line with or as
+     near to the release location as possible.
+
+ii) Two hand held fire extinguishers with a minimum UL rating of 10 BC each or
+     one hand held extinguisher with a minimum UL rating of 20BC.
+
+1) All bottles will be secured using a metal strap and have a fill gauge that is
+     visible for scrutineering.
+
+2) Each must be installed to be easily accessible inside the passenger
+     compartment. During installation, consideration must be given to quick
+     release and security of attachment.
+
+3) One fire extinguisher must be located within easy reach of the driver or co-
+     driver when seated.
+
+4) The following are considered equivalent substitutes for one 10-B:C hand
+     held extinguisher:
+
+              Minimum quantity of extinguishant:
+
+              · AFFF      2.4 liters
+
+              · FX G-TEC  2.0 kg
+
+2023 Edition                      11              ARA Rally Technical Rules
+                  · Viro3           2.0 kg
+                  · Novec 1230      2.0 kg
+
+b) If a dry powder unit is used, The unit must bear certification, from a certified fire
+     extinguisher inspector, that it has been serviced annually or per the FIA/SFI
+     requirements. All extinguishers shall be equipped with a visible indication of the
+     state of charge. All extinguishers shall be approved for vehicular use by the DOT,
+     U.S. Coast Guard, SFI or FIA.
+
+c) A fire extinguisher label must be placed on the outside of the vehicle, on a non-
+     glass surface, at the nearest point of access to a fire extinguisher.
+
+2.3.6 First Aid Kit
+
+a) A comprehensive first aid kit shall be carried in the passenger compartment.
+
+b) The first aid kit must be easily accessible, clearly identified and the complete kit
+     easily/quickly removable by hand. It is recommended that the first aid kit be
+     accessible from both sides of the car and from the seated position.
+
+c) A first-aid kit label must be placed on the outside of the vehicle, on a non-glass
+     surface, at the nearest point of access to a first-aid kit.
+
+2.3.7 Warning Devices
+
+Three self-supporting, light-reflecting, daylight-visible triangular warning devices of a
+minimum size of 12 inches per side shall be carried in the vehicle. One of these must be
+located within easy reach of the driver or co-driver when seated.
+
+Warning devices must be permanently marked with crew's assigned car number.
+
+2.3.8 Tow Rope
+
+All vehicles must carry a tow rope or winch with cable. All parts of the tow rope must be
+within the competition vehicle at all times while the tow rope is not in use.
+
+2.3.9 Camera and Camera Mounts
+
+Camera mounts and their attachment to the vehicle shall be of a safe and secure design
+which would prevent either driver from being able to strike any part of the mount. As
+well, the camera shall be secured at a minimum of two different points.
+
+2.3.10 Belt Cutters/Glass Breakers
+
+One or more belt cutters and glass breakers must be carried in the vehicle within reach
+of both driver and co-driver while safety harnesses are being worn. The seat belt cutter
+must be designed specifically for cutting seat belts.
+
+2.3.11 Spill Kit
+
+All vehicles in ARA events must carry a spill kit consisting of at least: a minimum of 2 -
+15" x 19" (standard) absorbent pads, 1 - 3" x 48" hydrocarbon absorbent sock, and a 13
+gallon plastic bag. All items will be contained in a heavy duty plastic bag that is re-
+sealable.
+
+2023 Edition                                12  ARA Rally Technical Rules
+3. GENERAL REGULATIONS
+
+3.1 Bodywork
+
+3.1.1 Production-based
+
+a) Must be a production-based chassis.
+b) Other than allowances within the rules, the bodywork must be original in
+
+     appearance to OEM.
+c) All vehicle measurements will be done in whole millimeters +/- 1%. Any digits to the
+
+     right of the decimal will be dropped.
+d) Competitor must declare vehicle year, make, model, and variant for dimensions
+
+     used.
+e) Front door openings shall remain unmodified
+
+     · Including width of chassis, height of opening, and length of opening
+     · Measured at pinch weld of opening
+f) Rear luggage opening shall remain unmodified
+     · Including location, size, and shape
+     · Measured at pinch weld of opening
+g) Windshield base and angle must remain in OEM position and angle
+h) Bumpers and fascias are to be made from rigid materials
+i) Detachable decorative elements (trim, mesh, etc) may be replaced with a flat
+     surface following the form of the part.
+
+3.1.2 Factory Floor Pan and Firewall
+
+A factory floor pan and firewall must be retained. Modifications for alternate components
+is allowed.
+
+3.1.3 Good Appearance
+
+Bodywork must be without visible damage or perforation from corrosion which would
+detract from the good appearance of the vehicle.
+
+3.1.4 Bumper Location
+
+The general shape and location of bumpers may not be changed.
+
+3.1.5 Tires Covered
+
+The upper part of the wheel located above the wheel hub center must be covered by the
+bodywork when viewed in plan view. Tires must be fully covered when viewed from
+above.
+
+3.1.6 Wings, Plates, and Additions to Bodywork
+
+a) Wings, their elements, and mountings must not extend beyond the body as viewed
+     in plan view nor extend above the roof line more than 76 mm when viewed directly
+     from the side. Wings, their elements, and mountings are not considered part of the
+     plan view in any case and may not define it. Wing end plates must be a minimum
+     section of 3mm.
+
+b) Devices or additions forward of the windshield must be below the line of the hood
+     when viewed from the side. They cannot define the plan view and must fall within it.
+
+2023 Edition  13  ARA Rally Technical Rules
+b) Any aerodynamic plates or element extending from major body surfaces must have
+     a 10 mm minimum section width at outside edge.
+
+c) ARA technical inspectors reserve the right to refuse any bodywork or aerodynamic
+     component based on safety concerns.
+
+d) Any moveable element adjustment is only allowed from outside the vehicle while the
+     car is stationary.
+
+e) Only one rear wing is permitted with one main horizontal profile. The main
+     horizontal profile is defined by air passing above and below the profile.
+
+f) OEM wings that do not meet these requirements may be submitted for
+     consideration.
+
+3.1.5 Paintwork
+
+Paintwork must be finished and of neat appearance. Primer paint is not acceptable.
+
+3.2 Identification of Vehicles and Crew
+
+3.2.1 Vehicle Graphics Standards
+
+All competing vehicles in stage events shall be identified in accordance with the ARA
+Visual Package, described on the ARA web site.
+
+3.2.2 Door Reserved Space
+
+An area 24 inches wide by 20 inches high, starting with the lead edge of the front doors
+and from the top of the door panel downwards shall be reserved for exclusive use for
+the installation of the ARA door panels and Event Sponsor decals. Door numbers shall
+meet Vehicle Graphics Standards.
+
+3.2.3 Competitor Identification
+
+The name of the driver and the co-driver must appear on the rear side windows of the
+car as shown in the Standards. Letters for the crew's names must be white, 2 inches in
+height in upper and lower-case Helvetica bold face. The national flag of each crew
+member must appear adjacent to the name.
+
+3.2.4 Windscreen Banner
+
+The top 4 inches of the windscreen is reserved for use by ARA and/or its sponsors. No
+other advertising is permitted anywhere on the windshield. Competitors have the option
+of installing a solid black background at the top of the windshield. The sponsor's decal is
+installed over this background.
+
+3.2.5 Hood Reserved Space
+
+An area 24 inches wide by 10 inches high at the front center of the hood is reserved for
+the exclusive use of the ARA Series Sponsors.
+
+3.3 Lights
+
+3.3.1 Compliance With State Requirements
+
+Headlights must comply with the legal requirements of the state of registration.
+
+2023 Edition  14  ARA Rally Technical Rules
+3.3.2 Headlights
+
+A headlight shall be considered as any lighting device throwing a beam toward the front
+of the vehicle (low-beam, high-beam, fog lamp). Auxiliary headlights may be installed.
+These lights may be fitted into the bumpers, radiator grillwork or the front part of the
+bodywork, provided that such openings as needed in this case are completely filled by
+the lights fitted. All auxiliary lights shall be mounted no higher than the top of the hood.
+
+3.3.3 Manufacturer-fitted Fog Lights
+
+It must not be possible to operate any manufacturer fitted fog lights fitted without the
+front marker lights and tail lights operating.
+
+3.3.4 Reversing Lights
+
+All reversing lights may only switch on by engaging reverse gear.
+
+3.4 Tire studs
+
+Studs or other hard material devices inserted into the tire are not permitted unless
+approved studs are allowed under local state law and as detailed in the event
+Supplementary Regulations.
+
+3.5 Documentation
+
+The following documentation shall be carried in the vehicle at all times:
+
+     - Vehicle registration
+
+     - Proof of third party liability insurance covering the entered vehicle
+
+3.6 International Vehicles
+
+3.6.1 Vehicle Class
+
+International vehicles entered in ARA rallies shall be classified by ARA vehicle class
+regulations.
+
+3.6.2 Vehicle Eligibility
+
+The vehicle must be based on a model built by a recognized motor vehicle
+manufacturer. It is the intent of these rules that all vehicles be based on production
+vehicles built for road use. Eligibility is restricted to street-licensed, closed-bodied
+vehicles. Non-production-based vehicles built from the ground up, are explicitly
+prohibited.
+
+3.7 Restricted Driver Vehicle Requirements
+
+3.7.1 Restrictors
+
+Restricted drivers, as defined elsewhere, must use a Novice Restrictor on all forced
+induction competition vehicles over 1600cc, and all normally aspirated competition
+vehicles over 2700cc. Novices will also be restricted when competing in under 1600cc
+forced induction or under 2700cc normally aspirated competition vehicles with
+exceptional performance potential, as judged by ARA. Some examples of under 1600cc
+forced induction or under 2700cc normally aspirated vehicles with exceptional
+performance potential:
+
+2023 Edition  15  ARA Rally Technical Rules
+     a) Group 4-style Ford Escort or similar (Millington, BDG, etc.)
+     b) FIA Super 2000 cars
+     c) F2 Category cars
+     d) R5 Category cars
+
+3.7.2 Forced Induction Restrictor
+
+When required for a novice driver, the forced induction restrictor used will be as
+described below.
+
+a) The restrictor must be located and have a minimum width as otherwise stated in
+     RTR 4.2.5.a (also applies to 2wd vehicle).
+
+b) The restrictor maximum inside diameter is to be 30mm.
+c) If a car is fitted with multiple induction systems, then the total combined area of all
+
+     restrictors cannot exceed the area of a single 30mm restrictor.
+
+3.7.3 Normally Aspirated Restrictor
+
+When required, the normally aspirated restrictor used will be as described below:
+
+a) Flat plate intake restrictor mounted between the throttle body and intake manifold.
+b) Restrictor must be of steel or aluminum, 55mm round ID max, maintained for at
+
+     least 1.5mm and not radiused to the flat edge.
+c) The opening must be round and centered with the throttle body. If an adapter is
+
+     needed for throttle plate clearance, it must be the same diameter as the throttle
+     bore and not create a radius into the restrictor.
+d) All engine combustion chamber air (and possibly fuel) must pass through the center
+     hole of the plate.
+e) The restrictor plate shall be securely mounted on the bolts or studs used to mount
+     the throttle body or carburetor.
+f) Carburetor restrictor plates may have multiple holes lined centered with venturis.
+g) If multiple holes are used, their area must be no greater than the sizes above.
+
+3.8 Other Equipment
+
+3.8.1 Driveline Release
+
+The mechanical connection between the center differential, transfer case, and rear
+differential may release upon the application of the handbrake, using a hydraulic or
+electrical system initiated only by the operation of the handbrake lever, independent of
+the brake system hydraulics.
+
+2023 Edition  16  ARA Rally Technical Rules
+Table A National - Class, Engine Type, Maximum Displacement, Restrictor, Minimum
+     Weight
+
+      Class        Engine          Max. Disp.  Restrictor               Min. Weight
+  Open 4WD
+               Forced induction    (cc)                                          (kg)
+    Naturally
+Aspirated 4WD   Nat. aspirated                 33mm @ 2.5 bar
+                Nat. aspirated
+ Limited 4WD    Nat. aspirated     2600        absolute                          1315
+                Nat. aspirated
+  Open 2WD      Nat. aspirated                 34mm @ 27 PSI
+
+ Limited 2WD   Forced induction    3320        none                              1315
+       RC2
+               Forced induction    4500        none                              2900
+                Nat. aspirated
+                Nat. aspirated                 Subject to Technical
+
+                            Group  6300        Review of specific                1315
+                                               engine proposals
+               Forced induction
+               Forced induction    2500        none                              1135
+               Forced induction
+                                   3320        none                              1315
+                Nat. aspirated
+                Nat. aspirated                 33mm @ 2.5 bar
+
+                Nat. aspirated     3000        absolute                          1405
+
+               Forced induction                34mm @ 27 PSI
+                Nat. aspirated
+                                   3000        36mm @ 22 PSI                     3100
+
+                                   2800        none                              1405
+
+                                   6300        none                              1495
+
+                                   Rally 3: Refer to applicable FIA Regulations
+
+                                   1800        none                              885
+
+                                   2600        none                              995
+
+                                   3500        none                              1270
+
+                                   1800        none                              none
+
+                                   4500        none                              950
+
+                                               Subject to
+
+                                               Technical
+
+                                   6900 6300      Review of                      1270
+                                               specific engine
+
+                                               proposals
+
+                                               none
+
+                                   1600        none                              1040
+
+                                   2500        none                              995
+
+                                   Refer to applicable FIA regulations
+
+2023 Edition                       17          ARA Rally Technical Rules
+Table A Regional (2023 only) - Class, Engine Type, Maximum Displacement,
+     Restrictor, Minimum Weight
+
+      Class        Engine          Max. Disp.  Restrictor               Min. Weight
+  Open 4WD
+               Forced induction                                                  (kg)
+    Naturally
+Aspirated 4WD   Nat. aspirated                 34mm @ 2.86
+                Nat. aspirated
+ Limited 4WD    Nat. aspirated     2600        bar absolute                      1315
+                Nat. aspirated
+  Open 2WD      Nat. aspirated                 34mm @ 27 PSI
+
+ Limited 2WD   Forced induction    3320        none                              1315
+       RC2
+               Forced induction    4500        none                              2900
+
+                Nat. aspirated                 Subject to Technical
+                Nat. aspirated
+                                   6300        Review of specific                1315
+                            Group              engine proposals
+
+               Forced induction    2500        none                              1135
+               Forced induction
+               Forced induction    3320        none                              1315
+
+                Nat. aspirated                 34mm @ 2.86
+                Nat. aspirated
+                                   3000        bar absolute                      1405
+                Nat. aspirated
+                                               34mm @ 27 PSI
+               Forced induction
+                Nat. aspirated                 36mm @ 2.5 bar
+
+                                   3000        absolute                          1405
+
+                                               22 PSI
+
+                                   2800        none                              1405
+
+                                   6300        none                              1495
+
+                                   Rally 3: Refer to applicable FIA Regulations
+
+                                   1800        none                              885
+
+                                   2600        none                              995
+
+                                   3500        none                              1270
+
+                                   1800        none                              none
+
+                                   4500        none                              950
+
+                                               Subject to
+
+                                               Technical
+
+                                   6900 6300   Review of                         1270
+
+                                               specific engine
+
+                                               proposals
+
+                                   1600        none                              1040
+
+                                   2500        none                              995
+
+                                   Refer to applicable FIA regulations
+
+2023 Edition                       18          ARA Rally Technical Rules
+4. VEHICLE CLASSES
+
+4.1 All Open Classes (Open 4WD, Naturally Aspirated 4WD, Open 2WD)
+
+4.1.1 Class Displacement and Weight Rules
+
+All class displacement and weight rules per Table A. The use of securely fixed ballast to
+complete the weight of the car is permitted. Rotary engines are subject to a
+displacement multiplier of 1.8.
+
+4.1.2 Exterior Bodywork
+
+a) All bodywork changes from OEM must be submitted to ARA Technical Director for
+     approval a minimum of 45 days before start of event and approved by ARA before
+     being used in competition.
+
+b) Roof, A & B pillars must be metallic and retain factory profile. C pillars must retain
+     factory profile.
+
+c) Front Fascia/Bumper
+     · The basic shape of the front fascia must be the same in appearance to OEM,
+          other than the permitted variances. No elements (such as dive planes) may be
+          added or enlarged/reduced.
+     · The lateral part of the front fascia may be widened only in order to align with the
+          widening of the front fenders.
+     · Front grilles may be removed and/or replaced with wire mesh.
+     · The lowest 100mm of the front bumper may not protrude beyond the portions
+          immediately above when viewed in a vertical projection. The lowest 100mm of
+          the front bumper may be detachable but must be designed as a flat strip.
+     · The radiator opening of the front bumper and fascia may be enlarged or
+          reduced. Additional openings in the front bumper or fascia may be added for the
+          sole purpose of providing cooling air flow to the front brakes or auxiliary heat
+          exchangers located in the front engine compartment. Openings may be covered
+          with a wire mesh.
+
+d) Rear Bumper
+     · The basic shape of the rear bumper must be the same appearance to OEM,
+          other than the permitted variances. No additional elements may be added on or
+          below the bumper. Additionally, elements may not be enlarged/reduced.
+     · The lateral part of the rear bumper may be widened only in order to align with
+          the widening of the rear fenders.
+     · A modification of the original cut-out for the exhaust, or to create a cut-out
+          specifically for the exhaust, is authorized. No additional openings or vents are
+          permitted.
+
+e) Front Fender
+     · The basic shape of the fender must be the same in appearance to OEM, other
+          than permitted variances.
+     · The fender may be widened in the vicinity of the wheel opening to meet the
+          RTR 3.1.3 requirements. This may be obtained by means of an extension or a
+          new part may be created. Changes must be for the sole purpose of covering the
+          wheel.
+     · No additional air intakes or outlets are permitted.
+
+2023 Edition  19  ARA Rally Technical Rules
+     · The addition of aerodynamic elements is not permitted.
+f) Rear Fender
+
+     · The basic shape of the fender must be the same in appearance to OEM, other
+          than permitted variances.
+
+     · The fender may be widened in the vicinity of the wheel opening to meet the
+          RTR 3.1.3 requirements. This may be obtained by means of an extension or a
+          new part may be created. Changes must be for the sole purpose of covering the
+          wheel.
+
+     · No additional air intakes or outlets are permitted.
+     · The addition of aerodynamic elements is not permitted.
+g) Rear Doors
+     · Localized modification of the rear doors is authorized only to allow the passage
+
+          of the rear wheel or the additional of an extended wheel arch flare to work in
+          conjunction with modifications to the rear fender.
+h) Engine Cover
+     · Additional openings in the engine cover are permitted but must be covered by
+          wire mesh. Louvers and trim surrounding these openings cannot extend more
+          than 15mm above the hood surface.
+     · OEM hood scoops may be enlarged, reduced, or removed. In regards to
+          enlarging or reducing, the hood scoop design must be the same as OEM with
+          only changing the size of the hood scoop.
+     · Cowl induction style hoods may be permitted but must be submitted to the ARA
+          for approval a minimum of 45 days before the start of event.
+i) Underbody Protection
+     · Underbody protection may be added provided it intends to serve no other
+          purpose.
+
+c) Fenders and quarter panels may be modified or replaced but must cover tires
+     completely as viewed from above.
+
+d) Bumpers and fascias are to be made from rigid materials.
+e) The radiator opening of the front bumper and fascia may be enlarged or reduced.
+
+     Additional openings in the front bumper or fascia may be added for the sole purpose
+     of providing cooling air flow to the front brakes or auxiliary heat exchangers located
+     in the front engine compartment.
+
+4.1.3 Wheelbase, Overhand, and Widths
+
+a) Wheelbase may not be modified more than 75mm +/- from factory specification.
+b) Total vehicle length not to exceed OEM length plus 3%
+c) Front overhang not to exceed OEM plus 7%
+
+     · Measured from centerline of front wheels forward
+d) Rear overhang not to exceed OEM plus 7%
+
+     · Measured from centerline of rear wheels rearward
+e) Total width not to exceed OEM width plus 10%
+
+     · Measured at any point.
+     · Total width not to exceed 2000 mm in any case including mirrors
+
+f) The front air dam
+
+2023 Edition  20  ARA Rally Technical Rules
+     · May be modified by downward or forward extension.
+     · May extend no more than 60 mm forward of the furthest point forward of the
+
+          front bumper face at any point.
+     · Must fit within the front overhang and total length percentages and may be no
+
+          wider than the front fenders.
+g) Rear diffusers
+
+     · May be added but must be below the lower luggage opening in their entirety.
+     · May define the plan view but cannot extend rearward more than 50mm of the
+
+          rearmost point of the rear bumper.
+     · It must fall within the approved body and overhang dimensions.
+
+4.1.4 Engine Location
+
+Engine may be moved but the OEM engine location (in front or behind) in relation to
+driver must remain.
+
+4.1.5 Fuel
+
+Fuel must be Gasoline, Ethanol, or Diesel based.
+
+4.1.6 Alternate Fuels
+
+Alternative energy sources (e.g., propane, battery electrical greater than 25V) must be
+pre-approved by ARA Technical Director a minimum 45 days before its event. There is
+no assurance given that a request for a technical exception can be fully resolved within
+less than 45 days.
+
+4.1.7 Electronically Controlled or Actuated Components
+
+Unless noted herein as an exception the suspension, braking, gear change, clutch front
+and rear differential components may not be electronically controlled or actuated.
+
+Active front differentials are allowed and subject to a 100lb weight penalty.
+
+Production-based active center differentials may be used. The method of control over
+such a center differential is free. Non-production-based active center differentials or
+transfer cases are not permitted.
+
+OEM electronic controls of OEM transmissions, clutches, and differentials may be
+allowed with prior approval from the ARA Technical Director.
+
+A simple engine cut is permitted during a mechanically activated gear change.
+
+Electronic actuation of reverse gear lockout is permitted.
+
+Electronic control of driveline release, as per RTR 3.8.1, is permitted.
+
+4.1.8 Damper Bushings
+
+Suspension dampers must be guided by solid bushings, roller bearings for liner
+guidance are not allowed.
+
+4.1.9 Turbocharger and Exhaust Gasses
+
+Turbocharger must be a single turbo with a single stage of compression and expansion.
+It must not have variable pitch or geometry.
+
+2023 Edition  21  ARA Rally Technical Rules
+The turbocharger assembly must be available from a recognized turbocharger
+manufacturer via retail sales.
+
+Turbocharger must only be driven by exhaust gasses only. No secondary injection of
+air, fuel, or otherwise except as allowed by the fresh air valve. Exhaust gasses are
+defined as a gas mixture exiting the combustion chambers of the engine.
+
+A fresh air valve between the intake and exhaust systems is allowed provided the
+following conditions are maintained:
+
+a) All incoming air must pass through the intake restrictor(s)
+b) The total volume between the restrictor(s) and the butterfly (or butterflies) must not
+
+     exceed 20 liters.
+c) Components required to actuate the fresh air valve may be added provided they
+
+     serve no other purpose.
+
+If the OEM turbocharger or configuration is in conflict with these requirements,
+competitors must request approval to use the OEM turbocharger(s) a minimum of 45
+days prior to the event. There is no assurance given that a request will be approved.
+
+4.1.10 Door Structure Bodywork
+
+Driver and co-driver doors must be structurally unaltered with the following exceptions.
+
+If the original structure has been removed or altered, either:
+
+     a) A door panel that is compliant with FIA drawing 255-14 must be installed
+
+or
+
+     b) the safety cage must include a sill bar plus 2 continuous door bars containing
+          four vertical studs. Homologated roll cages may not be modified.
+
+All sharp edges must be protected by a door panel, edge guard, or similar.
+
+4.1.11 Exceptions
+
+Any requests for exceptions to published rules must be submitted to the ARA Technical
+Director no less than 45 days before event. There is no assurance given that a request
+for a technical exception can be fully resolved within less than 45 days.
+
+4.2 Open 4WD Class
+
+4.2.1 Non-compliant Vehicles
+
+Vehicles which do not comply with current Open 4WD class rules including FIA vehicles
+may be allowed to compete -- competitors must request approval a minimum of 45 days
+prior to event.
+
+4.2.2 Matching Engine, Transmission and Chassis
+
+Engine, transmission and chassis manufacturer need not match.
+
+4.2.3 Restrictors
+
+Engines of displacement 3.3 4.5 - 6.3 liter must have a airflow restrictor no more than
+50 mm from throttle body inlet as measured along centerline of airflow path. All air
+entering the engine must pass through the restrictor. Restrictor sizing will be established
+
+2023 Edition  22  ARA Rally Technical Rules
+for specific engine proposals such that targeted engine output levels will not be
+exceeded. Proposals to be submitted per RTR 4.2.1 above. For normally aspirated
+engines, the throttle bore size may be specified in lieu of a restrictor.
+
+4.2.4 Turbocharger/Supercharger Restrictions
+
+a) Forced induction engines must have an air inlet orifice as specified in Table A or
+     smaller of 34mm diameter or less either through manufacture or by the use of a
+     restrictor. This restrictor must have a minimum width (parallel to the air flow path) of
+     3 mm and must be located within 50 mm of the compressor wheel. All air entering
+     the engine must pass through the restrictor.
+
+b) Must provide 1/8" female pipe fitting in the intake manifold plenum for ARA use. The
+     Table A indicated manifold pressure limit is absolute gauge pressure.
+
+c) If a car is fitted with multiple induction systems, then the total area of all restrictors
+     cannot exceed the area of the restrictor listed Table A.
+
+c) Competitors must have in place a mechanism to allow the induction system to be
+     sealed by the use of wire and ARA seals.
+
+     i) With the wire and seal in place, it must be impossible to access the restrictor
+          without removing the wire and seal.
+
+     ii) The wire and seal cannot be installed without a detailed inspection of the
+          restrictor.
+
+     iii) Competitors must be prepared to dismantle the induction system to allow for
+          verification of compliance with the rule above.
+
+d) The storage of boost (i.e., an accumulator) is not permitted.
+
+e) As an option to competitors, boost monitoring may be accomplished with an FIA
+     pop-off valve installed per FIA Technical List n 43. FIA Pop-off valves are to be
+     sealed during the event scrutineering. If the sealing must be removed during the
+     event, it must be under the supervision of the chief scrutineer or the ARA Technical
+     Director. The pop off valve shall be re-sealed at the discretion of the ARA Technical
+     Director.
+
+4.2.5 Electronic Controls
+
+Aside from the exceptions below, no type or form of electronic control is permitted for
+the following components: Suspension, braking, gear-change, clutch, front and rear
+differentials.
+
+a) Simple engine cut operating during a mechanically activated gear change is
+     permitted.
+
+b) O.E electronic rear differential is permitted.
+
+c) An active front differential may be used, but it will result in the minimum weight for
+     that competition vehicle being increased by 100 lbs.
+
+2023 Edition  23  ARA Rally Technical Rules
+4.2.5 Fuel Sample Acquisition
+
+All entrants in Open 4WD at ARA National Championship events shall be equipped with
+an easily accessible sampling valve/port located between the fuel tank and the
+carburetor(s) or fuel injection. To avoid spillage, the sampling valve/port shall not
+consist of removing a fuel line from any fuel system component unless a dry break
+fitting has been installed. In all cases entrants shall provide the labor and appropriate
+tools necessary to safely obtain the sample. A crew member must be present with a fire
+extinguisher whenever samples are being acquired.
+
+4.3 Naturally Aspirated 4WD Class
+
+4.3.1 Engine and Transmission
+
+Engine must be normally aspirated. Engine block and chassis manufacturer must
+match. Transmission manufacturer is free. Sequential shift allowed but is subject to a 45
+kg 100 lb. weight penalty.
+
+4.3.2 Other Applicable Rules
+
+Must conform to all 4WD Open Class rules except those pertaining to forced induction.
+
+4.4 Limited 4WD Class
+
+4.4.1 Drive Configuration
+
+Vehicle must have been manufactured as 4WD.
+
+4.4.2 Bodywork
+
+Bodywork must be OEM with regard to materials and appearance. Vents for cooling or
+cabin airflow allowed. Underbody protection may be added provided it intends to serve
+no other purpose.
+
+4.4.3 Hoods
+
+Hoods may be alternate materials.
+
+4.4.4 Seam Welding and Strengthening
+
+Seam welding and strengthening of suspension points are allowed.
+
+4.4.5 Unibody
+
+Unibody chassis must remain intact as manufactured without weight reductions.
+Mounting tabs and unnecessary brackets may be removed, but the major unibody
+structure must remain.
+
+4.4.6 Tunnel
+
+Tunnels may be modified to accommodate improved exhaust clearance or other
+required components.
+
+4.4.7 Rear Subframe
+
+Rear subframe must remain OEM. Only one suspension connection point per side may
+be moved.
+
+2023 Edition  24  ARA Rally Technical Rules
+4.4.8 Strut/Shock Towers
+
+Strut/Shock towers may be raised upward no more than 3.5" in the axis of travel only.
+OEM tower walls must remain.
+
+4.4.9 Front Doors
+
+Front door structure cannot be modified, although interior door cards are free.
+
+4.4.10 Wheel Tubs
+
+No modifications of the wheel tubs. Rolling the wheel arches is allowed, no flaring.
+
+4.4.11 Front and Rear Subframes
+
+Front and rear subframes must be OEM. Strengthening is allowed by welding only.
+Material may only be added, none removed, must retain OEM profile.
+
+4.4.12 Suspension Dampers
+
+Suspension dampers are free except they must be guided by solid bushings (roller
+bearings for linear guidance are not allowed) and must use OEM (or raised per 4.4.8)
+mounting locations with front and rear hubs remaining OEM.
+
+4.4.13 Hubs
+
+Hubs may be otherwise altered to accommodate permitted modifications.
+
+4.4.14 Control Arms
+
+Control arms must maintain OEM mounting dimensions and geometry. Replacement
+arms must not add additional track width to the vehicle.
+
+4.4.15 Engine and Manufacturer
+
+Engine must have been normally available in the same model range from manufacturer.
+
+4.4.16 Cylinder Head
+
+Cylinder heads must be OEM and match the engine. Porting of cylinder heads or rotor
+housings is not allowed.
+
+4.4.17 Valve Train Components
+
+Valves and valve spring retainers must be OEM with respect to materials and
+dimensions. Camshafts and valve springs are free.
+
+4.4.18 Crankshaft
+
+Standard crank must remain OEM.
+
+4.4.19 Turbocharger/Supercharger Restrictions
+
+a) Turbocharger including wheels, shafts and bearings must remain OEM or appear on
+     the list of approved alternate turbochargers, which are subject to a 45 kg 100 lb.
+     weight penalty. Compressor housings may be modified the minimum amount
+     necessary to accept a mandatory restrictor. Housings may be rotated.
+
+b) Turbochargers must be driven by exhaust gasses only. No secondary injection of
+     air, fuel, or otherwise to maintain turbocharger speed. Exhaust gasses are defined
+
+2023 Edition  25  ARA Rally Technical Rules
+     as a gas mixture exiting the combustion chambers of the engine. A connection
+     between the intake and the exhaust manifold is not allowed. The storage of boost
+     (i.e., an accumulator) is not permitted.
+
+c) Forced induction engines must have an air inlet restrictor no greater than listed in
+     Table A. This restrictor must have a minimum width (parallel to the air flow path) of
+     3 mm and must be located within 50 mm of the compressor wheel. All air entering
+     the engine must pass through the restrictor. If a car is fitted with multiple induction
+     systems, then the total combined area of all restrictors cannot exceed the area of
+     the restrictor listed in Table A.
+
+d) Must provide 1/8-inch female pipe fitting in the intake manifold plenum for ARA use.
+     The Table A indicated manifold pressure limit is absolute gauge pressure.
+
+e) Competitors must have in place a mechanism to allow the induction system to be
+     sealed by the use of wire and ARA seals. With the wire and seal in place, it must be
+     impossible to access the restrictor without removing the wire and seal.
+
+f) The wire and seal cannot be installed without a detailed inspection of the restrictor.
+
+g) Competitors must be prepared to dismantle the induction system to allow for
+     verification of compliance with the rule above.
+
+4.4.20 Intercooler
+
+The intercooler may be replaced and relocated within the original bodywork.
+
+4.4.21 Throttle Body and Manifold
+
+Throttle body, and manifolds are free.
+
+4.4.22 Exhaust System
+
+Exhaust system free. Must include catalyst and tail pipe must exit at the rear of the
+vehicle.
+
+4.4.23 Engine Cooling System
+
+Engine cooling systems are free but must remain in the OEM mounting location.
+
+4.4.24 Flywheel and Clutch
+
+Flywheel and clutch are free.
+
+4.4.25 Transmissions/Transaxles
+
+Transmissions and Transaxles do not need to match year and model.
+
+4.4.26 Sequential Shift
+
+Sequential shift allowed but is subject to a 45 kg 100 lb. weight penalty.
+
+4.4.27 Limited Slip Differential
+
+An aftermarket LSD type locking diff is allowed.
+
+2023 Edition  26  ARA Rally Technical Rules
+4.4.28 Rear Drive System
+
+The rear drive system must maintain the original design concept (i.e. live axle vs. IRS)
+and body mount locations but is otherwise free, including differential, ratio and housing.
+
+4.4.29 Electronics
+
+Electronics are free. No traction control, unless as fitted by manufacturer (OEM system).
+
+4.4.30 Minimum Weight
+
+Vehicles must meet minimum weight per Table A. The use of securely fixed ballast to
+complete the weight of the car is permitted.
+
+4.4.31 Other Technical Rules
+
+Vehicles must conform to all other applicable ARA Technical Rules.
+
+4.4.32 Exceptions
+
+Exceptions to these rules, especially to vehicles built prior to the 2018 season must be
+requested to the ARA Technical Director no less than 45 days before the event. There
+is no assurance given that a request for a technical exception can be fully resolved
+within less than 45 days.
+
+4.4.33 Water Injection
+
+Water injection is prohibited.
+
+4.4.34 Dry Sump
+
+Dry sump oil systems may only be used if it is OE for the car.
+
+4.4.35 Rally3 Vehicles Exception
+
+Vehicles conforming to the most current FIA regulations (Appendix J, Article 260) for
+Group Rally3 are eligible to compete in the L4WD class.
+
+a) All entrants in a Group Rally3 must present any and all homologation documents
+     pertaining to their vehicle upon demand at any time. This can be in electronic or
+     hard copy format.
+
+4.5 Open 2WD Class
+4.5.1 Drive Configuration
+
+Car must be 2WD.
+
+4.6 Limited 2WD Class
+4.6.1 Drive Configuration
+
+Vehicle must have been manufactured as 2WD.
+
+4.6.2 OEM Bodywork
+
+Bodywork must be OEM with regard to materials and appearance. Vents for cooling or
+cabin airflow allowed. Underbody protection may be added provided it intends to serve
+no other purpose.
+
+2023 Edition  27  ARA Rally Technical Rules
+4.6.3 Seam Welding and Strengthening
+
+Seam welding and strengthening of suspension points are allowed.
+
+4.6.4 Unibody
+
+Unibody chassis must remain intact as manufactured without weight reductions.
+Mounting tabs and unnecessary brackets may be removed, but the major unibody
+structure must remain.
+
+4.6.5 Chassis Modifications
+
+Tunnels may be modified to accommodate improved exhaust clearance or other
+required components.
+
+a) Rear subframe must remain OEM. One suspension connection point only may be
+     moved.
+
+b) Strut/Shock towers may be raised upward no more than 3.5" in the axis of travel
+     only. OEM tower walls must remain.
+
+c) Front door structure cannot be modified, although interior door cards are free.
+
+d) No modifications of the wheel tubs. Rolling the wheel arches is allowed, no flaring.
+
+4.6.6 Cross-members
+
+Front and rear cross-members must be OEM. Strengthening is allowed by welding only.
+Material may only be added, none removed, must retain OEM profile.
+
+4.6.7 Suspension Dampers
+
+Suspension dampers are free except they must be guided by solid bushings (roller
+bearings for linear guidance are not allowed) and must use OEM (or raised per 4.6.5.b
+above) mounting locations with front and rear hubs remaining OEM.
+
+4.6.8 Hubs
+
+Hubs may be otherwise altered to accommodate permitted modifications.
+
+4.6.9 Control Arms
+
+Control arms must maintain OEM mounting dimensions and geometry. Replacement
+arms must not add total track width to the vehicle.
+
+4.6.10 Engine Limitations
+
+a) Engine must have been normally available in the same model range from
+     manufacturer.
+
+b) Cylinder heads must be OEM and match the engine. Porting of cylinder heads is not
+     allowed.
+
+4.6.11 Engine Components
+
+a) Valves and valve spring retainers must be OEM with respect to materials and
+     dimensions. Camshafts and valve springs are free.
+
+b) Standard crankshaft must remain OEM.
+
+2023 Edition  28  ARA Rally Technical Rules
+c) Rotary engines are restricted to twin rotors and subject to a displacement multiplier
+     of 1.8. Peripheral porting is not permitted. Street porting is permitted with approval
+     from the ARA Technical Director. Such requests must be made no less than 45
+     days prior to event.
+
+d) Dry sump oil systems may only be used if it is OE for the car.
+
+e) Turbocharged engines must use OEM turbo and waste gate hardware. Turbo
+     engines must have been factory equipped with turbocharger.
+
+f) Turbochargers must be driven by exhaust gasses only. No secondary injection of
+     air, fuel, or otherwise to maintain turbocharger speed. Exhaust gasses are defined
+     as a gas mixture exiting the combustion chambers of the engine. A connection
+     between the intake and the exhaust manifold is not allowed. The storage of boost
+     (i.e., an accumulator) is not permitted.
+
+g) The intercooler may be replaced but must utilize the original mounts in their original
+     locations.
+
+h) Throttle body, and manifolds are free.
+
+i) Forced induction engine injectors must be OEM for the engine.
+
+j) Exhaust system free. Must include catalyst and tail pipe must exit at the rear of the
+     vehicle.
+
+k) Engine cooling systems are free but must remain in the OEM mounting location.
+
+l) Flywheel and clutch are free.
+
+m) Transmissions and Transaxles do not need to match year and model.
+
+n) No sequential shift allowed.
+
+o) An aftermarket LSD type locking diff is allowed.
+
+4.6.12 Rear Wheel Drive System
+
+The rear drive system must maintain the original design concept (i.e., live axle vs. IRS)
+and body mount locations but is otherwise free, including differential, ratio and housing.
+
+4.6.13 Electronics
+
+Electronics are free. No traction control, unless as fitted by manufacturer (OEM system).
+
+4.6.14 Minimum Weight
+
+Vehicles must meet minimum weight per Table A. The use of securely fixed ballast to
+complete the weight of the car is permitted.
+
+4.6.15 Other Technical Rules
+
+Vehicles must conform to all other applicable ARA Technical Rules.
+
+4.6.16 Exceptions
+
+Exceptions to these rules, especially to vehicles built prior to the 2018 season must be
+submitted to the ARA Technical Director no less than 45 days before the event. There is
+
+2023 Edition  29  ARA Rally Technical Rules
+no assurance given that a request for a technical exception can be fully resolved within
+less than 45 days.
+
+4.7 RC2 Class
+
+4.7.1 Summary
+
+Vehicle conforming to FIA rules for the following vehicle categories are eligible to
+compete in the RC2 class:
+
+     · Group Rally2 (VRa2) and Group R5 (VR5)
+
+          Vehicles conforming to the most current Appendix J, Art. 261
+
+     · Group R4 (VR4)
+
+          Group R4 cars conforming to Appendix J 2018, Art. 260
+          Cars fitted with R4 Kit conforming to the most current Appendix J, Art. 260E
+
+     · Group NR4 over 2000cc (current N4)
+
+          Group N cars conforming to Appendix J 2019, Art. 254
+
+     · S2000-Rally: 1.6T engine with a 28mm restrictor
+
+          - Super 2000-Rally cars (conforming to Appendix J 2013, Art. 255A) fitted
+                with a restrictor complying with Art. 255A-5.1.1-b except for the following
+                points:
+
+                a) The maximum internal diameter of the restrictor is 28mm,
+
+                b) The external diameter of the restrictor at its narrowest point must be
+                     less than 34mm. The diameter must be maintained over a distance of
+                     5mm to each side of the narrowest point.
+
+          - The diameter of the turbo compressor restrictor may be revised by the FIA
+                at any time without notice.
+
+     · S2000-Rally: 2.0 atmospheric
+
+          Super 2000 cars (conforming to Appendix J 2013, Art. 254A)
+
+4.7.2 Homologation Paperwork
+
+All entrants in RC2 Class must be prepared to present any and all homologation
+documents pertaining to their vehicle upon demand at any time. This can be in
+electronic or hard copy format.
+
+4.7.3 Fuel Sample Acquisition
+
+All entrants in RC2 class shall be equipped with an easily accessible sampling
+valve/port located between the fuel tank and the carburetor(s) or fuel injection. To avoid
+spillage, the sampling valve/port shall not consist of removing a fuel line from any fuel
+system component unless a dry break fitting has been installed. In all cases entrants
+shall provide the labor and appropriate tools necessary to safely obtain the sample. A
+crew member must be present with a fire extinguisher whenever samples are being
+acquired.
+
+2023 Edition  30  ARA Rally Technical Rules
+4.7.4 Pop-off Valves
+
+FIA pop-off valves are to be sealed during the event scrutineering. If the sealing must
+be removed during the event, it must be under the supervision of the chief scrutineer or
+the ARA technical director. The pop-off valve shall be re-sealed at the discretion of the
+ARA Technical Director.
+
+2023 Edition  31  ARA Rally Technical Rules
+5. VEHICLE LOG BOOKS
+
+5.1 Issuing Log Books
+
+5.1.1 Log Books Issued
+
+A standard ARA Vehicle Log Book shall be issued as requested for any new vehicle
+builds. Log books remain with the vehicle, including changes of ownership.
+
+5.1.2 One Log Book Per Vehicle
+
+Only one log book is issued to each vehicle (other than by way of extension or
+replacement) and the possession of two log books for one vehicle at one time shall be
+deemed a breach of the GCRs.
+
+5.1.3 Log Book Issuer
+
+The log book is issued by an ARA authorized Technical Inspector.
+
+5.1.4 Vehicle Description and Ownership History
+
+A complete description of the vehicle is to be entered in the places provided. All
+changes of ownership of the vehicle must be recorded as provided.
+
+5.2 Log Book Administration
+
+5.2.1 Surrender At Scrutineering
+
+At each event, the log book must be surrendered to the Chief Scrutineer at
+Scrutineering with the signature of the driver/entrant for that event in the space
+provided.
+
+5.2.2 Scrutineer Responsibilities
+
+During Scrutineering, any deviations should be noted by the Chief Scrutineer. All log
+books may be retained by the Chief Scrutineer.
+
+5.2.3 Protests
+
+If a car is protested during an event, the results of this protest may be noted in the log
+book by the Steward(s).
+
+5.2.4 Damage To Be Noted in Log Book
+
+If, during an event, the vehicle is involved in an accident or is damaged due to
+mechanical failure, the damage may is to be noted in the Vehicle Log Book by the Chief
+Scrutineer.
+
+5.2.5 Collect Log Book At End Of Event
+
+It is the responsibility of the entrant to collect the log book at the end of the event. The
+Chief Scrutineer will release all log books once the steward "opens" the "end of event"
+Parc Fermé.
+
+5.2.6 Log Books Issued By Other Sanction Bodies
+
+SCCA/RA/NASA/CARS and other recognized ASNs Vehicle Log Books will be accepted
+at all ARA rallies. All competition vehicles must still pass ARA Scrutineering.
+
+2023 Edition  32  ARA Rally Technical Rules
+5.2.7 Failure To Present Log Book
+
+Failure to present the Vehicle Log Book at Scrutineering will result in a $25.00 fine
+which must be paid in full before the offending entrant will be allowed to start the event.
+
+2023 Edition  33  ARA Rally Technical Rules
+

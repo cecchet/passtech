@@ -1,0 +1,2408 @@
+2026 BASIC CLUB & COMPETITION RULES
+              BCCR v.1.4 12/17/2025
+1. GOVERNING RULES & EVENT STRUCTURE .............................................................................................................. 5
+   1.1. CHUMPCAR INTERNATIONAL INC. DBA CHAMPCAR ENDURANCE SERIES ............................................................... 5
+   1.2. SANCTIONING BODY OPERATIONS............................................................................................................................ 5
+   1.3. CHAMPCAR GENERAL RULES..................................................................................................................................... 5
+   1.4. WINNERS AND AWARDS ........................................................................................................................................... 6
+   1.5. NATIONAL CHAMPIONSHIP ....................................................................................................................................... 7
+   1.6. NATIONAL CHAMPIONSHIP POINTS SYSTEM ............................................................................................................ 7
+   1.7. REGIONAL CHAMPIONSHIP POINTS SYSTEM ............................................................................................................ 8
+
+2. ELIGIBILITY ........................................................................................................................................................................ 9
+   2.1. DEFINITION OF A 500-POINT CHAMPCAR ................................................................................................................. 9
+   2.2. DEFINITION OF AN EXCEPTION CLASS ("EC") CAR..................................................................................................... 9
+   2.3. ENDURANCE RACING CAR CLASSIFICATIONS ............................................................................................................ 9
+   2.4. DRIVER AND CREW ELIGIBILITY AND LICENSING..................................................................................................... 10
+
+3. SAFETY SYSTEMS ............................................................................................................................................................ 12
+   3.1. ROLL-CAGES AND SUPPORTING STRUCTURE .......................................................................................................... 12
+   3.2. ROLL CAGE DESIGN.................................................................................................................................................. 12
+   3.3. DRIVER'S SEAT ......................................................................................................................................................... 16
+   3.4. RACING HARNESSES ................................................................................................................................................ 17
+   3.5. WINDOW NETS / ARM-RESTRAINTS........................................................................................................................ 17
+   3.6. DRIVER EGRESS........................................................................................................................................................ 19
+   3.7. STEERING WHEEL LOCKS ......................................................................................................................................... 19
+   3.8. AIRBAGS .................................................................................................................................................................. 19
+   3.9. ONBOARD FIRE EXTINGUISHER ............................................................................................................................... 19
+   3.10. DRIVER'S HELMET.................................................................................................................................................. 20
+   3.11. NECK RESTRAINT SYSTEM ..................................................................................................................................... 20
+   3.12. FIRE RETARDANT CLOTHING ................................................................................................................................. 20
+   3.13. ANNUAL GEAR CHECK ........................................................................................................................................... 21
+   3.14. BATTERIES ............................................................................................................................................................. 21
+   3.15. MASTER ELECTRICAL KILL (CUT-OFF) SWITCH....................................................................................................... 22
+   3.16. TOW HOOK ............................................................................................................................................................ 22
+   3.17. DRIVE SHAFT.......................................................................................................................................................... 22
+
+2 4. VEHICLE VALUE............................................................................................................................................................... 23
+         2026 BCCR v1.4 (updated 12/17/2025)
+         https://champcar.org
+   4.1. TOTAL POINT VALUE ............................................................................................................................................... 23
+   4.2. VEHICLE PERFORMANCE INDEX .............................................................................................................................. 23
+   4.3. FIXED POINTS .......................................................................................................................................................... 23
+   4.4. NON-FIXED POINT VALUE PARTS ............................................................................................................................ 26
+   4.5. ENGINE SWAP.......................................................................................................................................................... 26
+   4.6. PLATFORM SWAP .................................................................................................................................................... 27
+   4.7. OTHER EQUIPMENT THAT DOES NOT COUNT TOWARD THE TOTAL POINT VALUE ............................................... 28
+   4.8. TIRE SPECIFICATIONS FOR ALL CLASSES .................................................................................................................. 29
+5. SAFETY & TECHNICAL INSPECTIONS AND RELATED PENALTIES ..................................................................................... 32
+   5.1. INSPECTION PROCESS.............................................................................................................................................. 32
+   5.2. TECHNICAL INSPECTION .......................................................................................................................................... 32
+   5.3. PENALTIES ............................................................................................................................................................... 32
+   5.4. POST-RACE IMPOUND AND INSPECTION ................................................................................................................ 33
+   5.5. PROTESTS ................................................................................................................................................................ 33
+   5.6. DAY TWO HANDICAP............................................................................................................................................... 34
+6. ENTRIES AND TEAMS...................................................................................................................................................... 35
+   6.1. ENTRY APPLICATIONS & PAYMENT DEADLINES ...................................................................................................... 35
+   6.2. ENTRY & DRIVER FEES ............................................................................................................................................. 35
+   6.3. CATASTROPHIC FAILURE DISCOUNT ....................................................................................................................... 35
+   6.4. MINIMUM DRIVER ENTRIES PER CAR...................................................................................................................... 36
+7. RULES OF THE ROAD ...................................................................................................................................................... 37
+   7.1. MAXIMUM DRIVING TIME....................................................................................................................................... 37
+   7.2. ON-TRACK DRIVER CONDUCT ................................................................................................................................. 37
+   7.3. STOPPING ON COURSE............................................................................................................................................ 37
+   7.4. PIT IN: UNSAFE DRIVER CONDITION ....................................................................................................................... 37
+   7.5. PASSENGERS............................................................................................................................................................ 38
+8. RULES OF THE PIT ........................................................................................................................................................... 39
+   8.1. PIT AND/OR PADDOCK AREA................................................................................................................................... 39
+   8.2. PIT STOPS AND FUELING OF VEHICLES.................................................................................................................... 39
+   8.3. PIT STOPS AND TIRE CHANGES................................................................................................................................ 41
+   8.4. RED FLAG CONDITION ............................................................................................................................................. 41
+
+3 9. MECHANICAL & ELECTRICAL SYSTEMS, ASSEMBLIES, COMPONENTS ........................................................................... 42
+         2026 BCCR v1.4 (updated 12/17/2025)
+         https://champcar.org
+   9.1. GLASS - GENERAL.................................................................................................................................................... 42
+   9.2. WINDSHIELDS .......................................................................................................................................................... 42
+   9.3. SIDE & REAR WINDOWS .......................................................................................................................................... 42
+   9.4. NERF BARS OR EXOSKELETON ................................................................................................................................. 43
+   9.5. BODY PANELS .......................................................................................................................................................... 43
+   9.6. SUNROOFS, T-TOPS, CONVERTIBLES ....................................................................................................................... 43
+   9.7. CAR NUMBERS, CLASS DESIGNATION, AND VISIBILITY ........................................................................................... 44
+   9.8. CHAMPCAR AND SPONSOR DECALS........................................................................................................................ 44
+   9.9. HEADLIGHTS, TAILLIGHTS, AND BRAKE LIGHTS....................................................................................................... 45
+   9.10. FUEL SYSTEMS ....................................................................................................................................................... 46
+   9.11. OIL CATCH TANKS, FILTERS, COOLERS, AND BREATHERS...................................................................................... 48
+   9.12. COOLANT............................................................................................................................................................... 48
+   9.13. EXHAUST................................................................................................................................................................ 48
+   9.14. NOISE LIMIT........................................................................................................................................................... 49
+   9.15. COCKPIT & FLAGTONICS........................................................................................................................................ 49
+   9.16. MIRRORS ............................................................................................................................................................... 50
+   9.17. ENGINE FIREWALL ................................................................................................................................................. 50
+   9.18. CAMERA MOUNTS................................................................................................................................................. 50
+   9.19. COOL SUITS AND DRINKING SYSTEMS .................................................................................................................. 51
+   9.20. BALLAST................................................................................................................................................................. 51
+   9.21. BUMPER BARS / BASH BARS.................................................................................................................................. 51
+   9.22. AERODYNAMIC DEVICES ....................................................................................................................................... 51
+APPENDIX 1 - LEGAL ........................................................................................................................................................... 52
+APPENDIX 2 - AERODYNAMIC ANATOMY .......................................................................................................................... 53
+APPENDIX 3 - CHASSIS MODIFICATION GUIDE................................................................................................................... 54
+APPENDIX 4 - ROLL CAGE BASICS ...................................................................................................................................... 55
+APPENDIX 5 - TRANSPONDERS .......................................................................................................................................... 56
+APPENDIX 6 - RACE CAR DECALS ....................................................................................................................................... 57
+APPENDIX 7 - RACING FLAGS............................................................................................................................................. 58
+CHAMPCAR MISSION STATEMENT..................................................................................................................................... 59
+
+   4 2026 BCCR v1.4 (updated 12/17/2025)
+
+         https://champcar.org
+1. GOVERNING RULES & EVENT STRUCTURE
+
+1.1. CHUMPCAR INTERNATIONAL INC. DBA CHAMPCAR ENDURANCE SERIES
+
+            1.1.1. ChumpCar International Inc. is a membership organization ("Social Club") doing business as
+                      (DBA) the ChampCar Endurance Series.'
+
+1.1.2.  ChumpCar International / ChampCar Endurance Series Membership: Membership is open to
+        ALL without restriction. Full membership in ChampCar requires an annual dues payment and
+        is valid 12 months from the date of purchase. Full members shall be issued a membership
+        number and a printable membership card. Event memberships are also available. Event
+        members will purchase a temporary membership at the track, which will be valid only for
+        the duration of the event for which it was purchased. This membership will not grant voting
+        rights to the member, as they will not be considered a full member.
+
+1.2. SANCTIONING BODY OPERATIONS
+
+1.2.1. ChampCar shall adhere to the Basic Club & Competition Rules (BCCR)
+
+1.2.2.  The BCCR shall govern all ChampCar events sanctioned by ChampCar. ChampCar may revise
+        the BCCR or issue supplements to it, and all rules stated herein may be amended at any given
+        time in writing or verbally at any event (and put into writing at a later time) at the sole
+        discretion of ChampCar based on maintaining safety, equity in competition, cost reduction, or
+        clarification. The interpretation and application of the ChampCar BCCR by ChampCar officials
+        shall be final and binding.
+
+1.2.3.  All Members of ChampCar International Inc. shall uphold the Basic Club & Competition Rules
+        (BCCR) to promote, elevate, and enhance the name, brand, and reputation of the organization,
+        including its staff, Board of Directors, sponsors, and all those affiliated in any way with the
+        ChampCar Endurance Series. Any act ruled detrimental to the organization, as determined by
+        the Club's Board of Directors, may result in an action by the Board.
+
+1.3. CHAMPCAR GENERAL RULES
+
+1.3.1.  Release and Acknowledgment Forms: Members must sign a ChampCar release, annual gear
+        waiver, and acknowledgment agreement.
+
+1.3.2.  Event Credential: All drivers and crew ("crew" includes all non-driving attendees, including but
+        not limited to family, friends, and guests) must obtain a color-coded wristband from ChampCar
+        at registration. Track restrictions shall take precedence over ChampCar general access
+        allowances.
+
+1.3.3.  WARNING: This is racing. Racing is dangerous. Your car may be damaged or destroyed at any
+        time. You may be injured or killed. Do not participate in a race, in any capacity, if you do not
+        understand this, and do not get into a race car without thinking about this.
+
+          1.2.3.1. The naming of teams for entry into ChampCar events is open to anything the team chooses,
+
+                   but may not include obscene, indecent, or profane language. If it can't be said around small
+
+     5 children, it can't be used in your team name.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+1.3.4.   Insurance: ChampCar carries and provides insurance for facility and event liability; however,
+         ChampCar is NOT your primary health insurance provider. ALL COMPETITORS MUST HAVE
+1.3.5.   PERSONAL HEALTH AND/OR MEDICAL INSURANCE TO COVER THEIR MEDICAL NEEDS
+1.3.6.   (ambulance transport, initial medical screening, etc.). YOU SHOULD NOT BE ENGAGED IN
+1.3.7.   DANGEROUS ACTIVITIES SUCH AS AUTO RACING IF YOU DO NOT HAVE ADEQUATE PERSONAL
+1.3.8.   HEALTH INSURANCE PROTECTION. PARTICIPANTS THAT DO NOT HAVE INSURANCE WILL BE
+         PERSONALLY LIABLE FOR FINANCIAL CHARGES AND FEES ASSOCIATED WITH ANY MEDICAL
+1.3.9.   CARE.
+1.3.10.  Organizer Decisions: ChampCar decisions are final and not subject to discussion, negotiation,
+         definition, or argument.
+
+         Unsafe Vehicles: At ChampCar's sole discretion, any car may be deemed unsafe for
+         competition and removed from the event at any time.
+
+         Unsafe Drivers: At ChampCar's sole discretion, any driver may be deemed unsafe for
+         competition and removed from the event at any time.
+
+         Disqualification from Race: If you have hidden or concealed anything on your car that is illegal
+         in any way, OR violated ChampCar's rules, OR failed to meet the spirit and/or intent of
+         ChampCar's rules, or you have seriously and repeatedly violated the event's driving safety
+         rules, your car may be disqualified from the event. The act of disqualifying any car may occur
+         at any time. Notification shall be issued by a ChampCar official to the Team Manager (or
+         another representative).
+
+         Track Damage Liability: Teams entered in ANY ChampCar event shall be liable for any and all
+         damage their car may have caused to the event facilities, race track, paddock, pit lane, race
+         track safety barriers, and/or race track equipment. ChampCar will pass the cost onto the team
+         captain with a 4% service fee.
+
+         Event Changes: ChampCar reserves the right to cancel and/or alter the location, date(s),
+         format, length, credits, and/or schedule of any event based on conditions, circumstances, or
+         matters that are beyond the control of ChampCar, or for any reason whatsoever. This may
+         include, but is not limited to, weather, track safety conditions, car count/entry participation,
+         track surface conditions, or changes issued under track contractual agreements that (in the
+         opinion of ChampCar) would significantly detract from the overall safety, enjoyment, track
+         time or services of the event.
+
+1.4. WINNERS AND AWARDS
+
+1.4.1.   The car that completes the most laps (after all penalty laps and laps completed are tabulated)
+         shall be declared the Winner.
+
+1.4.2. Podium-winning cars do NOT need to be running at the checkered flag.
+
+1.4.3.   ChampCar's world-famous trophies will be awarded at ALL events, regardless of the number of
+         entries.
+
+        1.4.3.1. The top three in each class (excluding EC) will receive a Class Trophy.
+
+              1.4.3.2. A team representative MUST be present at the awards ceremony to collect any trophy
+
+        6 or award.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+1.4.4. Credits: Unless otherwise stated in the Supplemental Rules, all winnings shall be issued in
+         Credits. Credits are exchangeable and may be applied to ChampCar event entry fees,
+         transponders, Flagtronics, or garage rentals. Race credits expire two years from the date of
+         issue.
+
+      1.4.4.1. Credits cannot be used to pay for track damage, ChampCar products, SWAG, or other fees.
+                   However, they MAY be bartered, traded, or transferred.
+
+      1.4.4.2. Credits shall be issued as an award to the overall winners in these amounts:
+           1.4.4.2.1. For events 19 hours or longer:
+                     First Place $1,400, Second Place $1000, Third Place $800. Total: $3,200.
+           1.4.4.2.2. For events between 11 hours and 18 hours:
+                     First Place $1200, Second Place $800, Third Place $600. Total: $2,600.
+           1.4.4.2.3. For events 10 hours or less:
+                     First Place $800, Second Place $600, Third Place $400. Total: $1,800 (Total $3,600 for a
+                     Double-7 weekend)
+           1.4.4.2.4. For all events, fourth place $200, 5th place $100.
+
+      1.4.4.3. Credits may be accumulated.
+
+1.5. NATIONAL CHAMPIONSHIP
+
+1.5.1. An annual National Championship event will be held at a track designated by the CEO.
+
+        1.5.1.1. To qualify for the National Championship, a ChampCar team must:
+
+                  A. Finish in the top 75 in points for the previous season.
+
+                  B. Teams must compete in at least three (3) event weekends.
+
+1.5.2. The winner of the National Championship:
+
+                  A. All qualified teams carry their top three (3) season finish points into the
+                      Championship, which will be used for seeding purposes.
+
+                  B. The championship is a winner-take-all event. Win the race to win the Championship.
+
+1.5.3. Bring the same car you raced to qualify for the Championship.
+
+        1.5.3.1.  If a Championship-qualified car is totaled during the season, a replacement car can take
+                  its place in the Championship, provided the new car is the same generation, make,
+                  model, and options as the original qualified car. The new car must be inspected by
+                  ChampCar tech and approved as a qualified replacement.
+
+1.5.4.  A minimum of TWO (2) original team drivers from one or both qualifying races must complete
+        at least one championship race lap.
+
+1.5.5. Championship events are NOT exclusive; anyone can enter.
+
+1.6. NATIONAL CHAMPIONSHIP POINTS SYSTEM
+
+1.6.1.  One point per finishing position will be awarded to all competing teams. For example, 1 point
+        for 1st, 2 points for 2nd, 3 points for 3rd, etc.
+
+       1.6.2. Points will be calculated based on the top two (2) finishes for each team. All other finishes will
+
+     7 be dropped.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+1.7. REGIONAL CHAMPIONSHIP POINTS SYSTEM
+
+1.7.1.  ChampCar will recognize four (4) Regional Championships. Events count toward the region in
+        which they are held:
+
+1.7.1.1. South Region: Road Atlanta, Daytona International Speedway, Sebring (Summer), Sebring
+         (Fall), Atlanta Motorsports Park (AMP)
+
+1.7.1.2. Texas Region: G2 Motorsports Park, Harris Hill (Spring), Harris Hill (Fall), Ozarks International
+         Raceway, Circuit of the Americas (COTA)
+
+1.7.1.3. East Region: Dominion Raceway, Watkins Glen International, Lime Rock Park, Virginia
+         International Raceway (VIR), Pocono Raceway
+
+1.7.1.4. Midwest Region: Gingerman Raceway, Autobahn Country Club, Mid-Ohio Sports Car Course,
+         Road America, Ozarks International Raceway
+
+1.7.2. Eligibility Requirements
+
+        A team must enter a minimum of three (3) event weekends within a single region with the
+        same car to qualify for that region's championship.
+
+1.7.3. Race Count
+
+        Each race is scored individually. A double-enduro weekend counts as two (2) race results.
+
+1.7.4. Championship Announcement
+
+        Regional Champions will be determined and announced at the conclusion of the final race
+        within that region. Attendance is not required to win.
+
+1.7.5. Scoring of Results
+
+        Only the team's three (3) highest finishing results in that region will be scored. (Teams may
+        compete in more than three races to improve their scoring total.)
+
+1.7.6. Determining the Champion
+
+        The Regional Champion will be the team with the lowest total points from their best three (3)
+        race finishes.
+
+1.7.7. Tie-Breaker Procedure
+
+        In the event of a tie on points:
+
+        The team with the higher finishing position in any race where the tied teams competed
+        head-to-head will be declared the winner.
+
+        If still tied, the 4th-best finish will be compared, then the 5th, and so on, until the tie is
+        resolved.
+
+1.7.8. Scoring Method & Dual Championship Eligibility
+
+        Regional Championship points are awarded using the same system as the National
+
+        Championship (1 point for 1st, 2 points for 2nd, 3 points for 3rd, etc.).
+
+        Teams may earn points toward both the National and Regional Championships simultaneously.
+
+        No separate registration or forms are required--eligible participation automatically counts
+
+        toward Regional scoring.
+
+8 2026 BCCR v1.4 (updated 12/17/2025)
+
+https://champcar.org
+2. ELIGIBILITY
+
+2.1. DEFINITION OF A 500-POINT CHAMPCAR
+
+2.1.1.  Race entry is limited to mass-produced (over 1,000 units), four-wheeled vehicles certified for
+2.1.2.  US or Canadian street and highway use at the time of the vehicle's manufacture.
+2.1.3.  No kit cars.
+        ChampCar will assign all competing vehicles a Vehicle Performance Index (VPI). The Vehicle
+2.1.4.  Performance Index is a point value that is based on the Performance Evaluation of your car. In
+2.1.5.  order to compete for the overall win, all vehicles must maintain a total point value of 1000
+        points or less, as described in Section 4 of the BCCR. Vehicles with total point values between
+        500 and 1000 points will receive penalty laps.
+        The vehicle's original, manufacturer-stated curb weight may not exceed 4,200 pounds.
+        The Event Director reserves the right to transfer ANY competition vehicle from the 500-point
+        ChampCar classes to the Exception Class (EC) at ANY time. This rule shall only be invoked under
+        extraordinary circumstances.
+
+2.2. DEFINITION OF AN EXCEPTION CLASS ("EC") CAR
+
+2.2.1.  The Exception Class or "EC" car class is open to "ChampCar compatible" cars that wish to race
+        with ChampCar but exceed the 1,000-point limit or any team not wishing to compete for the
+        overall win.
+
+2.2.2.  ChampCar reserves the right to deny entry to any EC car if ChampCar determines the car to be
+        excessively superior in power, braking, top speed, or other factors that ChampCar feels would
+        be unsafe or disruptive to any event.
+
+2.2.3.  EC cars shall not be eligible for prize money issued by ChampCar. However, ChampCar will
+        award the class-winning car a separate EC class trophy.
+
+2.2.4. EC vehicles must meet all ChampCar rules and regulations for vehicle eligibility.
+
+2.2.5.  EC cars will display in live timing during the race with an "EC" in front of their name. At the
+        conclusion of the race, EC results will be uploaded separately from the ChampCar Podium
+        results.
+
+2.3. ENDURANCE RACING CAR CLASSIFICATIONS
+
+2.3.1.  Within ChampCar's endurance racing program, there are six (6) classes of racing:
+        · CLASS A - All cars with an engine displacement of 1.91 liters and under
+        · CLASS B - All cars with an engine displacement between 1.92 liters and 2.4 liters
+        · CLASS C - All cars with an engine displacement between 2.41 liters and 3.91 liters
+        · CLASS D - All cars with an engine displacement of 3.92 liters and higher
+        · CLASS EC - All exception class cars
+        · CLASS F - All cars with a total as-raced VPI of 300 or less
+
+9 2026 BCCR v1.4 (updated 12/17/2025)
+
+https://champcar.org
+2.3.2. A, B, and C class vehicles with forced induction engines shall be classed in the next higher class
+           (A -> B, B -> C, C ->D). Class D vehicles remain as Class D, e.g., a 2.2-liter turbocharged vehicle
+           will be Class C.
+
+2.3.3. Non-turbocharged rotary-powered cars shall be placed in Class B.
+           Factory-turbocharged rotaries shall be placed in Class C.
+
+2.3.4. Non-EC Class cars are referred to as cars competing for the "ChampCar Podium." The
+           ChampCar Podium is for all cars competing under the Vehicle Performance Index (VPI)
+           classification (see Section 4). The ChampCar Podium is for the top-placing cars in the event,
+           regardless of class.
+
+2.3.5. Any car not on the VPI list must get the Event Director's approval to race and will run in EC class.
+2.3.6. Class F cars are NOT in Class A through D. Teams wishing to compete for the Class F trophy
+
+           must declare Class F prior to the race start and display the applicable Class F decals on their
+           vehicle.
+
+2.4. DRIVER AND CREW ELIGIBILITY AND LICENSING
+
+2.4.1. All drivers must be ChampCar members.
+
+2.4.2. All drivers must have a valid state-issued or international driver's license
+
+        2.4.2.1.  Drivers without a state-issued or international driver's license may be allowed to
+                  compete, provided they can demonstrate extensive road racing experience with
+                  another sanctioning body (including karting).
+
+2.4.3.  First-time road race competitors who are novices are required to attend a ChampCar driver's
+        school session. The driver's school is free.
+
+        2.4.3.1.  Definition of "NOVICE": A novice (first-time road racing driver) is someone who has not
+                  competed in a ChampCar or other sanctioning body-organized road racing event in the
+                  last two years and/or does not hold a valid competition license. Solo, autocross, drifting,
+                  club track days, or HPDE events do not apply to competitive road racing experience,
+                  regardless of what license you may have.
+
+        2.4.3.2. Driver schools are held after registration. The time and location will be announced in
+                    the event's supplemental rules.
+
+2.4.4. Drivers under 18 years of age may compete if all the following conditions are met:
+
+2.4.4.1.          Contact the Club CEO with your request to drive in an event. Provide detailed records of
+                  your driving experience. CEO approval must be secured before anyone under 18 can
+                  drive in a CCES event.
+
+        2.4.4.2. The minor driver's parent or legal guardian must be present at the event. A legal
+                    guardian must present a copy of his or her court-ordered status as a legal guardian.
+
+        2.4.4.3. The minor driver's parent or legal guardian must sign a "waiver of liability" form on
+                    behalf of their child competing in the event (form available from ChampCar).
+
+        2.4.4.4. The parent or legal guardian must be present at all times the minor is on track, including
+                    the driving surface and the "hot pit."
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                             10
+https://champcar.org
+      2.4.4.5. The Event Director may limit the number of minor drivers allowed to compete at any
+                   event.
+
+      2.4.4.6. Any contact that a minor driver is involved in will be reviewed by the CEO and may
+                   result in driving privileges being lost until the age of 18.
+
+2.4.5. Any individual 16 years of age or older may be a crew member in the "hot pit" area, but only if
+           all the following conditions are met:
+
+      2.4.5.1. The minor crew members' parent or legal guardian must be present at the event. A legal
+                   guardian must present a copy of his or her court-ordered status as a legal guardian.
+
+      2.4.5.2. The minor crew members' parent or legal guardian must be present to sign a "waiver of
+                   liability" form on behalf of their child serving as a crew member (form available from
+                   ChampCar).
+
+      2.4.5.3. The minor crew members' parent or legal guardian must be present at all times the
+                   minor is on track, including the driving surface and the "hot pit."
+
+      2.4.5.4. The Event Director may limit the number of minors allowed to crew at any event. The
+                   track may restrict "hot pit" areas to those over 18 at certain events; if so, the
+                   information will be in the Supplemental Rules for each event.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                        11
+https://champcar.org
+3. SAFETY SYSTEMS
+
+3.1. ROLL-CAGES AND SUPPORTING STRUCTURE
+
+3.1.1.  A quality, well-fabricated, full roll cage is required. Roll cages may be weld-in or bolt-in. Roll
+        cage tubing joints may be welded or bolted, provided bolt-in methods meet conventional
+        safety standards. Roll-cage design and construction must maintain typical SCCA/NASA
+        standards.
+
+3.2. ROLL CAGE DESIGN
+
+                                                                          Figure A                                 12
+
+       3.2.1. The main hoop (behind the driver, labeled "1" in Figure A) must be the full width of the cockpit
+                   for all cars. It must be one continuous length of tubing with smooth bends and no evidence of
+                   crimping or tube wall failure.
+
+              3.2.1.1. A 3/16" inspection hole must be drilled in the main hoop so that a tech inspector can
+                           measure its wall thickness without obstruction.
+
+              3.2.1.2. On all closed cars, the main hoop must be as close as possible to the roof (in height) and
+                           "B" pillars (in width)
+
+       3.2.2. The halo hoop (labeled "9" in Figure A) may be constructed of either a U-shaped bar
+                   appropriately attached to the main hoop and two front vertical legs (labeled "2" in Figure A)
+                   OR front vertical bars bent rearwards at the roof line, connecting to the rear main hoop and
+                   cross-braced horizontally along the upper windscreen line.
+
+       3.2.3. To prevent cockpit intrusion, two driver-side door bars are required (labeled "7" in Figure A).
+                   NASCAR-style (Figure A) or Double-V style is recommended. NASCAR and Double-V designs
+                   must contain two continuous/unbroken bars. An X-design containing one unbroken bar and
+                   one interrupted bar (Figure B) is acceptable with appropriate reinforcement.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+3.2.3.1.  X-design door bars in which one leg of the X is interrupted at the center of the X are
+          permitted when appropriately gusseted and accompanied by a continuous/unbroken sill
+          bar. (Figure B) ChampCar recommends using two unbroken bars if possible.
+
+                                                          Figure B
+
+3.2.3.2. A minimum separation distance of 4.5" is required between the uppermost and
+            lowermost door bars at the junction to the A and B Pillars. Refer to Figure C.
+
+                                     Figure C
+
+3.2.3.3.  The upper door bar shall not be placed higher than the bottom of the driver's window,
+          and at its lowest point must be at least 6" above the door sill. For X-design, the joint
+          must be at least 6" above the door sill. Refer to Figure C.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                 13
+https://champcar.org
+       3.2.3.4. If the distance, measured at any point between the highest portion of the door sill or
+                   floor pan (whichever is higher) and the lowest edge of lower door bar is greater than
+                   ten inches (10"), a floor or lower-sill intrusion bar (labeled "8"), mounted as low as
+                   possible on each side of the roll-cage, at or just above the door sill, joining the front
+                   vertical legs and the main hoop is required.
+
+       3.2.3.5. A minimum of one (1) door bar shall be required on the passenger side. This bar can be
+                   a floor, a sill, or a mid-level door-bar.
+
+3.2.4. Appropriate main-hoop rear supports (back-stays, labeled "6" in Figure A) with no bends,
+           located as close to 45 degrees from horizontal as practical, are required.
+
+3.2.5. One main-hoop diagonal support bar (labeled "3" in Figure A) is installed in the same plane as
+           the main hoop, with one end terminating in general proximity to the main hoop bend above
+           the driver's head and the other end terminating in general proximity to the lower end of the
+           opposite side of the main hoop is required. The diagonal support bar may be of one (1) or two
+           (2) piece construction, and it may intersect with or cross through the horizontal support bar
+           (used for seat belt harness attachment and/or seat support).
+
+3.2.6. Complete 360-degree welds are required at all welded joints. All welds are to be sufficient in
+           heat, penetration, bead, and consistency.
+
+                                                                          Figure D                                14
+
+       3.2.7. Each major load-bearing member must be formed from its own single, continuous tube.
+       3.2.8. A shoulder-harness bar (labeled "4" in Figure A) mounted just below the driver's shoulder level
+
+                   is required.
+       3.2.9. A dash bar (labeled "5" in Figure A) is mandatory. The dash bar must be of appropriate roll
+
+                   cage material per 3.2.12. The factory dashboard support bar does NOT meet this requirement.
+                   NOTE: Installation using minimal bends is strongly recommended.
+       3.2.10. Roll-cages are limited to eight (8) body and/or frame mounting points - welded and/or bolted.
+              3.2.10.1. The total number of mounting points does NOT include a sub-frame to support a seat
+
+                           mount, provided that the seat sub-frame does not exceed two (2) chassis contact pads.
+                           There is no limit to the number of bars allowed for free between the main hoop to the
+                           front A-Pillar down bars.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+              3.2.10.2. The total number of mounting points does NOT include welded tabs connecting any hoop             15
+                           to the body. A "tab" is defined as being not greater than a 3/16" thick steel plate, no
+                           longer than six inches (6"), and a maximum of two (2) tabs may be placed within any 36"
+                           tube.
+
+              3.2.10.3. The total number of mounting points does NOT include pedal box/footwell bracing
+                           contact pads.
+
+              3.2.10.4. Where cages are attached to the vehicle unibody, tubes must be welded to a minimum
+                           1/8" steel plates no less than 16 square inches in size.
+
+       3.2.11. Additional Bars:
+              3.2.11.1. Roll-cages may not have more than four (4) tubes installed behind the main hoop, and
+                           two (2) of these must include the main hoop rear-support (backstay) bars without value
+                           added. There is no limit to the number of bars allowed for free between the main hoop
+                           and the front A-Pillar down bars.
+              3.2.11.2. Roll-cages MAY contain a maximum of four tubes (two per side) for pedal box/footwell
+                           bracing.
+              3.2.11.3. Roll-cages MAY contain a maximum of 2 tubes inside the front engine or storage
+                           compartment, and each tube MUST terminate before the centerline of the front axle.
+
+       3.2.12. Roll-cage Steel Tubing and Hardware:
+                      3.2.12.1. Minimum tubing size for cars weighing UNDER 2,500 pounds: 1.50" x .095".
+
+              3.2.12.2. The minimum tubing size for cars weighing over 2,500 pounds is 1.75" x .095" or 1.50" x
+                           .120".
+
+              3.2.12.3. For purposes of determining tubing sizes, the vehicle weight is as raced without fuel and
+                           driver.
+
+              3.2.12.4. Properly bent, quality tubing is mandatory. No stretched or crushed bends are allowed.
+                           DOM mild steel is very strongly recommended over ERW tubing.
+
+              3.2.12.5. The radius of all bends of the roll cage (measured at the centerline of the tubing) must
+                           not be less than three times the diameter of the tubing.
+
+                3.2.12.6. All attachment points on the vehicle must be selected and reinforced as necessary so
+                             that, in an accident, the roll-cage will not punch through, tear, or grossly distort any
+                             roll cage attachment point. Heavily rusted floor pans must be replaced or reinforced
+                             with a sheet steel plate. Spreader plates, gussets, and/ or other reinforcing hardware
+                             are generally required to meet this goal. Minimum 1/8" (0.125") (3.175mm) thick steel
+                             backing plates - not washers - must be present on the reverse or underside of any
+                             bolt in the cage location.
+
+                      3.2.12.7. All mounting hardware is to be SAE Grade 8/Metric Class 10.9 or better.
+                             3.2.12.7.1. Minimum bolt size is 3/8" or 10mm diameter.
+                             3.2.12.7.2. All nuts should be self-locking (Nylok® / ovalized), cotter-pinned, or drilled
+                                               and safety-wired.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+3.2.13.  All roll-cages / seats/drivers must be fit such that when the driver is securely belted in place,
+         the top of the driver's helmet does not extend above the centerline of the main hoop. This
+3.2.14.  applies to ALL drivers on the team. Any driver found violating this rule will be black-flagged,
+3.2.15.  and the car will be withdrawn from competition until repairs or modifications have been made
+         and the car completes a re-tech inspection.
+
+         All roll cage tubing must be padded with high-density roll bar padding wherever a driver's
+         extremity may contact the tube. SFI 45.1 Rated Roll Bar Padding is required wherever a helmet
+         may contact the roll cage.
+
+         To prevent the development of massively expensive roll cages that resemble tube-frame
+         chassis, ChampCar has defined the "maximum, value-free" roll cage. The "maximum, value-
+         free" roll cage includes all pads, points, tubes, and triangulations necessary to maintain an
+         extremely high degree of safety while keeping costs in check and competition well balanced.
+         Teams MAY exceed the design and application of the "maximum, value-free" roll-cage;
+         however, additional value will be assessed by the Tech Inspector based on the perceived
+         performance enhancement of the roll-cage.
+
+3.3. DRIVER'S SEAT
+
+3.3.1.   The back of all driver's seats must extend in height to above the middle of the driver's helmet
+         or higher.
+
+3.3.2.   One or two-piece SFI or FIA-rated competition seats are recommended. OEM seats are NOT
+         allowed.
+
+3.3.3.   All seats or seat sliders must be securely mounted to the floor or roll cage to avoid separation
+         during a crash. All mounting hardware must be SAE Grade 8/Metric Class 10.9 or better and a
+         minimum 2-inch diameter or larger steel plate or load washers are required when mounting to
+         sheet metal.
+
+3.3.4.   All seatbacks must be permanently fixed, braced or otherwise restrained against forward
+         and/or rearward failure. A one-piece, permanently mounted seat meets this requirement.
+
+3.3.5.   All non-SFI or non-FIA rated seats must be within 3" of the shoulder harness bar or the
+         diagonal main-hoop bar in its furthest forward position. For seats that do not meet this
+         requirement, a seatback support MUST be used.
+
+        3.3.5.1.    The seatback support may be permanently attached to the seat. For those supports not
+                    attached to the seat, the support MUST extend such that the support plate or contact
+                    point of the support mechanism is less than one-half inch (0.5") from making contact
+                    with the seat when it is in the furthest forward position.
+
+        3.3.5.2.    Seatback supports MUST maintain a minimum area of support contact of no less than
+                    sixteen square inches (4" x 4" square or 2" x 8" horizontal plate) and must be no less
+                    than 1/8" (0.125") in thickness.
+
+        3.3.5.3. All two-piece seats must have a permanently attached seatback support mechanism.
+
+        3.3.5.4. Passenger seats must be removed for racing events.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                         16
+https://champcar.org
+3.3.6.  Seat Mounting - Teams are permitted to modify the OE sheet metal in the vicinity of the
+        driver's position to permit safe mounting of the driver's seat. Seat mounting materials and
+        sheet metal used for these modifications do not incur points. However, ChampCar reserves the
+        right to assess additional points if the modifications exceed what is necessary to safely mount
+        the driver seat and add perceived performance enhancement.
+
+3.4. RACING HARNESSES
+
+3.4.1.  All drivers in ChampCar-sanctioned events shall utilize a five-, six-, or seven-point restraint
+        harness system. A five-point harness is considered a minimum restraint system. Six- or seven-
+        point systems are highly recommended. Harnesses may utilize 2" or 3" shoulder belts. PLEASE
+        NOTE THAT NECK RESTRAINT SYSTEMS ARE AVAILABLE FOR 2" AND 3" BELTS, AND YOU MUST
+        MATCH YOUR NECK RESTRAINT TO YOUR HARNESS.
+
+3.4.2.  All driver restraint systems shall meet SFI or FIA specifications. The certification indicated by an
+        SFI label or FIA label must be present. SFI Harnesses must display an in-date conformance
+        label. FIA harnesses expire on December 31st of the expiration year tag sewn into the harness.
+        The latest expiration may be used for harnesses with both FIA and SFI certification labels. Any
+        attempt to modify the date(s) on any belt is grounds for immediate team disqualification,
+        without recourse or refund.
+
+3.4.3.  All driver restraint systems shall be installed per applicable manufacturer recommendations.
+        ChampCar recommends carefully following these instructions to avoid common installation
+        errors, including but not limited to missing cotter pins on snap locks, incorrect installation
+        angles and distances, and incorrect shoulder harness wraps.
+
+3.5. WINDOW NETS / ARM-RESTRAINTS
+
+3.5.1.  All competition cars must have an SFI-approved window net mounted to the cage of the car
+        only. All window nets must be installed so that the front edge intersects the plane created by
+        the steering wheel. (Figure F) When securely belted in place, the driver's arm should not
+        extend beyond the wrist out of any portion of the window. Cars with nets that have extensive
+        openings, as defined solely by ChampCar officials, will NOT be allowed on track.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                           17
+https://champcar.org
+                                                                          Figure F                                      18
+
+              3.5.1.1. All window nets shall meet SFI or FIA specifications. The certification indicated by an SFI
+                           label or FIA label must be present, including a clear "Date of Manufacture" label or, in
+                           the case of FIA labels, "Date of Expiration." SFI nets list a year of manufacture, and
+                           ChampCar will accept them until December 31st of the fourth year from the year of
+                           manufacture. FIA nets expire on December 31st of the year of expiration sewn into net.
+                           Any attempt to modify the date(s) on any net is grounds for immediate team
+                           disqualification without recourse or refund.
+
+              3.5.1.2. A small piece of deformable, transparent polycarbonate may be used to screen in an
+                           the exposed area of the driver's side window (left exposed by the window net) without
+                           value add PROVIDED the piece of screening plastic does not exceed eighty square inches
+                           and is a maximum 1/8" in thickness.
+
+       3.5.2. ROOF NETS or SFI-CERTIFIED ARM RESTRAINTS ARE REQUIRED in all open (convertible) cars
+                   and/or cars with t-tops or sunroof openings.
+
+              3.5.2.1. All arm restraints shall meet SFI or FIA specifications. The certification indicated by an
+                           SFI label or FIA label must be present, including a clear Date of Manufacture label or, in
+                           the case of FIA labels, Date of Expiration. SFI restraints list a year of manufacture, and
+                           ChampCar will accept them until December 31st, four years from that year. FIA
+                           restraints expire on December 31st of the year of expiration sewn into the item. Any
+                           attempt to modify the date(s) on any restraint or net is grounds for immediate team
+                           disqualification, without recourse or refund.
+
+              3.5.2.2. Driver Arm Restraint Confirmation and Testing:
+                   3.5.2.2.1. At pit out, where all cars are required to stop, all drivers of open (convertible)
+                                     cars and/or cars with t-tops or sunroof openings, without roof nets, shall be
+                                     required to perform an arm restraint exhibition and test, by raising both arms to
+                                     their maximum allowable height.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+            3.5.2.2.2. At full vertical extension, the driver's hands must NOT extend above a linear
+                              plane defined by the bottom edge of the lowest bar comprising the roll cage
+                              "halo."
+
+        3.5.2.3. Penalties
+
+            3.5.2.3.1. Drivers of open (convertible) cars and/ or cars with t-tops or sunroof openings
+                              who fail the extension test at pit out will NOT be allowed on course. Drivers will
+                              be directed to remove their car from the pit out lane to a location that does not
+                              impede other cars and make the necessary adjustments to their arm restraints.
+                              Upon adjustments, they must complete the test at the availability of the pit out
+                              marshal.
+
+            3.5.2.3.2. Drivers of open (convertible) cars and/ or cars with t-tops or sunroof openings
+                              inspected at pit out who have not properly attached their arm restraints or roof
+                              nets or are completely missing arm restraints will be issued a 5-minute penalty
+                              at pit out.
+
+            3.5.2.3.3. Drivers of open (convertible) cars and/or cars with t-tops or sunroof openings
+                              found at the pit-in without arm restraints or roof net and have been on track
+                              will be issued a 10-minute penalty at the pit-in.
+
+3.6. DRIVER EGRESS
+
+3.6.1.  It is critical that all drivers and crew members are well-practiced at releasing belts, cooling
+        tubes, radio wires, and any other attachments quickly. All drivers must be able to remove
+        themselves under potentially life-threatening conditions quickly. IT IS EXTREMELY IMPORTANT
+        THAT EVERY TEAM MEMBER PRACTICE EMERGENCY EGRESS BEFORE EVERY EVENT!
+
+3.7. STEERING WHEEL LOCKS
+
+3.7.1.  Steering wheel lock devices shall be removed or disabled. Quick-disconnect steering wheels
+        are highly encouraged.
+
+3.8. AIRBAGS
+       3.8.1. All airbags must be disarmed and removed.
+
+3.9. ONBOARD FIRE EXTINGUISHER
+
+3.9.1.  ALL CHAMPCAR COMPETITION VEHICLES MUST HAVE A SELF-CONTAINED PUSH-BUTTON OR
+        PULL-HANDLE FIRE SUPPRESSION SYSTEM INSTALLED.
+
+        3.9.1.1. Fire suppression systems must have SFI or FIA certification.
+
+        3.9.1.2. Minimum 5 LB or 2 Liter bottle capacity -ABF/AFFF/FE-36/NOVEC 1230 - Rechargeable
+                    systems are highly advised.
+
+        3.9.1.3.    Minimum two (2) extinguisher nozzles, one (1) pointed centrally towards the top and
+                    center of the engine, and one (1) located in the driver's seating area and must be
+                    directed and have an unobstructed path to the driver's body.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                               19
+https://champcar.org
+       3.9.1.4. Onboard Fire Suppression Systems shall be inspected for recertification at least every
+                   two years after the original certification date or as specified by the certifying
+                   manufacturer. A new conformance label marked with the inspection date shall be used
+                   when a unit is deemed acceptable for continued service. Infield recertification is
+                   permitted only by the original manufacturer or its authorized agent. Mailing of
+                   certification labels to customers is strictly prohibited. Systems shall have a maximum
+                   field service life of 6 years (SFI) or 10 years (FIA) from the original installation date.
+
+       3.9.1.5. Teams using the ESS Fire Bottle must remove them from the car and take them to Tech
+                   to be weighed/inspected at every event the car is entered.
+
+3.9.2. All onboard fire systems shall identify the activation point for the automatic system by a circle
+           "E" decal. Decals are available at ChampCar Tech Inspection.
+
+3.9.3. Cars arriving at pit in or pit out with the fire system arming pin not removed will be issued a 5-
+           minute penalty.
+
+3.10. DRIVER'S HELMET
+
+3.10.1.  An undamaged full-face helmet, displaying Snell Type SA2015, SA2020, SA2025, or FIA
+         certification is required.
+         Note: Snell Type M helmets (motorcycle) or other non-SA helmets are not rated for fire
+         resistance and are not allowed.
+
+3.10.2. All helmets expire 11 years after the date of certification.
+
+3.10.3. Helmets showing any sign of abuse or accident damage shall not be used during a ChampCar
+           event.
+
+3.10.4. Any driver with a helmet found with an altered or counterfeit Snell sticker shall be banned
+           from that event.
+
+3.10.5. Sharing helmets between team members is very highly discouraged.
+
+3.11. NECK RESTRAINT SYSTEM
+
+3.11.1. An undamaged FIA and/or SFI-approved racing neck restraint system is mandatory.
+
+3.11.2. SFI-approved neck restraint systems must display a valid SFI conformance sticker. Devices
+           must be recertified every 5 years per SFI 38.1
+
+3.11.3.  FIA-approved neck restraint systems must display a valid FIA conformance sticker. FIA devices
+         do not require recertification; however, FIA guidance per Standard 8858-2010 must be
+         followed.
+
+3.12. FIRE RETARDANT CLOTHING                                                                                    20
+
+       3.12.1. Condition
+              3.12.1.1. Any clothing that is worn, frayed, torn, has holes, grease/oil stains, or any other
+                           conditions that reduce or negate the item's designed effectiveness shall NOT be used
+                           during a ChampCar event.
+
+       3.12.2. Suit and Undergarments
+                      3.12.2.1. An FIA and/or SFI-certified racing suit is required.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+      3.12.2.2. All driver suits possessing a valid FIA and/or SFI certification shall be allowed, regardless
+                   of the date of certification or manufacture.
+
+      3.12.2.3. If using a single-layer SFI 3.2/A1 or 3.2/A3 suit, the driver must also wear fire-retardant
+                   SFI- or FIA-certified undergarments. Multilayer suits rated SFI 3.2/A5 or higher are
+                   highly recommended and may be worn without undergarments.
+
+3.12.3. Gloves, Socks, and Shoes
+              3.12.3.1. Fire-retardant FIA and/or SFI-certified gloves, socks, and shoes are required.
+
+      3.12.3.2. All gloves, socks, and shoes possessing a valid FIA and/or SFI certification shall be
+                   allowed, regardless of the date of certification or manufacture.
+
+3.12.4. Balaclava
+      3.12.4.1. FIA and/or SFI-rated Balaclavas are strongly encouraged but are not mandatory.
+                   Balaclavas are required for drivers with beards or drivers with long hair that is not fully
+                   covered by their helmets. Hair protruding from beneath a driver's helmet shall be
+                   completely covered by fire-resistant material. As an alternative to a balaclava, a full SFI-
+                   or FIA-rated helmet skirt may be used.
+
+3.13. ANNUAL GEAR CHECK
+
+3.13.1.  Gear inspection, use, and maintenance is each member's personal responsibility. Members are
+         required to annually inspect all personal safety gear and confirm it meets ChampCar minimum
+         requirements. By accepting a member's annual gear check, neither ChampCar nor its
+         directors, officers, sponsors, staff, and/or officials ensure, certify, or warrant that the gear fully
+         complies with all ChampCar rules or will prevent bodily injury, death, or other harm (including
+         monetary damages). ChampCar expressly disclaims all consequential damages, regardless of
+         the cause.
+
+3.13.2. Helmet Inspection and Annual Helmet Decal
+
+            3.13.2.1. All drivers must present their helmet for inspection prior to on-track activity. Only the
+                      helmet is subject to inspection. Upon successful inspection, a ChampCar helmet
+                      identification decal will be issued. The decal is valid for the current racing year and must be
+                      affixed to the left side of the helmet, clearly visible to pit-out personnel. Decals may not be
+                      transferred between helmets. A dedicated helmet inspection station will be available on
+                      Fridays. On Saturday and Sunday, helmet inspections for late arrivals will be conducted at
+                      registration. Any driver arriving at pit out without a valid helmet identification decal will be
+                      sent back to their pit until their helmet has been inspected and stickered. Helmet
+                      compliance determinations made by ChampCar Officials are final.
+
+3.14. BATTERIES
+
+       3.14.1. All batteries must be installed in a safe location. All batteries must be fully secured via proper,
+                   purpose-built metal battery brackets, battery frames, or sealed battery boxes.
+
+       3.14.2. Positive ("hot") terminals must be in a sealed battery box or covered with insulating material.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                                     21
+https://champcar.org
+3.14.3.  All batteries located in the driver's compartment of the car shall be enclosed in a plastic,
+3.14.4.  aluminum, or metal box.
+         Lithium-Ion (LiCoO2) and Lithium-Polymer batteries are NOT allowed. LiFePO4, gel, and lead-
+         acid batteries are permitted.
+
+3.15. MASTER ELECTRICAL KILL (CUT-OFF) SWITCH
+
+3.15.1.  All cars must have a racing-type master electrical kill switch securely mounted in a location
+         accessible to and by the driver while he/she is secured in the driving seat by all seat belts and
+         harnesses. The control or key for this switch should be red and the OFF position should be
+         clearly indicated. Both the main battery circuit and the ignition circuit must be interrupted by
+         the kill switch. All electrical cut-off switches shall be identified by the international lightning
+         bolt symbol. Decals are available at ChampCar Tech Inspection.
+
+3.15.2.  The dash or console switch MAY be the sole kill switch, or it MAY be a second switch, wired in
+         series with an existing or additional switch located elsewhere on the car. If the switches are
+         wired in series, interrupting either switch, independent of the other, must kill all power and
+         vehicle operations.
+
+3.15.3. ALL terminals of the Kill Switch are to be treated as `hot" terminals and must be insulated.
+
+3.15.4. At technical inspection, the kill switch function will be tested by revving the engine to
+           approximately 1500 RPM and turning off the switch. The engine must shut off immediately.
+
+3.16. TOW HOOK
+
+3.16.1.  All cars must be equipped with a suitable front and rear tow hook (or chain or strap),
+         constructed of materials and installed so that they are capable of withstanding the tension
+         required to extract your car. Minimum 2" diameter opening and easily accessible. Tow point
+         must be clearly marked on car. Rigid tow hooks that protrude beyond the bumper are not
+         permitted. Tow decals are available at Tech Inspection at no cost.
+
+3.17. DRIVE SHAFT
+
+       3.17.1. All cars that have modified the OEM driveshaft or swapped in a non-OEM driveshaft must use
+                   a driveshaft safety loop.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                           22
+https://champcar.org
+4. VEHICLE VALUE
+
+4.1. TOTAL POINT VALUE
+
+4.1.1.  Cars with total points in excess of 500 points will receive penalty laps (1 lap per 10 points over
+4.1.2.  the allowable 500 point maximum). Points will be rounded up to the next multiple of `10'.
+        Greater than 500 and less than 510 will be rounded to 510, greater than 510 and less than 520
+        will be rounded to 520, and so on.
+        Total Point Value of the race car is the combination of:
+        · The Vehicle Performance Index
+        · Non-Stock replacement or other added parts from the Fixed Point Value list
+        · Non-Stock replacement or other added parts NOT on the Fixed Point Value list
+        · Engine, transmission/transaxle, differential Swap Points
+
+4.2. VEHICLE PERFORMANCE INDEX
+
+4.2.1.  The Vehicle Performance Index (VPI) is the assessed value (by ChampCar) of the Performance
+        of the ChampCar competition vehicle. The VPI for the most common ChampCar Endurance
+        Series vehicles can be found at https://champcar.org/web/register/vpi.php
+
+        4.2.1.1. All models must be standard factory offerings. Special, custom, or limited editions are
+                    not included (Unless identified as such in the VPI).
+
+        4.2.1.2. Factory supercharged or turbocharged vehicles must add 100 points to the listed value
+                    (Unless already identified as such in the VPI).
+
+4.2.2.  If the make/model/year of a vehicle that you have an interest in racing is NOT listed, contact
+        ChampCar through the Tech Desk system https://champcar.org/tech. New vehicles may be
+        raced upon approval through the Tech Desk. New vehicles may be temporarily placed in EC
+        pending a review of VPI value until an appropriate value is determined.
+
+        4.2.2.1. Vehicles less than 15 years old will not be assigned VPI values.
+
+        4.2.2.2. Vehicles more than 15 years old MAY be assigned a VPI value, at the discretion of the
+                    board of directors.
+
+4.2.3.  VPI's may be petitioned for review. A request for review is to be submitted to ChampCar
+        through the Tech Desk system at https://champcar.org/tech
+
+4.2.4.  Vehicle additions to the VPI table will be added quarterly. Adjustments to existing VPI, SPV,
+        and SVPI values will be posted annually with the release of the new BCCR in the Fall. All
+        changes will take effect on January 1 of the following year.
+
+4.3. FIXED POINTS
+
+4.3.1.  Non-stock Component Values: ChampCar has assigned a FIXED POINT VALUE that will be
+        applied to MOST non-stock and/or performance components.
+
+4.3.2.  Fixed Point Value List:
+         · ABS, Non-OE, from a vehicle on VPI list: 25 pts
+         · Aerodynamic Devices (See Appendix 1 - Aerodynamic Anatomy for more info) o Spoiler /             23
+
+            Wing / Splitter / Diffuser / Aero Pan / Air Dam / Side Skirts: 10 pts/ea.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+                        Any added aero component outside of the defined components will be charged points             24
+                        based on the square feet of material
+                     · Alternator, non-OE and not from VPI List: 10 pts
+                     · Adjustable Cam Gear(s): 5 pts single, 10 pts multiple
+                     · Automatic Transmissions with 4 speeds (gears) or less, -75 points
+
+                                       With 5 speeds, -50 points
+                                       With 6 speeds, -25 points
+                                       With 7+ speeds, no discount.
+                        An automatic transmission will still be defined as being coupled to the engine through a
+                        torque converter. Twin-clutch type transmissions will still be classified as a Manual
+                        Transmission.
+                     · Brake Caliper, 5-piston or more: 5 pts each
+                     · Camber/caster adjustable plates / extended ball joints / other apparatus:
+                          o Aftermarket (pair): 20 pts front, 20 pts rear o Homemade (pair): 5 pts front, 5 pts rear
+                          o Stock components (strut towers, suspension arms, subframes) redrilled/slotted for
+                           adjustment: 0 pts
+                     · Camshaft - non-OE or reground or reprofiled OE camshaft (Includes Springs, Lifters,
+                        Pushrods): 50 pts per engine
+                     · Carburetor: 25 points
+                     · Clutch, Multiple Disk system: 50 pts
+                     · CVs / axles, non-OE (pair): 25 pts
+                     · Cylinder head(s), non-OE and/or non-matching to your specific engine claimed. 100 pts per
+                        engine
+                     · Differential cover, non-OE: 5 pts
+                     · Differential swap: 25pts for any diff not originally available for your year, make, and model
+                        or chassis generation (excluding specialty high-performance models not listed on the VPI
+                        table). Includes axles and CVs
+                     · Distributor, non-OE, or non-OE ignition system (includes coils): 20 pts
+                     · Driveshaft, non-OE: 10 pts per single driveshaft
+                     · Dry sump assembly: 100 pts
+                     · Exhaust header: 25 pts per engine
+                     · Fiberglass/Composite Hood: 25 pts per engine
+                     · Heim joints: 5 pts each
+                     · Hub, non-OE: 2.5 pts each
+                     · Ignition coil(s), non-OE: 10 pts
+                     · Intake Manifold: 25 points
+                     · Mounts, non-OE, engine/transmission: 10pts per engine / 10 pts per transmission
+                        Any mount that does not change the vertical or horizontal position of the engine or
+                        transmission more than 1" in any direction be allowed for free.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+                     · Offset bushings: 5 pts/corner                                                                  25
+                     · Oil accumulator (e.g. - AccusumpTM): 0 pts
+                     · Oil cooler, non-OE (engine, transmission, and/or differential): 20 pts each
+                     · Oil pan, non-OE: 15 pts
+                     · Pulleys, engine accessory, non-OE: 5 pts for one pulley, 10 pts for multiple pulleys
+                     · Shock absorbers/struts with damping/rebound adjustment, includes remote reservoir, 25
+
+                        pts per corner
+                     · Shock/strut tower reinforcement bar (commercial or homemade): 10 pts each
+                     · Suspension Springs, non-OE coil springs are 5-points per corner
+
+                        Exemption: Vehicles may replace OE coil springs for 0-points provided that the
+                        replacement spring:
+
+                            Is the same shape as the OE spring (straight, frustum, beehive/keg, etc.).
+                            Maintains the exact same ID/OD measurements as the OE spring (+/- 0.25") when
+
+                              measured at the midpoint and at each end of the spring
+                            Springs may be cut and/or used with spacers (spring rubbers) for no additional points
+                            Shape and measurements must match when the springs are in their original
+
+                              unaltered condition
+                            Torsion bars may be replaced with non- OE torsion bars for 0-points if they are used
+
+                              in conjunction with OE mounting points and hardware
+                            Additional leafs may be added to leaf spring packs for 0 points if they are used with
+
+                                  OE mounting points.
+
+                     · Adjustable spring perches, or any non-OE part or modification giving ride height
+                        adjustability, 10 points per corner. Any metallic spring may be used in conjunction with the
+                        adjustable corner for no additional points
+
+                     · Suspension component (not otherwise listed in this table), non-OE: 10 pts per corner per
+                        component
+
+                     · Sway bar, non-OE, including end links: 20 pts each axle
+                     · Sway bar end link, non-OE, including Heim Joint(s) - 5 points per corner
+                     · Throttle Body: 25 points
+                     · Transmission / Transaxle swap: o 25pts for any transmission/transaxle from a vehicle on
+
+                        the VPI list, includes adapters
+                        Any transmission on the VPI list that requires an adapter: 25 Pts
+                     · Tubular front or rear subframe/K-member (bolt-on only): 10 pts
+                     · Turbochargers and superchargers, non-OE: 100 pts o Parts included with non-OE
+                        turbocharger/ supercharger installations are: exhaust/ intake manifold, pressure tubing,
+                        cooling lines, oil lines, and boost control systems
+                     · Turbocharger and supercharger intercoolers, non-OE: 25 pts
+                     · Valve train, non-OE: 50 pts per engine
+                     · Valve Springs, non-OE: 10 pts per engine
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+4.3.3.   · Water Pump, Electric: 10 pts
+         · Wheel spacers/hub adapters: 0 pts set of 4, max. 30mm/1.25" wide, max. 1/wheel
+         · Materials will be charged at the following rate:
+
+           o Interior bulkheads: 0 pts
+           o Sheet aluminum/steel: 2 pts per sq ft.
+           o Plywood: 1 pt per sq ft.
+           o Sheet plastic/polycarbonate/fiberglass: 3 pts
+           o CARBON FIBER: per sq ft. NOT ALLOWED
+        ChampCar reserves the right to apply an additional point value to any component or part that
+        substantially increases the value and/or performance of the car.
+
+4.4. NON-FIXED POINT VALUE PARTS
+
+4.4.1.  ALL non-stock components, parts, assemblies, or systems MUST be declared to Tech
+        Inspection and declared and accounted for in the total points of the vehicle.
+
+4.4.2.  There is NO SUCH THING as a free part, every part of a vehicle has a value. Parts not covered
+        elsewhere in the rules will be assigned a point value by ChampCar Tech.
+
+4.4.3.  Any vehicle found with missing (ground off) or tampered part numbers on any part or
+        component will be immediately reclassified as EC.
+
+4.4.4.  All point values assigned by Tech Inspection will be considered valid until ChampCar's Board of
+        Directors assigns a fixed point value.
+
+4.4.5. Carbon Fiber is not permitted anywhere outside of the driver's cockpit
+
+4.5. ENGINE SWAP
+
+4.5.1.  Use the Swap Vehicle Performance Index Calculator at
+        https://champcar.org/web/register/vpiswap.php to determine your vehicle's total swapped
+        value. The starting VPI of your vehicle when swapped may differ from the VPI of your un-
+        swapped vehicle as listed in the VPI Index. This allows for substantially similar cars to be
+        grouped together with the same starting value once the stock engine has been removed (I.E.
+        All E30s start from 450 points) 4.5.2. The web page provides an automated calculator. The
+        raw swap formula is:
+
+                 IF [16 - (SPV / (HP + hpAdd) ) > 0 ]
+                 THEN [ 0.032 * (16 - (SPV / (HP + hpAdd))) ^6] + 50
+                 ELSE + 50
+
+4.5.2.1. "SPV" refers to the ChampCar Swap Performance Value of that make and model, as
+            determined by ChampCar.
+
+        4.5.2.2. "HP" is the stock horsepower of the original engine.
+
+4.5.2.3. "hpAdd" is the amount of extra horsepower being added to the car, not the HP of the
+            new engine.
+
+        4.5.2.4. All of the above variables must be taken from ChampCar's database.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                      26
+https://champcar.org
+       4.5.2.5. All engine swaps that result in the same or a reduction of horsepower will be charged a
+                   flat 50-point fee.
+
+4.5.3. Engine swaps include stock long block, OE stock exhaust manifolds, stock induction system,
+           motor mounts, wiring, and transmission adapters.
+
+       4.5.3.1. Any OE exhaust manifold from a vehicle on the VPI List can be used on a swapped
+                   engine for zero (0) points. Aftermarket headers will be 25 points on all vehicles
+                   regardless of fitment issues.
+
+       4.5.3.2. The intake manifold used in the swap must be the OE or stock intake manifold that
+                   came from the engine you are swapping into your vehicle. If you need to swap to a
+                   different intake manifold from what engine is going into the car then it will be 25
+                   points.
+
+4.5.4. Maximum swap cost is $2500 (engine & adapters).
+4.5.5. Engine being swapped in must come from another vehicle in the VPI table, unless the Foreign
+
+           Market Engine exception is used.
+4.5.6. Foreign Market Engine Exception:
+
+       4.5.6.1. Foreign market engines are permitted with no additional point value provided they have
+                   the same displacement and construction as the OE engine in the vehicle and are within
+                   3% of the US/Canadian advertised horsepower.
+
+       4.5.6.2. Foreign market engines are permitted as substitutes for US/Canadian engines within the
+                   swap rule under the following conditions.
+
+            4.5.6.2.1. Foreign market swap engine must be significantly similar to a US/Canadian engine
+                     from a vehicle on the VPI list (Same displacement and construction) and be within 3%
+                     of the US/Canadian advertised horsepower.
+
+            4.5.6.2.2. Teams must use the US/Canadian advertised horsepower in the swap calculator.
+       4.5.6.3. Teams are required to present documentation of US/Canadian advertised horsepower
+
+                   and Foreign Market advertised horsepower to tech.
+4.5.7. All other drive train components shall be stock. "Stock" is defined as the published
+
+            specifications and technical measurements provided by the manufacturer.
+
+4.6. PLATFORM SWAP
+
+4.6.1.  As an alternative to an engine swap, teams may qualify for a platform swap. A platform swap is
+        defined as replacing the original components with all the components from the same chassis
+        family (i.e. - 318 to 325 BMW engine swaps or 2.8L to 5.7L Chevy Camaro). To qualify as a
+        platform swap, all of the differing vehicle components must be swapped to match the new
+        platform. This includes engine, transmission, differential, suspension, fuel tank, etc. The VPI of
+        the car will now be based on the car and engine combination as presented to tech, regardless
+        of what engine may have been installed originally. No swap surcharges shall be applied to
+        platform swaps.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                         27
+https://champcar.org
+4.7. OTHER EQUIPMENT THAT DOES NOT COUNT TOWARD THE TOTAL POINT VALUE
+
+4.7.1.  Teams may replace any worn, broken, ventilated, impaled, defective, or bent beyond all
+        recognition parts on their car without affecting their total points, so long as it's an OE or OE
+        equivalent part for that car's specific model.
+
+4.7.1.1.  Teams may repair/replace rusted/fatigued/ damaged portions of the chassis with
+          similar-thickness metal or OE-approved repair components/methods. Repairs must
+          maintain some likeness to the original body lines of the chassis.
+
+        4.7.1.2. Teams may remove parts or portions of parts from their car without incurring points.
+
+4.7.1.3.  STOCK engine rebuilds are permitted. "Stock" is defined as the published specifications
+          and technical measurements provided by the manufacturer. Manufacturer overbore
+          rebuilds are permitted.
+
+4.7.2.  Items that are point-free:
+        · Air intake components ahead of throttle body (including air filter, air filter housing, air
+                                                                                                          28
+            intake tubing, AFM/MAF)
+        · Air vents to the driver
+        · All fuel system components (Excludes the fuel tank/fuel cell)
+        · Alternator (Must come from vehicle on VPI List)
+        · All brake system components, excluding ABS units and brake calipers with over 4 pistons
+
+            per 4.3.2.
+        · Clutch, stock type single disc. Excludes smaller diameter or multi-disc clutches, see 4.3.2.
+        · Cooling system hoses and vacuum lines
+        · Coolant Expansion Tanks
+        · Computers, ECU = Engine - TCU = Transmission - Includes Sensors o ECU, non-OE or chip
+
+            replacement or chip re-programming o TCU, non-OE or chip replacement or chip re-
+            programming
+        · Driver comfort & information items are open and do not count towards total points (i.e.
+            steering wheel, removable steering wheel adapter, shifter handles, gauges, pedals, cool
+            suits, vents, heaters, radio communications, etc.)
+        · Engine accessory brackets
+        · Exhaust systems downstream of the header/ exhaust manifold (from the collector back)
+        · Final drive ratio is open to all factory offered ratios for that body style or chassis
+            generation. If that body style or chassis generation was offered from the factory with an
+            LSD, its use is permitted. Specialty high-performance models not listed on the VPI table are
+            excluded
+        · Flywheel
+        · Fuel Injectors / Carburetor Jets
+        · Hood Vents
+        · Hardware, fasteners, and materials used to attach things to other things (nuts, bolts,
+            screws, rivets, duct tape, baling wire, zip ties, JB Weld, etc.)
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+                   · Idler Pulley - Pulleys that only facilitate belt routing and do not drive any rotating pumps,    29
+                        gears, or shafts will be permitted no points.
+
+                   · Materials from your vehicle are permitted to be repurposed into other items for zero
+                        points, provided teams retain documented evidence of the process
+
+                   · Non-adjustable Shock Absorbers
+                   · Oil Pan Baffle
+                   · Oil pan skid plate protectors are zero points. Skid plates can extend no farther forward
+
+                        than the radiator and no further back than the firewall. Max width of 14". Must be made
+                        of 10-gauge or thicker steel only. No plastic, aluminum, or fiberglass.
+                   · Pedal Assembly Sets
+                   · PCV (Crankcase Ventilation) system and hoses
+                   · Power Steering Components
+                   · Radiator
+                   · Radiator Cooling Fan
+                   · Remote Oil Filter & Lines
+                   · Shifters, provided the original function is maintained (Conversion to paddle shift or
+                        sequential shift is not permitted)
+                   · Starters
+                   · Shocks/Struts, non-adjustable for rebound/ dampening, no remote reservoirs
+                   · Suspension bushings, OE replacement or polyurethane/Delrin with OE geometry (OE hole
+                        location/offset, height, thickness)
+                   · Screens protecting radiator and brake duct openings from debris
+                   · Transmission swap - Any transmission can be used for free as long as it comes from a
+                        vehicle on the VPI list, is bolted to the vehicle's OE engine, is of the same design (manual
+                        to manual), uses the same number of gears (5-speed for 5-speed), and no adaptors are
+                        required for it to bolt to the engine.
+                   · Valve Covers, non-OE
+                   · Water Pump, Mechanical
+
+       4.7.3. Drive-by-Wire Throttle Bodies:
+              4.7.3.1. Engines originally equipped with a drive-by-wire throttle body may replace the OE
+                           throttle body with a cable-operated throttle body from any vehicle on the VPI list, as
+                           long as the replacement throttle body has an equal or smaller flow diameter.
+
+4.8. TIRE SPECIFICATIONS FOR ALL CLASSES
+         4.8.1. All tires must be DOT-rated
+         4.8.2. All tires must have a minimum tread depth of 7/32" or greater when new. All tires must have
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+                   been originally manufactured with a minimum tread depth of 7/32 inch or greater when new.            30
+                   Tires originally molded with less than 7/32 inch of tread depth are prohibited, regardless of the
+                   current measured tread depth or wear.
+
+         4.8.3. All tires must have a UTQG treadwear rating of 250 or higher, unless specifically listed on the
+                   ChampCar Approved Tire List.
+
+                                             · BFGoodrich g-Force Rival
+                                             · BFGoodrich g-Force Rival+
+                                             · Continental Extreme Contact Force
+                                             · Falken Azensis RT615K+
+                                             · Hankook Ventus RS4
+                                             · Kenda Vezda UHP MAX KR20A
+                                             · Kumho Ecsta V730
+                                             · Maxxis Victra VR-1
+                                             · Valino VR08GP
+                                             · X Comp H/P
+                                             · Yokohama Advan Neova AD09
+
+         4.8.4. The ChampCar Approved Tire List is maintained and published by ChampCar and is the sole
+                   authority for tire eligibility.
+
+         4.8.5. Approved Tire List Updates
+                   4.8.5.1. The Approved Tire List will be reviewed and updated on a quarterly basis.
+                   4.8.5.2. Any new tire additions to the Approved Tire List will be announced and published by
+                             ChampCar and will take effect immediately upon publication.
+                   4.8.5.3. Any tire removals from the Approved Tire List will be announced no later than
+                             September 1 of the current calendar year.
+                   4.8.5.4. Tire removals will take effect on January 1 of the following calendar year.
+
+         4.8.6. Tire Size and Fender Coverage
+                   4.8.6.1. While tire size is open, tires may not extend beyond the coverage of the fenders from
+                             the 10 o'clock to 2 o'clock positions. Fenders may be stretched or rolled to cover wider
+                             tires, and flares may be added. Any additional materials used to enlarge the fenders
+                             will be assessed points at the material rate as outlined in Section 4.3.2.
+
+         4.8.7. Technical Inspection and Compliance
+                   4.8.7.1. All cars on track at a ChampCar event must be equipped with approved and compliant
+                             tires.
+                   4.8.7.2. Any car presented for technical inspection with non-approved or non-compliant tires
+                             will fail technical inspection and will not be allowed on track until compliant tires are
+                             installed.
+                   4.8.7.3 ChampCar officials may inspect tires at any time before, during, or after an event. All
+                             tire eligibility determinations are final.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+4.8.8. Penalties and Enforcement
+         4.8.8.1. Any car found to be using non-approved or non-compliant tires during an event or
+                   after competition will be disqualified from the event.
+         4.8.8.2. A car disqualified for a tire violation will also forfeit its annual technical inspection.
+         4.8.8.3. Loss of annual technical inspection requires the car to undergo full re-inspection at a
+                   future ChampCar event prior to returning to competition.
+         4.8.8.4. Penalties related to tire violations may not be protested.
+
+4.8.9. Competitor Responsibility
+
+         4.8.9.1. It is the sole responsibility of the competitor to ensure tire compliance.
+
+         4.8.9.2. Claims of ignorance, supplier error, manufacturer changes, or lack of notice will not be
+                   accepted as justification for non-compliance.
+
+         4.8.9.3. Teams are strongly encouraged to verify tire eligibility prior to purchase, installation,
+                   and competition.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                           31
+https://champcar.org
+5. SAFETY & TECHNICAL INSPECTIONS AND RELATED PENALTIES
+
+5.1. INSPECTION PROCESS
+
+5.1.1.          All competitors must present their vehicle(s) to ChumpCar International Inc., dba ChampCar
+5.1.2.          Endurance Series (collectively, "ChampCar"), for annual safety and technical inspections.
+
+5.1.3.          By inspecting a vehicle, neither ChampCar nor its directors, officers, sponsors, staff, and/or
+                officials ensure, certify, or warrant that
+
+                          · the inspection will detect any or every problem with the vehicle;
+                          · the vehicle or any part of the vehicle is safe; or
+                          · the vehicle complies fully with all ChampCar rules.
+                The inspection does not in any way change the fact that the driver, crew members, and vehicle
+                owner are ultimately responsible for the safety, operation, and proper maintenance of the
+                vehicle and personal safety equipment. ChampCar expressly disclaims all consequential
+                damages, regardless the cause.
+
+5.2. TECHNICAL INSPECTION
+
+5.2.1.          ChampCar Digital Tech inspection forms should be completed using the ChampCar website
+                prior to entering the tech line.
+
+5.2.2.          Technical Inspections shall be done annually, and upon approval, a car will be issued a
+                ChampCar Annual Inspection decal for that calendar year.
+
+        5.2.2.1. Cars with a valid ChampCar Annual Inspection decal need NOT return for inspection
+                    UNLESS ANY OF THE FOLLOWING HAVE OCCURRED:
+
+                5.2.2.1.1. The inspection decal has expired.
+
+                5.2.2.1.2.  The vehicle has undergone ANY major component exchange, swap, or
+                            replacement as a byproduct of an upgrade, repair, and/or modification.
+
+                5.2.2.1.3.  The vehicle has realized the upgrade, exchange, replacement and/or
+                            modification of any safety item, including but not limited to kill switch, seat
+                            belts or harness, seat and/or installation, roll-cage or attachment mounts, fire
+                            extinguisher system, window or roof nets, fuel cell, etc.
+
+                5.2.2.1.4.  The vehicle has been involved in ANY major contact or shunt. NOTE: Following
+                            any such incident the vehicle's Annual Inspection decal shall be removed by the
+                            Technical Inspector.
+
+5.2.3.          Appeals: The Technical Inspector's ruling may be appealed to the Event Director. The Event
+                Director's ruling is final for that event. You may appeal for future races to the ChampCar Board
+                of Directors at Board@champcar.org.
+
+5.3. PENALTIES
+
+5.3.1.          Cars with total points in excess of 500 pts will receive penalty laps (1 lap per 10 points over the
+                allowable 500-point maximum. Points will be rounded up to the next multiple of `10'. Greater
+                than 500 and less than 510 will be rounded to 510, greater than 510 and less than 520 will be        32
+                rounded to 520, and so on.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+5.3.2. Penalty Lap Assessment Adjustments for Length of Endurance Racing Events:
+      5.3.2.1. All penalty laps issued by Tech and/or as stated within the BCCR are applicable to 7-hour
+                   endurance racing events. Therefore, endurance event penalties shall be adjusted for
+                   longer endurance events:
+           5.3.2.1.1. For races 8 hours or less, all penalties shall have a multiplier of 1.0.
+           5.3.2.1.2. For races 9 to 16 hours, all penalties shall have a multiplier of 1.5.
+           5.3.2.1.3. For races 17+ hours, all penalties shall have a multiplier of 2.0.
+      5.3.2.2. ChampCar's Event Directors shall have the ability to amend the multiplier to whatever
+                   factor is numerically related and/ or appropriate to the length of the track or event. If
+                   the Event Director chooses to amend the multiplier, the multiplier shall be specified in
+                   the Supplemental Rules of the event.
+
+5.4. POST-RACE IMPOUND AND INSPECTION
+
+5.4.1.         At the conclusion of every ChampCar Race, the top five (5) finishing vehicles, overall, and class
+               winners, shall be impounded for a period not less than 30 minutes and not more than 90
+               minutes.
+
+5.4.2.         During the impound period, the top five (5) finishing vehicles and class winners impounded
+               must:
+
+        5.4.2.1. Raise and place the car on four (4) jack stands, a minimum of 12" from the ground or
+                    floor level.
+
+        5.4.2.2. Remove all four (4) wheels and tires.
+
+        5.4.2.3. Open the hood and trunk.
+
+5.4.3. ChampCar will make the cars Tech Sheet and Swap Sheet available for review.
+
+5.4.4.         ChampCar competitors and teams are welcome to "review" impounded vehicles. "REVIEW"
+               does NOT mean touch or crawl under a competitor's car however, you may request a
+               ChampCar official to look at an item for you.
+
+5.4.5.         During the impound period, the Event Director or Tech Chief may engage in any inspection
+               they so choose, including but not limited to the partial or full disassembly of any assembly,
+               system or component for legality.
+
+5.4.6. Upon the close of impound, all race results are final.
+
+5.4.7.         Cars that have been found, whether during the event or in post-race impound, to be in
+               violation of the rules will lose their annual tech sticker and be required to go through a new
+               tech inspection process at each event the rest of the year.
+
+5.5. PROTESTS
+
+5.5.1.         Any Team Captain has the ability to file a written protest with the Event Director or Tech Chief
+               regarding any car in the event. Protests must be submitted to the event's Event Director or
+               Technical Inspector after the race starts and before the post-race Impounds close. Protest
+               forms are available in the "Rules" section of the ChampCar website.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                               33
+https://champcar.org
+5.5.1.1. Driving Protest: Must include a written statement of the incident and be supported by
+            video, OR two additional driver statements, OR the report of the Corner Marshal.
+
+    5.5.1.1.1. Aggressive or unsafe driving protests accompanied by video or film
+                      documentation that do NOT offer a clear and concise view(s) of the incident or
+                      infraction or suggest any reasonable doubt will be defined as a "racing
+                      incident."
+
+    5.5.1.1.2. No protest will be accepted for missed or non-calls by corner workers or
+                      track/event officials, such as passing under yellow.
+
+  5.5.1.2. Vehicle Protest: The protest must identify a maximum of five (5) items that may or may not
+           be present on the protested car and are not claimed on the tech sheet.
+
+5.5.2. All protests must include a us$150 filing fee. A protest will result in:
+         5.5.2.1. VALID PROTEST: A penalty is applied to the protested team, and the protest fee is
+                      returned to the protester.
+         5.5.2.2. Valid driving protests penalties MAY result in penalty laps, a time penalty, or
+                      disqualification of the car, at the discretion of the Event Director.
+         5.5.2.3. Valid vehicle protests will result in the disqualification of the car, or reclassifying the
+                      car to EC, or adjusting the Total Vehicle Performance Index (TVPI), at the discretion
+                      of the Event Director.
+         5.5.2.4. INVALID PROTEST: No penalty is applied to the protested team, and the protest fee is
+                      lost.
+
+5.5.3.  During a 2-day race event, in order to allow a team to compete the following day without
+        having to rebuild any assembly torn down for post-race inspection, protested cars may have
+        various assemblies or components marked and sealed for a delayed teardown inspection
+        after the final race of the weekend. Any penalty applied due to illegalities found during a
+        delayed inspection will be applied to ALL race events of the weekend.
+
+5.6. DAY TWO HANDICAP
+
+5.6.1.  For two-day endurance events (that is, two separate races), the winning car on day one will
+        receive a lap penalty on day two equal to the number of laps they won by on day one plus
+        one extra lap. No victory penalties will follow a team once the weekend of racing is over.
+
+5.6.2.  Leaders who sandbag (drive intentionally slower) at the end of the race on Day 1 to reduce
+        their Day 2 handicap will get a handicap lap added to their margin of victory that existed
+        prior to the start of their sandbagging. Additionally, should the second-place car break or
+        sandbag to force a larger handicap on the winning car, the handicap will be equal to the
+        margin before the 2nd place car broke or slowed down.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                            34
+https://champcar.org
+6. ENTRIES AND TEAMS
+
+6.1. ENTRY APPLICATIONS & PAYMENT DEADLINES
+
+            6.1.2. ChampCar will refund any fees paid upon written request prior to the close of the event
+                      payment deadline (60 days).
+
+            6.1.3. Inside of 60 days, any paid fees less the $250 deposit, will be transferred to another event.
+            6.1.4. Inside of 14 days, fees are no longer transferable to any other event (exception for loss of car
+
+                      at another ChampCar event inside of this window).
+            6.1.5. If you no-show for an event, all fees are lost. Don't even ask.
+            6.1.6. Early pay discount: The ChampCar auto-pay website will reduce the event fee by $200 for any
+
+                      full entry payment made 60 days prior to the event.
+
+6.2. ENTRY & DRIVER FEES
+
+6.2.1. Entry fees for all ChampCar Endurance Race Events will be based on current track and
+         support costs. See https://champcar.org for specific event pricing.
+
+6.2.2. Every entry includes all drivers and crew. Some tracks may charge entry fees outside of
+         ChampCar's fees. See the supplemental rules for that event.
+
+6.2.3. AMB 260X, AMB/MyLaps X2, or a MyLaps TR2 transponder is required to compete. You can
+         bring your own or rent one from ChampCar.
+
+        6.2.3.1.  Rental transponders must have a factory MyLaps/AMB transponder mounting bracket
+                  affixed to their car in an approved location (see BCCR Appendix). ChampCar sells
+                  mounts at tech inspection. No loose, zip-tied, or duct-taped transponders are allowed.
+
+        6.2.3.2.  If a rental transponder is lost or broken, you agree to be charged for its replacement. If
+                  the case is cracked or deformed in any way, but the unit still works, you agree to be
+                  charged for repair and testing.
+
+6.2.4. To compete, you must have a Flagtronics FT200. You can bring your own or rent one from
+           ChampCar.
+
+        6.2.4.1. If a Flagtronics FT200 is lost or broken, you agree to be charged for its replacement.
+
+        6.2.4.2. ChampCar strongly recommends the installation of the Flagtronics FT200 as described
+                    on page 48, Section 9.1.5. This will facilitate the use of the FT200 as a pit timer.
+
+6.3. CATASTROPHIC FAILURE DISCOUNT
+
+6.3.1.  If a ChampCar or EC competitor's car experiences a catastrophic, non-repairable, mechanical
+        failure (not the result of brain fade or collision while on the track) within the first two hours of
+        the first day of any multi-day ChampCar Race event, ChampCar will extend a $300 discount to
+        that team for their next ChampCar entry.
+
+6.3.2.  If a team's car experiences a failure during a ChampCar event that prevents the vehicle from
+        attending another event the team has entered later in the season, ChampCar will transfer their
+        entry fee or deposit for that later event to any even later event at the discretion of the Event             35
+        Director.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+6.4. MINIMUM DRIVER ENTRIES PER CAR
+
+6.4.1.  Endurance Races:
+        · 8-Hours or less - Two (2) drivers minimum
+        · 9-16-Hours - Three (3) drivers minimum
+        · 17-hours and above - Four (4) drivers minimum
+
+2026 BCCR v1.4 (updated 12/17/2025)                      36
+https://champcar.org
+7. RULES OF THE ROAD
+
+7.1. MAXIMUM DRIVING TIME
+
+7.1.1. Within an Endurance Race, no driver shall drive for more than 2 hours consecutively and
+         shall have, at a minimum, sixty (60) minutes rest between stints.
+
+            7.1.2. Driver stint time starts at Official Race Start (green flag) time for 1st driver, or when driver is
+                      released from pit lane after a driver change.
+
+7.2. ON-TRACK DRIVER CONDUCT
+
+7.2.1.  It is the responsibility of all drivers to avoid physical contact between cars on the race track.
+        All competitors have a right to "racing room" on the marked racing surface. "Racing room"
+        shall be generally defined as sufficient space on the marked racing surface to allow a
+        competitor to maintain control of his/her car. CAR TO CAR CONTACT WILL RESULT IN A
+        BLACK FLAG BEING ISSUED AND A TIME PENALTY TO BE SERVED.
+
+7.2.2.  The responsibility for passing another car and accomplishing that pass safely rests with the
+        overtaking driver. The driver that is about to be overtaken has the responsibility to be aware
+        that he or she is about to be passed, give hand signals, and shall not impede the overtaking
+        car.
+
+        7.2.2.1. The driver being overtaken should, at all times, remain on their racing line unless the
+                 car is impaired and is unable to maintain an adequate racing speed.
+
+        7.2.2.2. The driver being overtaken shall not block. Any driver who fails to make use of their
+                 rear view mirror, or who appears to be blocking another car seeking a pass, will be
+                 black flagged and/or penalized.
+
+                   7.2.2.3. It is the responsibility of the overtaking car to prepare for, plan, and execute a FULL
+                             and COMPLETE safe pass. The definition of a full and complete pass is when the
+                             overtaking car has extended a lead of approximately one car length ahead of the
+                             vehicle being passed.
+
+7.3. STOPPING ON COURSE
+
+7.3.1.  If a driver is forced to stop his or her car on the course, he or she shall make every effort to
+        place the car in such position that it will not be a danger or obstruction to other
+        competitors, course workers or themselves.
+
+7.3.2.  Drivers stopping on course shall stay in their car with their seat belts firmly engaged and
+        helmet in place until they are instructed by a corner worker or other race official to leave
+        their car, UNLESS THE CAR IS ON FIRE.
+
+7.4. PIT IN: UNSAFE DRIVER CONDITION
+
+7.4.1. Drivers arriving at pit in, having been on track, found with their window net down or seat                       37
+         belt unbuckled, will be issued a 10-minute penalty at pit in.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+7.5. PASSENGERS
+       7.5.1. Passengers are not permitted during a ChampCar race.
+       7.5.2. Passengers may be allowed during a ChampCar test session at the event director's discretion.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                         38
+https://champcar.org
+8. RULES OF THE PIT
+
+8.1. PIT AND/OR PADDOCK AREA
+
+       8.1.1. Unless otherwise noted in the Supplemental Rules, all fueling must be done on pit road.
+       8.1.2. While in the pits, each team entered in the event is REQUIRED to have ready a minimum of
+
+                   one (1) each:
+            8.1.2.1. Ten (10) pound dry chemical or 3kg NOVEC fire extinguisher having a minimum UL 60 BC
+
+                     or ABC rating.
+            8.1.2.2. Ten (10) pound bag of grease sweep, kitty litter or other absorbent for oil leaks and/or fuel
+
+                      spillage in their fuel storage area. (Having a broom is a good idea, too!)
+            8.1.2.3. A suitable gasoline and/or liquid catch pan must be used during refueling in an appropriate
+
+                      position to catch any spilled fuel. All fueling / gasoline catch pans MUST be manufactured of
+                      metal or sturdy, chemical resistant plastic, maintain a minimum 3" depth, hold a minimum
+                      of 1-gallon (4-quarts) of liquid. Catch pans should be larger than 12" square or 12" in
+                      diameter. Oil drain pans work perfectly for this.
+       8.1.3. Unattended fuel or oil spills are punishable at the discretion of the Event Director.
+       8.1.4. All compressed air bottles/gas cylinders, with a pressure in excess of 200 psi, shall have a
+                   protective structure around their gauges and valves when in the pit/grid/pre-grid areas.
+       8.1.5. Unless restricted by the track, motorized paddock support vehicles are allowed PROVIDED that
+                   all drivers are 16 years or older and have a state issued driver's license. Unsafe driving in the
+                   pits/paddock may result in a penalty or even disqualification of the associated team at the
+                   discretion of the Event Director.
+       8.1.6. All used or junk parts too big for a normal trash can, empty fuel drums and anything else you
+                   brought with you must be taken out by you.
+
+8.2. PIT STOPS AND FUELING OF VEHICLES
+
+8.2.1.  NO FUEL JUGS OR CREW MEMBERS ARE ALLOWED ON OR OVER THE WALL UNTIL THE CAR HAS
+        COME TO A FULL AND COMPLETE STOP.
+
+8.2.2.  The fueling process starts when the gas cap is removed or whenever any fuel jugs are over the
+        pit wall and ends when the gas cap is replaced and all fuel cans, catch cans, and drip pans are
+        back over the pit wall. During this time, NO OTHER WORK IS ALLOWED ON THE CAR.
+
+        8.2.2.1. Fire bottle operator must be in place before gas cap is removed.
+
+8.2.3.  During fueling, any team member over the wall must wear a driver's suit possessing a valid FIA
+        and/or SFI certification. If using a single-layer SFI 3.2/A1 or 3.2/A3 suit, the team member must
+        wear fire-retardant SFI- or FIA-certified undergarments. HOWEVER, any suit determined by                      39
+        ChampCar to be worn, frayed, torn, or have holes, grease/oil stains, or other conditions that
+        reduce or negate the item's designed effectiveness shall NOT be used during a ChampCar
+        event. ChampCar's decision is final. Fire-retardant FIA or SFI 3.3-rated socks and gloves are also
+        required. FIA or SFI 3.3-rated Balaclavas are strongly encouraged but are not mandatory.
+        Balaclavas are required for over-the-wall crew with beards or drivers with long hair not fully
+        covered by their helmets. Hair protruding from beneath an over-the-wall crew helmet shall be
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+                   entirely covered by fire-resistant material. A full FIA or SFI-rated helmet skirt may be an          40
+                   alternative to balaclavas. Standard closed-toe "street" shoes can be worn by over-the-wall
+                   crew. Leather boots are recommended. Non-driving over the wall crew members may wear an
+                   out-of-date Snell SA closed face with face shield helmet for pit duties. Crew members with out-
+                   of-date helmets shall mark both sides of their helmet with the words "FUEL ONLY" in 1.5",
+                   high-contrast and easily identifiable letters.
+
+                           ALL FACE SHIELDS MUST BE DOWN DURING THE FUELING PROCESS
+                           Optional: The fueler is allowed to wear an SFI 52.1 fueler apron in addition to the above
+                   over the wall fueling gear.
+       8.2.4. Each pit stop for fuel shall be a timed pit stop. The minimum time required per stop is five (5)
+                   minutes (pit in to pit out). Pit stops where fuel is not added to the car shall not be considered a
+                   timed pit stop.
+       8.2.5. There is no minimum or maximum number of pit stops.
+       8.2.6. All refueling jugs shall be DOT and/or ChampCar approved, with a maximum indicated capacity
+                   of five (5) gallons. "Dry Break" systems are allowed. Funnels are not allowed to be used for the
+                   fueling process. All fueling must be done through a hose or dry break nozzle attached to the 5-
+                   gallon fuel jug. Overhead or elevated refueling rigs or electro-mechanical units to assist in
+                   lifting or supporting a fuel container are NOT allowed. All fuel jugs are to be manually
+                   supported. Only one fuel jug is permitted over the wall at a time.
+       8.2.7. During the fueling process all cars MUST have their electrical kill switch in the OFF position.
+       8.2.8. A MAXIMUM OF FIVE (5) PEOPLE ARE ALLOWED OVER THE WALL DURING FUELING.
+              8.2.8.1. The driver exiting the race car MAY assist the driver entering the car, or MAY take one
+                           of the fueling positions. If the exiting driver goes over the wall, another appropriately
+                           dressed crew member may take his or her place.
+              8.2.8.2. The driver entering the race car may ONLY be assisted with belts, radio connections,
+                           cool suit connections, and the window net during the fueling process.
+              8.2.8.3. The crew member manning the fire bottle must manage an approved 10LB ABC fire
+                           extinguisher and be stationed no less than 8' and no more than 15' from the point
+                           where fuel is being added to the vehicle. This team member is restricted from
+                           performing any other duty or function while managing the fire extinguisher; their entire
+                           focus is to be a safeguard in case of a fire. THE FIRE BOTTLE SAFETY CREW MEMBER IS
+                           NOT ALLOWED TO HANDLE FUEL JUGS.
+              8.2.8.4. The crew member fueling the car may only fuel the car while the fuel cap is removed. All
+                           fuel jugs are to be manually supported. Only ONE (1) fuel jug is allowed over the wall at
+                           a time and only ONE (1) fuel jug is to be poured into a car at a time.
+              8.2.8.5. The crew member assisting the fueling process may position the fuel catch pan and/or
+                           overflow vent catch can, etc. may assist the with the driver change.
+       8.2.9. TEAMS ARE RESTRICTED FROM STORING MORE THAN 25 GALLONS OF FUEL IN THEIR PIT
+                   STALL.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+8.2.10. THE USE OF ELECTRIC PUMP(S) TO REFILL YOUR FUEL JUGS IS NOT ALLOWED. All pumps used
+           to transfer any fuel shall be mechanical pumps.
+
+8.3. PIT STOPS AND TIRE CHANGES
+
+8.3.1.  NO TOOLS, EQUIPMENT, OR CREW MEMBERS ARE ALLOWED ON OR OVER THE WALL UNTIL
+        THE CAR HAS COME TO A FULL AND COMPLETE STOP.
+
+8.3.2.  The tire change process is in effect any time a team replaces a tire in the "Hot Pit" during a
+        ChampCar-sanctioned event.
+
+8.3.3.  During a tire change process, only battery and/or hand tools are permitted over the pit wall.
+        No Pneumatic tools are permitted.
+
+8.3.4.  During a tire change process, only 1 Lug tool (Battery or Hand), 1 Jack, 1 Torque Wrench, and
+        Jack Stand(s) are allowed over the wall.
+
+8.3.5.  Tire change process tool restrictions are only applicable to tire changes. These restrictions do
+8.3.6.  not apply for any repairs, adjustments, or changes required to any other vehicle components,
+        which may occur concurrently to tire replacement activities.
+        All over-the-wall team members must wear long pants and closed-toed shoes. Short pants are
+        no longer allowed over the wall at all ChampCar events.
+
+8.4. RED FLAG CONDITION
+
+8.4.1.  During a red-flag condition on track, any cars in the pitlane must cease being attended to by
+        crew members until the race is back under Yellow-flag conditions. Drivers may stay in the car
+        at their discretion, but if they get out, they may not get back in until the race is back under
+        Yellow. No cars may leave the pitlane to the track or to the paddock under red-flag conditions.
+        If the car was in the paddock prior to the red-flag condition, teams are free to continue
+        working. No car may return from the paddock to the pitlane until the race back under Yellow.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                       41
+https://champcar.org
+9. MECHANICAL & ELECTRICAL SYSTEMS, ASSEMBLIES, COMPONENTS
+
+9.1. GLASS - GENERAL
+       9.1.1. Rear and Side glass may remain in the car provided it is covered by a clear safety window film (not
+                   tape, not tint). Example: 3M Scotchshield
+
+9.2. WINDSHIELDS
+
+9.2.1.  Cracked windshields will be carefully scrutinized. Cracks that are deemed a visual hazard to the
+        driver or have the potential of losing their structural integrity upon impact by any object shall
+        not pass Safety & Tech inspection, requiring removal prior to competition.
+
+9.2.2.  OE windshields may be removed. Stock replacement windshields or polycarbonate (Lexan)
+        windshields of the stock dimensions are acceptable in the stock location. Plexiglas plastic is not
+        acceptable. If your OE safety glass or a stock dimension polycarbonate windshield is not
+        installed, you must have a complete hood with no holes or vents in place as your firewall.
+
+        9.2.2.1. All polycarbonate windscreens and/or windshields MUST have a nominal thickness of at
+                    least 3/16".
+
+        9.2.2.2.  All cars with polycarbonate front windshields or windscreens are required to have front
+                  safety straps installed on the INSIDE of the cockpit to support the windshield and keep it
+                  from collapsing into the interior of the vehicle.
+
+        9.2.2.2.1. A minimum of two (2) straps are required.
+
+        9.2.2.2.2.        Straps shall be 1 inch wide x 1/8 inch thick (aluminum or steel), and shall be
+                          bolted or riveted to the chassis or roll-cage at the top and bottom of the strap.
+
+        9.2.2.2.3.        The straps cannot be any further than 1" from contact with the front
+                          windshield.
+
+        9.2.2.2.4.        Placement of both straps should be approximately 12" apart and at least one
+                          strap may not be more than 12" from the centerline of the windshield.
+
+9.3. SIDE & REAR WINDOWS
+
+9.3.1. No covering of any type is allowed in place of the passenger's side window.
+
+9.3.2.  ONLY clear, transparent polycarbonate is allowed in place of any rear side or hatch window
+        opening without additional value-add, provided:
+
+        9.3.2.1. A factory-installed (OE) window was standard equipment for the year, make and model of
+                    car presented to Tech.
+
+9.3.2.2. The window opening is located behind the driver's seat or B-pillar (whichever is
+            appropriate).
+
+        9.3.2.3. All material must maintain a nominal thickness of at least 1/8".
+
+9.3.2.4. All windows must be attached by screw, rivet, or bolt on a maximum 10" centerline
+            around the perimeter of the window covering.
+
+        9.3.2.5. The window covering must be the same size as the OE window.
+
+9.3.3.  All polycarbonate rear windows or hatches are required to have at least two (2) 1" x 1/8"
+        aluminum safety straps installed on the OUTSIDE of the window/hatch to support the window
+                                                                                                                   42
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+9.3.4.  and keep it from separating from the vehicle. Straps must extend the full length of the
+        window/hatch and must be securely attached to the chassis or roll cage.
+        Rear and mid-engine vehicles where the rear window is an extension of the firewall may retain
+        the OE-glass (MUST be covered by safety film) or add a replacement plastic panel with straps.
+
+9.4. NERF BARS OR EXOSKELETON
+
+9.4.1.  Added structural elements that extend beyond the outline of the original body line are not
+        allowed. This includes additional structures holding lights or other components.
+
+9.4.2. Roll-cage main hoops and halo bars may extend above the roof.
+
+9.5. BODY PANELS
+
+9.5.1.  Hub caps shall be removed. All operable components of the vehicle's body (e.g. - hood, doors,
+        hatch or trunk lid) shall have a latching mechanism or be securely fastened.
+
+9.5.2.  Each car entered must have a minimum of SEVENTY-FIVE PERCENT (75%) of the total body
+        work and panels on the car. Vehicles must meet the "50/50" rule. This means vehicle must
+        appear generally complete and be identifiable as similar to a stock version of the vehicle at
+        50MPH from 50 feet away. (See Appendix 2 - Chassis Modification Guide for more info).
+
+9.5.3.  Doors cannot be removed. All cars must have a door or "OEM equivalent" body panel. Doors
+        do NOT need to open or be operative. Doors may be welded closed. Doors may be re-skinned,
+        however, re-skinned panels must be covered with the same type, thickness and quality of
+        material as originally presented by the manufacturer (no aluminum panels replacing steel
+        panels). Doors shall, in general, match the shape and contour of the originally designed
+        bodywork, including at least 75% of the original height, as measured upwards from base of the
+        door line.
+
+9.5.4.  Body panels significantly supported or held solely in place by fabricated tubular, sheet metal
+        and/or other forms of fabricated framework or brackets shall be charged for the materials
+        associated with this structure. Body panels must maintain their original placement, shape and
+        profile without the aid of other supporting brackets, rods, tubes or frames.
+
+9.5.5.  All cars without stock dimension windshields must have a hood. In this case, the hood is
+        considered a firewall and must be complete with no holes or vents.
+
+9.5.6.  OE front and rear crash structures need to remain stock. Teams are not allowed to shorten,
+        remove, or modify frame rails or significant portions of unibody structures outside of the
+        wheelbase. This also includes cars with damaged or compromised OE crash structures. OE
+        Equivalent replacement crash structures are an acceptable substitute.
+
+9.6. SUNROOFS, T-TOPS, CONVERTIBLES
+
+9.6.1.  All cars with sunroof and/or T-top openings must be covered by either a firmly attached
+                removable hardtop, the original sunroof panel, or a fabricated metal or fiberglass panel
+
+        secured and fixed in place. Alternatively, they can be run as convertibles with the drivers
+        wearing the required arm restraints or with a roof net installed on the vehicle.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                       43
+https://champcar.org
+9.7. CAR NUMBERS, CLASS DESIGNATION, AND VISIBILITY
+
+9.7.1. Car Numbers: One-, two-, and three-digit numbers are allowed.
+
+9.7.2. No cars may use "0" or "00" before their car number.
+
+9.7.3. Numbers must be shown on both doors, the front, and rear of the vehicle.
+
+9.7.4. Teams may contact their Event Director and arrange for a permanent car number.
+
+9.7.5. ALL CARS SHALL USE CHAMPCAR NUMBER BACKGROUND DECALS:
+
+        9.7.5.1. Two (2) large and two (2) small OFFICIAL CHAMPCAR backgrounds are required. A third
+                    large background on the roof (or hood, if there is no roof) is optional.
+
+        9.7.5.2. Electroluminescent numbers panels made in the same size and color scheme as
+                 standard panels are allowed.
+
+        9.7.5.3. The required large number backgrounds shall be applied to the front driver and
+                    passenger doors of the car.
+
+        9.7.5.4. The required small number backgrounds shall be applied to the front and rear of the
+                    vehicle.
+
+        9.7.5.5. All present number panels must display the same number.
+
+9.7.6. ALL CARS SHALL USE BLACK NUMBERS:
+
+        9.7.6.1. Numbers shall be at a minimum 8.0" tall.
+
+        9.7.6.2. Fonts shall be a minimum of 1.0" wide (brush stroke) and a maximum of 1.5" wide.
+
+        9.7.6.3.  All numbers MUST fit within the standard ChampCar number white background panel.
+                  All permanent number requests will be granted based on prior year event participation
+                  and estimated 2025 participation. Permanent numbers will be assigned to teams that
+                  register for a minimum of four races during the 2025 season. All other numbers are on a
+                  first-come, first-served basis. email reg@champcar.org
+
+9.7.7.  Other than numbers, no other decals, paint, tape, or themed items (of any type) are allowed
+        on the ChampCar number background decal.
+
+9.8. CHAMPCAR AND SPONSOR DECALS
+
+9.8.1.  Each car competing in a ChampCar event shall display the official ChampCar Endurance Series
+        banner at the top of the windshield. The decal must be unobstructed and in clear view.
+        Backgrounds may be any color except White, Orange, or Yellow. For cars with no windshield,
+        the Event Director will designate an alternate location for the banner.
+
+9.8.2.  ChampCar will provide teams with other series sponsor logos, printed on a single decal, which
+        must be displayed next to the ChampCar number panels on each side of the car.
+
+9.8.3. Other event sponsorship decals may be required.
+
+9.8.4.  All sponsor decals will be provided at the ChampCar Tech Inspection. For installation directions
+        and locations, refer to https://champcar.org/web/pdf/2023DecalPlacement.pdf.
+
+9.8.5.  ChampCar reserves the right to remove any decal that may conflict with ChampCar sponsors or
+        decals that we find in poor taste.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                        44
+https://champcar.org
+9.9. HEADLIGHTS, TAILLIGHTS, AND BRAKE LIGHTS
+
+9.9.1.  All cars must be equipped with suitable headlights. Headlights may be OEM or aftermarket and
+        must be mounted within 12" of stock locations. One must be mounted in each front corner
+        (right and left side) of the car. Cars having more than four (4) light sources mounted on the
+        car, whether working or wired for use, will be required to COMPLETELY REMOVE all lights
+        above the count of four (4).
+
+        9.9.1.1. CONVENTIONAL BULBS:
+
+        9.9.1.1.1.  No single light bulb or light source shall exceed 60W for H3 or H4 bulbs, or 35W
+                    for HID bulbs.
+
+        9.9.1.1.2. Bulbs must match the housing and lens that they were originally designed for.
+
+        9.9.1.1.3.  No vehicle may have mounted fewer than two (2) or more than four (4)
+                    headlights. A headlight is defined by the number of illuminating bulbs or
+                    sources - not by the housing.
+
+        9.9.1.2. LED FIXTURES:
+
+        9.9.1.2.1.  Cars equipped with LED head- or driving- lights shall be restricted to a maximum
+                    of 8,000 Lumens. Teams using LED lights MUST have documentation to prove
+                    Lumen data.
+
+        9.9.1.2.2. No LED light bar may be longer than 18" in lens length.
+
+        9.9.1.3.  Combined Lighting Sources: cars using a combination of BOTH H3/H4/HID and LED lights
+                  shall be limited to a maximum of 4,000 Lumens of LED lighting and no more than two
+                  lighting sources using conventional H3, H4, or HID lights.
+
+        9.9.1.4.  All headlights must be installed such that the base of the driving light lens is NO HIGHER
+                  than six inches (6") above the highest point of the stock front fender and NO FURTHER
+                  BACK than the centerline of the front axle.
+
+        9.9.1.5. Headlights must be aimed properly, such that all light is directed at the track level.
+
+        9.9.1.6. Cars not meeting these requirements or with improperly aimed or blinding lights shall
+                    be black-flagged and brought in to add, repair, or adjust lights to meet this requirement.
+
+9.9.2.  Adverse Weather Events: All cars must have a minimum of two (2) operational headlights and
+        two (2) operational taillights that remain on during rain/wet/fog/snow weather events, as
+        deemed by ChampCar Officials. Teams will be notified that the lights must be switched on.
+
+9.9.3.  Taillights: All cars must have a minimum of two (2) operational taillights that remain on at all
+        times whenever headlights are on. Taillights may be OEM or aftermarket. No car shall have
+        more than four (4) taillights. Taillight illumination shall be as bright or brighter than a 1034 or
+        1157 bulb but shall not be so bright as to overpower/outlight operating brake lights.
+        Multifilament and combination brake/taillight assemblies are permitted.
+
+9.9.4.  Brake Lights: Each car must have at least two (2) lights that are visible from 300 feet to the
+        rear of the car. One Brake light is required in each rear corner (right and left side) of the car.
+
+9.9.5. Rear Rain Lights
+
+        9.9.5.1. A rear rain light is recommended but not required.
+
+        9.9.5.2. Placement MUST be in the vicinity of the license plate mounting location.                      45
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+       9.9.5.3. Light is only permitted to be used during rain/wet/fog/snow weather.
+       9.9.5.4. Light is NOT permitted to be used at night.
+       9.9.5.5. If in use, light must be configured to flash at all times.
+       9.9.5.6. Rain light CANNOT function as a brake light at any time
+9.9.6. Headlight and taillight assemblies (and all associated hardware) are considered safety items
+
+           and do not count toward your car's total points.
+9.9.7. All glass and/or plastic taillight and brake light lenses that may be damaged from vehicle
+
+           contact are to be taped over with clear packaging or other strong clear tape. Do not use Scotch
+           tape.
+9.9.8. Accessory (Theme) Lights:
+       9.9.8.1. Accessory lights are NOT ADVISED on or inside any wheel assembly (as the lights are
+
+                   often mistaken for sparks).
+       9.9.8.2. Accessory lights inside the cockpit and driver compartment should be kept to a
+
+                   minimum. If the lighting is determined to be a nuisance to other drivers or race officials,
+                   ChampCar shall have the right to order the lights removed or turned off.
+       9.9.8.3. No accessory lights are to look like or be mistaken for an emergency vehicle. Accessory
+                   lights may not blink.
+
+9.10. FUEL SYSTEMS
+
+9.10.1.  Zero Tolerance for Fuel Leaks. You will have only one chance to repair any fuel leak. If a
+         ChampCar staff member detects a second instance of leakage, regardless of cause, your car
+         will be removed from the race. No exceptions.
+
+9.10.2.  Total fuel capacity, including all fillers and overflows, shall not exceed the OEM-stated fuel
+         capacity for the make/model plus two (2) gallons. This applies to cars equipped with OE fuel
+         tanks and to cars with approved fuel cells.
+
+9.10.2.1. ChampCar may verify total fuel capacity via the drain and fill method. The fuel tank is
+            completely drained and then refilled with known amounts until fuel escapes the fill
+            port.
+
+9.10.2.2. ChampCar competition vehicles with less than 13 gallons of OEM fuel capacity can
+            upgrade to 15 gallons of fuel capacity (via a fuel cell installation)
+
+9.10.3. Surge tanks are limited to 2-liter (.53-gallon) capacity. Surge tanks do not count towards the
+           total fuel system capacity.
+
+9.10.4. Fuel Tanks
+
+9.10.4.1. Stock fuel tanks in stock locations OR approved fuel cells are the only fuel sources
+            allowed for competition.
+
+         9.10.4.1.1.  Stock fuel tank must not be altered in any way from OEM specifications. No
+                      cutting, hammering, ballooning, or other changes are allowed.
+
+         9.10.4.1.2. Stock fuel tank vent lines and fill necks may be altered and/or relocated.
+
+9.10.4.2. NON-OEM REPLACEMENT OR SWAPPED FUEL TANKS ARE NOT ALLOWED. It's either                                46
+            stock, in the stock location, or an approved fuel cell with the proper installation.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+       9.10.5. Fuel Cells                                                                                                 47
+              9.10.5.1. All fuel cells must have FIA or SFI certification. Fuel cells expire, as outlined in the FIA/SFI
+                           certification provided by the manufacturer.
+              9.10.5.2. All cars equipped with fuel cells MUST have ball-check or sealable breather valves
+                           installed on all vents.
+              9.10.5.3. All cars equipped with fuel cells MUST have roll-over closure or "flapper valves" installed
+                           at the fuel inlet port of the fuel cell.
+              9.10.5.4. ALL FUEL CELLS AND FUEL COMPONENTS MUST BE ENCLOSED IN A METAL CANISTER/
+                           ENCLOSURE.
+              9.10.5.5. All fuel cells and fuel components (fill tubes, vent lines, etc) shall be separated from the
+                           driver compartment by a metal bulkhead. All lines and fittings that pass through the
+                           cabin of the vehicle must be metal or must be encased in continuous steel conduit or
+                           aluminum tube. The metal canister that makes up the fuel cell does not count as a
+                           bulkhead.
+              9.10.5.6. Rotary-molded (plastic) fuel tanks are allowed as fuel cells provided they are SFI and/or
+                           FIA certified, foam-filled, and fully encased in a metal enclosure, as well as properly
+                           installed and supported in the vehicle.
+              9.10.5.7. Fuel Cell Installation: If you decide to install a fuel cell, it must be securely mounted in a
+                           professional manner and must be installed in a safe location. All aftermarket fuel
+                           components must use threaded fittings and appropriate hose types, and include all
+                           appropriate racecar quality vents, valves, and other features. Fuel cell installation will be
+                           judged on overall execution and apparent safety.
+              9.10.5.8. A reasonable protective and supportive square and/or round tubular structures may be
+                           installed around any fuel cell PROVIDED that the structure DOES NOT connect to, or tie
+                           into any suspension point or suspension pick up point, or add to the general rigidity of
+                           the chassis, or provide any performance advantage whatsoever. Fuel cell protective
+                           structures may be attached to portions of the main roll cage. Tech Inspection may
+                           assess additional points for any structure(s) that violate this rule.
+              9.10.5.9. Fuel cells may be mounted in the passenger floor area of 2-seater cars or cars that have
+                           no space behind the driver's compartment, provided:
+                   9.10.5.9.1. The passenger side has full NASCAR-type door bars.
+                   9.10.5.9.2. The fuel cell is enclosed by a full metal canister AND a separate bulkhead that
+                                     encloses the fuel cell and canister. The fuel components (fill tubes, vent lines,
+                                     etc.) must be separated by a metal bulkhead.
+                   9.10.5.9.3. All lines and fittings that pass through the cabin of the vehicle must be metal or
+                                     must be encased in continuous steel conduit or aluminum tube.
+                   9.10.5.9.4. The mounting frame and attachments for the fuel cell should be constructed of
+                                     1" square or tubular steel, with a minimum wall thickness of 0.120", and tied
+                                     into the roll cage.
+
+       9.10.6. Fuel Fillers and Fuel Lines:
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+9.10.7.        9.10.6.1. Vehicles may not have more than the stock number of fill ports.
+9.10.8.        9.10.6.2. 3" MAXIMUM O.D. for all fuel fill lines.
+               9.10.6.3. MAXIMUM -8 (AN) or 1/2" I.D. shall be used for all fuel lines from cell/tank to the
+
+                           engine.
+               9.10.6.4. All fuel lines must be routed in the most direct (shortest distance) path to and from
+
+                           source/termination point.
+               9.10.6.5. Any fuel, oil, or coolant lines (including Aeroquip steel braided lines) that pass
+
+                          through the driving compartment must be metal or encased in continuous steel
+                          conduit or aluminum tube. (Flex conduit is not acceptable. Lines wrapped in
+                          aluminum tape are not acceptable.)
+               An overflow tube may be installed. Use of an overflow tube and overflow can DOES NOT
+               remove the requirement for a ground positioned catch pan for spills. If installed, an overflow
+               tube MUST meet the following requirements:
+               9.10.7.1. Allow passage of vapor and liquid during the fueling process
+               9.10.7.2. Not allow passage of vapor nor liquid while on track
+               9.10.7.3. May not extend beyond the protection of the bumper
+               9.10.7.4. Be constructed of a gasoline-resistant hose, no larger than 3/4" (0.75") inside
+                 diameter
+               9.10.7.5. Allow secure attachment of an overflow can with a minimum liquid capacity of 1 gal
+               9.10.7.6. Overflow can must not be held by a person during fueling
+               9.10.7.7. Overflow can may not spill fuel upon attachment or removal
+               Fuel Tank Vents allow for passage of vapor, but do not allow for passage of liquid. Fuel Tank
+               Vents are not subject to the restrictions outlined in section 9.10.7.
+
+9.11. OIL CATCH TANKS, FILTERS, COOLERS, AND BREATHERS
+
+       9.11.1. Non-stock engine, transmission/transaxle, and differential breathers shall be equipped with
+                   catch tanks.
+                   9.11.1.1. Minimum catch tank capacity shall be one U.S. quart.
+                   9.11.1.2. Catch tanks shall vent outside the driver's compartment.
+
+       9.11.2. Remote oil filters shall NOT be mounted in the driver/passenger compartment.
+
+9.12. COOLANT
+
+9.12.1.        Coolant must be water only. Antifreeze or anti-boil is not allowed. Red Line Oil's "Water
+               Wetter" or similar is allowed. A functional 1-Quart minimum capacity catch tank (overflow) is
+               mandatory.
+
+9.13. EXHAUST                                                                                                   48
+
+       9.13.1. A professionally installed, quality exhaust system WITH MUFFLER is required.
+       9.13.2. Exhaust systems must be designed, routed, and maintained to avoid the proximity of fuel
+
+                   tank(s) and/or fuel system components and/or driver compartments.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+9.13.3.  Exhaust system shall not terminate in front of the main roll-cage hoop.
+9.13.4.  Exhaust system must include at least two professional-quality flexible exhaust hangers behind
+         the collector. All exhaust joints must be properly slip-jointed, properly bolted, or welded.
+9.13.5.  All teams must maintain their exhaust in good condition throughout the event.
+
+9.14. NOISE LIMIT
+
+9.14.1.  ChampCar's basic noise limit for ALL EVENTS is 96 dB at 50 feet from the track. Certain events
+         may impose stricter noise restrictions - check all event supplemental rules. Excessive noise will
+         result in a black flag and require repair before the vehicle can be readmitted to the race. A
+         second offense will result in disqualification and removal from the event.
+
+9.15. COCKPIT & FLAGTONICS
+       9.15.1. All loose items in the cockpit must be removed or secured.
+
+9.15.2. Flagtronics FT200 Installation
+
+    · Flagtronics FT200 units MUST be securely mounted to a rigid structure
+    · The GPS antenna requires a clear line of sight to the sky
+    · Teams are responsible for ensuring that the FT200 firmware is up to date
+    · The FT200 battery must be charged for 24 hours before the event to ensure proper
+
+            operation during the race
+    · Teams are responsible for ensuring the FT200 has an adequate 12v 2-amp power source,
+
+            and that the FT200 stays on during a pit stop, utilizing the battery built into the cable
+    · The FT200 USB cable must be in an accessible spot in case any updates need to be applied
+    · Teams are responsible for entering the FT200 unit serial number into the registration system
+
+            when registering the car for a race
+9.15.3. Flagtronics FT200 Location
+
+    · The FT200 must be mounted to the right of the steering wheel as shown in the image below
+    · Within approx. 15in above the vertical centerline of the steering wheel
+    · Within approx. 15in of the horizontal centerline of the steering wheel
+    · All drivers of the car should be able to reach the device while belted in
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                         49
+https://champcar.org
+         Following the above guidelines ensures a clear view of the FT200 by the driver, along with a
+         line of sight to the device by ChampCar pit lane staff, ensuring an efficient release onto the
+         circuit.
+
+9.16. MIRRORS
+
+       9.16.1. All cars must have at least one interior mirror, one driver's-side mirror (or camera), and one
+                   passenger-side mirror (or camera).
+
+9.17. ENGINE FIREWALL
+
+9.17.1.  Openings or holes in the engine firewall under 2" diameter must be closed and sealed with a
+         metal plate or OE-type grommets. Fireproof expanded foam fire block should be used around
+         the roll bar through openings in any fuel areas or engine bay areas. Openings larger than 2"
+         diameter must be closed and sealed with a metal plate that is bolted, welded, or riveted in
+         place.
+
+9.18. CAMERA MOUNTS
+
+9.18.1.  The mounts for video / photographic cameras shall have a safe and secure design and be
+         confined within the cockpit area of the vehicle (excludes rear view cameras). No cameras may
+         be mounted outside of the driver's area or cockpit. The camera's body (recording unit) shall be       50
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+                   securely attached to the car's roll cage or interior bodywork. Helmet-mounted cameras are
+                   prohibited.
+
+9.19. COOL SUITS AND DRINKING SYSTEMS
+
+9.19.1. Cool suits and drinking systems are allowed in all vehicles. Water tank and/or ice storage
+         container mounts shall be safe and secure. No leakage of any kind is allowed throughout the
+         system. ChampCar will Black Flag your car for any liquid leakage because we won't know if
+         it's cool suit water or gasoline. Driver connections should be quick disconnects or
+         breakaways.
+
+            9.19.2. Cool suit coolers will be secured to the chassis using a minimum of a 1" ratcheting-type
+                      tiedown strap.
+
+9.20. BALLAST
+
+            9.20.1. Ballast shall not be added to any car.
+9.21. BUMPER BARS / BASH BARS
+
+            9.21.1. If the factory bumpers are removed from the car, a bar that extends no farther
+                      up/down/out/sideways than the factory bumper must be used in its place. The bar must
+                      attach to/cover the factory frame rails.
+
+9.22. AERODYNAMIC DEVICES
+
+9.22.1.  Aerodynamic devices not to exceed the width of unmodified OE bodywork (fenders,
+         bumpers, doors). Note: Side mirrors are not included in bodywork width. Maximum wing
+         height 12" above the roof. Maximum wing drop-back 12" behind the car. A splitter is any
+         horizontal device installed from the centerline of the front axle, extending a maximum of
+         12" out of the front of the vehicle. An air dam is any vertical device installed from the nose
+         of the bumper down.
+
+9.22.2. Wings may not be mounted forward of the centerline of the rear axle.
+
+9.22.3. Moving aerodynamic devices are prohibited.
+
+9.22.4. Definition of a 10-point wing: Uprights (mounts), endplates, and a single airfoil. Gurney flaps
+         are permitted.
+
+2026 BCCR v1.4 (updated 12/17/2025)                                                                           51
+https://champcar.org
+APPENDIX 1 - LEGAL
+
+I) General
+     a) Right of Publicity: All participating cars, drivers, crew members and guests may be photographed, videotaped,
+          recorded, or quoted, and by entering, attending and/or participating in any ChampCar event, you grant ChampCar
+          the right to the use of such images and/or recordings including but not limited to use on television, Internet,
+          within various publications and/or any other analog-digital broadcast or print media.
+     b) Any known medical condition (including pregnancy) which could affect medical fitness to compete shall be
+          reported and identified on the event entry application. Any significant change in medical status from the date the
+          entry has been submitted until and up to the start of the event, including cardiac or neurological problems, such
+          as heart attack, heart surgery, strokes, seizures, any major surgery or diagnosis of cancer must be reported to the
+          Event Director prior to that driver entering the track.
+     c) Each competitor and crew member is encouraged to have someone in their team maintain medical information
+          about them in the event it may be needed by a medical treatment team. A driver who is involved in an accident in
+          which his or her car rolls over, collides with a stationary object hard enough to cause structural damage to his or
+          her car, who is aware of possible injury from an accident, or who is directed to obtain medical attention by an
+          official shall report to the Event Director of the event as soon as possible.
+     d) A driver, crew member, official or staff worker/ volunteer at an event that is transported off-site to a medical
+          facility shall not subsequently compete in or engage in any further activity at that event and may not enter any
+          other ChampCar event without presenting a medical release signed by their personal physician.
+     e) A driver, crew member, official or staff worker/ volunteer who suffers loss of consciousness shall not subsequently
+          compete in or engage in any further activity at that event and may not enter any other ChampCar event without
+          presenting a medical release signed by their personal physician.
+
+II) Entries and Teams
+     a) The organizers have the right to refuse an entry at their discretion without giving a reason for refusal. If an entry
+          for any competition is refused, notification of such refusal shall be sent to the entrant at the e-mail address given
+          on the Entry Form as soon as possible.
+     b) An entry which contains a false or incorrect statement may be determined to be null and void by ChampCar. The
+          entrant may be deemed guilty of a breach of the BCCR, the entry fee may be forfeited, and further penalties may
+          be imposed.
+
+III) Children & Pets:
+     a) Parents or guardians of any minor shall be fully responsible for actions of their children. At SOME tracks children
+          under the age of eighteen (18) MAY be allowed in the paddock or cold pit lane, under supervision by an adult.
+          However, SOME tracks do not allow children in a cold pit lane. Each event's Supplemental Rules shall state the
+          track's and/or event's policy for children on COLD pit lane. Children are prohibited in the HOT pit lane, even with
+          an adult. Any person signing an event waiver for a minor shall be held responsible for that minor. Children under
+          the age of 16 are not allowed to drive any motorized- or gasoline-powered vehicle in the paddock or garage area
+          at any racetrack. That includes golf carts, scooters, ATV's, etc.
+     b) Pet owners shall be fully responsible for actions of their pets. When track rules permit, a pet may be in the
+          paddock, provided it is enclosed in a vehicle or on a leash that does not exceed six feet (6') in total length. When a
+          pet is on a leash, it shall be controlled by an adult. Pets are prohibited in the pits. Pet owners are responsible for
+          contacting the track to inquire about pet access and specific track rules. Track rules on pets shall always supersede
+          ChampCar rules on pets.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+APPENDIX 2 - AERODYNAMIC ANATOMY
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+APPENDIX 3 - CHASSIS MODIFICATION GUIDE
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+APPENDIX 4 - ROLL CAGE BASICS
+
+Please visit https://champcar.org/web/rules.php#cage for a 3D interactive view of the cage.
+All views are for left-hand drive vehicles. Reverse for right-hand drive vehicles.
+Please visit https://champcar.org/tech to ask questions about safety equipment and cages.
+
+Basic "NASCAR" Style Door Bar Roll Cage
+
+                                         Contact Roll Cage Components for cage supplies or full
+                                         cage builds.
+                                         https://rollcagecomponents.com/champcarendurance
+                                         -roll-cage-kit
+
+                                                Basic "X-Bar" Style Door Bar Roll Cage
+
+                                         Tech Tip:
+                                                 After the cage has cooled, take an
+
+                                         inspection mirror, a small flashlight, and your
+                                         finger and inspect all welds. Visually look for
+                                         missing welds, and run your fingers across the
+                                         welds to find missing fill.
+
+2026 BCCR v1.3 (updated 11/19/2025)
+https://champcar.org
+APPENDIX 5 - TRANSPONDERS
+
+To compete, you need an AMB 260X or AMB/MyLaps X2/MyLaps TR2 transponder. You can bring your own
+or rent one from ChampCar. Rental transponders must have a factory MyLaps / AMB transponder mounting
+bracket affixed to their car in an approved location. ChampCar sells mounts at tech inspection. No loose, zip-
+tied, or duct-taped transponders are allowed. If a rental transponder is lost or broken, you agree to be
+charged for its replacement. If the case is cracked or deformed in any way, but the unit still works, you agree
+to be charged for repair and testing.
+
+Transponder Mounting Tips:
+              · Always mount the transponder so that the black (AMB260X) or red (MyLaps TR2) is to the
+                   ground (not sideways).
+              · You need to get a bracket (they're only $10 and hold a $500+ unit in place).
+              · Do not mount it near the exhaust, as the unit will melt.
+              · Put it in a safe place where it will not get destroyed if someone "rubs" you.
+              · There should be a clear line of sight to the ground with no objects between the transponder
+                   and the ground.
+              · DO NOT cut a hole in the floorboard.
+              · It is best to mount the transponder on the engine bay frame rail (away from hot exhaust
+                   headers/ turbo) or near the fuel cell/ tank.
+              · Installation height should be 10" - 14" off the ground.
+              · DO NOT mount to bumpers, spoilers, or easily damaged areas.
+              · DO NOT mount using duct tape, zip ties, or wet chewing gum.
+              · DO NOT just throw it on the floorboard, the door channel, or your driver's pockets.
+
+If you entered a transponder number (or anything really) while registering, we assume you're bringing your
+own. Please verify that you have entered the correct number or reserved a transponder if you're not
+supplying your own. If you use a subscription-based MyLaps X2 / MyLaps TR2 transponder, ensure your
+subscription is up to date. When your subscription ends, the X2/TR2 will not count laps.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+APPENDIX 6 - RACE CAR DECALS
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+APPENDIX 7 - RACING FLAGS
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+CHAMPCAR MISSION STATEMENT
+
+       ChampCar exists to provide people with a straightforward path to
+                                 start road racing.
+
+        Real racing, wheel to wheel on America's greatest road courses.
+
+       However, it must be a hobby accessible to the average person. By
+    offering racing in an endurance format, teams can be utilized, and
+
+      the cost can be shared between 2 or more drivers. Our rule book is
+       unique, and while sometimes controversial, it exists to keep a cap
+       on the amount of money and speed required to race with us.
+
+       In ChampCar, all types of drivers race with us, from those entirely
+new to the sport to veteran pro racers. We believe that experience is the
+ best teacher, and you will get all the experience you will need in one of
+
+                              our endurance events.
+
+© 2009 -2026 ChumpCar International Inc., All rights reserved. ChampCar Endurance Series, ChampCar, CCES,    59
+and ChampCar.Live is a trademark and /or service mark of ChumpCar International Inc. The ChampCar logo is a
+service mark of ChumpCar International, Inc. and is fully protected.
+
+2026 BCCR v1.4 (updated 12/17/2025)
+https://champcar.org
+
