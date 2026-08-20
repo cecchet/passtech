@@ -6,7 +6,22 @@ export type EquipmentCategory =
   | "gloves"
   | "shoes"
   | "undergarment"
-  | "arm_restraint";
+  | "arm_restraint"
+  | "seat"
+  | "belts_harness"
+  | "window_net"
+  | "fuel_cell"
+  | "fire_extinguisher"
+  | "fire_suppression"
+  | "window_breaker"
+  | "kill_switch"
+  | "tow_hook"
+  | "tow_rope"
+  | "emergency_triangle"
+  | "first_aid_kit";
+
+/** Top-level section a category is displayed under. No categories are tagged "rollcage" yet — that's a future phase. */
+export type CategoryGroup = "driver" | "car" | "rollcage";
 
 export type RequirementLevel =
   | "required"
@@ -35,6 +50,22 @@ export interface SourceDocument {
   url?: string;
 }
 
+/**
+ * Fire extinguisher only: one acceptable (quantity, minimum rating) combination — e.g. "one
+ * extinguisher rated at least 10 B:C" or "two extinguishers rated at least 5 B:C each". A unit
+ * only needs to clear whichever of minBcRating/minClassARating/minWeightLbs are set (a body may
+ * spec by UL rating, by weight, or both).
+ */
+export interface ExtinguisherOption {
+  quantity: number;
+  /** Minimum UL B:C rating per unit, e.g. 10 for "10-B:C". */
+  minBcRating?: number;
+  /** Minimum UL Class A rating per unit, e.g. 1 for "1-A:10-B:C". Omit when the body doesn't require Class A coverage. */
+  minClassARating?: number;
+  /** Minimum weight per unit in lbs, for bodies that spec by weight instead of/alongside a UL rating. */
+  minWeightLbs?: number;
+}
+
 export interface CategoryRule {
   requirement: RequirementLevel;
   /** Free-text condition, used when requirement is 'conditional' or has scope caveats. */
@@ -55,6 +86,21 @@ export interface CategoryRule {
    * trigger can't be expressed as specific standard IDs (e.g. it depends on suit layer count).
    */
   undergarmentTriggerStandards?: string[];
+  /**
+   * Fire extinguisher only: acceptable (quantity, minimum rating) combinations — satisfied if the
+   * driver's entered units satisfy ANY one option (e.g. one 10-B:C, or two each 5-B:C). Omit for
+   * bodies not yet researched to this level of detail; the category then falls back to a simple
+   * presence check regardless of the ratings entered.
+   */
+  fireExtinguisherOptions?: ExtinguisherOption[];
+  /**
+   * This category's requirement can also be satisfied by having a valid, currently-accepted entry
+   * for the named alternative category instead (e.g. many bodies accept EITHER arm restraints OR a
+   * window net, not both — arm_restraint.satisfiedByAlternative = "window_net" and vice versa). Set
+   * this symmetrically on both categories' rules when a body frames the two as interchangeable; the
+   * matcher resolves whichever one the driver actually has and treats the other as not required.
+   */
+  satisfiedByAlternative?: EquipmentCategory;
   citation: SourceDocument;
   confidence: Confidence;
   notes?: string;
@@ -71,6 +117,12 @@ export type DisciplineGroup =
   | "Endurance Racing"
   | "HPDE / Track Day";
 
+/** One selectable car/competitor class within a ruleset whose rules differ enough from the ruleset's general picture to warrant refining by class (e.g. AMEC's Street Legal vs. Super Modified Closed). */
+export interface RulesetClass {
+  id: string;
+  label: string;
+}
+
 export interface Ruleset {
   id: string;
   bodyId: string;
@@ -80,7 +132,12 @@ export interface Ruleset {
   disciplineGroup: DisciplineGroup;
   lastReviewed: string;
   sourceDocuments: SourceDocument[];
+  /** Base rules — used as-is when no class is selected, and as the fallback for any category a selected class doesn't override in `classOverrides`. For a ruleset with `classes`, this should still describe the general/multi-class picture (as free text is fine here), since a user who hasn't picked a class yet sees this. */
   categories: Partial<Record<EquipmentCategory, CategoryRule>>;
+  /** Optional car/competitor classes within this ruleset. When present, the UI offers a "Class" dropdown after the ruleset itself is chosen, to refine results using `classOverrides`. Omit entirely for rulesets where driver/car equipment doesn't vary by class. */
+  classes?: RulesetClass[];
+  /** Per-class rule overrides, keyed by the matching `classes[].id`. For a selected class, any category present here replaces the base `categories` entry for both evaluation and the reference view; categories not listed fall back to the base rule. */
+  classOverrides?: Partial<Record<string, Partial<Record<EquipmentCategory, CategoryRule>>>>;
 }
 
 export interface StandardDef {

@@ -1,5 +1,5 @@
 import { Ruleset } from "../types";
-import { GENERIC_APPAREL_STANDARDS } from "../standards";
+import { GENERIC_APPAREL_STANDARDS, GENERIC_SEAT_STANDARDS } from "../standards";
 
 const sourceDoc = {
   title: "PCA National HPDE Committee - Minimum Standards",
@@ -97,6 +97,111 @@ const de: Ruleset = {
       materialNote: "Must be SFI and/or FIA approved when required — plain fire-resistant material does not qualify.",
       citation: { ...sourceDoc, section: "10(d)-10(e)" },
       confidence: "high",
+    },
+    seat: {
+      requirement: "conditional",
+      condition:
+        "No seat requirement applies to cars running the stock/factory 3-point seatbelt. Only triggered if the Entrant chooses to install an (optional — see belts_harness) 5-or-more-point competition harness: §10(g), 'Harnesses must be used in conjunction with a seat that has the supplied routing holes for the shoulder and antisubmarine belts.' Porsche GT seats get a specific stock-mount allowance instead (§10(h)).",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_SEAT_STANDARDS,
+      materialNote:
+        "No seat certification (SFI/FIA) is required anywhere in this document — stock/factory seats are acceptable, including once a harness is installed, as long as the seat has the supplied shoulder/antisubmarine routing holes. §10(h) Porsche GT Seats: 'the lap belts of the harness system may be attached to the carbon seat stock mounts. The harness shoulder belts shall be attached to either a properly mounted harness bar or to the roll bar' — and the factory anti-submarine belt punch-out on the passenger seat may be removed to match the driver side per the Equal Restraints rule (§10(f)), described as 'the only permissible way to implement an anti-submarine belt for these seats.'",
+      citation: { ...sourceDoc, section: "10(g)-10(h)" },
+      confidence: "high",
+      notes:
+        "Corrected from a prior 'not_addressed' placeholder — re-reading §10(g)-(h) directly confirms the document does briefly address seats, just not as a standalone requirement: it's a routing-holes/mounting constraint tied to installing an optional competition harness, not something imposed on cars using the stock 3-point belt. A certified FIA/SFI seat obviously also satisfies the routing-holes requirement even though PCA doesn't itself name a minimum seat cert spec here — the generic seat standards list is offered on that basis. The document doesn't address seat sliders/rails vs. a fixed mount at all.",
+    },
+    belts_harness: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: [
+        {
+          standardId: "sfi-16.1",
+          validityYearsFromLabel: 2,
+          note: "Document cites 'SFI' generically for 5-or-more-point harnesses without naming a specific slash-level; SFI 16.1/16.5/16.6 offered as reasonable representative specs, not verified name-for-name against the document.",
+        },
+        { standardId: "sfi-16.5", validityYearsFromLabel: 2 },
+        { standardId: "sfi-16.6", validityYearsFromLabel: 2 },
+        {
+          standardId: "fia-8853-2016",
+          validityYearsFromLabel: 5,
+          note: "Document cites 'FIA' generically without naming a specific spec number.",
+        },
+        { standardId: "fia-8853-98", validityYearsFromLabel: 5 },
+      ],
+      materialNote:
+        "Stock/OEM 3-point seatbelts are the accepted baseline restraint system. Installing a 5-or-more-point competition harness is optional, not mandated ('If the Entrant chooses to install a driving harness of five or more attachment points...'). If installed, it must be an SFI- or FIA-approved harness (no Y-type shoulder harnesses), mounted to the chassis/roll bar rather than the seat or seat rail (except the specific Porsche GT seat lap-belt stock-mount allowance in §10(h)), and it triggers a mandatory head-and-neck restraint device (see hnr category, §10(g)). Driver and passenger must use equal restraint types per §10(f) — a harness on one side requires a harness (not a 3-point belt) on the other.",
+      citation: { ...sourceDoc, section: "10(f)-10(g) Equal Restraints / Harness Systems" },
+      confidence: "high",
+      notes:
+        "'The SFI standard requires harnesses to be replaced every two years based on date of manufacture. The FIA standard allows the harness to be used until an expiration date at the end of the fifth year after the year of manufacture.' A narrow four-point-harness exception exists for non-Porsches using a vehicle-specific Schroth belt meeting FMVSS 209 attached to factory mounting points — not modeled as a separate acceptedStandards entry since it's a street-legal-belt allowance tied to a specific vehicle/product, not a general competition-harness certification.",
+    },
+    window_net: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "Full document search found no mention of window nets anywhere in the national Minimum Standards document. Cabriolet/convertible cars driven top-down (§10(d)) and all occupants of open-cockpit cars (§10(e)) must use an SFI and/or FIA approved arm restraint system instead — but unlike some other bodies (e.g. PHA), this document never frames a window net as an available alternative/substitute for that arm restraint requirement, so satisfiedByAlternative isn't wired here.",
+    },
+    fire_extinguisher: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "5(o) Corner Workers" },
+      confidence: "high",
+      notes:
+        "No fire extinguisher is required to be carried in the Entrant's car anywhere in this document. The only extinguisher requirement stated is track-side: 'Fire extinguishers must be readily available at either the worker station or with the emergency / safety services teams' (§5(o)), and the site must have a fire truck and/or a tow truck equipped with fire emergency equipment on hand while cars are on track (§5(n) Fire and Emergency at the Site) — both event-infrastructure requirements, not car-mounted equipment.",
+    },
+    fire_suppression: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the national Minimum Standards document.",
+    },
+    fuel_cell: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "Not mentioned anywhere in the national Minimum Standards document — consistent with this being a run-what-you-brung HPDE program for street-based cars, where a stock/OEM fuel tank is assumed.",
+    },
+    window_breaker: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "Not mentioned anywhere in the national Minimum Standards document. Cabriolet/convertible and open-cockpit cars have arm-restraint requirements instead (§10(d)-10(e), see arm_restraint category) — no window net or seatbelt-cutter tool requirement is stated.",
+    },
+    kill_switch: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "10(b) Final Safety Inspection" },
+      confidence: "high",
+      notes:
+        "No master battery cutoff / kill switch is required. The Final Safety Inspection checklist only requires the battery to be secure ('Gas cap and battery secure'), not switched or externally accessible.",
+    },
+    tow_hook: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the national Minimum Standards document.",
+    },
+    tow_rope: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "Not mentioned anywhere in the national Minimum Standards document. §5(n) requires the site/facility to have a tow truck on hand, but that's event infrastructure, not driver-carried equipment.",
+    },
+    emergency_triangle: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the national Minimum Standards document.",
+    },
+    first_aid_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "5(m) Medical Personnel at the Site" },
+      confidence: "high",
+      notes:
+        "No personal/car-carried first aid kit is required. The document requires event-level medical coverage instead: 'At minimum, one EMT trained attendant and one emergency equipped vehicle must be on-site at all times while cars are on track' (§5(m)).",
     },
   },
 };

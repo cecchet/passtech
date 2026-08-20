@@ -1,6 +1,8 @@
-import { CATEGORY_META, CATEGORY_ORDER } from "@/data/categoryMeta";
+import { Fragment } from "react";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
 import { standardLabel, standardsFor } from "@/data/standards";
-import { CategoryRule, EquipmentCategory, Ruleset, StandardAcceptance } from "@/data/types";
+import { CategoryGroup, CategoryRule, EquipmentCategory, Ruleset, StandardAcceptance } from "@/data/types";
+import { describeExtinguisherOptions, effectiveCategories } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CitationLine } from "@/components/CitationLine";
 
@@ -53,7 +55,7 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
   const Icon = CATEGORY_ICONS[category];
 
   return (
-    <div className="rounded-lg border border-neutral-700 p-4">
+    <div className={`rounded-lg border p-4 ${GROUP_COLORS[meta.group].border}`}>
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-3 text-sm font-semibold">
           <Icon />
@@ -77,9 +79,15 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
 
       {meta.hybrid && rule.materialOnlyAccepted && (
         <p className="mt-2 text-xs text-neutral-300">
-          Plain fire-resistant material accepted, no certification required.
+          {meta.materialOnlyDescription ?? "Plain fire-resistant material accepted, no certification required."}
           {rule.materialNote ? ` ${rule.materialNote}` : ""}
         </p>
+      )}
+
+      {!meta.hybrid && rule.materialNote && <p className="mt-2 text-xs text-neutral-300">{rule.materialNote}</p>}
+
+      {category === "fire_extinguisher" && rule.fireExtinguisherOptions && (
+        <p className="mt-2 text-xs text-neutral-300">Needs {describeExtinguisherOptions(rule.fireExtinguisherOptions)}.</p>
       )}
 
       {rule.acceptedStandards && rule.acceptedStandards.length > 0 && (
@@ -108,14 +116,39 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
   );
 }
 
-export function ReferenceView({ ruleset }: { ruleset: Ruleset }) {
-  const categories = CATEGORY_ORDER.filter((c) => ruleset.categories[c]);
+export function ReferenceView({
+  ruleset,
+  activeGroups,
+  classId,
+}: {
+  ruleset: Ruleset;
+  activeGroups: ReadonlySet<CategoryGroup>;
+  /** Selected class id (see `ruleset.classes`), if any — refines which rule is shown per category via `ruleset.classOverrides`. */
+  classId?: string;
+}) {
+  const effective = effectiveCategories(ruleset, classId);
+  const categories = filterCategoriesByGroups(CATEGORY_ORDER.filter((c) => effective[c]), activeGroups);
+
+  if (categories.length === 0) {
+    return <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">No categories selected — check a safety gear section above.</p>;
+  }
 
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      {categories.map((category) => (
-        <CategoryReferenceCard key={category} category={category} rule={ruleset.categories[category]!} />
-      ))}
+      {categories.map((category, i) => {
+        const group = CATEGORY_META[category].group;
+        const isNewGroup = i === 0 || CATEGORY_META[categories[i - 1]].group !== group;
+        return (
+          <Fragment key={category}>
+            {isNewGroup && (
+              <h3 className={`col-span-full mb-[-6px] mt-2 text-xs font-semibold uppercase tracking-wide first:mt-0 ${GROUP_COLORS[group].text}`}>
+                {GROUP_LABELS[group]}
+              </h3>
+            )}
+            <CategoryReferenceCard category={category} rule={effective[category]!} />
+          </Fragment>
+        );
+      })}
     </div>
   );
 }

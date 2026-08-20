@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { EquipmentCategory } from "@/data/types";
-import { CATEGORY_META, CATEGORY_ORDER } from "@/data/categoryMeta";
+import { CategoryGroup, EquipmentCategory } from "@/data/types";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
-import { CategoryResults, CertificationEntry, EquipmentEntry, newCertification } from "@/lib/matcher";
+import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { PhotoScan } from "@/components/PhotoScan";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
@@ -16,6 +16,8 @@ interface Props {
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
   /** When provided, each category's result is shown inline right under its inputs (body-first mode). */
   results?: CategoryResults;
+  /** Which top-level groups (Driver/Car/Rollcage safety gear) to show at all. */
+  activeGroups: ReadonlySet<CategoryGroup>;
 }
 
 const selectClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
@@ -161,6 +163,71 @@ function CertificationList({
   );
 }
 
+const numberInputClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
+
+function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherUnit; onChange: (patch: Partial<ExtinguisherUnit>) => void; onRemove: () => void }) {
+  const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
+
+  return (
+    <div className="flex flex-wrap items-end gap-2 rounded border border-neutral-700 p-2">
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        B:C rating
+        <input
+          type="number"
+          min={0}
+          placeholder="e.g. 10"
+          className={`${numberInputClass} w-24`}
+          value={unit.bcRating ?? ""}
+          onChange={(e) => onChange({ bcRating: numeric(e.target.value) })}
+        />
+      </label>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        Class A rating (if any)
+        <input
+          type="number"
+          min={0}
+          placeholder="e.g. 1"
+          className={`${numberInputClass} w-28`}
+          value={unit.classARating ?? ""}
+          onChange={(e) => onChange({ classARating: numeric(e.target.value) })}
+        />
+      </label>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        Weight (lbs)
+        <input
+          type="number"
+          min={0}
+          step="0.1"
+          placeholder="e.g. 5"
+          className={`${numberInputClass} w-24`}
+          value={unit.weightLbs ?? ""}
+          onChange={(e) => onChange({ weightLbs: numeric(e.target.value) })}
+        />
+      </label>
+      <button type="button" onClick={onRemove} aria-label="Remove this extinguisher" className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">
+        Remove
+      </button>
+    </div>
+  );
+}
+
+function ExtinguisherUnitList({ units, onChange }: { units: ExtinguisherUnit[]; onChange: (units: ExtinguisherUnit[]) => void }) {
+  const updateUnit = (index: number, patch: Partial<ExtinguisherUnit>) => onChange(units.map((u, i) => (i === index ? { ...u, ...patch } : u)));
+  const removeUnit = (index: number) => onChange(units.filter((_, i) => i !== index));
+  const addUnit = () => onChange([...units, newExtinguisherUnit()]);
+
+  return (
+    <div className="flex flex-col gap-2">
+      {units.map((unit, i) => (
+        <ExtinguisherUnitRow key={unit.key} unit={unit} onChange={(patch) => updateUnit(i, patch)} onRemove={() => removeUnit(i)} />
+      ))}
+      <button type="button" onClick={addUnit} className="self-start rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
+        + Add {units.length > 0 ? "another extinguisher" : "an extinguisher"}
+      </button>
+    </div>
+  );
+}
+
 function StatusPill({ status, requirement }: { status: CategoryResult["status"]; requirement: CategoryResult["requirement"] }) {
   return (
     <span className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusStyle(status, requirement)}`}>
@@ -179,35 +246,56 @@ const STATUS_DISPLAY_ORDER: Record<CategoryResult["status"], number> = {
   not_required: 5,
 };
 
-export function EquipmentForm({ entries, onChange, onReportMissing, results }: Props) {
-  const orderedCategories = results
-    ? [...CATEGORY_ORDER].sort((a, b) => {
-        const ra = results[a] ? STATUS_DISPLAY_ORDER[results[a].status] : 0;
-        const rb = results[b] ? STATUS_DISPLAY_ORDER[results[b].status] : 0;
-        return ra - rb;
-      })
-    : CATEGORY_ORDER;
+// Keeps categories in their natural group order (driver, then car, then rollcage) so a group
+// header always makes sense, while still surfacing items needing attention first within each group.
+function groupCategoriesForDisplay(categories: EquipmentCategory[], results?: CategoryResults): EquipmentCategory[] {
+  const byGroup = new Map<CategoryGroup, EquipmentCategory[]>();
+  for (const c of categories) {
+    const g = CATEGORY_META[c].group;
+    if (!byGroup.has(g)) byGroup.set(g, []);
+    byGroup.get(g)!.push(c);
+  }
+  return [...byGroup.values()].flatMap((group) => {
+    if (!results) return group;
+    return [...group].sort((a, b) => {
+      const ra = results[a] ? STATUS_DISPLAY_ORDER[results[a].status] : 0;
+      const rb = results[b] ? STATUS_DISPLAY_ORDER[results[b].status] : 0;
+      return ra - rb;
+    });
+  });
+}
+
+export function EquipmentForm({ entries, onChange, onReportMissing, results, activeGroups }: Props) {
+  const visibleCategories = filterCategoriesByGroups(CATEGORY_ORDER, activeGroups);
+  const orderedCategories = groupCategoriesForDisplay(visibleCategories, results);
 
   const detailsRefs = useRef<Partial<Record<EquipmentCategory, HTMLDetailsElement | null>>>({});
 
+  if (orderedCategories.length === 0) {
+    return <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">No categories selected — check a safety gear section above.</p>;
+  }
+
   return (
     <div className="flex flex-col gap-3">
-      {orderedCategories.map((category) => {
+      {orderedCategories.map((category, i) => {
         const meta = CATEGORY_META[category];
         const entry = entries[category] ?? { category, skipped: true };
         const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
-        const showCertList = !meta.hybrid || entry.mode === "certified";
+        const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
         const result = results?.[category];
         const Icon = CATEGORY_ICONS[category];
+        const isNewGroup = i === 0 || CATEGORY_META[orderedCategories[i - 1]].group !== meta.group;
+        const groupColor = GROUP_COLORS[meta.group];
 
         return (
-          <details
-            key={category}
-            ref={(el) => {
-              detailsRefs.current[category] = el;
-            }}
-            className="rounded-lg border border-neutral-700 p-4"
-          >
+          <div key={category} id={`category-${category}`} className="scroll-mt-4">
+            {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[meta.group]}</h3>}
+            <details
+              ref={(el) => {
+                detailsRefs.current[category] = el;
+              }}
+              className={`rounded-lg border p-4 ${groupColor.border}`}
+            >
             <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
               <span className="flex min-w-0 flex-1 items-center gap-3">
                 <Icon />
@@ -264,6 +352,10 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results }: P
                   </select>
                 )}
 
+                {category === "fire_extinguisher" && (
+                  <ExtinguisherUnitList units={entry.extinguisherUnits ?? []} onChange={(extinguisherUnits) => update({ extinguisherUnits })} />
+                )}
+
                 {meta.hybrid && (
                   <select
                     className={selectClass}
@@ -280,10 +372,10 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results }: P
                       Select…
                     </option>
                     <option className={optionClass} value="material_only">
-                      No certification (fire-resistant / non-flammable material)
+                      {meta.materialOnlyLabel ?? "No certification (fire-resistant / non-flammable material)"}
                     </option>
                     <option className={optionClass} value="certified">
-                      Certified (SFI or FIA rated)
+                      {meta.certifiedLabel ?? "Certified (SFI or FIA rated)"}
                     </option>
                   </select>
                 )}
@@ -341,7 +433,8 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results }: P
                 <ResultRow result={result} />
               </div>
             )}
-          </details>
+            </details>
+          </div>
         );
       })}
     </div>

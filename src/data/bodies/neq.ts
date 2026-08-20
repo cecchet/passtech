@@ -1,5 +1,5 @@
 import { Ruleset } from "../types";
-import { GENERIC_APPAREL_STANDARDS } from "../standards";
+import { GENERIC_APPAREL_STANDARDS, GENERIC_SEAT_STANDARDS } from "../standards";
 
 // "NEQ" = Northeast Chapter of the Audi Club of North America (ACNA), historically named for its
 // "North East Quattro" roots and still branded "NEQ" (neqclub.org). It runs non-competitive HPDE
@@ -27,9 +27,26 @@ const openTopPage = {
   url: "https://www.neqclub.org/open-top-cars/",
 };
 
+const vehicleRequirementsPage = {
+  title: "NEQ — Vehicle Requirements",
+  url: "https://www.neqclub.org/vehicle-requirements/",
+};
+
 // NEQ does not run tiered run groups with different equipment (their "non-solo" vs "solo" split is
 // about driving privileges/experience, confirmed via the vehicle-requirements page, not gear) — a
-// single ruleset covers all participants.
+// single ruleset covers all participants. There IS one genuine, well-cited car-category split,
+// though: per the Open Top Cars page (quoting ACNA Event Guidelines §2.13.2), a convertible/
+// open-top car WITHOUT factory-installed rollover protection must run a mandatory four-point
+// harness with ASM (anti-submarining) technology — no factory 3-point belt option, unlike every
+// other car in this program (closed cars, and convertibles WITH factory rollover protection, both
+// of which the base belts_harness rule below already covers). classOverrides below models that
+// one category for that one car-type class; everything else (helmet, firesuit, shoes, seat, etc.)
+// is confirmed identical across all car types and isn't overridden. The page also requires a
+// four-point roll cage and enforces the "broomstick rule" clearance for this car type — not
+// modeled since this app doesn't yet track a rollcage category (see types.ts CategoryGroup
+// comment). arm_restraint's existing conditional rule (top-down driving) already applies
+// identically to both convertible sub-types per the source text ("recommended in any case"), so it
+// isn't part of this class's overrides either.
 const hpde: Ruleset = {
   id: "neq-hpde",
   bodyId: "neq",
@@ -37,7 +54,10 @@ const hpde: Ruleset = {
   disciplineName: "HPDE / Driver Education (High-Speed Events)",
   disciplineGroup: "HPDE / Track Day",
   lastReviewed: "2026-08-15",
-  sourceDocuments: [techForms, helmetsPage, clothingPage, openTopPage],
+  sourceDocuments: [techForms, helmetsPage, clothingPage, openTopPage, vehicleRequirementsPage],
+  classes: [
+    { id: "open-top-no-protection", label: "Open-Top Car / Convertible WITHOUT Factory Rollover Protection" },
+  ],
   categories: {
     helmet: {
       requirement: "required",
@@ -101,6 +121,132 @@ const hpde: Ruleset = {
       confidence: "medium",
       notes:
         "Confidence is medium rather than high specifically because of the source's self-contradictory phrasing ('must be used and is recommended'). Open-top cars without factory rollover protection also face separate roll-cage/harness vehicle requirements (four-point cage, four-point ASM harness, 'broomstick rule' clearance) — out of scope for this app's driver-PPE categories.",
+    },
+
+    // Car safety gear
+    seat: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_SEAT_STANDARDS,
+      materialNote:
+        "Stock/OEM seat accepted — no certification is required or even offered anywhere in NEQ's materials. Pre-Event Tech Inspection checklist: 'SEAT & RESTRAINTS: Factory three-point required unless harnesses installed and bolted to factory points. Passenger seat & belts must be of similar design as the driver's.' The onsite Event Tech Confirmation checklist reduces this to 'BELTS & SEATS: Equivalent for driver and passenger.' Neither line addresses seat construction or certification — only that the driver's and passenger's seat/belt setup must match each other.",
+      citation: { ...techForms, section: "Pre-Event Tech Inspection checklist — SEAT & RESTRAINTS; Event Tech Confirmation — BELTS & SEATS" },
+      confidence: "high",
+      notes:
+        "Checked every source page cited in this file (tech forms, Vehicle Requirements, Open Top Cars, Clothing, Helmets) — none mandate a certified racing seat, not even for the highest-risk scenario this program addresses: a convertible with no factory rollover protection running an aftermarket four-point roll cage for high-speed events. The Open Top Cars page's equipment rule for that exact case is 'Equivalent equipment (harness and seat) is required for driver and passenger' — read here as a driver/passenger-parity rule (whatever seat you run, the passenger's must match), not a seat-certification mandate; no SFI/FIA seat spec (e.g. 39.1/39.2, 8855/8862) is named anywhere in NEQ's materials. This is a member's-own-car HPDE program where most cars aren't caged, so a stock/OEM seat being the norm for the large majority of participants is consistent with everything checked. acceptedStandards (GENERIC_SEAT_STANDARDS) is offered for the minority who do run a certified racing seat, even though NEQ itself never requires or names a spec. Not addressed anywhere: seat sliders/rails vs. fixed mount, or any run-group-based seat tiering (NEQ's run groups differ only in driving privileges/experience per the Vehicle Requirements page, not equipment — see the ruleset-level comment above).",
+    },
+    belts_harness: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: [
+        {
+          standardId: "sfi-16.1",
+          note: "NEQ cites 'a current SFI or FIA certification' generically without a spec number or slash-level; all currently-registered SFI/FIA belts_harness standards are listed here to match.",
+        },
+        { standardId: "sfi-16.5" },
+        { standardId: "sfi-16.6" },
+        { standardId: "fia-8853-2016" },
+        { standardId: "fia-8853-98" },
+      ],
+      materialNote:
+        "Vehicle Requirements page: 'Required for driver and passenger, both must be fully functional.' Factory belts are accepted as-is. 'Non-factory restraint belts must carry a current SFI or FIA certification' and 'may not be used beyond the expiration date printed on the belt' — no fixed validity window (e.g. a stated number of years) is given, so this defers to whatever date is printed on the belt's own label rather than a computed expiration. Aftermarket belts must also be installed per the manufacturer's instructions, and the passenger's belts must match the driver's (equal restraints). The Pre-Event Tech Inspection checklist separately states: 'Factory three-point required unless harnesses installed and bolted to factory points.'",
+      citation: { ...vehicleRequirementsPage, section: "Lap and Shoulder Belts" },
+      confidence: "high",
+      notes:
+        "Open-top cars/convertibles without factory rollover protection face a stricter, separate requirement per the Open Top Cars page: 'Minimum four-point harness with ASM (anti-submarining) technology must be used,' alongside the four-point roll cage and 'broomstick rule' clearance (neither modeled — this app doesn't yet track a rollcage category). See the 'open-top-no-protection' classOverrides entry below, which replaces this base rule (factory 3-point OK) with that mandatory certified 4-point ASM harness for that car type.",
+    },
+    window_net: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes:
+        "Full document search found no mention of a window net anywhere in NEQ's materials — checked the 3-page Pre-Event Tech Inspection / Event Tech Confirmation / Responsibility Statement PDF (including its SEAT & RESTRAINTS, ROLL BAR, and GLASS & MIRRORS lines), the Vehicle Requirements page, the Open Top Cars / Convertibles page, and the Clothing page. The Open Top Cars page requires an SFI/FIA arm restraint for open-top cars with the top down (see arm_restraint) but never offers a window net as an alternative or otherwise, so satisfiedByAlternative is intentionally not set here or on arm_restraint — NEQ simply doesn't address window nets at all, unlike bodies (e.g. PHA) that frame the two as interchangeable.",
+    },
+    fire_extinguisher: {
+      requirement: "recommended",
+      citation: { ...techForms, section: "Pre-Event Tech Inspection checklist — FIRE EXTINGUISHER" },
+      confidence: "high",
+      notes:
+        "Checklist states in full: 'FIRE EXTINGUISHER: Recommended, not required. If present must be metal to metal mounted.' No size, UL rating, or quantity is specified anywhere in NEQ's materials, so fireExtinguisherOptions is left unset rather than guessed.",
+    },
+    fire_suppression: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes:
+        "No mention of a fire suppression system anywhere across the tech forms, Vehicle Requirements page, or Open Top Cars page — consistent with a run-what-you-brung HPDE program where the only extinguisher provision is a recommended handheld unit (see fire_extinguisher).",
+    },
+    fuel_cell: {
+      requirement: "not_addressed",
+      citation: { ...techForms, section: "Pre-Event Tech Inspection checklist — FUEL SYSTEM" },
+      confidence: "high",
+      notes:
+        "The checklist's 'FUEL SYSTEM' line only covers leak/condition inspection of the stock fuel system ('No leaks at injectors, seals, lines or fittings. No pinching or abrasion of lines.') — it does not mandate a certified fuel cell or otherwise address stock tank vs. cell. Not mentioned on the Vehicle Requirements or Open Top Cars pages either, consistent with a street-car-based HPDE program where the OEM fuel tank is implicitly acceptable.",
+    },
+    window_breaker: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes:
+        "No window net, window breaker, or seatbelt cutter tool requirement found anywhere in NEQ's tech forms, Vehicle Requirements page, or Open Top Cars page. The checklist's 'GLASS & MIRRORS' line only covers crack/mirror condition and requires the driver's and front passenger's windows to roll down.",
+    },
+    kill_switch: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes:
+        "No kill switch or master battery cutoff requirement found anywhere in NEQ's materials — the checklist's 'BATTERY' line only covers mounting/venting/cable condition, not a driver- or corner-worker-accessible cutoff switch.",
+    },
+    tow_hook: {
+      requirement: "conditional",
+      condition:
+        "The onsite Event Tech Confirmation checklist lists 'TOW HOOK: Installed if available' — read here as: if the car has a (often removable, factory-supplied) tow hook, it must be installed/attached rather than left in the trunk, but a car with no factory tow-hook provision isn't required to add an aftermarket one.",
+      citation: { ...techForms, section: "Event Tech Confirmation — TOW HOOK" },
+      confidence: "medium",
+      notes:
+        "Confidence is medium because the four-word checklist phrase 'Installed if available' is terse and not elaborated on elsewhere in NEQ's materials — the reading above matches common HPDE tech-inspection convention but isn't spelled out.",
+    },
+    tow_rope: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes: "No tow rope/strap requirement found anywhere in NEQ's tech forms, Vehicle Requirements page, or Open Top Cars page.",
+    },
+    emergency_triangle: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes: "No warning/emergency triangle requirement found anywhere in NEQ's materials.",
+    },
+    first_aid_kit: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes: "No first aid kit requirement found anywhere in NEQ's materials.",
+    },
+  },
+  classOverrides: {
+    "open-top-no-protection": {
+      belts_harness: {
+        requirement: "required",
+        materialOnlyAccepted: false,
+        acceptedStandards: [
+          {
+            standardId: "sfi-16.1",
+            note: "NEQ cites 'a current SFI or FIA certification' generically without a spec number or slash-level (same generic phrasing as the base belts_harness rule); all currently-registered SFI/FIA belts_harness standards are listed here to match.",
+          },
+          { standardId: "sfi-16.5" },
+          { standardId: "sfi-16.6" },
+          { standardId: "fia-8853-2016" },
+          { standardId: "fia-8853-98" },
+        ],
+        materialNote:
+          "Open Top Cars page (quoting ACNA Event Guidelines §2.13.2): 'Minimum four-point harness with ASM (anti-submarining) technology must be used. Equivalent equipment (harness and seat) is required for driver and passenger.' Unlike the base/general rule, a factory three-point belt does NOT satisfy this — a certified 4-point-or-greater harness with anti-submarining strap geometry is mandatory for any convertible/open-top car lacking factory rollover protection.",
+        citation: { ...openTopPage, section: "2.13.2 Convertibles — minimum requirements for convertibles without factory rollover protection" },
+        confidence: "high",
+        notes:
+          "This is the one confirmed structural equipment difference by car type at NEQ (see the ruleset-level comment above) — everything else (helmet, firesuit, shoes, seat spec, fire extinguisher, etc.) is unchanged for this class. The same source paragraph also requires a four-point roll cage and enforces the 'broomstick rule' helmet clearance for this car type — neither is modeled since this app doesn't yet track a rollcage category, and the broomstick rule is a fitment check rather than a driver/car equipment item. 'ASM (anti-submarining) technology' isn't itself a distinguishable attribute of the SFI/FIA standardIds listed above (this app doesn't track harness geometry/point-count per standard), so acceptedStandards here mirrors the base rule's generic 'current SFI or FIA' list rather than narrowing it.",
+      },
     },
   },
 };

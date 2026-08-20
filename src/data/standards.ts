@@ -94,6 +94,42 @@ export const STANDARDS: StandardDef[] = [
   { id: "sfi-3.3-5", label: "SFI 3.3/5", family: "sfi", categories: APPAREL },
   { id: "sfi-3.3-10", label: "SFI 3.3/10", family: "sfi", categories: APPAREL },
   { id: "sfi-3.3-20", label: "SFI 3.3/20", family: "sfi", categories: APPAREL },
+
+  // Seat
+  { id: "sfi-39.1", label: "SFI 39.1", family: "sfi", categories: ["seat"] },
+  { id: "sfi-39.2", label: "SFI 39.2", family: "sfi", categories: ["seat"] },
+  { id: "fia-8855-1999", label: "FIA 8855-1999", family: "fia", categories: ["seat"] },
+  { id: "fia-8855-2010", label: "FIA 8855-2010", family: "fia", categories: ["seat"] },
+  { id: "fia-8855-2021", label: "FIA 8855-2021", family: "fia", categories: ["seat"] },
+  { id: "fia-8862-2009", label: "FIA 8862-2009", family: "fia", categories: ["seat"] },
+
+  // Belts / harnesses
+  { id: "sfi-16.1", label: "SFI 16.1", family: "sfi", categories: ["belts_harness"] },
+  { id: "sfi-16.5", label: "SFI 16.5", family: "sfi", categories: ["belts_harness"] },
+  { id: "sfi-16.6", label: "SFI 16.6", family: "sfi", categories: ["belts_harness"] },
+  { id: "fia-8853-2016", label: "FIA 8853-2016", family: "fia", categories: ["belts_harness"] },
+  { id: "fia-8853-98", label: "FIA 8853/98", family: "fia", categories: ["belts_harness"] },
+  { id: "fia-8854-98", label: "FIA 8854/98", family: "fia", categories: ["belts_harness"] },
+  { id: "fia-8853-1985", label: "FIA 8853/1985 (incl. Amendment 1/92)", family: "fia", categories: ["belts_harness"] },
+
+  // Window net
+  { id: "sfi-27.1", label: "SFI 27.1", family: "sfi", categories: ["window_net"] },
+  { id: "fia-8863-2013", label: "FIA 8863-2013", family: "fia", categories: ["window_net"] },
+  { id: "fia-8863-2015", label: "FIA 8863-2015", family: "fia", categories: ["window_net"] },
+
+  // Fuel cell
+  { id: "sfi-28.1", label: "SFI 28.1", family: "sfi", categories: ["fuel_cell"] },
+  { id: "sfi-28.3", label: "SFI 28.3", family: "sfi", categories: ["fuel_cell"] },
+  { id: "fia-ft3-1999", label: "FIA FT3-1999", family: "fia", categories: ["fuel_cell"] },
+  { id: "fia-ft3.5-1999", label: "FIA FT3.5-1999", family: "fia", categories: ["fuel_cell"] },
+  { id: "fia-ft5-1999", label: "FIA FT5-1999", family: "fia", categories: ["fuel_cell"] },
+
+  // Fire suppression system
+  { id: "sfi-17.1", label: "SFI 17.1", family: "sfi", categories: ["fire_suppression"] },
+  { id: "sfi-17.2", label: "SFI 17.2", family: "sfi", categories: ["fire_suppression"] },
+  { id: "fia-8865-2015", label: "FIA 8865-2015", family: "fia", categories: ["fire_suppression"] },
+  { id: "fia-technical-list-16", label: "FIA Technical List #16 (fire extinguishers)", family: "fia", categories: ["fire_suppression"] },
+  { id: "fia-technical-list-52", label: "FIA Technical List #52 (fire extinguishing systems)", family: "fia", categories: ["fire_suppression"] },
 ];
 
 /** Every SFI 3.3 tier — use when a body cites the spec generically without naming a minimum level. */
@@ -107,6 +143,33 @@ export const GENERIC_APPAREL_STANDARDS: StandardAcceptance[] = [
   ...SFI_3_3_IDS.map((standardId) => ({ standardId })),
   { standardId: "fia-8856-2000" },
   { standardId: "fia-8856-2018" },
+];
+
+/**
+ * Standard accepted-list for seats when a body requires certification generically ("current FIA
+ * or SFI rated seat") without naming a specific spec/level.
+ */
+export const GENERIC_SEAT_STANDARDS: StandardAcceptance[] = [
+  { standardId: "sfi-39.1" },
+  { standardId: "sfi-39.2" },
+  { standardId: "fia-8855-1999" },
+  { standardId: "fia-8855-2010" },
+  { standardId: "fia-8855-2021" },
+  { standardId: "fia-8862-2009" },
+];
+
+/**
+ * Standard accepted-list for fuel cells when a body requires a certified/homologated cell but
+ * doesn't name a specific spec/level ("an FIA- or SFI-approved fuel cell") — any registered
+ * fuel-cell homologation is treated as acceptable in that case. Only offer this when the body is
+ * genuinely non-specific; if it names a particular family or generation, list only those instead.
+ */
+export const GENERIC_FUEL_CELL_STANDARDS: StandardAcceptance[] = [
+  { standardId: "sfi-28.1" },
+  { standardId: "sfi-28.3" },
+  { standardId: "fia-ft3-1999" },
+  { standardId: "fia-ft3.5-1999" },
+  { standardId: "fia-ft5-1999" },
 ];
 
 export function standardsFor(category: EquipmentCategory): StandardDef[] {

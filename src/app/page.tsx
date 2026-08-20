@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset, getRuleset } from "@/data";
-import { CATEGORY_META, CATEGORY_ORDER } from "@/data/categoryMeta";
+import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, RulesetClass, getRuleset } from "@/data";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
-import { CategoryResults, EquipmentEntry, evaluateRuleset, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
+import { CategoryResults, EquipmentEntry, evaluateRuleset, filterResultsByGroups, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
@@ -41,7 +41,9 @@ const TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
 export default function Home() {
   const [mode, setMode] = useState<Mode>("landing");
   const [rulesetId, setRulesetId] = useState<string>(ALL_RULESETS[0]?.id ?? "");
+  const [classId, setClassId] = useState<string | undefined>(undefined);
   const [entries, setEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
+  const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
@@ -55,7 +57,9 @@ export default function Home() {
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved.entries) setEntries(saved.entries);
+        if (saved.activeGroups) setActiveGroups(new Set(saved.activeGroups));
         if (saved.rulesetId) setRulesetId(saved.rulesetId);
+        if (saved.classId) setClassId(saved.classId);
         if (saved.mode) setMode(saved.mode);
         if (saved.missingReports) setMissingReports(saved.missingReports);
       }
@@ -74,8 +78,16 @@ export default function Home() {
 
   useEffect(() => {
     if (!hydrated) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ entries, rulesetId, mode, missingReports }));
-  }, [entries, rulesetId, mode, missingReports, hydrated]);
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ entries, rulesetId, classId, mode, missingReports, activeGroups: Array.from(activeGroups) })
+    );
+  }, [entries, rulesetId, classId, mode, missingReports, activeGroups, hydrated]);
+
+  const handleRulesetChange = (id: string) => {
+    setRulesetId(id);
+    setClassId(undefined);
+  };
 
   const handleChange = (category: EquipmentCategory, entry: EquipmentEntry) => {
     setEntries((prev) => ({ ...prev, [category]: entry }));
@@ -108,14 +120,20 @@ export default function Home() {
   }, [missingReports]);
 
   const ruleset = getRuleset(rulesetId);
-  const resultsForSelected = useMemo(() => (ruleset ? evaluateRuleset(ruleset, entries) : {}), [ruleset, entries]);
+  // Ignore a stale classId left over from a different ruleset (e.g. after switching bodies, or
+  // loading an older saved session) rather than silently applying another body's class overrides.
+  const activeClassId = ruleset?.classes?.some((c) => c.id === classId) ? classId : undefined;
+  const resultsForSelected = useMemo(
+    () => (ruleset ? filterResultsByGroups(evaluateRuleset(ruleset, entries, undefined, activeClassId), activeGroups) : {}),
+    [ruleset, entries, activeGroups, activeClassId]
+  );
 
   const allResults = useMemo(
     () => ALL_RULESETS.map((rs) => {
-      const results = evaluateRuleset(rs, entries);
+      const results = filterResultsByGroups(evaluateRuleset(rs, entries), activeGroups);
       return { rs, results, status: overallEligibility(results) };
     }),
-    [entries]
+    [entries, activeGroups]
   );
 
   const eligible = allResults.filter((r) => r.status === "eligible");
@@ -131,7 +149,7 @@ export default function Home() {
             <div>
               <h1 className="flex items-center gap-2 text-2xl font-bold">PassTech</h1>
               <p className="text-xs text-neutral-400">
-                Racer Personal Safety Equipment Checker — by{" "}
+                Racer Safety Gear Checker — by{" "}
                 <a href="https://www.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-300">
                   Frog Racing
                 </a>
@@ -221,15 +239,19 @@ export default function Home() {
         </button>
       )}
 
+      {mode !== "landing" && <GroupFilter active={activeGroups} onChange={setActiveGroups} />}
+
       {mode === "reference" && (
         <section>
           <h2 className="mb-4 text-lg font-semibold text-amber-400">Sanctioning body requirements</h2>
 
-          <RulesetPicker value={rulesetId} onChange={setRulesetId} />
+          <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
+
+          {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
           {ruleset && <SourceLine ruleset={ruleset} />}
 
-          {ruleset && <ReferenceView ruleset={ruleset} />}
+          {ruleset && <ReferenceView ruleset={ruleset} activeGroups={activeGroups} classId={activeClassId} />}
         </section>
       )}
 
@@ -239,11 +261,19 @@ export default function Home() {
 
           {ruleset && <PassTechVerdict results={resultsForSelected} />}
 
-          <RulesetPicker value={rulesetId} onChange={setRulesetId} />
+          <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
+
+          {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
           {ruleset && <SourceLine ruleset={ruleset} />}
 
-          <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} results={resultsForSelected} />
+          <EquipmentForm
+            entries={entries}
+            onChange={handleChange}
+            onReportMissing={handleReportMissing}
+            results={resultsForSelected}
+            activeGroups={activeGroups}
+          />
         </section>
       )}
 
@@ -251,7 +281,7 @@ export default function Home() {
         <section>
           <h2 className="mb-4 text-lg font-semibold text-amber-400">Where can my equipment race?</h2>
 
-          <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} />
+          <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} activeGroups={activeGroups} />
 
           <div className="mt-6 space-y-6">
             <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" />
@@ -358,6 +388,39 @@ export default function Home() {
   );
 }
 
+function GroupFilter({ active, onChange }: { active: Set<CategoryGroup>; onChange: (next: Set<CategoryGroup>) => void }) {
+  const toggle = (group: CategoryGroup) => {
+    const next = new Set(active);
+    if (next.has(group)) next.delete(group);
+    else next.add(group);
+    onChange(next);
+  };
+
+  return (
+    <div className="mb-4">
+      <p className="mb-1.5 text-xs font-medium text-neutral-400">Which safety gear sections do you want to check?</p>
+      <div className="flex flex-wrap gap-2">
+        {GROUP_ORDER.map((group) => {
+          const isActive = active.has(group);
+          const color = GROUP_COLORS[group];
+          return (
+            <label
+              key={group}
+              className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${color.border} ${
+                isActive ? `${color.text} bg-neutral-900` : "text-neutral-500"
+              }`}
+            >
+              <input type="checkbox" checked={isActive} onChange={() => toggle(group)} />
+              {GROUP_LABELS[group]}
+              {group === "rollcage" && <span className="text-xs font-normal text-neutral-500">(coming soon)</span>}
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function LandingCard({
   number,
   title,
@@ -419,13 +482,16 @@ const VERDICT_LIST_STYLE: Record<VerdictState, string> = {
 
 function PassTechVerdict({ results }: { results: CategoryResults }) {
   const entries = (Object.keys(results) as EquipmentCategory[]).map((category) => ({ category, result: results[category]! }));
-  const violations = entries.filter(({ result }) => isViolation(result)).map(({ category, result }) => `${CATEGORY_META[category].label}: ${result.reason}`);
-  const pendingConditionals = entries
-    .filter(({ result }) => isPendingConditional(result))
-    .map(({ category, result }) => `${CATEGORY_META[category].label}: ${result.reason}`);
+  const violations = entries.filter(({ result }) => isViolation(result));
+  const pendingConditionals = entries.filter(({ result }) => isPendingConditional(result));
 
   const state: VerdictState = violations.length > 0 ? "fail" : pendingConditionals.length > 0 ? "conditional" : "pass";
   const list = state === "fail" ? violations : state === "conditional" ? pendingConditionals : [];
+
+  const groupedList = GROUP_ORDER.map((group) => ({
+    group,
+    items: list.filter(({ category }) => CATEGORY_META[category].group === group),
+  })).filter((g) => g.items.length > 0);
 
   return (
     <div className={`mb-4 rounded-lg border p-4 ${VERDICT_BOX_STYLE[state]}`}>
@@ -435,12 +501,25 @@ function PassTechVerdict({ results }: { results: CategoryResults }) {
         <span className="font-bold">PassTech</span>
         <span className={`text-sm font-semibold ${VERDICT_LABEL_STYLE[state]}`}>{VERDICT_LABEL[state]}</span>
       </div>
-      {list.length > 0 && (
-        <ul className={`mt-2 space-y-1 text-sm ${VERDICT_LIST_STYLE[state]}`}>
-          {list.map((v, i) => (
-            <li key={i}>• {v}</li>
+      {groupedList.length > 0 && (
+        <div className={`mt-2 space-y-3 text-sm ${VERDICT_LIST_STYLE[state]}`}>
+          {groupedList.map(({ group, items }) => (
+            <div key={group}>
+              <h3 className={`text-xs font-semibold uppercase tracking-wide ${GROUP_COLORS[group].text}`}>{GROUP_LABELS[group]}</h3>
+              <ul className="mt-1 space-y-1">
+                {items.map(({ category, result }) => (
+                  <li key={category}>
+                    •{" "}
+                    <a href={`#category-${category}`} className="underline underline-offset-2 hover:text-white">
+                      {CATEGORY_META[category].label}
+                    </a>
+                    : {result.reason}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
@@ -488,6 +567,36 @@ function RulesetPicker({ value, onChange }: { value: string; onChange: (id: stri
               </option>
             ))}
           </optgroup>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function ClassPicker({
+  classes,
+  value,
+  onChange,
+}: {
+  classes: RulesetClass[];
+  value: string | undefined;
+  onChange: (id: string | undefined) => void;
+}) {
+  return (
+    <label className="mb-4 block">
+      <span className="mb-1 block text-sm font-medium">Refine by class (optional)</span>
+      <select
+        className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value || undefined)}
+      >
+        <option className="bg-neutral-900 text-neutral-100" value="">
+          All classes — general rules
+        </option>
+        {classes.map((c) => (
+          <option key={c.id} value={c.id} className="bg-neutral-900 text-neutral-100">
+            {c.label}
+          </option>
         ))}
       </select>
     </label>
