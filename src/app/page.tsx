@@ -8,7 +8,7 @@ import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
 import { CategoryResults, EquipmentEntry, evaluateRuleset, filterResultsByGroups, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
 import { BrandLogo } from "@/components/BrandLogo";
-import { TutorialModal } from "@/components/TutorialModal";
+import { TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first";
@@ -43,7 +43,7 @@ export default function Home() {
   const [rulesetId, setRulesetId] = useState<string>(ALL_RULESETS[0]?.id ?? "");
   const [classId, setClassId] = useState<string | undefined>(undefined);
   const [entries, setEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
-  const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver"]));
+  const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
@@ -87,6 +87,12 @@ export default function Home() {
   const handleRulesetChange = (id: string) => {
     setRulesetId(id);
     setClassId(undefined);
+  };
+
+  const tutorialActions: TutorialActions = {
+    goToReference: () => setMode("reference"),
+    selectRuleset: handleRulesetChange,
+    selectClass: setClassId,
   };
 
   const handleChange = (category: EquipmentCategory, entry: EquipmentEntry) => {
@@ -383,7 +389,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <TutorialModal open={showTutorial} onClose={closeTutorial} />
+      <TutorialModal open={showTutorial} onClose={closeTutorial} actions={tutorialActions} />
     </div>
   );
 }
@@ -397,7 +403,7 @@ function GroupFilter({ active, onChange }: { active: Set<CategoryGroup>; onChang
   };
 
   return (
-    <div className="mb-4">
+    <div id="tutorial-group-filter" className="mb-4">
       <p className="mb-1.5 text-xs font-medium text-neutral-400">Which safety gear sections do you want to check?</p>
       <div className="flex flex-wrap gap-2">
         {GROUP_ORDER.map((group) => {
@@ -527,7 +533,7 @@ function PassTechVerdict({ results }: { results: CategoryResults }) {
 
 function SourceLine({ ruleset }: { ruleset: Ruleset }) {
   return (
-    <p className="mb-6 mt-4 rounded-lg border border-sky-900 bg-sky-950/40 p-3 text-sm text-sky-200">
+    <p id="tutorial-source-line" className="mb-6 mt-4 rounded-lg border border-sky-900 bg-sky-950/40 p-3 text-sm text-sky-200">
       Source:{" "}
       {ruleset.sourceDocuments.map((d, i) => (
         <span key={i}>
@@ -552,7 +558,7 @@ function SourceLine({ ruleset }: { ruleset: Ruleset }) {
 
 function RulesetPicker({ value, onChange }: { value: string; onChange: (id: string) => void }) {
   return (
-    <label className="mb-4 block">
+    <label id="tutorial-ruleset-picker" className="mb-4 block">
       <span className="mb-1 block text-sm font-medium">Select a sanctioning body / discipline</span>
       <select
         className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
@@ -583,7 +589,7 @@ function ClassPicker({
   onChange: (id: string | undefined) => void;
 }) {
   return (
-    <label className="mb-4 block">
+    <label id="tutorial-class-picker" className="mb-4 block">
       <span className="mb-1 block text-sm font-medium">Refine by class (optional)</span>
       <select
         className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
