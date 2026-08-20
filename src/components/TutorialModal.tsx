@@ -7,6 +7,7 @@ const INTRO_TEXT = `PassTech checks your safety equipment against the published 
 
 export interface TutorialActions {
   goToReference: () => void;
+  goToLanding: () => void;
   selectRuleset: (id: string) => void;
   selectClass: (id: string | undefined) => void;
 }
@@ -111,6 +112,9 @@ export function TutorialModal({
   const next = () => {
     const newStep = step + 1;
     if (newStep >= TOTAL_STEPS) {
+      // The tour drove the app into "reference" mode partway through — leave the user back at the
+      // landing page, not stranded on Option 1, once it's done.
+      actions.goToLanding();
       onClose();
       return;
     }
