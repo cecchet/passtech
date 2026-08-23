@@ -5,7 +5,7 @@ export const GROUP_ORDER: CategoryGroup[] = ["driver", "car", "rollcage"];
 export const GROUP_LABELS: Record<CategoryGroup, string> = {
   driver: "Driver Safety Gear",
   car: "Car Safety Gear",
-  rollcage: "Rollcage",
+  rollcage: "Rollover protection",
 };
 
 /** Section text/border color per group, so each group reads as visually distinct wherever its categories are shown. */
@@ -18,6 +18,31 @@ export const GROUP_COLORS: Record<CategoryGroup, { text: string; border: string 
 /** Categories whose group is currently selected, in CATEGORY_ORDER — used to filter what's shown/evaluated. */
 export function filterCategoriesByGroups(categories: EquipmentCategory[], activeGroups: ReadonlySet<CategoryGroup>): EquipmentCategory[] {
   return categories.filter((c) => activeGroups.has(CATEGORY_META[c].group));
+}
+
+/**
+ * Rally only: categories that need a separate entry per occupant when a ruleset has
+ * `supportsCodriver` and the "Add codriver gear" toggle is on — the usual driver-group personal
+ * gear plus seat/harness/window net, which rally treats as per-seat rather than car-shared.
+ * Everything else (fuel cell, extinguisher, kill switch, rollover protection, etc.) stays a single
+ * shared car-level entry regardless of occupant count.
+ */
+export const PER_OCCUPANT_CATEGORIES: EquipmentCategory[] = [
+  "helmet",
+  "balaclava",
+  "hnr",
+  "firesuit",
+  "undergarment",
+  "gloves",
+  "arm_restraint",
+  "shoes",
+  "seat",
+  "belts_harness",
+  "window_net",
+];
+
+export function isPerOccupantCategory(category: EquipmentCategory): boolean {
+  return PER_OCCUPANT_CATEGORIES.includes(category);
 }
 
 export const CATEGORY_ORDER: EquipmentCategory[] = [
@@ -43,6 +68,8 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "emergency_triangle",
   "first_aid_kit",
   "window_breaker",
+  // Rollover protection
+  "rollover_protection",
 ];
 
 interface CategoryMeta {
@@ -175,5 +202,17 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+  },
+
+  // Rollover protection
+  rollover_protection: {
+    label: "Rollover Protection",
+    group: "rollcage",
+    hybrid: false,
+    // Not cert/standard-based (no registered standards for this category) — evaluateCategory has
+    // its own dedicated branch, and this flag just keeps the generic certification dropdown off
+    // the form (see EquipmentForm's showCertList).
+    presenceOnly: true,
+    hint: "Whether a cage/roll bar is required — and what's expected of it — usually depends on your car's body style: closed roof, convertible, open with no windshield frame, or open-wheel. Rally bodies typically also check when the cage was logbooked/built.",
   },
 };

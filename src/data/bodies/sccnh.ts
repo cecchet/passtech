@@ -7,6 +7,7 @@ const gravelTrials: Ruleset = {
   bodyName: "SCCNH",
   disciplineName: "Gravel Trials",
   disciplineGroup: "Rally",
+  supportsCodriver: true,
   lastReviewed: "2026-08-15",
   sourceDocuments: [
     {
@@ -447,6 +448,35 @@ const climbToTheClouds: Ruleset = {
         "Rule 1.2.1: a seatbelt cutter must be in the vehicle and within reach of the driver. No separate window-breaking tool is addressed beyond the polycarbonate (Lexan) window material requirement (Rule 1.4.2).",
       citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "1.2" },
       confidence: "high",
+    },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 1200, minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.095 }], materialNote: "DOM or Docol R8, ≥350N/mm² tensile" },
+        {
+          underWeightLbs: 2501,
+          minSizes: [
+            { outerDiameterIn: 1.5, wallThicknessIn: 0.095 },
+            { outerDiameterIn: 1.25, wallThicknessIn: 0.12 },
+          ],
+          materialNote: "DOM or Docol R8, ≥350N/mm² tensile",
+        },
+        {
+          minSizes: [
+            { outerDiameterIn: 1.75, wallThicknessIn: 0.095 },
+            { outerDiameterIn: 1.5, wallThicknessIn: 0.12 },
+          ],
+          materialNote: "DOM or Docol R8, ≥350N/mm² tensile — for 2501 lbs and up",
+        },
+      ],
+      condition:
+        "Two cage types apply depending on class: Cage A (FIA Art. 253 Appendix J rally-style) for Unlimited/Unlimited Sport/Open Lite/Modified Electric/Rally; Cage A or B (full sedan cage, two side-protection bars per side, sill bar) for Open/Prepared/HPSS/Stock Electric/Vintage Exhibition; Vintage Driver may use A or B but excludes open-wheel/Unlimited-type cars from that class. FIA-homologated cages built after 2005 are accepted as designed, with supporting paperwork required at tech; pre-2005 FIA cages need an A-pillar-support + X-bracing retrofit.",
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "1.12–1.22" },
+      confidence: "high",
+      notes:
+        "Bolt-in footplates are explicitly allowed (≥3/16\" steel, 5\" square, minimum 3× 3/8\" grade-5 bolts) — the ban is specifically on bolt-together/sleeved tube joints, not the chassis mounting plates. No aluminum cages allowed, even if otherwise compliant. Padding must be SFI or FIA high-density.",
     },
   },
   classOverrides: {

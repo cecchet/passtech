@@ -2,6 +2,36 @@ import { EquipmentCategory, StandardAcceptance, StandardDef } from "./types";
 
 export const NOT_LISTED = "__not_listed__";
 
+/**
+ * Rollover protection only: bodies whose cage logbooks a sanctioning body might recognize. Shared
+ * across rally and road racing rulesets — each ruleset's `rolloverProtectionAcceptedLogbookBodies`
+ * lists which of these ids it actually accepts, the same way `StandardAcceptance` narrows this
+ * registry's STANDARDS list per category. The UI always offers the full list plus "No logbook" and
+ * "Not listed / other…" regardless of ruleset — narrowing happens at evaluation time, not display
+ * time, consistent with how the certification dropdowns work.
+ */
+export interface RolloverLogbookBodyDef {
+  id: string;
+  label: string;
+}
+
+export const ROLLOVER_LOGBOOK_BODIES: RolloverLogbookBodyDef[] = [
+  { id: "ara", label: "ARA (American Rally Association)" },
+  { id: "cars", label: "CARS (Canadian Rally Championship)" },
+  { id: "nasa-rallysport", label: "NASA RallySport" },
+  { id: "scca-prorally", label: "SCCA ProRally" },
+  { id: "rally-america", label: "Rally America (legacy)" },
+  { id: "score", label: "SCORE" },
+  { id: "scca", label: "SCCA" },
+  { id: "nasa", label: "NASA" },
+  { id: "fia", label: "FIA" },
+];
+
+export function logbookBodyLabel(id: string): string {
+  if (id === NOT_LISTED) return "Not listed / other";
+  return ROLLOVER_LOGBOOK_BODIES.find((b) => b.id === id)?.label ?? id;
+}
+
 const APPAREL: EquipmentCategory[] = ["gloves", "shoes", "undergarment", "arm_restraint", "balaclava"];
 
 /**

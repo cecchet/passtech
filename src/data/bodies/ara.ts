@@ -7,6 +7,7 @@ const performanceRally: Ruleset = {
   bodyName: "American Rally Association (ARA)",
   disciplineName: "Performance Rally",
   disciplineGroup: "Rally",
+  supportsCodriver: true,
   lastReviewed: "2026-08-04",
   sourceDocuments: [
     {
@@ -99,13 +100,14 @@ const performanceRally: Ruleset = {
     seat: {
       requirement: "required",
       materialOnlyAccepted: false,
+      seatRailsForbidden: true,
       acceptedStandards: [{ standardId: "fia-8855-1999" }, { standardId: "fia-8862-2009" }],
       materialNote:
         "RTR 2.3.1.a: 'The use of hinged-back and OEM seats is prohibited.' This is an explicit, unambiguous ban — unlike some other bodies where a stock seat is merely implied-out by a belt-routing or construction requirement, ARA names OEM seats outright as disallowed. materialOnlyAccepted is false for that reason: there is no stock/OEM path here. RTR 2.3.1.b: 'All the occupants' seats must be homologated by FIA Standards 8855-1999 or 8862-2009, or be specifically designed for motor racing. All non-FIA seats are subject to acceptance by the Chief Scrutineer.' So the accepted paths are (1) FIA-homologated, or (2) a purpose-built racing seat without FIA homologation, admitted at the Chief Scrutineer's discretion — not modeled as a separate standards entry since it's a discretionary call rather than a named certification.",
-      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.1" },
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition, through Bulletin 2026-8", section: "2.3.1–2.3.2" },
       confidence: "high",
       notes:
-        "Seat mounting (RTR 2.3.2): seats must be securely attached to the vehicle structure to prevent movement in an accident — sliders are explicitly prohibited ('Seats may not be mounted with sliders'), a fixed mount is required. Confidence raised to high: directly confirmed against the locally cached full text of the 2023 RTR Edition (through Bulletin 2023-8, saved at rulebooks/ara-rally-technical-rules.txt/.pdf) — RTR 2.3.1.a/b and 2.3.2 quoted verbatim above. The '2026 Edition, through Bulletin 2026-8' cited elsewhere in this file is still only distributed via the ARA/Sportity app, not as a downloadable PDF, but section 2.3 numbering matches the already-verified 2026 driver-gear sections in this file exactly (2.2.5 master switch, 2.2.9 tow hooks, 2.3.5 fire extinguishers, 2.3.6 first aid kit, 2.3.10 belt cutters all match precisely), so no renumbering is expected between the 2023 and 2026 editions for this clause either.",
+        "Seat mounting (RTR 2.3.2): 'Seats must be securely attached to the structure of the vehicle in such a manner as to prevent the movement of the seat in case of an accident. Seats may not be mounted with sliders.' Verified verbatim against the actual 2026 RTR PDF (rulebooks/ara-rally-technical-rules-2026.pdf, distributed via the ARA/Sportity app rather than a plain download link) — this file's earlier '2026 Edition' citations had been carried forward from a stale, differently-sourced 2023 PDF without being re-verified against the real 2026 document; this category is now confirmed against the genuine 2026 text.",
     },
     belts_harness: {
       requirement: "required",
@@ -210,6 +212,20 @@ const performanceRally: Ruleset = {
       confidence: "medium",
       notes:
         "One or more belt cutters and glass breakers must be carried within reach of both driver and co-driver while harnesses are worn; the seat belt cutter must be designed specifically for cutting seat belts. Related: RTR 2.2.6.b requires one or more window-breakers accessible to driver and co-driver for vehicles with glass side windows, and 2.2.6.d requires window nets (FIA Art. 253 or SFI 27.1) in lieu of rolled-up windows during stages.",
+    },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionLogbookCutoffYear: 2009,
+      rolloverProtectionRequiresLogbook: true,
+      rolloverProtectionAcceptedLogbookBodies: ["ara", "cars", "nasa-rallysport", "scca-prorally", "rally-america", "fia"],
+      condition:
+        "Vehicles log-booked before 1/1/2009 may instead run a legacy (2006 Rally America-spec) cage with required retrofit elements (sill bar + door bar, diagonals, windscreen support ≥1.5\"×0.095\") rather than full Article 253 compliance. A cage logbook is required — ARA, CARS, NASA RallySport, SCCA ProRally, Rally America (legacy), and FIA logbooks are recognized.",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition, through Bulletin 2026-8", section: "2.2.2" },
+      confidence: "high",
+      notes:
+        "Built to FIA Appendix J Article 253 (CDS steel, or DOM/Docol R8 alternates at named minimums: 1.75\"×0.095\" DOM or 1.75\"×0.083\" DOCOL R8 for main/front/lateral bars and door bars, 1.5\"×0.095\"/0.083\" elsewhere), or a fully FIA-homologated cage with original certification documentation. No convertible/open-top path — ARA rally cars are closed-body only. Cage must be entered in the ARA Vehicle Log Book, issued only by an ARA-authorized Technical Inspector; homologated cages may not be modified. RTR 2.2.2.c.4: 'All roll cages must be fully welded at all joints. Cages with bolt together design members will not be allowed regardless of homologation status.' Verified against the genuine 2026 RTR PDF (rulebooks/ara-rally-technical-rules-2026.pdf, via the ARA/Sportity app link) — footplates themselves may still be welded directly to the chassis per 2.2.2.c.2.b, which this app doesn't yet separately track from tube-joint welding.",
     },
   },
 };

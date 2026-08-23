@@ -16,6 +16,7 @@ const performanceRally: Ruleset = {
   bodyName: "CARS (Canadian Rally Championship)",
   disciplineName: "Performance Rally",
   disciplineGroup: "Rally",
+  supportsCodriver: true,
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "NRR 11.1.6-11.1.8" }],
   categories: {
@@ -219,6 +220,7 @@ const rallySprint: Ruleset = {
   bodyName: "CARS (Canadian Rally Championship)",
   disciplineName: "Rally Sprint",
   disciplineGroup: "Rally",
+  supportsCodriver: true,
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "NRR 28.3.3" }],
   categories: {

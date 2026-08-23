@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, RulesetClass, getRuleset } from "@/data";
-import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER } from "@/data/categoryMeta";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
+import { EquipmentSummary } from "@/components/EquipmentSummary";
 import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
 import { CategoryResults, EquipmentEntry, evaluateRuleset, filterResultsByGroups, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
@@ -35,6 +36,10 @@ interface MissingReport {
   reportedAt: string;
 }
 
+// Bump this by hand whenever a new build is deployed — it's shown next to the app title so we can
+// tell at a glance whether a user reporting an issue is on the latest version or a stale cached one.
+const BUILD_DATE = "2026/08/22";
+
 const STORAGE_KEY = "safety-gear-check:v2";
 const TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
 
@@ -43,6 +48,8 @@ export default function Home() {
   const [rulesetId, setRulesetId] = useState<string>(ALL_RULESETS[0]?.id ?? "");
   const [classId, setClassId] = useState<string | undefined>(undefined);
   const [entries, setEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
+  const [codriverEntries, setCodriverEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
+  const [hasCodriver, setHasCodriver] = useState(false);
   const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [onlyHaveEquipment, setOnlyHaveEquipment] = useState(false);
@@ -58,6 +65,8 @@ export default function Home() {
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved.entries) setEntries(saved.entries);
+        if (saved.codriverEntries) setCodriverEntries(saved.codriverEntries);
+        if (typeof saved.hasCodriver === "boolean") setHasCodriver(saved.hasCodriver);
         if (saved.activeGroups) setActiveGroups(new Set(saved.activeGroups));
         if (saved.rulesetId) setRulesetId(saved.rulesetId);
         if (saved.classId) setClassId(saved.classId);
@@ -82,9 +91,19 @@ export default function Home() {
     if (!hydrated) return;
     window.localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ entries, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups: Array.from(activeGroups) })
+      JSON.stringify({
+        entries,
+        codriverEntries,
+        hasCodriver,
+        rulesetId,
+        classId,
+        mode,
+        missingReports,
+        onlyHaveEquipment,
+        activeGroups: Array.from(activeGroups),
+      })
     );
-  }, [entries, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups, hydrated]);
+  }, [entries, codriverEntries, hasCodriver, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups, hydrated]);
 
   const handleRulesetChange = (id: string) => {
     setRulesetId(id);
@@ -102,12 +121,19 @@ export default function Home() {
     setEntries((prev) => ({ ...prev, [category]: entry }));
   };
 
+  const handleCodriverChange = (category: EquipmentCategory, entry: EquipmentEntry) => {
+    setCodriverEntries((prev) => ({ ...prev, [category]: entry }));
+  };
+
   const handleReportMissing = (category: EquipmentCategory, label: string) => {
     setMissingReports((prev) => [...prev, { category, label, reportedAt: new Date().toISOString() }]);
   };
 
+  const handleCodriverReportMissing = (category: EquipmentCategory, label: string) => handleReportMissing(category, `Codriver — ${label}`);
+
   const clearAll = () => {
     setEntries({});
+    setCodriverEntries({});
     window.localStorage.removeItem(STORAGE_KEY);
   };
 
@@ -136,6 +162,20 @@ export default function Home() {
     () => (ruleset ? filterResultsByGroups(evaluateRuleset(ruleset, entries, undefined, activeClassId), activeGroups) : {}),
     [ruleset, entries, activeGroups, activeClassId]
   );
+  const showCodriver = !!ruleset?.supportsCodriver;
+  const codriverResultsForSelected = useMemo(() => {
+    if (!ruleset || !showCodriver || !hasCodriver) return {};
+    const raw = filterResultsByGroups(evaluateRuleset(ruleset, codriverEntries, undefined, activeClassId), activeGroups);
+    // The codriver only has their own gear (helmet...shoes, seat, belts, window net) — evaluateRuleset
+    // computes every category against codriverEntries, so shared car items (fuel cell, rollover
+    // protection, etc.) would otherwise show up as bogus codriver violations since nothing is entered
+    // for them there.
+    const perOccupant: CategoryResults = {};
+    (Object.keys(raw) as EquipmentCategory[]).forEach((category) => {
+      if (isPerOccupantCategory(category)) perOccupant[category] = raw[category];
+    });
+    return perOccupant;
+  }, [ruleset, showCodriver, hasCodriver, codriverEntries, activeGroups, activeClassId]);
 
   const allResults = useMemo(
     () => ALL_RULESETS.map((rs) => {
@@ -176,7 +216,9 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <BrandLogo />
             <div>
-              <h1 className="flex items-center gap-2 text-2xl font-bold">PassTech</h1>
+              <h1 className="flex items-center gap-2 text-2xl font-bold">
+                PassTech <span className="text-xs font-normal text-neutral-500">({BUILD_DATE} release)</span>
+              </h1>
               <p className="text-xs text-neutral-400">
                 Racer Safety Gear Checker — by{" "}
                 <a href="https://www.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-300">
@@ -283,6 +325,8 @@ export default function Home() {
 
           {ruleset && <SourceLine ruleset={ruleset} />}
 
+          {ruleset && <EquipmentSummary ruleset={ruleset} classId={activeClassId} activeGroups={activeGroups} />}
+
           {ruleset && <ReferenceView ruleset={ruleset} activeGroups={activeGroups} classId={activeClassId} />}
         </section>
       )}
@@ -291,13 +335,33 @@ export default function Home() {
         <section>
           <h2 className="mb-4 text-lg font-semibold text-amber-400">Will my equipment pass tech?</h2>
 
-          {ruleset && <PassTechVerdict results={resultsForSelected} />}
+          {ruleset && (
+            <PassTechVerdict results={resultsForSelected} codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined} />
+          )}
 
           <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
 
           {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
+          {showCodriver && (
+            <label className="mb-4 flex items-center gap-2 text-sm text-neutral-300">
+              <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
+              Add codriver gear
+            </label>
+          )}
+
           {ruleset && <SourceLine ruleset={ruleset} />}
+
+          {ruleset && (
+            <EquipmentSummary
+              ruleset={ruleset}
+              classId={activeClassId}
+              activeGroups={activeGroups}
+              results={resultsForSelected}
+              hasCodriver={showCodriver && hasCodriver}
+              codriverResults={codriverResultsForSelected}
+            />
+          )}
 
           <EquipmentForm
             entries={entries}
@@ -306,6 +370,20 @@ export default function Home() {
             results={resultsForSelected}
             activeGroups={activeGroups}
           />
+
+          {showCodriver && hasCodriver && (
+            <div className="mt-6">
+              <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver Safety Gear</h3>
+              <EquipmentForm
+                entries={codriverEntries}
+                onChange={handleCodriverChange}
+                onReportMissing={handleCodriverReportMissing}
+                results={codriverResultsForSelected}
+                activeGroups={activeGroups}
+                occupant="codriver"
+              />
+            </div>
+          )}
         </section>
       )}
 
@@ -523,18 +601,29 @@ const VERDICT_LIST_STYLE: Record<VerdictState, string> = {
   fail: "text-red-200",
 };
 
-function PassTechVerdict({ results }: { results: CategoryResults }) {
-  const entries = (Object.keys(results) as EquipmentCategory[]).map((category) => ({ category, result: results[category]! }));
+function PassTechVerdict({ results, codriverResults }: { results: CategoryResults; codriverResults?: CategoryResults }) {
+  const toEntries = (r: CategoryResults, anchorSuffix: string) =>
+    (Object.keys(r) as EquipmentCategory[]).map((category) => ({ category, result: r[category]!, anchorSuffix }));
+  const entries = [...toEntries(results, ""), ...toEntries(codriverResults ?? {}, "-codriver")];
   const violations = entries.filter(({ result }) => isViolation(result));
   const pendingConditionals = entries.filter(({ result }) => isPendingConditional(result));
 
   const state: VerdictState = violations.length > 0 ? "fail" : pendingConditionals.length > 0 ? "conditional" : "pass";
   const list = state === "fail" ? violations : state === "conditional" ? pendingConditionals : [];
 
-  const groupedList = GROUP_ORDER.map((group) => ({
+  const driverList = list.filter((i) => i.anchorSuffix === "");
+  const codriverList = list.filter((i) => i.anchorSuffix === "-codriver");
+
+  const groupedList: { group: string; label: string; color: string; items: typeof driverList }[] = GROUP_ORDER.map((group) => ({
     group,
-    items: list.filter(({ category }) => CATEGORY_META[category].group === group),
+    label: GROUP_LABELS[group],
+    color: GROUP_COLORS[group].text,
+    items: driverList.filter(({ category }) => CATEGORY_META[category].group === group),
   })).filter((g) => g.items.length > 0);
+
+  if (codriverList.length > 0) {
+    groupedList.push({ group: "codriver", label: "Codriver Safety Gear", color: "text-teal-400", items: codriverList });
+  }
 
   return (
     <div className={`mb-4 rounded-lg border p-4 ${VERDICT_BOX_STYLE[state]}`}>
@@ -546,14 +635,14 @@ function PassTechVerdict({ results }: { results: CategoryResults }) {
       </div>
       {groupedList.length > 0 && (
         <div className={`mt-2 space-y-3 text-sm ${VERDICT_LIST_STYLE[state]}`}>
-          {groupedList.map(({ group, items }) => (
+          {groupedList.map(({ group, label, color, items }) => (
             <div key={group}>
-              <h3 className={`text-xs font-semibold uppercase tracking-wide ${GROUP_COLORS[group].text}`}>{GROUP_LABELS[group]}</h3>
+              <h3 className={`text-xs font-semibold uppercase tracking-wide ${color}`}>{label}</h3>
               <ul className="mt-1 space-y-1">
-                {items.map(({ category, result }) => (
+                {items.map(({ category, result, anchorSuffix }) => (
                   <li key={category}>
                     •{" "}
-                    <a href={`#category-${category}`} className="underline underline-offset-2 hover:text-white">
+                    <a href={`#category-${category}${anchorSuffix}`} className="underline underline-offset-2 hover:text-white">
                       {CATEGORY_META[category].label}
                     </a>
                     : {result.reason}

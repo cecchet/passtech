@@ -42,6 +42,8 @@ const TowRopeIcon = () => <CategoryIcon src="/tow-rope.jpg" objectPosition="50% 
 const EmergencyTriangleIcon = () => <CategoryIcon src="/triangles.jpg" objectPosition="50% 45%" />;
 const FirstAidKitIcon = () => <CategoryIcon src="/first-aid.jpg" objectPosition="50% 45%" />;
 
+const RolloverProtectionIcon = () => <CategoryIcon src="/rollcage-diagram.png" objectPosition="50% 50%" fit="contain" />;
+
 export const CATEGORY_ICONS: Record<EquipmentCategory, () => React.JSX.Element> = {
   helmet: HelmetIcon,
   balaclava: BalaclavaIcon,
@@ -63,4 +65,5 @@ export const CATEGORY_ICONS: Record<EquipmentCategory, () => React.JSX.Element> 
   tow_rope: TowRopeIcon,
   emergency_triangle: EmergencyTriangleIcon,
   first_aid_kit: FirstAidKitIcon,
+  rollover_protection: RolloverProtectionIcon,
 };

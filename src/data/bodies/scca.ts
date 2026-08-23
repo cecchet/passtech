@@ -891,6 +891,22 @@ const roadRacing: Ruleset = {
       confidence: "high",
       notes: "No requirement for a first aid kit carried in the car — confirmed via full-document search. (Event-level medical staffing/facilities are addressed elsewhere in the GCR but are an event-organizational requirement, not car equipment, and out of scope for this app.)",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionByBodyStyle: {
+        closed_roof: "required",
+        convertible: "required",
+        open_no_windshield: "required",
+        open_wheel: "required",
+      },
+      condition:
+        "Geometry requirement differs by body style: closed cars need the main hoop as close as possible to the roof/B-pillars with a high front hoop; open cars retaining the windshield frame need a full-height main hoop ≥2\" above the driver's helmet; open cars without a windshield frame may use an asymmetric main hoop with either a high or low front hoop. Formula/Sports Racing cars follow a separate GCR §9.4.5 spec (low or high front hoop, no diagonal brace requirement).",
+      citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.4" },
+      confidence: "high",
+      notes:
+        "Own weight-tiered tubing spec (SAE 1020/1025 mild/DOM, 4130/T45 alloy, or Docol R8 — ERW banned): roughly 1.375\"×0.080\" up to 1700 lbs, up to 2.00\"×0.095\"/1.75\"×0.120\" over 4000 lbs. Mounting points required vary 6–12 by class (Improved Touring/Spec Miata/B-Spec/C-Spec limited to 6; T2/T3/T4 allow up to 12). FIA or FIA-Approved-Test-House homologated cages accepted with an FIA ID plate plus a letter from SCCA Technical Services (Motorsport UK ROPS-certified cages likewise); the car's logbook records a full description of the roll bar/cage, and its identity number is permanently stamped on the roll bar itself.",
+    },
   },
   classOverrides: {
     "touring-t3-t4-bspec-cspec": {

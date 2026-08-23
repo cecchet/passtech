@@ -18,10 +18,38 @@ export type EquipmentCategory =
   | "tow_hook"
   | "tow_rope"
   | "emergency_triangle"
-  | "first_aid_kit";
+  | "first_aid_kit"
+  | "rollover_protection";
 
-/** Top-level section a category is displayed under. No categories are tagged "rollcage" yet — that's a future phase. */
+/** Top-level section a category is displayed under. */
 export type CategoryGroup = "driver" | "car" | "rollcage";
+
+/** Rally only: a car has a driver and, when this occupant is added, a codriver, each with their own personal gear + seat/harness. */
+export type Occupant = "driver" | "codriver";
+
+/**
+ * Rollover protection only: the four ways rulesets actually draw the line, per the cross-body
+ * survey — a plain "convertible vs. not" split is too coarse (SCCA GCR alone distinguishes open
+ * cars that retain the windshield frame from those that don't; rally/autocross bodies mostly
+ * don't care about that distinction and just ask "removable roof or not").
+ */
+export type CarBodyStyle = "closed_roof" | "convertible" | "open_no_windshield" | "open_wheel";
+
+/** Rollover protection only: one acceptable (outer diameter, wall thickness) tube size. Bodies commonly allow several equivalent alternates per weight bracket (e.g. a smaller diameter with a thicker wall) — a cage clears the bracket by meeting or exceeding ANY one listed size. */
+export interface RolloverTubingSize {
+  outerDiameterIn: number;
+  wallThicknessIn: number;
+}
+
+/** Rollover protection only: one weight bracket's minimum tube spec. List brackets lightest first. */
+export interface RolloverTubingTier {
+  /** This tier applies to cars under this weight (lbs); omit on the heaviest tier to mean "and up." */
+  underWeightLbs?: number;
+  /** Acceptable tube sizes for this bracket — see RolloverTubingSize. */
+  minSizes: RolloverTubingSize[];
+  /** Free-text material note for this bracket (e.g. a required steel grade/alloy). */
+  materialNote?: string;
+}
 
 export type RequirementLevel =
   | "required"
@@ -113,6 +141,71 @@ export interface CategoryRule {
    * rather than an outright rejection, since most bodies don't check ongoing service currency.
    */
   fireSuppressionRequiresCurrentService?: boolean;
+  /**
+   * Rollover protection only: requirement level per car body style, when it isn't uniform (e.g.
+   * not required for a closed car but required for an unprotected convertible; a different
+   * geometry rule for open-wheel). A style missing from this map falls back to the base
+   * `requirement` above. Omit entirely when the body's rule doesn't distinguish by body style.
+   */
+  rolloverProtectionByBodyStyle?: Partial<Record<CarBodyStyle, RequirementLevel>>;
+  /**
+   * Rollover protection, convertible only: a convertible with OEM/factory-installed rollover
+   * protection (integrated hoops — Boxster, S2000, MINI Cooper, etc.) is treated as satisfying
+   * this rule outright, without needing an aftermarket cage/bar.
+   */
+  rolloverProtectionFactoryExempt?: boolean;
+  /**
+   * Rollover protection only (rally-style logbook bodies): a cage is accepted "as-is" only if
+   * FIA-homologated, or if its logbook/build year is on or after this cutoff (built to the body's
+   * current spec). An older logbooked cage isn't rejected outright — it typically needs a
+   * retrofit/grandfathering step described in `condition`.
+   */
+  rolloverProtectionLogbookCutoffYear?: number;
+  /**
+   * Rollover protection only: this discipline requires the car to have a cage logbook at all — no
+   * logbook is an automatic rejection, not just a caveat (typical for rally). Combine with
+   * `rolloverProtectionAcceptedLogbookBodies` to also restrict which issuers count.
+   */
+  rolloverProtectionRequiresLogbook?: boolean;
+  /**
+   * Rollover protection only: which logbook-issuing bodies (ids into the shared
+   * ROLLOVER_LOGBOOK_BODIES registry in standards.ts) this discipline recognizes. Omit to accept
+   * any body the driver names — most useful paired with `rolloverProtectionRequiresLogbook`, where
+   * a recognized-but-wrong issuer should still fail even though *some* logbook exists.
+   */
+  rolloverProtectionAcceptedLogbookBodies?: string[];
+  /**
+   * Rollover protection only: a rollbar/half-cage (fewer attachment points, not a full multi-point
+   * structure — typically well under the ~6 chassis attachment points a full cage has) isn't
+   * accepted where this body requires a full cage, which is most road racing and stage rally
+   * bodies. Omit when the body doesn't distinguish, or a rollbar satisfies its rule (common in
+   * autocross/HPDE, where this category is often not required at all for a closed car).
+   */
+  rolloverProtectionRequiresFullCage?: boolean;
+  /**
+   * Rollover protection only: a bolt-together cage (bolted/sleeved tube joints) isn't accepted —
+   * the cage's joints must be welded. Most rally bodies have moved to this over time; omit when
+   * the body doesn't say either way.
+   */
+  rolloverProtectionRequiresWelded?: boolean;
+  /**
+   * Rollover protection only: the cage's mounting/foot plates must be welded to the chassis, not
+   * bolted — a separate question from `rolloverProtectionRequiresWelded` (tube joints). A cage can
+   * have welded joints but still be bolted to the chassis via footplates, or vice versa; most
+   * bodies that address this at all only regulate the joints, not the plates, so this is rarer.
+   */
+  rolloverProtectionRequiresWeldedPlates?: boolean;
+  /**
+   * Rollover protection only: minimum tube size, tiered by car weight (lightest tier first).
+   * Matched against the driver's entered car weight and cage tube dimensions.
+   */
+  rolloverProtectionTubingSpec?: RolloverTubingTier[];
+  /**
+   * Seat only: this body forbids seat rails/sliders outright — the seat must be fixed-mounted,
+   * regardless of whether it's otherwise a compliant certified/stock seat. Omit when the body
+   * doesn't address slider/rail mounts (most don't).
+   */
+  seatRailsForbidden?: boolean;
   citation: SourceDocument;
   confidence: Confidence;
   notes?: string;
@@ -142,6 +235,8 @@ export interface Ruleset {
   disciplineName: string;
   /** Which top-level discipline this ruleset is grouped under in the picker (e.g. "Rally", "Hillclimb"). */
   disciplineGroup: DisciplineGroup;
+  /** Rally only: this discipline runs with a codriver who has their own helmet/suit/seat/harness/etc. When true, the UI offers an "Add codriver gear" toggle that duplicates the per-occupant categories (see PER_OCCUPANT_CATEGORIES) into a parallel Codriver Safety Gear section. */
+  supportsCodriver?: boolean;
   lastReviewed: string;
   sourceDocuments: SourceDocument[];
   /** Base rules — used as-is when no class is selected, and as the fallback for any category a selected class doesn't override in `classOverrides`. For a ruleset with `classes`, this should still describe the general/multi-class picture (as free text is fine here), since a user who hasn't picked a class yet sees this. */

@@ -203,6 +203,21 @@ const de: Ruleset = {
       notes:
         "No personal/car-carried first aid kit is required. The document requires event-level medical coverage instead: 'At minimum, one EMT trained attendant and one emergency equipped vehicle must be on-site at all times while cars are on track' (§5(m)).",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionByBodyStyle: {
+        closed_roof: "not_addressed",
+        convertible: "conditional",
+        open_wheel: "not_addressed",
+      },
+      rolloverProtectionFactoryExempt: true,
+      condition:
+        "Only convertibles WITHOUT factory-installed rollover protection need an aftermarket roll bar/cage — it must pass the \"broomstick\" rule and meet PCA Club Racing Rules Appendix A. Open-wheel/open-cockpit cars have no cage rule here, but separately require fenders at all four corners and arm restraints for all occupants.",
+      citation: { ...sourceDoc, section: "10(d)" },
+      confidence: "high",
+      notes:
+        "\"If a car does not have factory installed rollover protection, a roll bar or roll cage must be installed, which meets the 'broomstick' rule... Design, installation and materials of roll bars or cages...must meet PCA Club Racing specifications, contained in Appendix A–Roll Cage Specifications of the PCA Club Racing Rules.\" That external Club Racing document isn't locally cached, so its specific tube/material table isn't modeled here.",
+    },
   },
 };
 

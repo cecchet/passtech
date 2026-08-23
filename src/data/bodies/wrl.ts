@@ -3,7 +3,7 @@ import { GENERIC_FUEL_CELL_STANDARDS, SFI_3_3_IDS } from "../standards";
 
 const sourceDoc = {
   title: "World Racing League Rules",
-  version: "2026 Rules Version 2026.1.2",
+  version: "2026 Rules Version 2026.1.3",
   url: "https://www.racewrl.com/rules",
 };
 
@@ -88,7 +88,7 @@ const endurance: Ruleset = {
       citation: { ...sourceDoc, section: "B.2.a" },
       confidence: "medium",
       notes:
-        "Rulebook: 'Full-face with visor (face shield). No structural damage. Rated Snell SA/SAH-2015 or 2020 for drivers... Helmets meeting current FIA standards are permitted.' Two ambiguities: (1) the 'SAH' reference has no matching SAH2015/SAH2020 entries in this app's standards registry (only 'snell-sah2010' exists) — possibly a rulebook holdover/typo, flagged for the maintainer; (2) 'current FIA standards' isn't itemized, so the current FIA 8859 (auto racing helmet) generations are assumed — FIA 8860 (higher-spec) generations were not added since WRL doesn't reference them. Notably WRL does NOT list Snell SA2025, unlike most other bodies in this app — confirmed from the current 2026.1.2 rulebook text, not an oversight.",
+        "Rulebook: 'Full-face with visor (face shield). No structural damage. Rated Snell SA/SAH-2015 or 2020 for drivers... Helmets meeting current FIA standards are permitted.' Two ambiguities: (1) the 'SAH' reference has no matching SAH2015/SAH2020 entries in this app's standards registry (only 'snell-sah2010' exists) — possibly a rulebook holdover/typo, flagged for the maintainer; (2) 'current FIA standards' isn't itemized, so the current FIA 8859 (auto racing helmet) generations are assumed — FIA 8860 (higher-spec) generations were not added since WRL doesn't reference them. Notably WRL does NOT list Snell SA2025, unlike most other bodies in this app — confirmed from the current 2026.1.3 rulebook text, not an oversight.",
     },
     balaclava: {
       requirement: "not_addressed",
@@ -192,7 +192,7 @@ const endurance: Ruleset = {
       citation: { ...sourceDoc, section: "Appendix A, Section A.3.g" },
       confidence: "high",
       notes:
-        "Re-checked directly against the cached rulebook PDF (rulebooks/wrl-rules.pdf, confirmed version 2026.1.3 per its cover page — one point-release newer than this file's sourceDoc.version of 2026.1.2, a pre-existing discrepancy also flagged in the arm_restraint notes above; not corrected here since it's shared across the whole file and out of scope for this seat-only pass). No SFI seat standard (e.g. SFI 39.1/39.2) is mentioned anywhere in the current text, so acceptedStandards is left FIA-only. Appendix A - Vehicle Preparation and Classing is the single, universal car-prep section for WRL's caged classes (GTO and GTU) — there is no separate lower tier or class with a distinct, more permissive seat rule; a full-text search for 'stock seat'/'OEM seat'/'bench seat'/'factory seat' returned no hits. Seat sliders/rails vs. a fixed mount: not addressed either way — WRL only specifies '4 points at the base' with 3\" dia. (min) backing washers/plates if bolted through the floor, with no explicit ruling on adjustable slider mounts.",
+        "Re-checked directly against the cached rulebook PDF (rulebooks/wrl-rules.pdf, version 2026.1.3 per its cover page — sourceDoc.version now corrected to match, was previously stuck at 2026.1.2). No SFI seat standard (e.g. SFI 39.1/39.2) is mentioned anywhere in the current text, so acceptedStandards is left FIA-only. Appendix A - Vehicle Preparation and Classing is the single, universal car-prep section for WRL's caged classes (GTO and GTU) — there is no separate lower tier or class with a distinct, more permissive seat rule; a full-text search for 'stock seat'/'OEM seat'/'bench seat'/'factory seat' returned no hits. Seat sliders/rails vs. a fixed mount: not addressed either way — WRL only specifies '4 points at the base' with 3\" dia. (min) backing washers/plates if bolted through the floor, with no explicit ruling on adjustable slider mounts.",
     },
     belts_harness: {
       requirement: "required",

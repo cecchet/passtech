@@ -286,6 +286,7 @@ const rallySport: Ruleset = {
   bodyName: "NASA",
   disciplineName: "RallySport",
   disciplineGroup: "Rally",
+  supportsCodriver: true,
   lastReviewed: "2026-08-04",
   sourceDocuments: [
     {
@@ -384,6 +385,7 @@ const rallySport: Ruleset = {
     seat: {
       requirement: "required",
       materialOnlyAccepted: false,
+      seatRailsForbidden: true,
       acceptedStandards: [
         { standardId: "fia-8855-1999", noExpiration: true, note: "GRR §3.9: 'Seats do not expire but must be in good condition and should be replaced if involved in a significant accident.'" },
         { standardId: "fia-8855-2021", noExpiration: true, note: "Using the mount supplied with the seat is required to meet this standard — GRR §3.9." },
@@ -394,7 +396,7 @@ const rallySport: Ruleset = {
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.9" },
       confidence: "high",
       notes:
-        "Re-verified against the GRR Section 3 PDF: §3.9 states plainly 'Use of FIA certified/homologated seats is required,' immediately after the one-piece/racing-use construction language — a certified-only mandate with no material/construction-only path, confirming materialOnlyAccepted: false.",
+        "Re-verified against the GRR Section 3 PDF: §3.9 states plainly 'Use of FIA certified/homologated seats is required,' immediately after the one-piece/racing-use construction language — a certified-only mandate with no material/construction-only path, confirming materialOnlyAccepted: false. §3.9 also states verbatim: 'The use of sliders is prohibited' — same rule as ARA's RTR 2.3.2, now enforced via seatRailsForbidden rather than prose-only.",
     },
     belts_harness: {
       requirement: "required",

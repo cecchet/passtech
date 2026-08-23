@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
-import { standardLabel, standardsFor } from "@/data/standards";
-import { CategoryGroup, CategoryRule, EquipmentCategory, Ruleset, StandardAcceptance } from "@/data/types";
-import { describeExtinguisherOptions, effectiveCategories } from "@/lib/matcher";
+import { logbookBodyLabel, standardLabel, standardsFor } from "@/data/standards";
+import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
+import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CitationLine } from "@/components/CitationLine";
 
@@ -55,7 +55,7 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
   const Icon = CATEGORY_ICONS[category];
 
   return (
-    <div className={`rounded-lg border p-4 ${GROUP_COLORS[meta.group].border}`}>
+    <div id={`category-${category}`} className={`scroll-mt-4 rounded-lg border p-4 ${GROUP_COLORS[meta.group].border}`}>
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-3 text-sm font-semibold">
           <Icon />
@@ -86,8 +86,67 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
 
       {!meta.hybrid && rule.materialNote && <p className="mt-2 text-xs text-neutral-300">{rule.materialNote}</p>}
 
+      {category === "seat" && rule.seatRailsForbidden && (
+        <p className="mt-2 text-xs text-neutral-300">Seat rails/sliders aren&apos;t allowed — the seat must be fixed-mounted.</p>
+      )}
+
       {category === "fire_extinguisher" && rule.fireExtinguisherOptions && (
         <p className="mt-2 text-xs text-neutral-300">Needs {describeExtinguisherOptions(rule.fireExtinguisherOptions)}.</p>
+      )}
+
+      {category === "rollover_protection" && (
+        <div className="mt-2 space-y-1.5 text-xs text-neutral-300">
+          {rule.rolloverProtectionByBodyStyle && (
+            <ul className="space-y-0.5">
+              {(Object.entries(rule.rolloverProtectionByBodyStyle) as [CarBodyStyle, RequirementLevel][]).map(([style, level]) => (
+                <li key={style}>
+                  • {bodyStyleLabel(style)}: {REQUIREMENT_LABEL[level]}
+                </li>
+              ))}
+            </ul>
+          )}
+          {rule.rolloverProtectionFactoryExempt && (
+            <p>A convertible with OEM/factory-installed rollover protection is exempt from needing an aftermarket cage/bar.</p>
+          )}
+          {rule.rolloverProtectionRequiresFullCage && <p>A rollbar/half-cage isn&apos;t accepted — this body requires a full multi-point cage.</p>}
+          {rule.rolloverProtectionRequiresWelded && <p>Bolt-together tube joints aren&apos;t accepted — this body requires welded joints.</p>}
+          {rule.rolloverProtectionRequiresWeldedPlates && (
+            <p>Bolted mounting/foot plates aren&apos;t accepted — this body requires the plates to be welded to the chassis.</p>
+          )}
+          {rule.rolloverProtectionRequiresLogbook && (
+            <p>
+              A cage logbook is required.
+              {rule.rolloverProtectionAcceptedLogbookBodies && rule.rolloverProtectionAcceptedLogbookBodies.length > 0
+                ? ` Recognized issuers: ${rule.rolloverProtectionAcceptedLogbookBodies.map((id) => logbookBodyLabel(id)).join(", ")}.`
+                : ""}
+            </p>
+          )}
+          {!rule.rolloverProtectionRequiresLogbook &&
+            rule.rolloverProtectionAcceptedLogbookBodies &&
+            rule.rolloverProtectionAcceptedLogbookBodies.length > 0 && (
+              <p>Recognized logbook issuers: {rule.rolloverProtectionAcceptedLogbookBodies.map((id) => logbookBodyLabel(id)).join(", ")}.</p>
+            )}
+          {rule.rolloverProtectionTubingSpec && rule.rolloverProtectionTubingSpec.length > 0 && (
+            <div>
+              <p className="font-semibold text-neutral-400">Minimum tube size by car weight</p>
+              <ul className="mt-0.5 space-y-0.5">
+                {rule.rolloverProtectionTubingSpec.map((tier, i) => (
+                  <li key={i}>
+                    • {tier.underWeightLbs ? `Under ${tier.underWeightLbs} lbs` : "At and above the heaviest bracket"}:{" "}
+                    {tier.minSizes.map((s) => `${s.outerDiameterIn}"×${s.wallThicknessIn}"`).join(" or ")}
+                    {tier.materialNote ? ` (${tier.materialNote})` : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {rule.rolloverProtectionLogbookCutoffYear && (
+            <p>
+              Cages logbooked/built {rule.rolloverProtectionLogbookCutoffYear} or later (or FIA-homologated) are accepted as-is;
+              older cages typically need a retrofit or grandfathering step.
+            </p>
+          )}
+        </div>
       )}
 
       {rule.acceptedStandards && rule.acceptedStandards.length > 0 && (

@@ -1,5 +1,5 @@
-import { CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
-import { NOT_LISTED, standardFamily, standardLabel } from "@/data/standards";
+import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, RequirementLevel, RolloverTubingTier, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
+import { logbookBodyLabel, NOT_LISTED, standardFamily, standardLabel } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 
 export type ItemStatus = "ok" | "rejected" | "not_required" | "recommended_only" | "needs_info" | "unrecognized";
@@ -13,6 +13,19 @@ export type ItemStatus = "ok" | "rejected" | "not_required" | "recommended_only"
  * firesuit material, for instance, aren't something a driver has by default the way OEM parts are.
  */
 const SOFT_MATERIAL_ONLY_CATEGORIES = new Set<EquipmentCategory>(["shoes", "seat", "belts_harness"]);
+
+/**
+ * The requirement level actually in effect, once the OEM/stock-equipment softening is applied:
+ * shoes/seat/belts_harness read as "conditional" rather than a hard "required" whenever the body
+ * accepts plain OEM/stock equipment for it — the bar is trivially met by default (an ordinary
+ * closed-toe shoe qualifies; cars already ship with an OEM seat and belts fitted), so it shouldn't
+ * present as a tech-inspection failure before the driver even says whether they have it. Used both
+ * by evaluateCategory (to decide the actual pass/fail) and anywhere else that needs to bucket a
+ * category the same way the evaluator will (e.g. the reference-view equipment summary).
+ */
+export function effectiveRequirementLevel(category: EquipmentCategory, rule: CategoryRule): RequirementLevel {
+  return SOFT_MATERIAL_ONLY_CATEGORIES.has(category) && rule.requirement === "required" && rule.materialOnlyAccepted ? "conditional" : rule.requirement;
+}
 
 /** One certification printed on the item's tag. An item can carry more than one (e.g. a helmet with both a Snell and an FIA sticker) — it only takes one currently-valid certification for the item to pass. */
 export interface CertificationEntry {
@@ -60,6 +73,32 @@ export interface EquipmentEntry {
   helmetType?: "open_face" | "full_face";
   /** Fire extinguisher only: one entry per physical unit carried in the car. */
   extinguisherUnits?: ExtinguisherUnit[];
+  /** Rollover protection only: the car's body style. */
+  bodyStyle?: CarBodyStyle;
+  /** Rollover protection, convertible only: does the car have OEM/factory-installed rollover protection (integrated hoops)? */
+  factoryProtection?: boolean;
+  /** Rollover protection only: year the cage was logbooked/built, for bodies that gate acceptance on a cutoff year. */
+  cageLogbookYear?: number;
+  /** Rollover protection only: is the cage FIA-homologated? Accepted outright by every body that cites Article 253. */
+  fiaHomologated?: boolean;
+  /** Rollover protection only: rollbar (aka half-cage) vs. a full multi-point cage. */
+  cageType?: "rollbar" | "full_cage";
+  /** Rollover protection only: are the cage's tube joints bolted/sleeved together, or welded? Most rally bodies no longer accept bolt-together cages. */
+  cageMountType?: "bolt_in" | "welded";
+  /** Rollover protection only: are the cage's mounting/foot plates bolted to the chassis, or welded? Independent of cageMountType — a cage's joints and its chassis attachment are regulated separately where a body addresses both. */
+  cagePlateMountType?: "bolted" | "welded";
+  /** Rollover protection only: which body issued the cage's logbook — an id from ROLLOVER_LOGBOOK_BODIES, "none", or NOT_LISTED (paired with cageLogbookBodyCustom). */
+  cageLogbookBody?: string;
+  /** Rollover protection only: free-text issuer name when cageLogbookBody is NOT_LISTED. */
+  cageLogbookBodyCustom?: string;
+  /** Seat only: fixed-mounted, or on sliders/rails? Several bodies forbid seat rails outright. */
+  seatMounting?: "fixed" | "rails";
+  /** Rollover protection only: the car's weight as raced (lbs), for bodies whose tubing spec is tiered by weight. */
+  carWeightLbs?: number;
+  /** Rollover protection only: the cage's tube outer diameter (inches). */
+  cageTubeOuterDiameterIn?: number;
+  /** Rollover protection only: the cage's tube wall thickness (inches). */
+  cageTubeWallThicknessIn?: number;
   /** User indicates they don't have / aren't entering this item at all. */
   skipped?: boolean;
 }
@@ -378,6 +417,179 @@ function applyServiceDateCheck(
   return { ...ok, reason: result.reason + conditionNote };
 }
 
+export function bodyStyleLabel(style: CarBodyStyle): string {
+  switch (style) {
+    case "closed_roof":
+      return "closed-roof";
+    case "convertible":
+      return "convertible";
+    case "open_no_windshield":
+      return "open (no windshield frame)";
+    case "open_wheel":
+      return "open-wheel";
+  }
+}
+
+/**
+ * Rollover protection only. `entry` here is never skipped (evaluateCategory already resolved the
+ * skipped/no-entry case before reaching this branch) — "I have this item" just means "some form of
+ * rollover protection"; body style and the fields below refine what kind, and whether that kind
+ * satisfies this specific body's rule.
+ */
+/** Rollover protection only: the lightest tier whose `underWeightLbs` the car's weight is still under, or the last (heaviest, "and up") tier if none apply. Tiers are sorted by weight regardless of input order. */
+function matchTubingTier(tiers: RolloverTubingTier[], weightLbs: number): RolloverTubingTier {
+  const sorted = [...tiers].sort((a, b) => (a.underWeightLbs ?? Infinity) - (b.underWeightLbs ?? Infinity));
+  return sorted.find((t) => t.underWeightLbs === undefined || weightLbs < t.underWeightLbs) ?? sorted[sorted.length - 1];
+}
+
+/** Seat only: layered on top of an otherwise-passing material/cert result — a seat on sliders/rails doesn't satisfy a body that forbids them outright, however compliant it is otherwise. */
+function applySeatMountingCheck(rule: CategoryRule, entry: EquipmentEntry, result: CategoryResult): CategoryResult {
+  if (!rule.seatRailsForbidden) return result;
+  if (result.status !== "ok" && result.status !== "recommended_only") return result;
+  if (!entry.seatMounting) {
+    return { ...result, status: "needs_info", reason: `${result.reason} Also confirm the seat is fixed-mounted, not on sliders/rails — this body doesn't allow seat rails.` };
+  }
+  if (entry.seatMounting === "rails") {
+    return { ...result, status: "rejected", reason: "Seat is mounted on sliders/rails — this body doesn't allow seat rails, even with an otherwise-compliant seat." };
+  }
+  return result;
+}
+
+function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, base: Omit<CategoryResult, "status" | "reason">): CategoryResult {
+  if (!entry.bodyStyle) {
+    return {
+      ...base,
+      status: "needs_info",
+      reason: "Specify your car's body style (closed roof, convertible, open with no windshield frame, or open-wheel) to see what's required.",
+    };
+  }
+
+  const styleRequirement = rule.rolloverProtectionByBodyStyle?.[entry.bodyStyle] ?? rule.requirement;
+
+  if (styleRequirement === "not_addressed") {
+    return { ...base, status: "not_required", reason: "Not addressed by this sanctioning body's rules for this discipline." };
+  }
+  if (styleRequirement !== "required" && styleRequirement !== "conditional") {
+    return { ...base, status: "not_required", reason: `Not required for a ${bodyStyleLabel(entry.bodyStyle)} car under this discipline's rules.` };
+  }
+
+  if (entry.bodyStyle === "convertible" && rule.rolloverProtectionFactoryExempt) {
+    if (entry.factoryProtection === undefined) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason: "Does your convertible have OEM/factory-installed rollover protection (integrated hoops)? If so, this body doesn't require anything further.",
+      };
+    }
+    if (entry.factoryProtection) {
+      return { ...base, status: "not_required", reason: "Factory-installed rollover protection satisfies this body's requirement — no aftermarket cage/bar needed." };
+    }
+  }
+
+  const conditionNote = rule.condition ? ` ${rule.condition}` : "";
+
+  if (rule.rolloverProtectionRequiresFullCage) {
+    if (!entry.cageType) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason: "Is it a rollbar (half-cage) or a full multi-point cage? This body requires a full cage — a rollbar alone isn't accepted.",
+      };
+    }
+    if (entry.cageType === "rollbar") {
+      return { ...base, status: "rejected", reason: `A rollbar/half-cage isn't accepted here — this body requires a full multi-point cage.${conditionNote}` };
+    }
+  }
+
+  if (rule.rolloverProtectionRequiresWelded) {
+    if (!entry.cageMountType) {
+      return { ...base, status: "needs_info", reason: "Are the cage's tube joints bolted/sleeved together, or welded? This body requires welded joints." };
+    }
+    if (entry.cageMountType === "bolt_in") {
+      return { ...base, status: "rejected", reason: `Bolt-together cages aren't accepted here — this body requires welded joints.${conditionNote}` };
+    }
+  }
+
+  if (rule.rolloverProtectionRequiresWeldedPlates) {
+    if (!entry.cagePlateMountType) {
+      return { ...base, status: "needs_info", reason: "Are the cage's mounting/foot plates bolted to the chassis, or welded? This body requires welded plates." };
+    }
+    if (entry.cagePlateMountType === "bolted") {
+      return { ...base, status: "rejected", reason: `Bolted mounting plates aren't accepted here — this body requires the plates to be welded to the chassis.${conditionNote}` };
+    }
+  }
+
+  if (rule.rolloverProtectionRequiresLogbook && !entry.fiaHomologated) {
+    if (!entry.cageLogbookBody) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason: "Which body issued your cage's logbook? Select \"No logbook\" if it doesn't have one — logbooks are required here.",
+      };
+    }
+    if (entry.cageLogbookBody === "none") {
+      return { ...base, status: "rejected", reason: `A cage logbook is required here — without one, this cage isn't accepted.${conditionNote}` };
+    }
+    if (entry.cageLogbookBody === NOT_LISTED && !entry.cageLogbookBodyCustom) {
+      return { ...base, status: "needs_info", reason: "Which body issued the logbook? Enter its name." };
+    }
+    if (
+      entry.cageLogbookBody !== NOT_LISTED &&
+      rule.rolloverProtectionAcceptedLogbookBodies &&
+      !rule.rolloverProtectionAcceptedLogbookBodies.includes(entry.cageLogbookBody)
+    ) {
+      return {
+        ...base,
+        status: "rejected",
+        reason: `${logbookBodyLabel(entry.cageLogbookBody)} isn't a logbook issuer this body recognizes.${conditionNote}`,
+      };
+    }
+  }
+
+  if (rule.rolloverProtectionTubingSpec && rule.rolloverProtectionTubingSpec.length > 0) {
+    if (!entry.carWeightLbs || !entry.cageTubeOuterDiameterIn || !entry.cageTubeWallThicknessIn) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason: "Enter your car's weight and the cage's tube outer diameter/wall thickness — the minimum tube size required here scales with car weight.",
+      };
+    }
+    const tier = matchTubingTier(rule.rolloverProtectionTubingSpec, entry.carWeightLbs);
+    const clears = tier.minSizes.some((s) => entry.cageTubeOuterDiameterIn! >= s.outerDiameterIn && entry.cageTubeWallThicknessIn! >= s.wallThicknessIn);
+    if (!clears) {
+      const sizes = tier.minSizes.map((s) => `${s.outerDiameterIn}"×${s.wallThicknessIn}"`).join(" or ");
+      return {
+        ...base,
+        status: "rejected",
+        reason: `At ${entry.carWeightLbs} lbs, this body requires at least ${sizes} tubing${tier.materialNote ? ` (${tier.materialNote})` : ""} — entered ${entry.cageTubeOuterDiameterIn}"×${entry.cageTubeWallThicknessIn}" is undersized.`,
+      };
+    }
+  }
+
+  if (rule.rolloverProtectionLogbookCutoffYear) {
+    if (entry.fiaHomologated) {
+      return { ...base, status: "ok", reason: `FIA-homologated cages are accepted — bring the homologation documentation to tech.${conditionNote}` };
+    }
+    if (!entry.cageLogbookYear) {
+      return { ...base, status: "needs_info", reason: "Enter the year your cage was logbooked/built, or confirm it's FIA-homologated." };
+    }
+    if (entry.cageLogbookYear >= rule.rolloverProtectionLogbookCutoffYear) {
+      return { ...base, status: "ok", reason: `Logbooked ${entry.cageLogbookYear} — built to this body's current spec.${conditionNote}` };
+    }
+    return {
+      ...base,
+      status: "needs_info",
+      reason: `Logbooked ${entry.cageLogbookYear}, before this body's ${rule.rolloverProtectionLogbookCutoffYear} cutoff for the current spec — older cages are typically still accepted with a retrofit or grandfathering step.${conditionNote}`,
+    };
+  }
+
+  return {
+    ...base,
+    status: "ok",
+    reason: `Present — meets this body's rollover-protection requirement for a ${bodyStyleLabel(entry.bodyStyle)} car.${conditionNote}`,
+  };
+}
+
 export function evaluateCategory(
   category: EquipmentCategory,
   rule: CategoryRule | undefined,
@@ -398,14 +610,7 @@ export function evaluateCategory(
     };
   }
 
-  // Categories satisfiable with plain stock/OEM equipment (no certification needed) are a much
-  // softer bar than a certified item — treated as conditional rather than a hard "required"
-  // failure when nothing's been entered yet, since the bar is trivially met by default: any
-  // ordinary closed-toe shoe qualifies, and cars already ship with an OEM seat and belts fitted.
-  const effectiveRequirement =
-    SOFT_MATERIAL_ONLY_CATEGORIES.has(category) && rule.requirement === "required" && rule.materialOnlyAccepted
-      ? "conditional"
-      : rule.requirement;
+  const effectiveRequirement = effectiveRequirementLevel(category, rule);
 
   const base = {
     category,
@@ -446,6 +651,10 @@ export function evaluateCategory(
     return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base, asOf);
   }
 
+  if (category === "rollover_protection") {
+    return evaluateRolloverProtection(rule, entry, base);
+  }
+
   if (CATEGORY_META[category].presenceOnly) {
     const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
     return { ...base, status, reason: rule.materialNote ?? "Present." };
@@ -460,7 +669,8 @@ export function evaluateCategory(
     if (entry.mode === "material_only") {
       if (rule.materialOnlyAccepted) {
         const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
-        return { ...base, status, reason: rule.materialNote ?? "Meets the stated material requirement." };
+        const result = { ...base, status, reason: rule.materialNote ?? "Meets the stated material requirement." };
+        return category === "seat" ? applySeatMountingCheck(rule, entry, result) : result;
       }
       return {
         ...base,
@@ -531,7 +741,8 @@ export function evaluateCategory(
     };
   }
 
-  return { ...base, status: result.status, reason: result.reason + conditionNote, certBreakdown: result.certBreakdown, resolvedStandardIds: result.validStandardIds };
+  const finalResult = { ...base, status: result.status, reason: result.reason + conditionNote, certBreakdown: result.certBreakdown, resolvedStandardIds: result.validStandardIds };
+  return category === "seat" ? applySeatMountingCheck(rule, entry, finalResult) : finalResult;
 }
 
 export type CategoryResults = Partial<Record<EquipmentCategory, CategoryResult>>;

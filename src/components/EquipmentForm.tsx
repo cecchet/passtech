@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { CategoryGroup, EquipmentCategory } from "@/data/types";
-import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
-import { NOT_LISTED, standardsFor } from "@/data/standards";
+import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
+import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { PhotoScan } from "@/components/PhotoScan";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
@@ -18,6 +18,14 @@ interface Props {
   results?: CategoryResults;
   /** Which top-level groups (Driver/Car/Rollcage safety gear) to show at all. */
   activeGroups: ReadonlySet<CategoryGroup>;
+  /**
+   * Rally only: which occupant this form instance is for. "driver" (the default) shows every
+   * selected category, same as always. "codriver" restricts the list to PER_OCCUPANT_CATEGORIES
+   * only (the codriver's own gear — shared car items like the fuel cell aren't shown here), skips
+   * the per-group subheadings (the section already has one "Codriver Safety Gear" heading from the
+   * caller), and suffixes DOM ids/radio names so this instance doesn't collide with the driver's.
+   */
+  occupant?: Occupant;
 }
 
 const selectClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
@@ -278,6 +286,225 @@ function ExtinguisherUnitList({ units, onChange }: { units: ExtinguisherUnit[]; 
   );
 }
 
+const BODY_STYLE_OPTIONS: { value: NonNullable<EquipmentEntry["bodyStyle"]>; label: string }[] = [
+  { value: "closed_roof", label: "Closed roof (sedan / coupe / hatchback)" },
+  { value: "convertible", label: "Convertible (removable soft or hard top)" },
+  { value: "open_no_windshield", label: "Open, no windshield frame (roadster / spec racer)" },
+  { value: "open_wheel", label: "Open-wheel (formula / sports racer)" },
+];
+
+function RolloverProtectionFields({
+  category,
+  entry,
+  onChange,
+  onReportMissing,
+}: {
+  category: EquipmentCategory;
+  entry: EquipmentEntry;
+  onChange: (patch: Partial<EquipmentEntry>) => void;
+  onReportMissing?: (category: EquipmentCategory, label: string) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="flex flex-col gap-1">
+        <span className="text-xs text-neutral-400">Car body style</span>
+        <select
+          className={selectClass}
+          value={entry.bodyStyle ?? ""}
+          onChange={(e) => onChange({ bodyStyle: (e.target.value || undefined) as EquipmentEntry["bodyStyle"] })}
+        >
+          <option className={optionClass} value="">
+            Select…
+          </option>
+          {BODY_STYLE_OPTIONS.map((o) => (
+            <option key={o.value} className={optionClass} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      {entry.bodyStyle === "convertible" && (
+        <div className="flex items-center gap-3 text-xs text-neutral-300">
+          <span className="text-neutral-400">Factory/OEM rollover protection (integrated hoops)?</span>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input type="radio" name="factory-protection" checked={entry.factoryProtection === true} onChange={() => onChange({ factoryProtection: true })} />
+            Yes
+          </label>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input type="radio" name="factory-protection" checked={entry.factoryProtection === false} onChange={() => onChange({ factoryProtection: false })} />
+            No
+          </label>
+        </div>
+      )}
+
+      <label className="flex flex-col gap-1">
+        <span className="text-xs text-neutral-400">Rollbar/half-cage, or full multi-point cage?</span>
+        <select
+          className={selectClass}
+          value={entry.cageType ?? ""}
+          onChange={(e) => onChange({ cageType: (e.target.value || undefined) as EquipmentEntry["cageType"] })}
+        >
+          <option className={optionClass} value="">
+            Select…
+          </option>
+          <option className={optionClass} value="rollbar">
+            Rollbar / half-cage (fewer attachment points)
+          </option>
+          <option className={optionClass} value="full_cage">
+            Full cage (typically 6+ points to the chassis)
+          </option>
+        </select>
+      </label>
+
+      <label className="flex flex-col gap-1">
+        <span className="text-xs text-neutral-400">Tube joints: bolted/sleeved together, or welded?</span>
+        <select
+          className={selectClass}
+          value={entry.cageMountType ?? ""}
+          onChange={(e) => onChange({ cageMountType: (e.target.value || undefined) as EquipmentEntry["cageMountType"] })}
+        >
+          <option className={optionClass} value="">
+            Select…
+          </option>
+          <option className={optionClass} value="bolt_in">
+            Bolt-together (bolted or sleeved tube joints)
+          </option>
+          <option className={optionClass} value="welded">
+            Welded joints
+          </option>
+        </select>
+      </label>
+
+      <label className="flex flex-col gap-1">
+        <span className="text-xs text-neutral-400">Mounting/foot plates: bolted to chassis, or welded?</span>
+        <select
+          className={selectClass}
+          value={entry.cagePlateMountType ?? ""}
+          onChange={(e) => onChange({ cagePlateMountType: (e.target.value || undefined) as EquipmentEntry["cagePlateMountType"] })}
+        >
+          <option className={optionClass} value="">
+            Select…
+          </option>
+          <option className={optionClass} value="bolted">
+            Bolted plates
+          </option>
+          <option className={optionClass} value="welded">
+            Welded plates
+          </option>
+        </select>
+      </label>
+
+      <div className="flex flex-wrap items-end gap-3 rounded border border-neutral-700 p-2">
+        <label className="flex flex-col gap-1 text-xs text-neutral-400">
+          Car weight, as raced (lbs)
+          <input
+            type="number"
+            min={0}
+            placeholder="e.g. 2600"
+            className={`${numberInputClass} w-28`}
+            value={entry.carWeightLbs ?? ""}
+            onChange={(e) => onChange({ carWeightLbs: e.target.value === "" ? undefined : Number(e.target.value) })}
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-xs text-neutral-400">
+          Cage tube outer diameter (in)
+          <input
+            type="number"
+            min={0}
+            step="0.001"
+            placeholder="e.g. 1.5"
+            className={`${numberInputClass} w-28`}
+            value={entry.cageTubeOuterDiameterIn ?? ""}
+            onChange={(e) => onChange({ cageTubeOuterDiameterIn: e.target.value === "" ? undefined : Number(e.target.value) })}
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-xs text-neutral-400">
+          Cage tube wall thickness (in)
+          <input
+            type="number"
+            min={0}
+            step="0.001"
+            placeholder="e.g. 0.095"
+            className={`${numberInputClass} w-28`}
+            value={entry.cageTubeWallThicknessIn ?? ""}
+            onChange={(e) => onChange({ cageTubeWallThicknessIn: e.target.value === "" ? undefined : Number(e.target.value) })}
+          />
+        </label>
+      </div>
+      <p className="text-xs text-neutral-500">Weight/tube size mainly matter for road racing and hillclimb bodies, which size the cage to the car. Logbook year mainly matters for rally bodies.</p>
+
+      <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+        <div className="flex flex-wrap items-end gap-3">
+          <label className="flex flex-col gap-1 text-xs text-neutral-400">
+            Cage logbooked/built (year)
+            <input
+              type="number"
+              min={1970}
+              max={2100}
+              placeholder="e.g. 2018"
+              className={`${numberInputClass} w-28`}
+              value={entry.cageLogbookYear ?? ""}
+              onChange={(e) => onChange({ cageLogbookYear: e.target.value === "" ? undefined : Number(e.target.value) })}
+            />
+          </label>
+          <label className="flex cursor-pointer items-center gap-1 pb-2 text-xs text-neutral-300">
+            <input type="checkbox" checked={!!entry.fiaHomologated} onChange={(e) => onChange({ fiaHomologated: e.target.checked || undefined })} />
+            FIA-homologated
+          </label>
+        </div>
+
+        {!entry.fiaHomologated && (
+          <label className="flex flex-col gap-1">
+            <span className="text-xs text-neutral-400">Logbook issued by</span>
+            <select
+              className={selectClass}
+              value={entry.cageLogbookBody ?? ""}
+              onChange={(e) => onChange({ cageLogbookBody: e.target.value || undefined, cageLogbookBodyCustom: undefined })}
+            >
+              <option className={optionClass} value="">
+                Select…
+              </option>
+              <option className={optionClass} value="none">
+                No logbook
+              </option>
+              {ROLLOVER_LOGBOOK_BODIES.map((b) => (
+                <option key={b.id} className={optionClass} value={b.id}>
+                  {b.label}
+                </option>
+              ))}
+              <option className={optionClass} value={NOT_LISTED}>
+                Not listed / other…
+              </option>
+            </select>
+          </label>
+        )}
+
+        {entry.cageLogbookBody === NOT_LISTED && (
+          <div className="flex flex-col gap-1">
+            <input
+              type="text"
+              placeholder="Which body issued it?"
+              className={`${numberInputClass} placeholder:text-neutral-500`}
+              value={entry.cageLogbookBodyCustom ?? ""}
+              onChange={(e) => onChange({ cageLogbookBodyCustom: e.target.value })}
+            />
+            {onReportMissing && (
+              <button
+                type="button"
+                className="self-start rounded border border-amber-700 bg-amber-950 px-2 py-1 text-xs text-amber-200 hover:bg-amber-900"
+                onClick={() => onReportMissing(category, entry.cageLogbookBodyCustom || "(no description entered)")}
+              >
+                Report this logbook issuer for review
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function StatusPill({ status, requirement }: { status: CategoryResult["status"]; requirement: CategoryResult["requirement"] }) {
   return (
     <span className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusStyle(status, requirement)}`}>
@@ -315,8 +542,10 @@ function groupCategoriesForDisplay(categories: EquipmentCategory[], results?: Ca
   });
 }
 
-export function EquipmentForm({ entries, onChange, onReportMissing, results, activeGroups }: Props) {
-  const visibleCategories = filterCategoriesByGroups(CATEGORY_ORDER, activeGroups);
+export function EquipmentForm({ entries, onChange, onReportMissing, results, activeGroups, occupant = "driver" }: Props) {
+  const visibleCategories = filterCategoriesByGroups(CATEGORY_ORDER, activeGroups).filter(
+    (c) => occupant === "driver" || isPerOccupantCategory(c)
+  );
   const orderedCategories = groupCategoriesForDisplay(visibleCategories, results);
 
   const detailsRefs = useRef<Partial<Record<EquipmentCategory, HTMLDetailsElement | null>>>({});
@@ -334,11 +563,13 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
         const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
         const result = results?.[category];
         const Icon = CATEGORY_ICONS[category];
-        const isNewGroup = i === 0 || CATEGORY_META[orderedCategories[i - 1]].group !== meta.group;
+        const isNewGroup = occupant === "driver" && (i === 0 || CATEGORY_META[orderedCategories[i - 1]].group !== meta.group);
         const groupColor = GROUP_COLORS[meta.group];
+        const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
+        const radioName = occupant === "driver" ? `has-${category}` : `has-${category}-${occupant}`;
 
         return (
-          <div key={category} id={`category-${category}`} className="scroll-mt-4">
+          <div key={category} id={domId} className="scroll-mt-4">
             {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[meta.group]}</h3>}
             <details
               ref={(el) => {
@@ -358,7 +589,7 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
                 <label className="flex cursor-pointer items-center gap-1">
                   <input
                     type="radio"
-                    name={`has-${category}`}
+                    name={radioName}
                     checked={!entry.skipped}
                     onChange={() => {
                       update({ skipped: false });
@@ -371,7 +602,7 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
                 <label className="flex cursor-pointer items-center gap-1">
                   <input
                     type="radio"
-                    name={`has-${category}`}
+                    name={radioName}
                     checked={!!entry.skipped}
                     onChange={() => update({ skipped: true })}
                   />
@@ -406,6 +637,10 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
                   <ExtinguisherUnitList units={entry.extinguisherUnits ?? []} onChange={(extinguisherUnits) => update({ extinguisherUnits })} />
                 )}
 
+                {category === "rollover_protection" && (
+                  <RolloverProtectionFields category={category} entry={entry} onChange={update} onReportMissing={onReportMissing} />
+                )}
+
                 {meta.hybrid && (
                   <select
                     className={selectClass}
@@ -428,6 +663,27 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
                       {meta.certifiedLabel ?? "Certified (SFI or FIA rated)"}
                     </option>
                   </select>
+                )}
+
+                {category === "seat" && entry.mode && (
+                  <label className="flex flex-col gap-1">
+                    <span className="text-xs text-neutral-400">Fixed-mounted, or on sliders/rails?</span>
+                    <select
+                      className={selectClass}
+                      value={entry.seatMounting ?? ""}
+                      onChange={(e) => update({ seatMounting: (e.target.value || undefined) as EquipmentEntry["seatMounting"] })}
+                    >
+                      <option className={optionClass} value="">
+                        Select…
+                      </option>
+                      <option className={optionClass} value="fixed">
+                        Fixed-mounted
+                      </option>
+                      <option className={optionClass} value="rails">
+                        Sliders / rails
+                      </option>
+                    </select>
+                  </label>
                 )}
 
                 {category === "firesuit" && entry.mode === "certified" && (
