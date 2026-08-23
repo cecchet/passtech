@@ -57,7 +57,7 @@ function IconRow({
   const labelColor = LABEL_COLOR[results ? aggregateState(categories, results) : staticColor];
   return (
     <div className="flex items-center gap-2">
-      <span className={`w-24 shrink-0 text-sm font-semibold ${labelColor}`}>{title}</span>
+      <span className={`min-w-24 shrink-0 whitespace-nowrap text-sm font-semibold ${labelColor}`}>{title}</span>
       <div className="flex flex-wrap gap-1.5">
         {categories.map((category) => {
           const Icon = CATEGORY_ICONS[category];
@@ -109,6 +109,10 @@ export function EquipmentSummary({
     ? categories.filter((c) => isPerOccupantCategory(c) && ["required", "conditional"].includes(effectiveRequirementLevel(c, effective[c]!)))
     : [];
 
+  // Reference mode (no `results`) has no "Add codriver gear" toggle to produce a separate Codriver
+  // row — since the codriver needs identical gear to the driver, say so on the one row instead.
+  const driverRowTitle = supportsCodriver && !results ? "Driver & Codriver" : "Driver";
+
   if (required.length === 0 && conditional.length === 0 && occupantCategories.length === 0) return null;
 
   return (
@@ -117,7 +121,7 @@ export function EquipmentSummary({
       <div className="flex flex-col gap-2">
         <IconRow title="Required" staticColor="red" categories={required} results={results} />
         <IconRow title="Conditional" staticColor="yellow" categories={conditional} results={results} />
-        {supportsCodriver && <IconRow title="Driver" staticColor="neutral" categories={occupantCategories} results={results} />}
+        {supportsCodriver && <IconRow title={driverRowTitle} staticColor="neutral" categories={occupantCategories} results={results} />}
         {supportsCodriver && hasCodriver && (
           <IconRow
             title="Codriver"

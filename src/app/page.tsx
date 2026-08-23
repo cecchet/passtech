@@ -7,7 +7,7 @@ import { EquipmentForm } from "@/components/EquipmentForm";
 import { EquipmentSummary } from "@/components/EquipmentSummary";
 import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
-import { CategoryResults, EquipmentEntry, evaluateRuleset, filterResultsByGroups, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
+import { CategoryResults, EquipmentEntry, evaluateRuleset, filterResultsByGroups, isEntryEmpty, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
@@ -185,15 +185,13 @@ export default function Home() {
         return { rs, results, status: overallEligibility(results), needsMoreGear: false };
       }
 
-      // "Only check the equipment I have": drop categories the driver hasn't told us about (no
-      // entry, or explicitly "I don't have this item") from eligibility entirely, instead of
-      // letting them fail the ruleset outright. Missing *required* categories are flagged
-      // separately below, as a caveat rather than a hard failure.
+      // "Only check the equipment I have": drop categories with no data entered from eligibility
+      // entirely, instead of letting them fail the ruleset outright. Missing *required*
+      // categories are flagged separately below, as a caveat rather than a hard failure.
       const haveResults: CategoryResults = {};
       let missingRequired = false;
       (Object.keys(results) as EquipmentCategory[]).forEach((category) => {
-        const entry = entries[category];
-        if (!entry || entry.skipped) {
+        if (isEntryEmpty(category, entries[category])) {
           if (results[category]!.requirement === "required") missingRequired = true;
           return;
         }
@@ -335,10 +333,6 @@ export default function Home() {
         <section>
           <h2 className="mb-4 text-lg font-semibold text-amber-400">Will my equipment pass tech?</h2>
 
-          {ruleset && (
-            <PassTechVerdict results={resultsForSelected} codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined} />
-          )}
-
           <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
 
           {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
@@ -363,12 +357,18 @@ export default function Home() {
             />
           )}
 
+          {ruleset && (
+            <PassTechVerdict results={resultsForSelected} codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined} />
+          )}
+
           <EquipmentForm
             entries={entries}
             onChange={handleChange}
             onReportMissing={handleReportMissing}
             results={resultsForSelected}
             activeGroups={activeGroups}
+            orderResetKey={rulesetId}
+            perOccupantAsDriverGroup={showCodriver && hasCodriver}
           />
 
           {showCodriver && hasCodriver && (
@@ -380,6 +380,7 @@ export default function Home() {
                 onReportMissing={handleCodriverReportMissing}
                 results={codriverResultsForSelected}
                 activeGroups={activeGroups}
+                orderResetKey={rulesetId}
                 occupant="codriver"
               />
             </div>
@@ -614,16 +615,23 @@ function PassTechVerdict({ results, codriverResults }: { results: CategoryResult
   const driverList = list.filter((i) => i.anchorSuffix === "");
   const codriverList = list.filter((i) => i.anchorSuffix === "-codriver");
 
-  const groupedList: { group: string; label: string; color: string; items: typeof driverList }[] = GROUP_ORDER.map((group) => ({
-    group,
-    label: GROUP_LABELS[group],
-    color: GROUP_COLORS[group].text,
-    items: driverList.filter(({ category }) => CATEGORY_META[category].group === group),
-  })).filter((g) => g.items.length > 0);
-
-  if (codriverList.length > 0) {
-    groupedList.push({ group: "codriver", label: "Codriver Safety Gear", color: "text-teal-400", items: codriverList });
-  }
+  // Order: Driver, then Codriver (if any), then Car/Rollcage — codriver's own gear reads more
+  // naturally right after the driver's than tacked on at the end, after the shared car items.
+  const groupedList: { group: string; label: string; color: string; items: typeof driverList }[] = [
+    {
+      group: "driver",
+      label: GROUP_LABELS.driver,
+      color: GROUP_COLORS.driver.text,
+      items: driverList.filter(({ category }) => CATEGORY_META[category].group === "driver"),
+    },
+    ...(codriverList.length > 0 ? [{ group: "codriver", label: "Codriver Safety Gear", color: "text-teal-400", items: codriverList }] : []),
+    ...GROUP_ORDER.filter((group) => group !== "driver").map((group) => ({
+      group,
+      label: GROUP_LABELS[group],
+      color: GROUP_COLORS[group].text,
+      items: driverList.filter(({ category }) => CATEGORY_META[category].group === group),
+    })),
+  ].filter((g) => g.items.length > 0);
 
   return (
     <div className={`mb-4 rounded-lg border p-4 ${VERDICT_BOX_STYLE[state]}`}>

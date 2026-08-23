@@ -99,7 +99,13 @@ export interface EquipmentEntry {
   cageTubeOuterDiameterIn?: number;
   /** Rollover protection only: the cage's tube wall thickness (inches). */
   cageTubeWallThicknessIn?: number;
-  /** User indicates they don't have / aren't entering this item at all. */
+  /**
+   * Presence-only categories with no other fields (tow hook, tow rope, emergency triangle, first
+   * aid kit, window breaker, kill switch) only: the single "I have this item" checkbox. `false`
+   * means checked/present; anything else (including undefined) reads as "no data yet". Categories
+   * with real fields of their own (certifications, extinguisher units, rollover protection's
+   * dedicated fields) infer presence from those fields instead — see `isEntryEmpty`.
+   */
   skipped?: boolean;
 }
 
@@ -590,6 +596,26 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
   };
 }
 
+/**
+ * Whether the entry has no meaningful data entered for this category yet. Replaces the old
+ * skipped/"I don't have this item" toggle — there's no separate "explicitly said no" state
+ * anymore, so a blank entry and one the user filled in and then fully cleared out both read as
+ * "no data" the same way.
+ */
+export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry | undefined): boolean {
+  if (!entry) return true;
+  if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).length === 0;
+  if (category === "rollover_protection") return !entry.bodyStyle;
+  const meta = CATEGORY_META[category];
+  if (meta.presenceOnly) return entry.skipped !== false;
+  if (meta.hybrid) {
+    if (!entry.mode) return true;
+    if (entry.mode === "material_only") return false;
+    return (entry.certifications ?? []).length === 0 && (entry.pantsCertifications ?? []).length === 0;
+  }
+  return (entry.certifications ?? []).length === 0;
+}
+
 export function evaluateCategory(
   category: EquipmentCategory,
   rule: CategoryRule | undefined,
@@ -619,9 +645,9 @@ export function evaluateCategory(
     confidence: rule.confidence,
   };
 
-  if (!entry || entry.skipped) {
+  if (!entry || isEntryEmpty(category, entry)) {
     if (effectiveRequirement === "required") {
-      return { ...base, status: "needs_info", reason: "Required, but you indicated you don't have this item." };
+      return { ...base, status: "needs_info", reason: "Required — no data entered yet." };
     }
     if (effectiveRequirement === "conditional") {
       // Undergarment's condition usually hinges on the firesuit's own tier (e.g. only required

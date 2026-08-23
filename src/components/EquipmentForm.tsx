@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, standardsFor } from "@/data/standards";
-import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { PhotoScan } from "@/components/PhotoScan";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
@@ -26,7 +26,28 @@ interface Props {
    * caller), and suffixes DOM ids/radio names so this instance doesn't collide with the driver's.
    */
   occupant?: Occupant;
+  /**
+   * Category display order (by status: needs attention first, then OK, then not-required) is
+   * established once and held fixed after that — so filling in a certification doesn't yank the
+   * card the user is looking at somewhere else on the page. Pass the current ruleset's id here;
+   * the order only re-establishes itself when this value changes (i.e. the sanctioning body was
+   * switched), not when entries/results change.
+   */
+  orderResetKey?: string;
+  /**
+   * Rally only, driver instance only: when the codriver toggle is on, the driver's own seat/belts/
+   * window net (normally "car" group) display under "Driver Safety Gear" instead of "Car Safety
+   * Gear" — matching the codriver's section, where all of their per-occupant gear already lives
+   * under one heading. The shared car items (fuel cell, extinguisher, etc.) stay under "Car Safety
+   * Gear" either way.
+   */
+  perOccupantAsDriverGroup?: boolean;
 }
+
+// Matches the teal used for the "Codriver Safety Gear" heading/verdict group elsewhere (page.tsx) —
+// codriver cards get this one color regardless of the category's own driver/car group, so the
+// whole codriver section reads as visually distinct from the driver's own cards above it.
+const CODRIVER_COLOR = { text: "text-teal-400", border: "border-teal-800" };
 
 const selectClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
 const optionClass = "bg-neutral-900 text-neutral-100";
@@ -505,6 +526,18 @@ function RolloverProtectionFields({
   );
 }
 
+// Presence-only categories with no other fields of their own (tow hook, tow rope, emergency
+// triangle, first aid kit, window breaker, kill switch) — the only way the user can indicate
+// possession is a single checkbox. Fire extinguisher and rollover protection are presence-only
+// too but have their own dedicated fields, so they're excluded here.
+function isSimplePresenceCategory(category: EquipmentCategory): boolean {
+  return CATEGORY_META[category].presenceOnly === true && category !== "fire_extinguisher" && category !== "rollover_protection";
+}
+
+function NoDataBadge() {
+  return <span className="shrink-0 rounded-full border border-neutral-600 px-2 py-0.5 text-xs text-neutral-400">No data</span>;
+}
+
 function StatusPill({ status, requirement }: { status: CategoryResult["status"]; requirement: CategoryResult["requirement"] }) {
   return (
     <span className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusStyle(status, requirement)}`}>
@@ -525,10 +558,13 @@ const STATUS_DISPLAY_ORDER: Record<CategoryResult["status"], number> = {
 
 // Keeps categories in their natural group order (driver, then car, then rollcage) so a group
 // header always makes sense, while still surfacing items needing attention first within each group.
-function groupCategoriesForDisplay(categories: EquipmentCategory[], results?: CategoryResults): EquipmentCategory[] {
+// `groupOf` decides which group each category buckets/sorts under — usually just its
+// CATEGORY_META group, except the driver's own per-occupant items (seat/belts/window net) when
+// perOccupantAsDriverGroup is active, which bucket as "driver" instead of "car" (see Props).
+function groupCategoriesForDisplay(categories: EquipmentCategory[], results: CategoryResults | undefined, groupOf: (c: EquipmentCategory) => CategoryGroup): EquipmentCategory[] {
   const byGroup = new Map<CategoryGroup, EquipmentCategory[]>();
   for (const c of categories) {
-    const g = CATEGORY_META[c].group;
+    const g = groupOf(c);
     if (!byGroup.has(g)) byGroup.set(g, []);
     byGroup.get(g)!.push(c);
   }
@@ -542,13 +578,34 @@ function groupCategoriesForDisplay(categories: EquipmentCategory[], results?: Ca
   });
 }
 
-export function EquipmentForm({ entries, onChange, onReportMissing, results, activeGroups, occupant = "driver" }: Props) {
+export function EquipmentForm({
+  entries,
+  onChange,
+  onReportMissing,
+  results,
+  activeGroups,
+  occupant = "driver",
+  orderResetKey,
+  perOccupantAsDriverGroup,
+}: Props) {
   const visibleCategories = filterCategoriesByGroups(CATEGORY_ORDER, activeGroups).filter(
     (c) => occupant === "driver" || isPerOccupantCategory(c)
   );
-  const orderedCategories = groupCategoriesForDisplay(visibleCategories, results);
+  const groupOf = (c: EquipmentCategory): CategoryGroup =>
+    occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
 
-  const detailsRefs = useRef<Partial<Record<EquipmentCategory, HTMLDetailsElement | null>>>({});
+  // Compute the status-sorted order once per orderResetKey (the current ruleset) and hold it
+  // fixed after that, even as entries/results change the underlying statuses — otherwise a card
+  // jumps elsewhere in the list the instant its status changes (e.g. right as you finish entering
+  // a certification), which is disorienting mid-edit. This is React's documented "adjust state
+  // during render" pattern (https://react.dev/reference/react/useState#storing-information-from-previous-renders).
+  const setKey = `${orderResetKey ?? ""}::${perOccupantAsDriverGroup ? "1" : "0"}::${visibleCategories.join(",")}`;
+  const [orderState, setOrderState] = useState(() => ({ key: setKey, order: groupCategoriesForDisplay(visibleCategories, results, groupOf) }));
+  let orderedCategories = orderState.order;
+  if (orderState.key !== setKey) {
+    orderedCategories = groupCategoriesForDisplay(visibleCategories, results, groupOf);
+    setOrderState({ key: setKey, order: orderedCategories });
+  }
 
   if (orderedCategories.length === 0) {
     return <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">No categories selected — check a safety gear section above.</p>;
@@ -558,63 +615,39 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
     <div className="flex flex-col gap-3">
       {orderedCategories.map((category, i) => {
         const meta = CATEGORY_META[category];
-        const entry = entries[category] ?? { category, skipped: true };
+        const entry = entries[category] ?? { category };
         const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
         const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
         const result = results?.[category];
         const Icon = CATEGORY_ICONS[category];
-        const isNewGroup = occupant === "driver" && (i === 0 || CATEGORY_META[orderedCategories[i - 1]].group !== meta.group);
-        const groupColor = GROUP_COLORS[meta.group];
+        const displayGroup = groupOf(category);
+        const isNewGroup = occupant === "driver" && (i === 0 || groupOf(orderedCategories[i - 1]) !== displayGroup);
+        const groupColor = occupant === "codriver" ? CODRIVER_COLOR : GROUP_COLORS[displayGroup];
         const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
-        const radioName = occupant === "driver" ? `has-${category}` : `has-${category}-${occupant}`;
+        const isEmpty = isEntryEmpty(category, entry);
 
         return (
           <div key={category} id={domId} className="scroll-mt-4">
-            {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[meta.group]}</h3>}
-            <details
-              ref={(el) => {
-                detailsRefs.current[category] = el;
-              }}
-              className={`rounded-lg border p-4 ${groupColor.border}`}
-            >
+            {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[displayGroup]}</h3>}
+            <details className={`rounded-lg border p-4 ${groupColor.border}`}>
             <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
               <span className="flex min-w-0 flex-1 items-center gap-3">
                 <Icon />
                 <span className="min-w-0">{meta.label}</span>
               </span>
-              <div
-                className="flex w-full shrink-0 items-center gap-3 text-xs font-normal sm:w-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <label className="flex cursor-pointer items-center gap-1">
-                  <input
-                    type="radio"
-                    name={radioName}
-                    checked={!entry.skipped}
-                    onChange={() => {
-                      update({ skipped: false });
-                      const el = detailsRefs.current[category];
-                      if (el) el.open = true;
-                    }}
-                  />
-                  I have this item
-                </label>
-                <label className="flex cursor-pointer items-center gap-1">
-                  <input
-                    type="radio"
-                    name={radioName}
-                    checked={!!entry.skipped}
-                    onChange={() => update({ skipped: true })}
-                  />
-                  I don&apos;t have this item
-                </label>
-              </div>
+              {isEmpty && <NoDataBadge />}
               {result && <StatusPill status={result.status} requirement={result.requirement} />}
             </summary>
             <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
 
-            {!entry.skipped && (
-              <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+                {isSimplePresenceCategory(category) && (
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
+                    <input type="checkbox" checked={entry.skipped === false} onChange={(e) => update({ skipped: e.target.checked ? false : undefined })} />
+                    I have this item
+                  </label>
+                )}
+
                 {category === "helmet" && (
                   <select
                     className={selectClass}
@@ -732,7 +765,6 @@ export function EquipmentForm({ entries, onChange, onReportMissing, results, act
                     />
                   ))}
               </div>
-            )}
 
             {result && (
               <div className="mt-3">

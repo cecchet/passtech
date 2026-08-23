@@ -201,7 +201,7 @@ export function ReferenceView({
           <Fragment key={category}>
             {isNewGroup && (
               <h3 className={`col-span-full mb-[-6px] mt-2 text-xs font-semibold uppercase tracking-wide first:mt-0 ${GROUP_COLORS[group].text}`}>
-                {GROUP_LABELS[group]}
+                {group === "driver" && ruleset.supportsCodriver ? "Driver & Codriver Safety Gear" : GROUP_LABELS[group]}
               </h3>
             )}
             <CategoryReferenceCard category={category} rule={effective[category]!} />
