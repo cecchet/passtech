@@ -116,7 +116,7 @@ export function EquipmentSummary({
   if (required.length === 0 && conditional.length === 0 && occupantCategories.length === 0) return null;
 
   return (
-    <div className="mb-6 rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
+    <div id="tutorial-equipment-summary" className="mb-6 rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
       <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Equipment summary</p>
       <div className="flex flex-col gap-2">
         <IconRow title="Required" staticColor="red" categories={required} results={results} />

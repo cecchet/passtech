@@ -42,6 +42,10 @@ const POINTER_STEPS: PointerStep[] = [
     targetId: "tutorial-source-line",
     text: "Click here to download the official rulebook for the selected body and class.",
   },
+  {
+    targetId: "tutorial-equipment-summary",
+    text: "This box summarizes everything at a glance — one line for required equipment, one for conditional. Click any icon to jump straight to that item further down the page.",
+  },
 ];
 
 const TOTAL_STEPS = 1 + POINTER_STEPS.length;
