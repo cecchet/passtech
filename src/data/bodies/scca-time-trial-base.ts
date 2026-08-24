@@ -91,8 +91,15 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
     requirement: "required",
     materialOnlyAccepted: true,
     acceptedStandards: GENERIC_APPAREL_STANDARDS,
-    materialNote:
-      "'Shoes, with uppers of leather and/or nonflammable material that, at a minimum, cover the instep' — no certification number required. Separately, socks of accepted fire-resistant material are required — not modeled as its own category here since this app's undergarment category covers body underwear, not socks.",
+    materialNote: "'Shoes, with uppers of leather and/or nonflammable material that, at a minimum, cover the instep' — no certification number required.",
+    citation: SCCA_TT_LEVEL2_SOURCE,
+    confidence: "high",
+  },
+  socks: {
+    requirement: "required",
+    materialOnlyAccepted: true,
+    acceptedStandards: GENERIC_APPAREL_STANDARDS,
+    materialNote: "Socks of accepted fire-resistant material are required — no certification number cited.",
     citation: SCCA_TT_LEVEL2_SOURCE,
     confidence: "high",
   },

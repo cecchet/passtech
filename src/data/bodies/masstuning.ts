@@ -73,6 +73,12 @@ const trackfest: Ruleset = {
       citation: { ...techForm },
       confidence: "high",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned in the tech form's equipment checklist ('Snell certified helmet, closed toe shoes and valid driver's license' is the entire published requirement).",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...techForm },

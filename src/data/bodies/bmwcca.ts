@@ -100,6 +100,14 @@ const clubRacing: Ruleset = {
       citation: { ...sourceDoc, section: "III.B.1.d" },
       confidence: "high",
     },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "Rulebook §III.B.1.d.i: 'Fire-retardant socks and gloves are required' — no specific certification number cited.",
+      citation: { ...sourceDoc, section: "III.B.1.d" },
+      confidence: "high",
+    },
     undergarment: {
       requirement: "conditional",
       condition:
@@ -332,6 +340,12 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "Not mentioned in the Driving Schools/HPDE section — the closed-toe/closed-heel shoe rule elsewhere in this manual is written specifically for §2.4 (Autocross/Gymkhana/Car-Control Clinics), not HPDE.",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes: "Not mentioned in the Driving Schools/HPDE section.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...deSourceDoc },
@@ -482,6 +496,12 @@ const autocross: Ruleset = {
       citation: { ...deSourceDoc, section: "2.4.6.4 Footwear" },
       confidence: "high",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes: "Not mentioned for autocross/gymkhana/car-control clinics.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...deSourceDoc },
@@ -625,6 +645,12 @@ const iceAutocross: Ruleset = {
       materialNote: "Inherited from the regular Autocross section's closed-toe/closed-heel shoe rule via §2.5.1's 'all standards also apply' clause — no fire-resistance or certification requirement.",
       citation: { ...deSourceDoc, section: "2.4.6.4 Footwear (applies via 2.5.1)" },
       confidence: "high",
+    },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes: "Not mentioned for ice autocross or, via inheritance, for regular autocross.",
     },
     undergarment: {
       requirement: "not_addressed",

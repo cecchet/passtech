@@ -5,6 +5,7 @@ export type EquipmentCategory =
   | "firesuit"
   | "gloves"
   | "shoes"
+  | "socks"
   | "undergarment"
   | "arm_restraint"
   | "seat"

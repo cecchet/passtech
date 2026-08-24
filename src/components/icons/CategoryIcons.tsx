@@ -26,6 +26,7 @@ const HnrIcon = () => <CategoryIcon src="/frog-hans.png" objectPosition="50% 45%
 const FiresuitIcon = () => <CategoryIcon src="/frog-firesuit.png" objectPosition="50% 45%" />;
 const GlovesIcon = () => <CategoryIcon src="/frog-gloves.png" objectPosition="50% 38%" />;
 const ShoesIcon = () => <CategoryIcon src="/frog-shoes.jpg" objectPosition="50% 55%" />;
+const SocksIcon = () => <CategoryIcon src="/frog-socks.jpg" objectPosition="50% 45%" />;
 const UndergarmentIcon = () => <CategoryIcon src="/frog-undergarment.png" objectPosition="50% 45%" />;
 const ArmRestraintIcon = () => <CategoryIcon src="/frog-arm-restraints.png" objectPosition="50% 45%" />;
 
@@ -51,6 +52,7 @@ export const CATEGORY_ICONS: Record<EquipmentCategory, () => React.JSX.Element> 
   firesuit: FiresuitIcon,
   gloves: GlovesIcon,
   shoes: ShoesIcon,
+  socks: SocksIcon,
   undergarment: UndergarmentIcon,
   arm_restraint: ArmRestraintIcon,
   seat: SeatIcon,

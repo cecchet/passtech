@@ -102,7 +102,19 @@ const endurance: Ruleset = {
         { standardId: "fia-8856-2018", noExpiration: true },
       ]),
       materialNote:
-        "Same sentence as gloves (§3.12.3.1): 'Fire-retardant FIA and/or SFI-certified gloves, socks, and shoes are required,' valid regardless of certification/manufacture date. Socks are also required by this rule but are not modeled as a separate category in this app.",
+        "Same sentence as gloves (§3.12.3.1): 'Fire-retardant FIA and/or SFI-certified gloves, socks, and shoes are required,' valid regardless of certification/manufacture date.",
+      citation: { ...sourceDoc, section: "3.12.3" },
+      confidence: "high",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: SFI_3_3_IDS.map((standardId) => ({ standardId, noExpiration: true })).concat([
+        { standardId: "fia-8856-2000", noExpiration: true },
+        { standardId: "fia-8856-2018", noExpiration: true },
+      ]),
+      materialNote:
+        "Rule text (§3.12.3.1-2): 'Fire-retardant FIA and/or SFI-certified gloves, socks, and shoes are required... shall be allowed, regardless of the date of certification or manufacture.' No specific tier/spec number is named, but a certified item is required.",
       citation: { ...sourceDoc, section: "3.12.3" },
       confidence: "high",
     },

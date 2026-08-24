@@ -82,6 +82,13 @@ const solo: Ruleset = {
       citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "4.3.3" },
       confidence: "high",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA National Solo Rules", version: "2026 Edition" },
+      confidence: "high",
+      notes:
+        "Not addressed in core §4.3 Driver Safety Equipment. Appendix E ('Driver Safety Equipment Requirements') separately says fire-resistant clothing including 'suits, gloves, socks, and shoes' is 'highly recommended' for Street Modified/Prepared/Modified and Club Racing GT/Production/Formula/Sports Racing category vehicles — not modeled as the general rule here, consistent with how firesuit/gloves also read 'not_addressed' for core Solo despite that same Appendix E passage.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { title: "SCCA National Solo Rules", version: "2026 Edition" },
@@ -379,6 +386,12 @@ const rallycross: Ruleset = {
       requirement: "not_addressed",
       citation: { title: "SCCA RallyCross Rules", version: "RX2026" },
       confidence: "high",
+    },
+    socks: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA RallyCross Rules", version: "RX2026" },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the RallyCross rules, consistent with the absent shoe requirement.",
     },
     undergarment: {
       requirement: "not_addressed",
@@ -737,6 +750,14 @@ const roadRacing: Ruleset = {
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "Uppers of leather and/or nonflammable material, covering at minimum the instep. Manufacturer ventilation pinholes allowed. No specific certification number cited by the GCR.",
       citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.19.C.9" },
+      confidence: "high",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "GCR §9.3.19.C.5: 'Socks made of accepted fire resistant material' — no specific certification number cited, plain FR material qualifies.",
+      citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.19.C.5" },
       confidence: "high",
     },
     undergarment: {

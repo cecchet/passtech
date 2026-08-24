@@ -86,6 +86,12 @@ const iceRacing: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the current rulebook, for any driver.",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the current rulebook, for any driver.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...sourceDoc },

@@ -159,6 +159,16 @@ const raceGear: Ruleset = {
       citation: { ...eventListing, section: "Safety Gear" },
       confidence: "medium",
     },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "Rulebook Chapter 7, Section A, item 6: 'Socks: SFI 3.3 or FIA 8856/2000 rated socks' — unlike shoes, no material-only fallback is offered, just the certified standard directly.",
+      citation: { ...rulebook, section: "Chapter 7, Section A.6" },
+      confidence: "high",
+      notes:
+        "Sourced from the rulebook directly (unlike the sibling gloves/shoes entries above, which still rely on the weaker eventListing source per the file-level note) since socks wasn't a tracked category when that earlier pass ran.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...rulebook },
@@ -358,6 +368,16 @@ const raceGear: Ruleset = {
         materialNote:
           "Rulebook §7B: 'Shoes or boots, made of leather or nonflammable material that at a minimum cover the foot up to the ankle. SFI 3.3/5 & FIA 8856/2000 rated shoes are strongly recommended' — certification itself is only recommended, not required, even when the condition above applies.",
         citation: { ...rulebook, section: "7B.6" },
+        confidence: "high",
+      },
+      socks: {
+        requirement: "conditional",
+        materialOnlyAccepted: false,
+        acceptedStandards: GENERIC_APPAREL_STANDARDS,
+        condition:
+          "Rulebook §7B: required only 'for time attack drivers of non-production cars and cars with a gutted interior' — not required for a time attack driver in a production car with an intact interior.",
+        materialNote: "Rulebook §7B: 'Socks: SFI 3.3 or FIA 8856/2000 rated socks' — unlike shoes, no material-only fallback is offered here.",
+        citation: { ...rulebook, section: "7B.7" },
         confidence: "high",
       },
 

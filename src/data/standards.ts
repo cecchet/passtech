@@ -32,7 +32,7 @@ export function logbookBodyLabel(id: string): string {
   return ROLLOVER_LOGBOOK_BODIES.find((b) => b.id === id)?.label ?? id;
 }
 
-const APPAREL: EquipmentCategory[] = ["gloves", "shoes", "undergarment", "arm_restraint", "balaclava"];
+const APPAREL: EquipmentCategory[] = ["gloves", "shoes", "socks", "undergarment", "arm_restraint", "balaclava"];
 
 /**
  * Master registry of certification standards a user can select when entering equipment.

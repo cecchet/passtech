@@ -153,8 +153,19 @@ const endurance: Ruleset = {
       materialNote: "Same rule and citation as gloves — 'SFI 3.3/5 & FIA 8856/2000 rated gloves & shoes are required for all drivers.'",
       citation: { ...sourceDoc, section: "B.2.d" },
       confidence: "medium",
-      notes:
-        "SFI 3.3/5 as a shoe-specific citation is unusual for the same reason noted on gloves. Separately, §B.2.e requires socks rated SFI 3.3 or FIA 8856/2000 for drivers — not modeled since socks aren't a tracked category in this app; shown here as an adjacent requirement to check for.",
+      notes: "SFI 3.3/5 as a shoe-specific citation is unusual for the same reason noted on gloves.",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: [
+        { standardId: "sfi-3.3-5" },
+        { standardId: "fia-8856-2000" },
+        { standardId: "fia-8856-2018", note: "Not explicitly named by WRL's rule text but assumed acceptable as the current FIA suit-family standard." },
+      ],
+      materialNote: "Rulebook §B.2.e: 'SFI 3.3 or FIA 8856/2000 rated socks are required for all drivers' — a certified item, not just fire-resistant material.",
+      citation: { ...sourceDoc, section: "B.2.e" },
+      confidence: "medium",
     },
     undergarment: {
       requirement: "conditional",
@@ -166,7 +177,6 @@ const endurance: Ruleset = {
       materialNote: "Rulebook just says 'SFI 3.3 rated underwear' when required — no specific tier named, but a certified item is required, not just fire-resistant material.",
       citation: { ...sourceDoc, section: "B.2.b" },
       confidence: "high",
-      notes: "Section B.2.e separately requires SFI 3.3 or FIA 8856/2000 rated socks for drivers — not modeled since socks aren't a tracked category in this app.",
     },
     arm_restraint: {
       requirement: "not_addressed",

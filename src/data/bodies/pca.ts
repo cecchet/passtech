@@ -82,6 +82,12 @@ const de: Ruleset = {
       citation: { ...sourceDoc, section: "11(c) Footwear and Clothing" },
       confidence: "high",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "11(c) Footwear and Clothing" },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the national Minimum Standards document.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...sourceDoc },

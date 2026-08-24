@@ -117,10 +117,19 @@ const hillClimb: Ruleset = {
       confidence: "low",
       notes: "SFI 3.3/5 is unusual as a shoe-specific citation (it's normally the glove/apparel family spec) — transcribed as written from the rule book; the rule may intend the broader SFI 3.3 apparel family rather than a glove-only spec. Worth spot-checking against a current copy. The rule book text also only names FIA 8856-2000, but FIA 8856-2018 is also accepted in practice — confirmed by a Pikes Peak competitor.",
     },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: [{ standardId: "sfi-3.3-5" }, { standardId: "fia-8856-2000" }, { standardId: "fia-8856-2018" }],
+      materialNote: "Rule Book §114.2.4: socks worn with your shoes must be SFI 3.3/5 or FIA 8856-2000 certified — a certified item, not just fire-resistant material.",
+      citation: { ...sourceDoc, section: "114.2.4" },
+      confidence: "low",
+      notes: "Same citation and same SFI 3.3/5-as-shoe/sock-spec caveat as the shoes rule above. The rule book text only names FIA 8856-2000, but FIA 8856-2018 is also accepted in practice — confirmed by a Pikes Peak competitor.",
+    },
     undergarment: {
       requirement: "conditional",
       condition:
-        "Required if your driving suit is single- or double-layer (Nomex or equivalent long-sleeve fire-retardant underwear); not required with 3-or-more-layer suits unless the suit manufacturer specifies otherwise. Separately, socks worn with your shoes must be SFI 3.3/5 or FIA 8856-2000/2018 certified per §114.2.4 — not fully modeled here since this category covers body underwear, not socks specifically.",
+        "Required if your driving suit is single- or double-layer (Nomex or equivalent long-sleeve fire-retardant underwear); not required with 3-or-more-layer suits unless the suit manufacturer specifies otherwise.",
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
       materialNote: "Rule Book just says 'Nomex or equivalent long sleeved fire-retardant underwear' when required — no specific certification number cited for the underwear itself.",

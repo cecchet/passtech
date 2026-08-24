@@ -85,6 +85,12 @@ const hpde: Ruleset = {
       notes:
         "HOD's own FAQ and policies pages (searched directly for footwear/shoe mentions) do not state a footwear requirement. Some third-party aggregator summaries mention 'closed-toe shoes' as a general expectation for HOD events, but this was not found verbatim in HOD's official materials during this research pass — closed-toe/athletic shoes are standard track-day practice regardless, but it isn't confirmed here as an HOD-stated rule. Worth a direct spot-check with HOD or a regional waiver/registration form if precision matters.",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...faq },
+      confidence: "medium",
+      notes: "Not mentioned anywhere in HOD's public FAQ, policies page, or self-tech checklist — consistent with the absent shoe requirement.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...faq },

@@ -91,8 +91,15 @@ const endurance: Ruleset = {
       requirement: "required",
       materialOnlyAccepted: false,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
-      materialNote:
-        "Same sentence as gloves (§3.2.3): 'Fire-retardant FIA- or SFI-rated racing gloves, shoes, and socks are required.' The rule also requires FR-rated socks, which is not modeled as a separate category in this app.",
+      materialNote: "Same sentence as gloves (§3.2.3): 'Fire-retardant FIA- or SFI-rated racing gloves, shoes, and socks are required.'",
+      citation: { ...sourceDoc, section: "3.2.3" },
+      confidence: "high",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "Same sentence as gloves/shoes (§3.2.3): 'Fire-retardant FIA- or SFI-rated racing gloves, shoes, and socks are required.' No specific tier/spec number is named, but a certified item is required.",
       citation: { ...sourceDoc, section: "3.2.3" },
       confidence: "high",
     },

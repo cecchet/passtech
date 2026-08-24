@@ -11,7 +11,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // returns 404 "no longer available to new users" on those. gemini-3.6-flash is the current flash model.
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
-const VALID_CATEGORIES: EquipmentCategory[] = ["helmet", "hnr", "firesuit", "gloves", "shoes", "undergarment", "arm_restraint"];
+const VALID_CATEGORIES: EquipmentCategory[] = ["helmet", "hnr", "firesuit", "gloves", "shoes", "socks", "undergarment", "arm_restraint"];
 
 // Simple in-memory sliding-window limit, keyed by client IP. Not distributed — resets on cold
 // start and isn't shared across serverless instances — but it's enough to stop a runaway loop

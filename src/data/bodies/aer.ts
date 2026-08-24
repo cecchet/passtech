@@ -87,8 +87,15 @@ const endurance: Ruleset = {
       materialNote: "Same rule and citation as gloves — SFI 3.3 or FIA 8856-2000 or better, no plain-material allowance.",
       citation: { ...sourceDoc, section: "1.4.2" },
       confidence: "high",
-      notes:
-        "The same §1.4.2 sentence also requires socks rated SFI 3.3 or FIA 8856-2000 or better ('Shoes, socks and gloves...') — not modeled separately since socks aren't one of this app's tracked categories; shown here as an adjacent requirement to check for.",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: false,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "Rulebook: 'Shoes, socks and gloves, all to be rated at SFI 3.3 or FIA 8856-2000 or better' — no specific SFI 3.3 tier named, and no plain-material allowance (must be a certified item).",
+      citation: { ...sourceDoc, section: "1.4.2" },
+      confidence: "high",
+      notes: "Gear 'must also be in good condition' — no separate age/expiration limit stated.",
     },
     undergarment: {
       requirement: "conditional",

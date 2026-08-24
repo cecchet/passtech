@@ -36,6 +36,7 @@ export const PER_OCCUPANT_CATEGORIES: EquipmentCategory[] = [
   "gloves",
   "arm_restraint",
   "shoes",
+  "socks",
   "seat",
   "belts_harness",
   "window_net",
@@ -55,6 +56,7 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "gloves",
   "arm_restraint",
   "shoes",
+  "socks",
   // Car safety gear
   "seat",
   "belts_harness",
@@ -106,6 +108,7 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
   },
   gloves: { label: "Gloves", group: "driver", hybrid: true, hint: "Some bodies accept plain fire-resistant material; others require SFI or FIA certification." },
   shoes: { label: "Shoes", group: "driver", hybrid: true, hint: "Some bodies accept plain fire-resistant/non-flammable material; others require SFI or FIA certification." },
+  socks: { label: "Socks", group: "driver", hybrid: true, hint: "Some bodies accept plain fire-resistant/non-flammable material or don't address socks at all; others require SFI or FIA certification." },
   undergarment: { label: "Fire-resistant Undergarment", group: "driver", hybrid: true, hint: "Optional/conditional for most bodies — depends on your suit's rating." },
   arm_restraint: {
     label: "Arm Restraint",

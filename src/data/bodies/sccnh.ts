@@ -77,6 +77,12 @@ const gravelTrials: Ruleset = {
       confidence: "high",
       notes: "Confirmed real gap in the 2026 rulebook too: no shoe requirement in this document, unlike NEHA which has one.",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025" },
+      confidence: "high",
+      notes: "Confirmed real gap: no sock requirement in this document, unlike SCCNH's own Climb to the Clouds rules which do have one.",
+    },
     undergarment: {
       requirement: "conditional",
       condition: "Required only if using an SFI 3.2A/1 driving suit (no specific standard number given for the underwear itself in this document).",
@@ -322,6 +328,13 @@ const climbToTheClouds: Ruleset = {
       materialOnlyAccepted: true,
       materialNote: "Leather or nonflammable material, must cover the instep — no certification cited.",
       citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.7" },
+      confidence: "high",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      materialNote: "Rule 2.3.6: 'Socks made of fire resistant material (e.g., cotton, Nomex). No thermoplastic (meltable) synthetic materials (e.g., nylon, polyester, polypropylene).' No certification cited.",
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "2.3.6" },
       confidence: "high",
     },
     arm_restraint: {

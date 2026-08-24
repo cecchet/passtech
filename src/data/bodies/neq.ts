@@ -104,6 +104,13 @@ const hpde: Ruleset = {
       citation: { ...clothingPage, section: "Clothing requirements" },
       confidence: "high",
     },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      materialNote: "'Light weight, smooth-soled footwear with socks is also required.' Just plain socks worn with shoes — no fire-resistance material or certification requirement.",
+      citation: { ...clothingPage, section: "Clothing requirements" },
+      confidence: "high",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...clothingPage },

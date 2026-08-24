@@ -107,6 +107,8 @@ export interface EquipmentEntry {
    * dedicated fields) infer presence from those fields instead — see `isEntryEmpty`.
    */
   skipped?: boolean;
+  /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3. Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
+  photoDataUrls?: string[];
 }
 
 export function newCertification(): CertificationEntry {

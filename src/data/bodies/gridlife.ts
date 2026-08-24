@@ -88,7 +88,16 @@ const competitiveShoesRule: CategoryRule = {
   requirement: "required",
   materialOnlyAccepted: false,
   acceptedStandards: GENERIC_APPAREL_STANDARDS,
-  materialNote: "Fire-resistant shoes required, no holes from wear. Nomex socks are also required at this tier — not modeled separately since socks aren't a tracked category in this app.",
+  materialNote: "Fire-resistant shoes required, no holes from wear.",
+  citation: { ...sourceDoc, section: "6. Driver's Safety Equipment" },
+  confidence: "medium",
+};
+
+const competitiveSocksRule: CategoryRule = {
+  requirement: "required",
+  materialOnlyAccepted: false,
+  acceptedStandards: GENERIC_APPAREL_STANDARDS,
+  materialNote: "Nomex socks required at this tier — same clause as the fire-resistant shoes requirement.",
   citation: { ...sourceDoc, section: "6. Driver's Safety Equipment" },
   confidence: "medium",
 };
@@ -295,6 +304,12 @@ const hpde: Ruleset = {
       notes: "No glove requirement stated for HPDE.",
     },
     shoes: basicShoesRule,
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "Clothing (general)" },
+      confidence: "medium",
+      notes: "No sock requirement stated for HPDE.",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...sourceDoc },
@@ -379,7 +394,13 @@ const trackBattleTimeAttack: Ruleset = {
     },
     shoes: {
       ...basicShoesRule,
-      notes: "Base tier: closed-toe shoes, no certification. §6 separately requires fire-resistant shoes and Nomex socks for 'Unlimited or GLTC' participants — the source doesn't define the Unlimited threshold (see file-level note).",
+      notes: "Base tier: closed-toe shoes, no certification. §6 separately requires fire-resistant shoes for 'Unlimited or GLTC' participants — the source doesn't define the Unlimited threshold (see file-level note).",
+    },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "6. Driver's Safety Equipment" },
+      confidence: "medium",
+      notes: "Required only for 'Unlimited or GLTC' participants per §6 — the source doesn't define the Unlimited threshold (see file-level note). Not modeled as the general rule for this ruleset.",
     },
     undergarment: {
       requirement: "not_addressed",
@@ -442,6 +463,7 @@ const gltcGlgt: Ruleset = {
     firesuit: competitiveFiresuitRule,
     gloves: competitiveGlovesRule,
     shoes: competitiveShoesRule,
+    socks: competitiveSocksRule,
     undergarment: competitiveUndergarmentRule,
     arm_restraint: {
       requirement: "not_addressed",
@@ -484,6 +506,7 @@ const rushSr: Ruleset = {
     firesuit: competitiveFiresuitRule,
     gloves: competitiveGlovesRule,
     shoes: competitiveShoesRule,
+    socks: competitiveSocksRule,
     undergarment: competitiveUndergarmentRule,
     arm_restraint: {
       requirement: "required",

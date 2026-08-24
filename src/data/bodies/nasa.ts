@@ -107,6 +107,14 @@ const roadRacing: Ruleset = {
       citation: { title: "NASA CCR", version: "2026.3", section: "15.17.6" },
       confidence: "high",
     },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "CCR §15.17.7: 'Socks made of fire-resistant material must be worn.' No specific certification number cited.",
+      citation: { title: "NASA CCR", version: "2026.3", section: "15.17.7" },
+      confidence: "high",
+    },
     undergarment: {
       requirement: "conditional",
       condition:
@@ -354,6 +362,12 @@ const rallySport: Ruleset = {
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0" },
       confidence: "high",
       notes: "Confirmed real gap: no shoe requirement anywhere in the current GRR Section 3.",
+    },
+    socks: {
+      requirement: "not_addressed",
+      citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0" },
+      confidence: "high",
+      notes: "Confirmed real gap: no sock requirement anywhere in the current GRR Section 3, consistent with the absent shoe/glove requirements.",
     },
     undergarment: {
       requirement: "conditional",

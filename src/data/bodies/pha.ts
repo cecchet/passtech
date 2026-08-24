@@ -107,9 +107,16 @@ const timeTrialHillclimb: Ruleset = {
       requirement: "required",
       materialOnlyAccepted: true,
       acceptedStandards: GENERIC_APPAREL_STANDARDS,
-      materialNote:
-        "PHA: 'Shoes, with uppers of leather and/or nonflammable material that at a minimum cover the instep' — no certification number required. Separately, §9.20.D requires socks of accepted fire-resistant material — not modeled as its own category here since this app's undergarment category covers body underwear, not socks.",
+      materialNote: "PHA: 'Shoes, with uppers of leather and/or nonflammable material that at a minimum cover the instep' — no certification number required.",
       citation: { ...sourceDoc, section: "9.20.H" },
+      confidence: "high",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "PHA §9.20.D: socks of accepted fire-resistant material required — no certification number named, plain FR material qualifies.",
+      citation: { ...sourceDoc, section: "9.20.D" },
       confidence: "high",
     },
     undergarment: {

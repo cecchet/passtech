@@ -80,6 +80,12 @@ const performanceRally: Ruleset = {
       citation: { ...sourceDoc, section: "NRR 11.1.8" },
       confidence: "medium",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 11.1.8" },
+      confidence: "medium",
+      notes: "Not mentioned anywhere in the rule book, unlike gloves/shoes which are at least recommended.",
+    },
     undergarment: {
       requirement: "conditional",
       condition: "Required only as a substitute when the driving suit itself is SFI 3.2A/1 (not addressed as a standalone recommendation otherwise).",
@@ -268,6 +274,12 @@ const rallySprint: Ruleset = {
       citation: { ...sourceDoc, section: "NRR 11.1.8 (cross-referenced)" },
       confidence: "medium",
     },
+    socks: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 11.1.8 (cross-referenced)" },
+      confidence: "medium",
+      notes: "Same as Performance Rally: not mentioned anywhere in the rule book.",
+    },
     undergarment: {
       requirement: "conditional",
       condition: "Same as Performance Rally: required only as a substitute when the suit itself is SFI 3.2A/1.",
@@ -443,6 +455,11 @@ const rallyCross: Ruleset = {
       confidence: "high",
     },
     shoes: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 27.3.3" },
+      confidence: "high",
+    },
+    socks: {
       requirement: "not_addressed",
       citation: { ...sourceDoc, section: "NRR 27.3.3" },
       confidence: "high",

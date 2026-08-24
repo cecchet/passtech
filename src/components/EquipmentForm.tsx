@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
-import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
-import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, standardsFor } from "@/data/standards";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory } from "@/data/categoryMeta";
+import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import { resizeImageToDataUrl } from "@/lib/imageResize";
+import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
+import { TagCandidateList } from "@/components/TagCandidateList";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryResult } from "@/lib/matcher";
@@ -42,6 +45,117 @@ interface Props {
    * Gear" either way.
    */
   perOccupantAsDriverGroup?: boolean;
+  /**
+   * Garage only: shows a control to attach up to 3 reference photos of this item, storing
+   * compressed thumbnails on the entry (see EquipmentEntry.photoDataUrls). Categories that show a
+   * certification list also get a per-photo "scan for tags" action, reusing the same tag-scanning
+   * flow as the upload-a-photo-to-scan button. Off elsewhere to keep the pass-tech checking flow
+   * uncluttered.
+   */
+  showPhotoUpload?: boolean;
+}
+
+const MAX_ITEM_PHOTOS = 3;
+
+function ItemPhotoThumb({
+  category,
+  imageDataUrl,
+  canScan,
+  onRemove,
+  onAddCertification,
+}: {
+  category: EquipmentCategory;
+  imageDataUrl: string;
+  canScan: boolean;
+  onRemove: () => void;
+  onAddCertification: (cert: CertificationEntry) => void;
+}) {
+  const scanner = useTagScanner(category, onAddCertification);
+  return (
+    <div className="flex max-w-[220px] flex-col gap-1">
+      <div className="flex items-start gap-2">
+        {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
+        <img src={imageDataUrl} alt="" className="h-16 w-16 shrink-0 rounded object-cover" />
+        <div className="flex flex-col gap-1">
+          {canScan && (
+            <button
+              type="button"
+              onClick={() => scanner.analyze(imageDataUrl)}
+              disabled={scanner.status === "loading"}
+              className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
+            >
+              {scanner.status === "loading" ? "Scanning…" : "🔍 Scan for tags"}
+            </button>
+          )}
+          <button type="button" onClick={onRemove} className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
+            Remove photo
+          </button>
+        </div>
+      </div>
+      {scanner.error && <p className="text-xs text-red-400">{scanner.error}</p>}
+      {scanner.candidates && (
+        <TagCandidateList candidates={scanner.candidates} notes={scanner.notes} added={scanner.added} onAdd={scanner.addCandidate} />
+      )}
+    </div>
+  );
+}
+
+function ItemPhotos({
+  category,
+  entry,
+  canScan,
+  onChange,
+  onAddCertification,
+}: {
+  category: EquipmentCategory;
+  entry: EquipmentEntry;
+  canScan: boolean;
+  onChange: (photoDataUrls: string[]) => void;
+  onAddCertification: (cert: CertificationEntry) => void;
+}) {
+  const inputId = useId();
+  const photos = entry.photoDataUrls ?? [];
+  const canAddMore = photos.length < MAX_ITEM_PHOTOS;
+
+  return (
+    <div className="flex flex-col gap-2">
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-3">
+          {photos.map((url, i) => (
+            <ItemPhotoThumb
+              key={i}
+              category={category}
+              imageDataUrl={url}
+              canScan={canScan}
+              onRemove={() => onChange(photos.filter((_, idx) => idx !== i))}
+              onAddCertification={onAddCertification}
+            />
+          ))}
+        </div>
+      )}
+      {canAddMore && (
+        <label
+          htmlFor={inputId}
+          className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+        >
+          📷 Add a photo of this item ({photos.length}/{MAX_ITEM_PHOTOS})
+          <input
+            id={inputId}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (!file) return;
+              const dataUrl = await resizeImageToDataUrl(file, 640, 0.75);
+              onChange([...photos, dataUrl]);
+            }}
+          />
+        </label>
+      )}
+    </div>
+  );
 }
 
 // Matches the teal used for the "Codriver Safety Gear" heading/verdict group elsewhere (page.tsx) —
@@ -534,6 +648,54 @@ function isSimplePresenceCategory(category: EquipmentCategory): boolean {
   return CATEGORY_META[category].presenceOnly === true && category !== "fire_extinguisher" && category !== "rollover_protection";
 }
 
+const CERT_BADGE_COLOR: Record<CategoryResult["status"], string> = {
+  ok: "text-emerald-400",
+  recommended_only: "text-emerald-400",
+  rejected: "text-red-400",
+  unrecognized: "text-red-400",
+  // Missing something (e.g. a required expiration/label date) — same yellow as a pending
+  // conditional item elsewhere, not a plain gray, since it's a specific thing to go fix rather
+  // than a neutral "not applicable" state.
+  needs_info: "text-yellow-400",
+  not_required: "text-neutral-400",
+};
+
+interface CertBadge {
+  key: string;
+  label: string;
+  colorClass: string;
+}
+
+/**
+ * What's actually entered for the collapsed card header — e.g. "SNELL SA2015", or "Stock/OEM" for
+ * material-only mode. With a dual certification (e.g. both a Snell and an FIA sticker), every
+ * certification gets its own badge, each colored by whether THAT specific certification is
+ * accepted (green) or rejected (red) — a dual cert can have one of each, and the item as a whole
+ * still passes as long as one is accepted (see evaluatePieceCerts's "best of" status). Colors only
+ * apply once a rule has actually been evaluated against (`result` present, i.e. body-first mode);
+ * garage editing with no ruleset selected shows the same labels in neutral gray.
+ */
+function summarizeEntryCerts(category: EquipmentCategory, entry: EquipmentEntry, result: CategoryResult | undefined): CertBadge[] {
+  const meta = CATEGORY_META[category];
+  if (meta.hybrid && entry.mode === "material_only") {
+    const label = meta.materialOnlyLabel ?? "Material only";
+    return [{ key: "material", label, colorClass: result ? CERT_BADGE_COLOR[result.status] : "text-neutral-400" }];
+  }
+
+  const certs = entry.certifications ?? [];
+  // Two-piece firesuit doesn't expose a flat certBreakdown for the jacket's own certs — fall back
+  // to the jacket's overall pass/fail from pieceBreakdown so multi-cert jackets still get colored,
+  // just without per-certificate precision in that one edge case.
+  const jacketFallbackStatus = result?.pieceBreakdown?.[0]?.status;
+
+  return certs.flatMap((c, i): CertBadge[] => {
+    if (!c.standardId) return [];
+    const label = c.standardId === NOT_LISTED ? c.customStandardLabel || "Not listed" : standardLabel(c.standardId);
+    const status = result?.certBreakdown?.[i]?.status ?? (certs.length === 1 ? result?.status : undefined) ?? jacketFallbackStatus;
+    return [{ key: c.key, label, colorClass: status ? CERT_BADGE_COLOR[status] : "text-neutral-400" }];
+  });
+}
+
 function NoDataBadge() {
   return <span className="shrink-0 rounded-full border border-neutral-600 px-2 py-0.5 text-xs text-neutral-400">No data</span>;
 }
@@ -587,12 +749,15 @@ export function EquipmentForm({
   occupant = "driver",
   orderResetKey,
   perOccupantAsDriverGroup,
+  showPhotoUpload,
 }: Props) {
-  const visibleCategories = filterCategoriesByGroups(CATEGORY_ORDER, activeGroups).filter(
-    (c) => occupant === "driver" || isPerOccupantCategory(c)
-  );
   const groupOf = (c: EquipmentCategory): CategoryGroup =>
     occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
+  // Filters by the *effective* group (post perOccupantAsDriverGroup reclassification), not each
+  // category's raw CATEGORY_META group — otherwise a caller restricting activeGroups to just
+  // {"driver"} (to render the driver-only section, with a codriver section slotted in after it)
+  // would miss seat/belts/window net even though they're displaying as "driver" group right now.
+  const visibleCategories = CATEGORY_ORDER.filter((c) => activeGroups.has(groupOf(c)) && (occupant === "driver" || isPerOccupantCategory(c)));
 
   // Compute the status-sorted order once per orderResetKey (the current ruleset) and hold it
   // fixed after that, even as entries/results change the underlying statuses — otherwise a card
@@ -625,6 +790,7 @@ export function EquipmentForm({
         const groupColor = occupant === "codriver" ? CODRIVER_COLOR : GROUP_COLORS[displayGroup];
         const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
         const isEmpty = isEntryEmpty(category, entry);
+        const certBadges = showPhotoUpload ? summarizeEntryCerts(category, entry, result) : [];
 
         return (
           <div key={category} id={domId} className="scroll-mt-4">
@@ -635,12 +801,45 @@ export function EquipmentForm({
                 <Icon />
                 <span className="min-w-0">{meta.label}</span>
               </span>
+              {certBadges.length > 0 && (
+                <span className="flex max-w-[12rem] shrink flex-wrap items-center justify-end gap-x-1 text-xs font-normal">
+                  {certBadges.map((badge, badgeIndex) => (
+                    <span key={badge.key} className={`truncate ${badge.colorClass}`}>
+                      {badge.label}
+                      {badgeIndex < certBadges.length - 1 ? "," : ""}
+                    </span>
+                  ))}
+                </span>
+              )}
+              {showPhotoUpload && entry.photoDataUrls?.[0] && (
+                // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
+                <img src={entry.photoDataUrls[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
+              )}
               {isEmpty && <NoDataBadge />}
               {result && <StatusPill status={result.status} requirement={result.requirement} />}
             </summary>
             <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
 
             <div className="flex flex-col gap-2">
+                {showPhotoUpload && (
+                  <ItemPhotos
+                    category={category}
+                    entry={entry}
+                    canScan={!meta.presenceOnly}
+                    onChange={(photoDataUrls) => update({ photoDataUrls })}
+                    onAddCertification={(cert) =>
+                      update({
+                        certifications: [...(entry.certifications ?? []), cert],
+                        // Finding a tag on the photo means it's a certified item — flip a hybrid
+                        // category (gloves, seat, etc.) out of "material only" mode automatically,
+                        // rather than leaving the found certification stranded under a mode that
+                        // hides the certification list.
+                        ...(meta.hybrid && entry.mode !== "certified" ? { mode: "certified" as const } : {}),
+                      })
+                    }
+                  />
+                )}
+
                 {isSimplePresenceCategory(category) && (
                   <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
                     <input type="checkbox" checked={entry.skipped === false} onChange={(e) => update({ skipped: e.target.checked ? false : undefined })} />

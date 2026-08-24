@@ -181,6 +181,14 @@ const hillclimbX: Ruleset = {
       citation: { ...sourceDoc, section: "1.3.2" },
       confidence: "high",
     },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "Rule 1.3.1.1: 'Full clothing (minimal exposed skin), long sleeves, long pants, socks' — required to be of fire-resistant material per 1.3.1.2, same as the rest of the base-tier clothing rule.",
+      citation: { ...sourceDoc, section: "1.3.1" },
+      confidence: "high",
+    },
     undergarment: {
       requirement: "not_addressed",
       citation: { ...sourceDoc, section: "1.3" },
@@ -282,6 +290,14 @@ const hillclimbCompetitive: Ruleset = {
       materialNote:
         "Fire-resistant material, no platform/high-heel/open/sandal (base rule) plus: uppers of leather or nonflammable material covering at minimum the instep. No certification number required.",
       citation: { ...sourceDoc, section: "1.3.2 and 1.4.1.7" },
+      confidence: "high",
+    },
+    socks: {
+      requirement: "required",
+      materialOnlyAccepted: true,
+      acceptedStandards: GENERIC_APPAREL_STANDARDS,
+      materialNote: "Rule 1.4.1.6: 'Socks made of fire resistant material (e.g., cotton, Nomex). No thermoplastic (meltable) synthetic materials (e.g., nylon, polyester, polypropylene).' No certification number required.",
+      citation: { ...sourceDoc, section: "1.4.1.6" },
       confidence: "high",
     },
     undergarment: {

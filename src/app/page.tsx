@@ -5,14 +5,26 @@ import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Rulese
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { EquipmentSummary } from "@/components/EquipmentSummary";
+import { GarageManager } from "@/components/GarageManager";
 import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
-import { CategoryResults, EquipmentEntry, evaluateRuleset, filterResultsByGroups, isEntryEmpty, isPendingConditional, isViolation, overallEligibility } from "@/lib/matcher";
+import {
+  CategoryResults,
+  EligibilityStatus,
+  EquipmentEntry,
+  evaluateRuleset,
+  filterResultsByGroups,
+  isEntryEmpty,
+  isPendingConditional,
+  isViolation,
+  overallEligibility,
+} from "@/lib/matcher";
+import { GarageProfile, newGarageProfile, loadGarage, saveGarage } from "@/lib/garage";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
-type Mode = "landing" | "reference" | "body-first" | "equipment-first";
+type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
 
 const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Autocross",
@@ -131,6 +143,18 @@ export default function Home() {
 
   const handleCodriverReportMissing = (category: EquipmentCategory, label: string) => handleReportMissing(category, `Codriver — ${label}`);
 
+  const handleLoadGarageProfile = (profile: GarageProfile, target: "body-first" | "equipment-first") => {
+    setEntries({ ...profile.entries });
+    setCodriverEntries({ ...(profile.codriverEntries ?? {}) });
+    setHasCodriver(!!profile.hasCodriver);
+    setMode(target);
+  };
+
+  const handleSaveToGarage = (name: string) => {
+    const profile = { ...newGarageProfile(name), entries: { ...entries }, hasCodriver, codriverEntries: { ...codriverEntries } };
+    saveGarage([...loadGarage(), profile]);
+  };
+
   const clearAll = () => {
     setEntries({});
     setCodriverEntries({});
@@ -181,26 +205,51 @@ export default function Home() {
     () => ALL_RULESETS.map((rs) => {
       const results = filterResultsByGroups(evaluateRuleset(rs, entries), activeGroups);
 
+      // Codriver gear only matters for rulesets that actually have a codriver — everywhere else
+      // it's simply not part of that body's tech inspection, so it can't affect eligibility there.
+      const codriverApplicable = hasCodriver && !!rs.supportsCodriver;
+      let codriverResults: CategoryResults | undefined;
+      if (codriverApplicable) {
+        const rawCodriver = filterResultsByGroups(evaluateRuleset(rs, codriverEntries), activeGroups);
+        const perOccupant: CategoryResults = {};
+        (Object.keys(rawCodriver) as EquipmentCategory[]).forEach((category) => {
+          if (isPerOccupantCategory(category)) perOccupant[category] = rawCodriver[category];
+        });
+        codriverResults = perOccupant;
+      }
+
       if (!onlyHaveEquipment) {
-        return { rs, results, status: overallEligibility(results), needsMoreGear: false };
+        const status = codriverApplicable ? worseEligibility(overallEligibility(results), overallEligibility(codriverResults!)) : overallEligibility(results);
+        return { rs, results, codriverResults, status, needsMoreGear: false };
       }
 
       // "Only check the equipment I have": drop categories with no data entered from eligibility
       // entirely, instead of letting them fail the ruleset outright. Missing *required*
       // categories are flagged separately below, as a caveat rather than a hard failure.
-      const haveResults: CategoryResults = {};
-      let missingRequired = false;
-      (Object.keys(results) as EquipmentCategory[]).forEach((category) => {
-        if (isEntryEmpty(category, entries[category])) {
-          if (results[category]!.requirement === "required") missingRequired = true;
-          return;
-        }
-        haveResults[category] = results[category];
-      });
-      const status = overallEligibility(haveResults);
-      return { rs, results, status, needsMoreGear: missingRequired && status !== "not_eligible" };
+      const dropEmpty = (all: CategoryResults, entrySource: Partial<Record<EquipmentCategory, EquipmentEntry>>): [CategoryResults, boolean] => {
+        const have: CategoryResults = {};
+        let missingRequired = false;
+        (Object.keys(all) as EquipmentCategory[]).forEach((category) => {
+          if (isEntryEmpty(category, entrySource[category])) {
+            if (all[category]!.requirement === "required") missingRequired = true;
+            return;
+          }
+          have[category] = all[category];
+        });
+        return [have, missingRequired];
+      };
+
+      const [haveResults, missingRequired] = dropEmpty(results, entries);
+      let status = overallEligibility(haveResults);
+      let anyMissingRequired = missingRequired;
+      if (codriverApplicable) {
+        const [haveCodriverResults, codriverMissingRequired] = dropEmpty(codriverResults!, codriverEntries);
+        status = worseEligibility(status, overallEligibility(haveCodriverResults));
+        anyMissingRequired = anyMissingRequired || codriverMissingRequired;
+      }
+      return { rs, results, codriverResults, status, needsMoreGear: anyMissingRequired && status !== "not_eligible" };
     }),
-    [entries, activeGroups, onlyHaveEquipment]
+    [entries, codriverEntries, hasCodriver, activeGroups, onlyHaveEquipment]
   );
 
   const eligible = allResults.filter((r) => r.status === "eligible");
@@ -235,6 +284,13 @@ export default function Home() {
               className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
             >
               How it works
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("garage")}
+              className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+            >
+              My Garage
             </button>
             {(mode === "body-first" || mode === "equipment-first") && (
               <button
@@ -311,7 +367,7 @@ export default function Home() {
         </button>
       )}
 
-      {mode !== "landing" && <GroupFilter active={activeGroups} onChange={setActiveGroups} />}
+      {mode !== "landing" && mode !== "garage" && <GroupFilter active={activeGroups} onChange={setActiveGroups} />}
 
       {mode === "reference" && (
         <section>
@@ -346,6 +402,8 @@ export default function Home() {
             </label>
           )}
 
+          <SaveToGarageButton onSave={handleSaveToGarage} />
+
           {ruleset && <SourceLine ruleset={ruleset} />}
 
           {ruleset && (
@@ -360,32 +418,56 @@ export default function Home() {
           )}
 
           {ruleset && (
-            <PassTechVerdict results={resultsForSelected} codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined} />
+            <PassTechVerdict
+              results={resultsForSelected}
+              codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined}
+              perOccupantAsDriverGroup={showCodriver && hasCodriver}
+            />
           )}
 
-          <EquipmentForm
-            entries={entries}
-            onChange={handleChange}
-            onReportMissing={handleReportMissing}
-            results={resultsForSelected}
-            activeGroups={activeGroups}
-            orderResetKey={rulesetId}
-            perOccupantAsDriverGroup={showCodriver && hasCodriver}
-          />
-
-          {showCodriver && hasCodriver && (
-            <div className="mt-6">
-              <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver Safety Gear</h3>
+          {showCodriver ? (
+            <>
               <EquipmentForm
-                entries={codriverEntries}
-                onChange={handleCodriverChange}
-                onReportMissing={handleCodriverReportMissing}
-                results={codriverResultsForSelected}
-                activeGroups={activeGroups}
+                entries={entries}
+                onChange={handleChange}
+                onReportMissing={handleReportMissing}
+                results={resultsForSelected}
+                activeGroups={intersectGroups(activeGroups, ["driver"])}
                 orderResetKey={rulesetId}
-                occupant="codriver"
+                perOccupantAsDriverGroup={hasCodriver}
+                showPhotoUpload
               />
-            </div>
+              {hasCodriver && (
+                <CodriverGearSection
+                  entries={codriverEntries}
+                  onChange={handleCodriverChange}
+                  onReportMissing={handleCodriverReportMissing}
+                  results={codriverResultsForSelected}
+                  activeGroups={activeGroups}
+                  orderResetKey={rulesetId}
+                />
+              )}
+              <EquipmentForm
+                entries={entries}
+                onChange={handleChange}
+                onReportMissing={handleReportMissing}
+                results={resultsForSelected}
+                activeGroups={intersectGroups(activeGroups, ["car", "rollcage"])}
+                orderResetKey={rulesetId}
+                perOccupantAsDriverGroup={hasCodriver}
+                showPhotoUpload
+              />
+            </>
+          ) : (
+            <EquipmentForm
+              entries={entries}
+              onChange={handleChange}
+              onReportMissing={handleReportMissing}
+              results={resultsForSelected}
+              activeGroups={activeGroups}
+              orderResetKey={rulesetId}
+              showPhotoUpload
+            />
           )}
         </section>
       )}
@@ -399,13 +481,54 @@ export default function Home() {
             Only check the equipment I have
           </label>
 
-          <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} activeGroups={activeGroups} />
+          <label className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
+            <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+            <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
+            Add codriver gear (only affects rally bodies that require one)
+          </label>
+
+          {hasCodriver ? (
+            <>
+              <EquipmentForm
+                entries={entries}
+                onChange={handleChange}
+                onReportMissing={handleReportMissing}
+                activeGroups={intersectGroups(activeGroups, ["driver"])}
+                perOccupantAsDriverGroup
+                showPhotoUpload
+              />
+              <CodriverGearSection
+                entries={codriverEntries}
+                onChange={handleCodriverChange}
+                onReportMissing={handleCodriverReportMissing}
+                activeGroups={activeGroups}
+              />
+              <EquipmentForm
+                entries={entries}
+                onChange={handleChange}
+                onReportMissing={handleReportMissing}
+                activeGroups={intersectGroups(activeGroups, ["car", "rollcage"])}
+                perOccupantAsDriverGroup
+                showPhotoUpload
+              />
+            </>
+          ) : (
+            <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} activeGroups={activeGroups} showPhotoUpload />
+          )}
 
           <div className="mt-6 space-y-6">
             <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" />
             <ResultGroup title={`Eligible under condition (${eligibleConditional.length})`} items={eligibleConditional} accent="border-yellow-700" />
             <ResultGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-700" />
           </div>
+        </section>
+      )}
+
+      {mode === "garage" && (
+        <section>
+          <h2 className="mb-4 text-lg font-semibold text-amber-400">My Garage</h2>
+          <GarageManager onLoadProfile={handleLoadGarageProfile} />
         </section>
       )}
 
@@ -530,7 +653,7 @@ function GroupFilter({ active, onChange }: { active: Set<CategoryGroup>; onChang
             >
               <input type="checkbox" checked={isActive} onChange={() => toggle(group)} />
               {GROUP_LABELS[group]}
-              {group === "rollcage" && <span className="text-xs font-normal text-neutral-500">(coming soon)</span>}
+              {group === "rollcage" && <span className="text-xs font-normal text-neutral-500">(beta)</span>}
             </label>
           );
         })}
@@ -604,7 +727,16 @@ const VERDICT_LIST_STYLE: Record<VerdictState, string> = {
   fail: "text-red-200",
 };
 
-function PassTechVerdict({ results, codriverResults }: { results: CategoryResults; codriverResults?: CategoryResults }) {
+function PassTechVerdict({
+  results,
+  codriverResults,
+  perOccupantAsDriverGroup,
+}: {
+  results: CategoryResults;
+  codriverResults?: CategoryResults;
+  /** When the codriver toggle is on, the driver's own seat/belts/window net (normally "car" group) should list under "Driver Safety Gear" here too, matching how EquipmentForm displays them. */
+  perOccupantAsDriverGroup?: boolean;
+}) {
   const toEntries = (r: CategoryResults, anchorSuffix: string) =>
     (Object.keys(r) as EquipmentCategory[]).map((category) => ({ category, result: r[category]!, anchorSuffix }));
   const entries = [...toEntries(results, ""), ...toEntries(codriverResults ?? {}, "-codriver")];
@@ -617,6 +749,9 @@ function PassTechVerdict({ results, codriverResults }: { results: CategoryResult
   const driverList = list.filter((i) => i.anchorSuffix === "");
   const codriverList = list.filter((i) => i.anchorSuffix === "-codriver");
 
+  const driverGroupFor = (category: EquipmentCategory): CategoryGroup =>
+    perOccupantAsDriverGroup && isPerOccupantCategory(category) ? "driver" : CATEGORY_META[category].group;
+
   // Order: Driver, then Codriver (if any), then Car/Rollcage — codriver's own gear reads more
   // naturally right after the driver's than tacked on at the end, after the shared car items.
   const groupedList: { group: string; label: string; color: string; items: typeof driverList }[] = [
@@ -624,14 +759,14 @@ function PassTechVerdict({ results, codriverResults }: { results: CategoryResult
       group: "driver",
       label: GROUP_LABELS.driver,
       color: GROUP_COLORS.driver.text,
-      items: driverList.filter(({ category }) => CATEGORY_META[category].group === "driver"),
+      items: driverList.filter(({ category }) => driverGroupFor(category) === "driver"),
     },
     ...(codriverList.length > 0 ? [{ group: "codriver", label: "Codriver Safety Gear", color: "text-teal-400", items: codriverList }] : []),
     ...GROUP_ORDER.filter((group) => group !== "driver").map((group) => ({
       group,
       label: GROUP_LABELS[group],
       color: GROUP_COLORS[group].text,
-      items: driverList.filter(({ category }) => CATEGORY_META[category].group === group),
+      items: driverList.filter(({ category }) => driverGroupFor(category) === group),
     })),
   ].filter((g) => g.items.length > 0);
 
@@ -663,6 +798,108 @@ function PassTechVerdict({ results, codriverResults }: { results: CategoryResult
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function SaveToGarageButton({ onSave }: { onSave: (name: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [savedMessage, setSavedMessage] = useState<string | null>(null);
+
+  const save = () => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    onSave(trimmed);
+    setSavedMessage(`Saved "${trimmed}" to your garage.`);
+    setOpen(false);
+    setName("");
+    setTimeout(() => setSavedMessage(null), 4000);
+  };
+
+  if (savedMessage) {
+    return <p className="mb-4 text-sm text-emerald-400">{savedMessage}</p>;
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mb-4 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+      >
+        💾 Save this gear to my garage
+      </button>
+    );
+  }
+
+  return (
+    <div className="mb-4 flex flex-wrap items-center gap-2">
+      <input
+        type="text"
+        autoFocus
+        placeholder="Name this gear set (e.g. My road racing kit)"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && save()}
+        className="min-w-[220px] flex-1 rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100 placeholder:text-neutral-500"
+      />
+      <button type="button" onClick={save} className="rounded border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-900">
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setOpen(false);
+          setName("");
+        }}
+        className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+      >
+        Cancel
+      </button>
+    </div>
+  );
+}
+
+function intersectGroups(base: ReadonlySet<CategoryGroup>, allowed: CategoryGroup[]): Set<CategoryGroup> {
+  return new Set(allowed.filter((g) => base.has(g)));
+}
+
+const ELIGIBILITY_RANK: Record<EligibilityStatus, number> = { eligible: 0, eligible_conditional: 1, not_eligible: 2 };
+
+/** Combines a driver's and codriver's eligibility for the same ruleset — both have to pass for the pair to compete, so the worse of the two wins. */
+function worseEligibility(a: EligibilityStatus, b: EligibilityStatus): EligibilityStatus {
+  return ELIGIBILITY_RANK[b] > ELIGIBILITY_RANK[a] ? b : a;
+}
+
+function CodriverGearSection({
+  entries,
+  onChange,
+  onReportMissing,
+  results,
+  activeGroups,
+  orderResetKey,
+}: {
+  entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+  onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
+  onReportMissing?: (category: EquipmentCategory, label: string) => void;
+  results?: CategoryResults;
+  activeGroups: ReadonlySet<CategoryGroup>;
+  orderResetKey?: string;
+}) {
+  return (
+    <div className="my-6">
+      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver Safety Gear</h3>
+      <EquipmentForm
+        entries={entries}
+        onChange={onChange}
+        onReportMissing={onReportMissing}
+        results={results}
+        activeGroups={activeGroups}
+        orderResetKey={orderResetKey}
+        occupant="codriver"
+        showPhotoUpload
+      />
     </div>
   );
 }
@@ -751,7 +988,12 @@ function ResultGroup({
   accent,
 }: {
   title: string;
-  items: { rs: (typeof ALL_RULESETS)[number]; results: ReturnType<typeof evaluateRuleset>; needsMoreGear?: boolean }[];
+  items: {
+    rs: (typeof ALL_RULESETS)[number];
+    results: ReturnType<typeof evaluateRuleset>;
+    codriverResults?: CategoryResults;
+    needsMoreGear?: boolean;
+  }[];
   accent: string;
 }) {
   if (items.length === 0) return null;
@@ -759,7 +1001,7 @@ function ResultGroup({
     <div>
       <h2 className="mb-2 text-sm font-semibold">{title}</h2>
       <div className="space-y-3">
-        {items.map(({ rs, results, needsMoreGear }) => (
+        {items.map(({ rs, results, codriverResults, needsMoreGear }) => (
           <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
             <summary className="cursor-pointer text-sm font-medium">
               {rs.bodyName} — {rs.disciplineName}
@@ -775,6 +1017,17 @@ function ResultGroup({
                 return result ? <ResultRow key={category} result={result} /> : null;
               })}
             </div>
+            {codriverResults && Object.keys(codriverResults).length > 0 && (
+              <div className="mt-3">
+                <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {CATEGORY_ORDER.map((category) => {
+                    const result = codriverResults[category];
+                    return result ? <ResultRow key={`${category}-codriver`} result={result} /> : null;
+                  })}
+                </div>
+              </div>
+            )}
           </details>
         ))}
       </div>
