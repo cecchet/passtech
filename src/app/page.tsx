@@ -338,8 +338,10 @@ export default function Home() {
           {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
           {showCodriver && (
-            <label className="mb-4 flex items-center gap-2 text-sm text-neutral-300">
+            <label className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
               <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
               Add codriver gear
             </label>
           )}
