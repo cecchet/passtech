@@ -175,6 +175,12 @@ const trackfest: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the tech form's 10-item checklist.",
     },
+    rollover_protection: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the tech form's 10-item checklist — no roll bar/cage requirement, including for convertibles, is stated for any run group.",
+    },
   },
 };
 

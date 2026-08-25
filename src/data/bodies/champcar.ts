@@ -294,6 +294,21 @@ const endurance: Ruleset = {
       notes:
         "No first aid kit requirement was found anywhere in the BCCR. §1.3.4 requires competitors to carry personal health/medical insurance, but that's an insurance mandate, not an equipment requirement for a first aid kit.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: false,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 2500, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }] },
+        { minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.5, wallThicknessIn: 0.12 }], materialNote: "For over 2500 lbs (as raced, without fuel and driver)." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      citation: { ...sourceDoc, section: "3.1.1, 3.2.1-3.2.15" },
+      confidence: "high",
+      notes:
+        "§3.1.1: 'A quality, well-fabricated, full roll cage is required' for every car — weld-in or bolt-in, but design/construction must maintain typical SCCA/NASA standards. Requires: full-width main hoop (one continuous tube, 3/16\" tech-inspection hole, as close as possible to the roof/B-pillars on closed cars); a halo hoop; two driver-side door bars (NASCAR or Double-V style recommended, X-design acceptable with reinforcement) plus at least one passenger-side door/sill/floor bar; main-hoop rear back-stays near 45°; one main-hoop diagonal; a shoulder-harness bar; a dash bar (the factory dash support bar doesn't qualify); complete 360° welds; DOM mild steel strongly recommended over ERW. Limited to 8 body/frame mounting points (with some exclusions for seat sub-frames, welded tabs, and pedal-box bracing). The driver's helmet must not extend above the main hoop's centerline when belted in, for every driver on the team. Padding: high-density roll bar padding wherever a driver's extremity may contact a tube, SFI 45.1-rated padding specifically wherever a helmet may contact the cage.",
+    },
   },
 };
 

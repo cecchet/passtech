@@ -1,5 +1,5 @@
 import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, RequirementLevel, RolloverTubingTier, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
-import { logbookBodyLabel, NOT_LISTED, standardFamily, standardLabel } from "@/data/standards";
+import { logbookBodyLabel, NOT_LISTED, ROLLOVER_PADDING_STANDARDS, standardFamily, standardLabel } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 
 export type ItemStatus = "ok" | "rejected" | "not_required" | "recommended_only" | "needs_info" | "unrecognized";
@@ -99,6 +99,14 @@ export interface EquipmentEntry {
   cageTubeOuterDiameterIn?: number;
   /** Rollover protection only: the cage's tube wall thickness (inches). */
   cageTubeWallThicknessIn?: number;
+  /** Rollover protection only: is high-density padding installed wherever an occupant's helmet/body could contact the cage or roll bar? */
+  cagePaddingPresent?: boolean;
+  /** Rollover protection only: is padding installed across all tubing forward of and including the main hoop in the roofline, regardless of whether it could actually be contacted? Asked consistently for every body (not just ones that require it) alongside cagePaddingPresent. */
+  cageForwardHoopPaddingPresent?: boolean;
+  /** Rollover protection only: which certification (if any) the padding carries — an id from ROLLOVER_PADDING_STANDARDS, "none" (plain/uncertified material), or NOT_LISTED (paired with cagePaddingStandardCustom). */
+  cagePaddingStandardId?: string;
+  /** Rollover protection only: free-text standard name when cagePaddingStandardId is NOT_LISTED. */
+  cagePaddingStandardCustom?: string;
   /**
    * Presence-only categories with no other fields (tow hook, tow rope, emergency triangle, first
    * aid kit, window breaker, kill switch) only: the single "I have this item" checkbox. `false`
@@ -107,7 +115,7 @@ export interface EquipmentEntry {
    * dedicated fields) infer presence from those fields instead — see `isEntryEmpty`.
    */
   skipped?: boolean;
-  /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3. Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
+  /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3 for most categories, up to 5 for rollover_protection (see EquipmentForm's MAX_ITEM_PHOTOS_BY_CATEGORY). Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
   photoDataUrls?: string[];
 }
 
@@ -574,6 +582,67 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
     }
   }
 
+  if (rule.rolloverProtectionRequiresPadding) {
+    if (entry.cagePaddingPresent === undefined) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason: "Is high-density padding installed wherever an occupant's helmet or body could contact the cage/roll bar? This body requires it.",
+      };
+    }
+    if (!entry.cagePaddingPresent) {
+      return { ...base, status: "rejected", reason: `Padding is required wherever the cage/roll bar could be contacted by an occupant's helmet or body.${conditionNote}` };
+    }
+  }
+
+  // Asked consistently for every body, not just ones that need it — some (e.g. ARA) require
+  // padding across this zone outright, regardless of whether it would actually be contacted, on
+  // top of (not instead of) the plain contact-based requirement above.
+  if (rule.rolloverProtectionRequiresForwardHoopPadding) {
+    if (entry.cageForwardHoopPaddingPresent === undefined) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason:
+          "Is padding installed across all tubing forward of and including the main hoop in the roofline — regardless of whether it could actually be contacted? This body requires it there either way.",
+      };
+    }
+    if (!entry.cageForwardHoopPaddingPresent) {
+      return {
+        ...base,
+        status: "rejected",
+        reason: `Padding is required across all tubing forward of and including the main hoop in the roofline, regardless of contact.${conditionNote}`,
+      };
+    }
+  }
+
+  if (rule.rolloverProtectionPaddingCertRequired && (rule.rolloverProtectionRequiresPadding || rule.rolloverProtectionRequiresForwardHoopPadding)) {
+    // A stored id that no longer matches a known standard (e.g. an option this app has since
+    // removed from the list) is treated the same as unanswered — it can't silently satisfy a
+    // certification requirement just because some value happens to be present.
+    const recognizedStandardId =
+      entry.cagePaddingStandardId === "none" ||
+      entry.cagePaddingStandardId === NOT_LISTED ||
+      ROLLOVER_PADDING_STANDARDS.some((s) => s.id === entry.cagePaddingStandardId);
+    if (!entry.cagePaddingStandardId || !recognizedStandardId) {
+      return {
+        ...base,
+        status: "needs_info",
+        reason: "What certification does the padding carry (e.g. SFI 45.1 or FIA 8857-2001)? This body requires certified padding, not just plain material — select \"Plain/uncertified material\" if it isn't certified.",
+      };
+    }
+    if (entry.cagePaddingStandardId === "none") {
+      return {
+        ...base,
+        status: "rejected",
+        reason: `Certified padding (e.g. SFI 45.1 or FIA 8857-2001) is required here — plain/uncertified padding material isn't accepted.${conditionNote}`,
+      };
+    }
+    if (entry.cagePaddingStandardId === NOT_LISTED && !entry.cagePaddingStandardCustom) {
+      return { ...base, status: "needs_info", reason: "What certification does the padding carry? Enter its name." };
+    }
+  }
+
   if (rule.rolloverProtectionLogbookCutoffYear) {
     if (entry.fiaHomologated) {
       return { ...base, status: "ok", reason: `FIA-homologated cages are accepted — bring the homologation documentation to tech.${conditionNote}` };
@@ -586,8 +655,12 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
     }
     return {
       ...base,
+      // Overrides the base "required" so this renders as a conditional pass (amber), not a
+      // still-outstanding requirement (red) — a pre-cutoff logbook is a legitimate grandfathered
+      // path, not a gap the driver still needs to close.
+      requirement: "conditional",
       status: "needs_info",
-      reason: `Logbooked ${entry.cageLogbookYear}, before this body's ${rule.rolloverProtectionLogbookCutoffYear} cutoff for the current spec — older cages are typically still accepted with a retrofit or grandfathering step.${conditionNote}`,
+      reason: `Logbooked ${entry.cageLogbookYear}, before this body's ${rule.rolloverProtectionLogbookCutoffYear} cutoff — grandfathered under the older spec instead of needing a full upgrade.${conditionNote} This app doesn't yet ask about the specific grandfathering elements the older spec requires, so treat this as conditional and confirm them at tech.`,
     };
   }
 

@@ -192,6 +192,13 @@ const solo: Ruleset = {
       confidence: "high",
       notes: "Not required and not mentioned anywhere in the rulebook — confirmed via full-document search.",
     },
+    rollover_protection: {
+      requirement: "recommended",
+      citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2" },
+      confidence: "high",
+      notes:
+        "§3.3.2: 'Roll bars or roll cages are strongly recommended in all cars' — a roll bar meeting Appendix C (Solo's own roll bar standard — not locally cached, so its tube/material table isn't modeled here) or a roll cage meeting Club Racing GCR §9.4/9.4.5. Becomes REQUIRED for specific Modified sub-classes and for open cars in Prepared/DM/EM — see the Prepared and Modified class overrides. If built to the GCR §9.4 cage path, that spec's own padding rule applies (min 1\" material, or SFI 45.1/FIA 8857-2001 curved or SFI 45.2/FIA headrest-material flat padding recommended — see this app's SCCA Road Racing ruleset). Appendix C's own padding requirement for the roll-bar path isn't locally cached.",
+    },
   },
   classOverrides: {
     street: {
@@ -260,6 +267,14 @@ const solo: Ruleset = {
         notes:
           "§17.12.D: 'Fire extinguishers or fire systems are permitted.' §17.11 separately lists a hand-held extinguisher and on-board fire systems among GCR items 'recommended' but 'not required' for X Prepared specifically. Not mandatory in either case.",
       },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionByBodyStyle: { closed_roof: "recommended", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+        condition:
+          "§3.3.2 requires a roll bar/cage outright for open cars in Prepared Category (closed Prepared cars fall back to the base 'strongly recommended' treatment). A full original-equipment windshield + securely bolted standard hardtop lets the required height be reduced to the highest point that fits under the hardtop.",
+        citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2" },
+        confidence: "high",
+      },
     },
     modified: {
       seat: {
@@ -283,6 +298,13 @@ const solo: Ruleset = {
         citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "18.0.B.9.k" },
         confidence: "high",
         notes: "§18.0.B.9.k lists a hand-held fire extinguisher and on-board fire systems among GCR items 'recommended' but 'not required' for Modified Category. Not mandatory.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2" },
+        confidence: "high",
+        notes:
+          "§3.3.2 requires a roll bar/cage outright for A/B/C/F Modified (AM/BM/CM/FM); D Modified (DM) and E Modified (EM) only require it for OPEN cars specifically (a closed DM/EM car falls back to the base 'strongly recommended' treatment). AM-FM sub-classes aren't broken out separately in this app's Modified bucket, so this defaults to Required — a closed DM/EM driver should treat this as a caveat to double-check rather than a hard fail.",
       },
     },
   },
@@ -445,6 +467,13 @@ const rallycross: Ruleset = {
       citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.2.D; vehicle construction items 11, 11.d/e" },
       confidence: "high",
     },
+    rollover_protection: {
+      requirement: "recommended",
+      citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.2.O" },
+      confidence: "high",
+      notes:
+        "§3.2.O: 'Roll cages are strongly recommended in all vehicles. If installed it is strongly recommended that roll cages be constructed according to the rules for stage rally competition used in other sanctioning bodies.' Becomes REQUIRED outright for the UTV category (factory upper tubular structure/OEM roll cage, see the UTV class override) and for the Constructors (Exhibition Only) category (see that class override). Prepared category may voluntarily add a roll bar/cage — meeting SCCA Time Trial Safety Level 2 or 3 — which unlocks certain interior modification allowances but is never mandatory there.",
+    },
     fuel_cell: {
       requirement: "not_addressed",
       citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.3.E.27-28 (Modified); 3.3.F.10 (Truck); 3.3.H.5 (Constructors)" },
@@ -601,6 +630,15 @@ const rallycross: Ruleset = {
         citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "vehicle construction item 11.d/e" },
         confidence: "high",
       },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresPadding: true,
+        citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.2.O; vehicle construction item 13" },
+        confidence: "high",
+        notes:
+          "§3.2.O: 'Roll cages are required for UTVs' — this base statement is superseded for Constructors specifically by item 13, requiring a cage meeting or exceeding current SCCA Road Racing GCR cage rules (or another RXB-approved sanctioning body's rules): must allow occupant egress out the sides, have no holes beyond inspection holes, and be padded (min. 1/2\") anywhere the driver can contact it — SFI 45.1/FIA 8857-2001 (curved) or SFI 45.2/FIA sports car head rest material (flat) padding recommended but not mandatory.",
+      },
     },
     utv: {
       kill_switch: {
@@ -638,6 +676,14 @@ const rallycross: Ruleset = {
         satisfiedByAlternative: "arm_restraint",
         citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "vehicle construction item 11" },
         confidence: "high",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionFactoryExempt: true,
+        citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.2.O; vehicle construction items 3-5" },
+        confidence: "high",
+        notes:
+          "§3.2.O: 'Roll cages are required for UTVs' — but every eligible UTV comes with one from the factory as part of its stock upper tubular passenger-compartment structure, so this is inherently satisfied by an unmodified vehicle (item 3). If replaced with an aftermarket cage, it must meet SCCA Time Trial Level 3 construction specs with at least one front hoop, one rear hoop or two side lateral hoops, two interconnecting top bars, and two rear down braces (item 4), with the top bar a minimum of 2\" above the top of the driver's helmet (item 5).",
       },
     },
   },
@@ -915,6 +961,7 @@ const roadRacing: Ruleset = {
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresPadding: true,
       rolloverProtectionByBodyStyle: {
         closed_roof: "required",
         convertible: "required",
@@ -926,7 +973,7 @@ const roadRacing: Ruleset = {
       citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.4" },
       confidence: "high",
       notes:
-        "Own weight-tiered tubing spec (SAE 1020/1025 mild/DOM, 4130/T45 alloy, or Docol R8 — ERW banned): roughly 1.375\"×0.080\" up to 1700 lbs, up to 2.00\"×0.095\"/1.75\"×0.120\" over 4000 lbs. Mounting points required vary 6–12 by class (Improved Touring/Spec Miata/B-Spec/C-Spec limited to 6; T2/T3/T4 allow up to 12). FIA or FIA-Approved-Test-House homologated cages accepted with an FIA ID plate plus a letter from SCCA Technical Services (Motorsport UK ROPS-certified cages likewise); the car's logbook records a full description of the roll bar/cage, and its identity number is permanently stamped on the roll bar itself.",
+        "Own weight-tiered tubing spec (SAE 1020/1025 mild/DOM, 4130/T45 alloy, or Docol R8 — ERW banned): roughly 1.375\"×0.080\" up to 1700 lbs, up to 2.00\"×0.095\"/1.75\"×0.120\" over 4000 lbs. Mounting points required vary 6–12 by class (Improved Touring/Spec Miata/B-Spec/C-Spec limited to 6; T2/T3/T4 allow up to 12). FIA or FIA-Approved-Test-House homologated cages accepted with an FIA ID plate plus a letter from SCCA Technical Services (Motorsport UK ROPS-certified cages likewise); the car's logbook records a full description of the roll bar/cage, and its identity number is permanently stamped on the roll bar itself. Padding (§9.4.G.1): every portion of the cage the driver could contact must be padded — either a minimum 1\" of material, or padding meeting/exceeding SFI 45.1/FIA 8857-2001 (curved padding) or SFI 45.2/FIA sports car head rest material (flat padding); SFI/FIA-certified padding is recommended over the plain 1\"-minimum option but not mandatory.",
     },
   },
   classOverrides: {

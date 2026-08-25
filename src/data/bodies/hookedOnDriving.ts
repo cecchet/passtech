@@ -193,6 +193,17 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in HOD's public materials.",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+      rolloverProtectionFactoryExempt: true,
+      condition:
+        "Self-Tech Sheet: 'Convertibles on track: Hooked On Driving allows convertibles on track assuming the manufacturer states they have rollover protection, or if they have aftermarket rollover protection meeting or exceeding the most current SCCA Solo1 standards.' The checklist itself lists 'Open cars with roll bar or other rollover protection' as an item to verify. Not addressed for fixed-roof/closed cars, which have no rollover-protection line item on the checklist.",
+      citation: { ...techSheet, section: "Convertibles on track; Safety Equipment checklist" },
+      confidence: "high",
+      notes:
+        "'Hooked On Driving makes no judgment as to the safety of allowed convertibles compared to hardtop cars.' No specific tubing/material spec is given directly — instead the aftermarket path is required to meet or exceed 'the most current SCCA Solo1 standards' (SCCA's own Solo roll bar/cage appendix), an external reference this app doesn't independently model for HOD.",
+    },
   },
 };
 

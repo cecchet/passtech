@@ -238,6 +238,17 @@ const endurance: Ruleset = {
       confidence: "high",
       notes: "No first aid kit requirement was found anywhere in the rulebook.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionAcceptedLogbookBodies: ["scca", "nasa"],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      citation: { ...sourceDoc, section: "2.5.3-2.5.4 Cage Construction & Padding" },
+      confidence: "medium",
+      notes:
+        "§2.5.3: 'All cars that will be used in qualifying sessions or races must have a minimum of a six-point cage' — required outright, universal across the series, no class exemption. AER accepts cage construction complying with SCCA, NASA, BMW CCA, PCA, IMSA, or FIA standards rather than publishing its own tubing/material spec, and permits chassis stiffening. Padding (§2.5.4): 'All surfaces of roll cage tubing that the driver's head or body may contact must be covered in SFI 45.1 or FIA Type A padding.' Confidence is medium since this was sourced via an AI-summarized read of the rulebook's web page rather than a direct verbatim PDF read, and no weight-tiered tubing size table (unlike bodies with their own published spec) was found.",
+    },
   },
 };
 

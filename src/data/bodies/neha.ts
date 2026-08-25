@@ -233,6 +233,15 @@ const hillclimbX: Ruleset = {
       citation: { ...sourceDoc, section: "1.3.13.5 (referencing 1.4.7)" },
       confidence: "high",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+      rolloverProtectionRequiresWelded: false,
+      condition:
+        "§1.3.20.1: 'Roll bar required in all vehicles with a removable roof' — convertibles and any car with a removable roof/no roof must have one; a fixed hard-roof car isn't addressed at this X/breakout-limited tier. Where fitted, §1.3.20.2 says the roll bar 'should be equivalent in construction to cage specs' — a should, not a shall, so this tier doesn't mandate the full §1.4.6 tubing/mounting spec that the competitive tier requires outright.",
+      citation: { ...sourceDoc, section: "1.3.20.1-1.3.20.2" },
+      confidence: "high",
+    },
     ...notAddressedCarCategories,
   },
 };
@@ -346,6 +355,21 @@ const hillclimbCompetitive: Ruleset = {
       materialNote: "Switch must cut off/isolate electrical power throughout the vehicle. Must be obviously marked with a standard lightning bolt symbol, with the off position clearly marked.",
       citation: { ...sourceDoc, section: "1.4.7.1-1.4.7.2" },
       confidence: "high",
+    },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 1500, minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.38, wallThicknessIn: 0.09 }] },
+        { underWeightLbs: 2500, minSizes: [{ outerDiameterIn: 1.38, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.5, wallThicknessIn: 0.09 }] },
+        { minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.625, wallThicknessIn: 0.109 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.09 }], materialNote: "For over 2500 lbs." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      citation: { ...sourceDoc, section: "1.4.6.1-1.4.6.12" },
+      confidence: "high",
+      notes:
+        "This tier is 'caged cars only' — a roll cage is required outright, not conditional on body style like the X tier's roll-bar rule. Cage material must be steel mechanical tubing meeting ASTM A500/A513/A519 or SAE xx16-xx30 (>50,000 psi tensile, >36,000 psi yield, ≥10% elongation, Rb>60) — 1018 CDS or 1020 DOM preferred. Mounted at 6 points minimum, with welded mounts socketed/gusseted/plated and bolted foot plates ≥4\"x5\" using 3+ grade-5 (or better) 3/8\" bolts per plate. Must have horizontal/vertical bars above, ahead, behind, and to the sides of the driver's helmet plane; main hoop braced front and/or back with a diagonal member if spanning >36\"; minimum 2 sections of side protection with at least one door-area bar (a stock door beam, outboard frame rail, or rocker panel qualifies); footwell/driveline-intrusion protection (a full continuous stamped OE steel floor qualifies); headrest padded, max 3\" behind the driver's head, with high-density shock-absorbing padding on any cage member reachable by the driver's head. FIA-homologated cages built after 2006 may run as designed with paperwork at tech; earlier FIA cages need an FIA-approved A-pillar support + X-bracing kit retrofit.",
     },
     ...notAddressedCarCategories,
   },

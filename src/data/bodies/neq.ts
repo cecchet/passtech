@@ -42,11 +42,11 @@ const vehicleRequirementsPage = {
 // of which the base belts_harness rule below already covers). classOverrides below models that
 // one category for that one car-type class; everything else (helmet, firesuit, shoes, seat, etc.)
 // is confirmed identical across all car types and isn't overridden. The page also requires a
-// four-point roll cage and enforces the "broomstick rule" clearance for this car type — not
-// modeled since this app doesn't yet track a rollcage category (see types.ts CategoryGroup
-// comment). arm_restraint's existing conditional rule (top-down driving) already applies
-// identically to both convertible sub-types per the source text ("recommended in any case"), so it
-// isn't part of this class's overrides either.
+// four-point roll cage and enforces the "broomstick rule" clearance for this car type — modeled
+// below as the class's rollover_protection override, alongside the base rule's general "ROLL BAR
+// (If Present)" clearance check that applies to every other car. arm_restraint's existing
+// conditional rule (top-down driving) already applies identically to both convertible sub-types
+// per the source text ("recommended in any case"), so it isn't part of this class's overrides.
 const hpde: Ruleset = {
   id: "neq-hpde",
   bodyId: "neq",
@@ -231,6 +231,15 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "No first aid kit requirement found anywhere in NEQ's materials.",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      condition:
+        "NEQ's Pre-Event Tech Inspection checklist regulates a roll bar only 'if present' — never mandatory for closed cars or convertibles with factory rollover protection. Open-top cars/convertibles WITHOUT factory rollover protection instead have a mandatory four-point roll cage requirement — see the open-top-no-protection class override.",
+      citation: { ...techForms, section: "Pre-Event Tech Inspection — ROLL BAR (If Present)" },
+      confidence: "high",
+      notes:
+        "Where a roll bar is present: 'A straight edge from the windshield to the roll bar must have at least two inches between it and the helmet of both driver and passenger in their normal sitting position' — no material/tubing/mounting spec is given, only this clearance check.",
+    },
   },
   classOverrides: {
     "open-top-no-protection": {
@@ -252,7 +261,15 @@ const hpde: Ruleset = {
         citation: { ...openTopPage, section: "2.13.2 Convertibles — minimum requirements for convertibles without factory rollover protection" },
         confidence: "high",
         notes:
-          "This is the one confirmed structural equipment difference by car type at NEQ (see the ruleset-level comment above) — everything else (helmet, firesuit, shoes, seat spec, fire extinguisher, etc.) is unchanged for this class. The same source paragraph also requires a four-point roll cage and enforces the 'broomstick rule' helmet clearance for this car type — neither is modeled since this app doesn't yet track a rollcage category, and the broomstick rule is a fitment check rather than a driver/car equipment item. 'ASM (anti-submarining) technology' isn't itself a distinguishable attribute of the SFI/FIA standardIds listed above (this app doesn't track harness geometry/point-count per standard), so acceptedStandards here mirrors the base rule's generic 'current SFI or FIA' list rather than narrowing it.",
+          "This is one of two confirmed structural equipment differences by car type at NEQ (see the ruleset-level comment above and rollover_protection below) — everything else (helmet, firesuit, shoes, seat spec, fire extinguisher, etc.) is unchanged for this class. 'ASM (anti-submarining) technology' isn't itself a distinguishable attribute of the SFI/FIA standardIds listed above (this app doesn't track harness geometry/point-count per standard), so acceptedStandards here mirrors the base rule's generic 'current SFI or FIA' list rather than narrowing it.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        citation: { ...openTopPage, section: "2.13.2 Convertibles — minimum requirements for convertibles without factory rollover protection" },
+        confidence: "medium",
+        notes:
+          "Open Top Cars page (quoting ACNA Event Guidelines §2.13.2) requires 'a four-point roll cage consisting of a main roll bar behind the front seats with two rear-triangulated braces,' for any convertible/open-top car lacking factory rollover protection, and enforces a 'broomstick rule' helmet-clearance fitment check (conceptually the same kind of straight-edge clearance the base ruleset's 'ROLL BAR (If Present)' rule checks for other cars, per the tech-inspection form). No tubing size, material, mounting-point count beyond '4-point,' or padding standard/thickness is given anywhere in this source (confirmed via a direct re-check for padding specifically) — confidence is medium since the construction detail is thinner here than for bodies with a dedicated roll-cage appendix.",
       },
     },
   },

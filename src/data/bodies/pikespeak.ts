@@ -236,6 +236,25 @@ const hillClimb: Ruleset = {
       notes:
         "No requirement for a dedicated window-breaking tool or seatbelt cutter was found anywhere in the Rule Book. PPIHC does require, for closed-cockpit cars, either arm restraints or a window net (§114.2.6) — modeled under the arm_restraint category, not here, since a window net is a restraint device rather than a glass-breaking/belt-cutting tool.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 1000, minSizes: [{ outerDiameterIn: 1.375, wallThicknessIn: 0.09 }], materialNote: "Mild steel or D.O.M.; Alloy Steel 1.25x0.095; Aluminum 6061-T6 1.5x0.125; Docol R8 1.25x0.095" },
+        { underWeightLbs: 2000, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.09 }], materialNote: "Mild steel or D.O.M.; Alloy Steel 1.375x0.095; Aluminum 6061-T6 1.5x0.188; Docol R8 1.375x0.095" },
+        { underWeightLbs: 3000, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }], materialNote: "Mild steel; D.O.M. 1.5x0.095; Alloy Steel 1.625x0.095; Aluminum 6061-T6 1.5x0.188; Docol R8 1.375x0.095" },
+        { underWeightLbs: 4000, minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.12 }], materialNote: "Mild steel or D.O.M.; Alloy Steel 1.75x0.095; Aluminum 6061-T6 1.625x0.188; Docol R8 1.625x0.083" },
+        { minSizes: [{ outerDiameterIn: 2.0, wallThicknessIn: 0.12 }], materialNote: "For over 4000 lbs. Mild steel or D.O.M.; Alloy Steel 1.75x0.095; Aluminum 6061-T6 1.75x0.188 or 2.0x0.188; Docol R8 1.75x0.095" },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      condition:
+        "Main hoop geometry differs for Open Wheel Division (§504.4: extend 4\" above the competitor's helmet, headrest support attached to the cage; roll cage is never a tow point) versus all other divisions (§105.1: full width of the compartment, 2\"-10\" above/behind the helmet). Monocoque/full-safety-pod chassis are allowed in place of a tube-frame cage if the integrated rollover structure is tested and results submitted for approval.",
+      citation: { ...sourceDoc, section: "105, 105.1-105.5, 504.4" },
+      confidence: "high",
+      notes:
+        "§105: 'All vehicles must incorporate the use of a roll cage,' required outright with no class exemption. Steel tubing or 6061-T6 aluminum only (must match the frame material) — titanium barred; two fore-aft braces at least equal to the main hoop's tubing, minimum 2 passenger-side + 3 competitor-side sidebars; gusseted at all four corners; mounting plates minimum 3/16\" thick; AWS D1.1:2002 welding standard. Production vehicles over 4,000 lbs need a non-factory dash bar of the same cage material; under 4,000 lbs may use the factory dash bar if tied into the A-pillar on both sides. The Pikes Peak GT4 Division instead follows its own FIA/SRO-homologated safety cage spec — see the gt4 class override. Padding (§105.6): except where it would block forward/side vision, any portion of the roll structure that could contact the competitor's helmet must be covered with high-density energy-absorbing material (Styrofoam/Ensolite are named examples) at least 1/2\" thick, itself covered by protective wrapping — no SFI/FIA certification number is cited for this general rule (contrast with the GT4 Division's own padding rule, which does require FIA 8857-2001 Type A).",
+    },
     kill_switch: {
       requirement: "required",
       citation: { ...sourceDoc, section: "116.4" },
@@ -345,6 +364,18 @@ const hillClimb: Ruleset = {
         citation: { ...sourceDoc, section: "414.5" },
         confidence: "high",
         notes: "Replaces the general tow_hook rule (§123) in full for GT4 cars rather than adding to it — the Rule Book frames this as a supersession, not an additional option.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresWelded: false,
+        rolloverProtectionAcceptedLogbookBodies: ["fia"],
+        rolloverProtectionRequiresPadding: true,
+        rolloverProtectionPaddingCertRequired: true,
+        citation: { ...sourceDoc, section: "415, 415.1" },
+        confidence: "high",
+        notes:
+          "Rule Book §415.1: 'The safety cage must have no more than six mounting points... must be certified or homologated by an ASN or homologated by the FIA' — an authentic copy of the homologation document/certificate, signed by qualified technicians representing the manufacturer, must be presented to scrutineers. Cars homologated in GT4 after 01/01/2016 use the cage defined in the car's Homologation Form (VO). Unlike the general §105 weight-tiered tubing spec, GT4's cage is accepted purely on FIA/ASN homologation paperwork, not measured tube dimensions — rolloverProtectionTubingSpec isn't carried over from the base rule. Padding must comply with FIA 8857-2001 Type A per Appendix J art. 253-8.3 (FIA Technical List n°23).",
       },
     },
   },

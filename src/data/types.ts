@@ -202,6 +202,30 @@ export interface CategoryRule {
    */
   rolloverProtectionTubingSpec?: RolloverTubingTier[];
   /**
+   * Rollover protection only: padding is required wherever the driver's (or passenger's) helmet
+   * or body could contact the cage/roll bar. True for most bodies whenever a cage/bar is itself
+   * required — omit only when the body is genuinely silent on padding.
+   */
+  rolloverProtectionRequiresPadding?: boolean;
+  /**
+   * Rollover protection only: the padding itself must carry a recognized certification (e.g. SFI
+   * 45.1, SFI 45.2, FIA 8857-2001 Type A) rather than just being plain high-density material of a
+   * minimum thickness. Only set when a body's text actually mandates certified padding — most
+   * bodies merely recommend it, which doesn't set this flag. Meaningless unless
+   * `rolloverProtectionRequiresPadding` is also true.
+   */
+  rolloverProtectionPaddingCertRequired?: boolean;
+  /**
+   * Rollover protection only: padding is required across all tubing forward of and including the
+   * main hoop in the roofline, regardless of whether it would actually be contacted — a separate,
+   * stricter requirement than `rolloverProtectionRequiresPadding` (which only kicks in wherever
+   * contact is actually possible). Most bodies don't distinguish the two; ARA's §2.2.3 does
+   * ("all tubing forward of and including the main hoop... must be padded" as its own sentence,
+   * separate from the contact-conditioned padding elsewhere). The corresponding form question is
+   * asked consistently for every body regardless of this flag — only the pass/fail gating differs.
+   */
+  rolloverProtectionRequiresForwardHoopPadding?: boolean;
+  /**
    * Seat only: this body forbids seat rails/sliders outright — the seat must be fixed-mounted,
    * regardless of whether it's otherwise a compliant certified/stock seat. Omit when the body
    * doesn't address slider/rail mounts (most don't).

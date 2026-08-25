@@ -6,7 +6,12 @@ import { GENERIC_APPAREL_STANDARDS, GENERIC_SEAT_STANDARDS } from "../standards"
  * rules just say "meet SCCA Time Trial Safety Level 2/3" rather than restating equipment
  * requirements themselves (e.g. Appalachian HillClimb Series). Safety Level 3 adds only a
  * roll cage on top of Level 2 — no additional driver-gear items — so it's driver-PPE-identical
- * to Level 2 and doesn't need its own copy here (roll cages are out of this app's scope).
+ * to Level 2 and doesn't need its own copy here for every other category. rollover_protection
+ * below IS the one place Level 2 and Level 3 genuinely diverge (4-point roll bar vs. full
+ * cage) — modeled as the Level 2 baseline (required for every Level-2-or-higher vehicle, not
+ * just convertibles) with the Level 3 upgrade documented in its notes, since a client using
+ * this shared base (e.g. Appalachian HillClimb Series) doesn't currently split its own classes
+ * by safety level.
  *
  * A club with its OWN restated/superseding equipment rules (e.g. PHA, whose SUPPS explicitly
  * take precedence over the base SCCA Time Trial Rules) should NOT use this — write its own
@@ -229,5 +234,20 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
     citation: SCCA_TT_LEVEL2_SOURCE,
     confidence: "high",
     notes: "Not mentioned anywhere across Safety Levels 1-3 of this document.",
+  },
+  rollover_protection: {
+    requirement: "required",
+    rolloverProtectionRequiresFullCage: false,
+    rolloverProtectionTubingSpec: [
+      { underWeightLbs: 1500, minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.09 }] },
+      { underWeightLbs: 1701, minSizes: [{ outerDiameterIn: 1.375, wallThicknessIn: 0.08 }] },
+      { underWeightLbs: 2700, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.625, wallThicknessIn: 0.08 }] },
+      { minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }, { outerDiameterIn: 2.0, wallThicknessIn: 0.08 }], materialNote: "For 2700 lbs and up." },
+    ],
+    rolloverProtectionRequiresPadding: true,
+    citation: { ...SCCA_TT_LEVEL2_SOURCE, section: "IV.2 Safety Level 2 — 2. Vehicle Equipment — 1. Roll Bars" },
+    confidence: "high",
+    notes:
+      "'Safety Level 2 generally means an appropriate racing-specific seat, 4-point roll bar, 5-point racing harness, arm restraints or window net, and fire-retardant helmets and clothing' — a roll bar is required for every Safety Level 2 vehicle, not just convertibles/open cars. The tubing spec 'applies to all vehicles (other than those issued an SCCA Logbook before 1/1/19)' — seamless or DOM mild steel (SAE 1010/1020/1025) or alloy steel (SAE 4130); pre-2016-logbook vehicles may retain existing ERW tubing. One continuous length of tubing for the hoop, smooth bends, vertical members more than 15\" apart (interior), extending to (ideally) the full cockpit width, top clearing the driver's helmet when seated normally. Padding: non-resilient material (e.g. Ethafoam/Ensolite), minimum 1/2\" thick, wherever the driver's or passenger's helmet could contact the main hoop/braces — SFI 45.1 or FIA 8857-2001-rated padding is strongly recommended but not required; the plain 1/2\"-minimum-thickness option alone satisfies the rule. Mounted to the frame with SAE Grade 5-or-better bolts, 5/16\" minimum diameter. Safety Level 3 upgrades this to a full roll CAGE (main hoop, front hoop, side protection across door openings, main-hoop diagonal bracing, shoulder- and dash-level horizontal braces, ≥30° rearward braces, minimum 6 attachment points on production chassis) — a strict superset of the Level 2 spec, using its own weight-tiered tubing table (as light as 1.00\"x0.060\" under 1000 lbs, up to the same 2.00\"x0.080\" top tier), seamless/DOM mild steel (SAE 1020/1025) or alloy steel (SAE 4130/T45) or Docol R8 (ERW prohibited), full-penetration welds, and 0.080\"-minimum-thick mounting plates. Level 3 padding is a minimum 1\" of material, with SFI 45.1/FIA 8857-2001 (curved) or SFI 45.2/FIA sports car head rest material (flat) again recommended, not required. A client using this shared base whose own classes require Level 3 for specific classes should override this category with the full-cage spec for those classes.",
   },
 };

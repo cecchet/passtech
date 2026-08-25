@@ -17,7 +17,7 @@ import { pcaRulesets } from "./bodies/pca";
 import { hookedOnDrivingRulesets } from "./bodies/hookedOnDriving";
 import { neqRulesets } from "./bodies/neq";
 import { masstuningRulesets } from "./bodies/masstuning";
-import { northeastGTRulesets } from "./bodies/northeastGT";
+import { northeastGTRulesets } from "./bodies/northeastgt";
 import { amecRulesets } from "./bodies/amec";
 import { gridlifeRulesets } from "./bodies/gridlife";
 import { bmwccaRulesets } from "./bodies/bmwcca";

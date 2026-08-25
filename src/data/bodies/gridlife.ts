@@ -16,8 +16,8 @@ import { GENERIC_APPAREL_STANDARDS, GENERIC_FUEL_CELL_STANDARDS, GENERIC_SEAT_ST
 // stricter Unlimited-tier requirement that may also apply. Recommend a direct read of the
 // published doc, and confirmation from GridLife tech, before treating this as final.
 // GRIDLIFE Drift is not modeled here — the source states it has no distinct driver PPE rules of
-// its own beyond the general competitive standard (roll cage requirements aside, which are
-// vehicle equipment, out of this app's scope).
+// its own beyond the general competitive standard (its own tandem/close-proximity roll cage
+// requirement is a distinct discipline this app doesn't otherwise track).
 // ============================================================================================
 
 const sourceDoc = {
@@ -257,6 +257,27 @@ const notAddressedTowRope: CategoryRule = {
     "The document requires tow hooks/points (see tow_hook) and references 'tow truck' hookup at tech inspection, but never separately requires the competitor to carry their own tow rope/strap in the car.",
 };
 
+// "8. Roll cage construction and design": "Full roll cage required for GLTC, GLGT, and Unlimited
+// TA" — shared verbatim by GLTC/GLGT (RUSH SR defers to its own separate spec doc instead).
+const competitiveRollCageRule: CategoryRule = {
+  requirement: "required",
+  rolloverProtectionRequiresFullCage: true,
+  rolloverProtectionRequiresWelded: true,
+  rolloverProtectionTubingSpec: [
+    { underWeightLbs: 1500, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.08 }], materialNote: "Seamless mild steel." },
+    { underWeightLbs: 2501, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }], materialNote: "Seamless mild steel." },
+    { underWeightLbs: 3001, minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.095 }], materialNote: "Seamless mild steel." },
+    { underWeightLbs: 4001, minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.12 }], materialNote: "Seamless alloy or mild steel." },
+    { minSizes: [{ outerDiameterIn: 2.0, wallThicknessIn: 0.12 }], materialNote: "For over 4000 lbs. Seamless alloy or mild steel." },
+  ],
+  rolloverProtectionRequiresPadding: true,
+  rolloverProtectionPaddingCertRequired: true,
+  citation: { ...sourceDoc, section: "8. Roll cage construction and design" },
+  confidence: "medium",
+  notes:
+    "'Full roll cage required for GLTC, GLGT, and Unlimited TA.' All tubes must be welded fully around the perimeter, with no noticeable deformation in any bend. Padding with SFI-rated high-density material is required. The document also specifies hoop designs, rear braces, diagonal braces, and door bars, not modeled individually here. A narrow carve-out exists for specific convertibles with factory rollover protection (2002 Porsche Boxster, Honda S2000, MINI Cooper Convertible named as examples), which may run with factory seats/seatbelts — see the seat and belts_harness categories.",
+};
+
 const notAddressedEmergencyTriangle: CategoryRule = {
   requirement: "not_addressed",
   citation: { ...sourceDoc },
@@ -353,6 +374,17 @@ const hpde: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+      rolloverProtectionFactoryExempt: true,
+      condition:
+        "Rollbars/cages are 'strongly encouraged' but not required for closed cars in general HPDE. Convertibles have their own rule: Mazda Miata NA/NB models require a roll bar outright; NC/ND Miatas may use OEM-or-better rollover protection instead; other convertibles with factory rollover protection (e.g. Porsche Boxster, Honda S2000, MINI Cooper Convertible) may run with their factory setup. All convertibles must pass the 'broomstick test' for driver head clearance.",
+      citation: { ...sourceDoc, section: "General HPDE Safety Devices; Convertibles" },
+      confidence: "medium",
+      notes:
+        "Where a rollbar/cage IS fitted (voluntarily, for a closed car, or as required for an NA/NB Miata): 'Rollbars and roll cages must be quality, professional-level, and fully welded around all joints to be allowed on track' — no further tubing/material spec is given at this tier, unlike the full construction spec required for GLTC/GLGT (see that ruleset).",
+    },
   },
 };
 
@@ -443,6 +475,13 @@ const trackBattleTimeAttack: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    rollover_protection: {
+      requirement: "recommended",
+      citation: { ...sourceDoc, section: "8. Roll cage construction and design" },
+      confidence: "high",
+      notes:
+        "'We strongly recommend that all GRIDLIFE Time Attack cars meet the rollcage rules and utilize additional driver safety versus just using street car based equipment' — a recommendation only, not a requirement, for standard/non-Unlimited TrackBattle Time Attack. A full roll cage IS required for the 'Unlimited TA' tier specifically (same construction spec as GLTC/GLGT, see that ruleset) — the source doesn't define the Unlimited threshold (see file-level note), so that stricter tier isn't modeled as the general rule here.",
+    },
   },
 };
 
@@ -482,6 +521,7 @@ const gltcGlgt: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    rollover_protection: competitiveRollCageRule,
   },
 };
 
@@ -545,6 +585,13 @@ const rushSr: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    rollover_protection: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "GLRSR (RUSH SR)" },
+      confidence: "medium",
+      notes:
+        "The main GTCR rules' §8 roll cage construction/design section names only GLTC, GLGT, and Unlimited TA — RUSH SR isn't included in that list. GRIDLIFE instead defers: 'FOR GLRSR the Vehicle Must comply with the 2026 RUSH SR SPEC SERIES TECHNICAL REGULATIONS' — a separate document not covered by this research pass, so the actual cage requirement for RUSH SR (a full cage is very likely mandatory for a spec racing series, but unconfirmed here) is not modeled as a guess.",
+    },
   },
 };
 

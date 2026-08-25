@@ -131,6 +131,17 @@ const gravelTrials: Ruleset = {
       notes:
         "Re-checked the complete 2026 document (all numbered sections 1-35 plus Appendix A) — 'window net' still does not appear anywhere, matching the arm_restraint category's finding. Independently verified for this ruleset (not assumed from Climb to the Clouds' window-net-or-arm-restraint rule) — no either/or relationship exists here since neither item is addressed at all.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }] }],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025", section: "9.1" },
+      confidence: "high",
+      notes:
+        "Rule 9.1: 'All cages, regardless of log book must have' a six-point mounting design; A-pillar support bars; two door bars per side minimum; diagonals to each corner of the top of the main hoop (single or double, either in the plane of the main hoop or as rear stays); minimum tubing size 1.5\"x0.095\". Required outright for every car — this event log-books through Rally America/SCCA Pro Rally/CARS/ARA/FIA/NASA Rallysport (§8), and §9.1 applies the cage spec 'regardless of log book.' Padding is separately required (§9.2) on any bar that could contact the driver/co-driver's helmet — SFI 45.1 or FIA 8857-2001 Type A energy-absorbing material.",
+    },
     fire_extinguisher: {
       requirement: "required",
       fireExtinguisherOptions: [
@@ -202,9 +213,10 @@ const gravelTrials: Ruleset = {
 // window_net, seat, belts_harness, fuel_cell, window_breaker — is written under §1 "General
 // Vehicle Rules (These rules apply to all vehicles)" or §2 "Safety Rules (All competitors must
 // comply)," with no class-specific carve-out anywhere in the eleven class sections. Roll cage
-// construction (cage A vs. cage B) DOES vary heavily by class, but this app doesn't yet track a
-// rollcage category (see the CategoryGroup comment in src/data/types.ts), so that variation isn't
-// modeled here. The two categories that genuinely do diverge by class, each with its own explicit
+// construction (cage A vs. cage B) varies by class — see the rollover_protection category's
+// `condition` field below for which classes use which cage type; the tubing spec itself is
+// weight-tiered rather than class-tiered so it's modeled once at the base level. The two other
+// categories that genuinely do diverge by class, each with its own explicit
 // rule text: kill_switch (§1.9.1 names only Unlimited and Open; §10.2 separately mandates a master
 // disconnect switch for Modified Electric; no other class is addressed) and fire_suppression
 // (§9.1 makes an onboard system mandatory for Rally specifically, where it's merely an optional
@@ -484,6 +496,8 @@ const climbToTheClouds: Ruleset = {
           materialNote: "DOM or Docol R8, ≥350N/mm² tensile — for 2501 lbs and up",
         },
       ],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
       condition:
         "Two cage types apply depending on class: Cage A (FIA Art. 253 Appendix J rally-style) for Unlimited/Unlimited Sport/Open Lite/Modified Electric/Rally; Cage A or B (full sedan cage, two side-protection bars per side, sill bar) for Open/Prepared/HPSS/Stock Electric/Vintage Exhibition; Vintage Driver may use A or B but excludes open-wheel/Unlimited-type cars from that class. FIA-homologated cages built after 2005 are accepted as designed, with supporting paperwork required at tech; pre-2005 FIA cages need an A-pillar-support + X-bracing retrofit.",
       citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "1.12–1.22" },

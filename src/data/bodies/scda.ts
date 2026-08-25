@@ -226,6 +226,14 @@ const hpdeStreet: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+      condition:
+        "Tech form item 4: 'Convertible vehicles must meet convertible policy. Must pass \"broomstick test\" with fixed rollbar: driver's helmet must be under a straight line from top of windshield to top of rollbar. Pop-up roll bars are not acceptable, unless deployed in fixed position and pass test.' Fixed-roof street cars aren't addressed by this rule at all.",
+      citation: { ...techForm, section: "Item 4 (Convertible policy)" },
+      confidence: "high",
+    },
   },
 };
 
@@ -307,6 +315,14 @@ const hpdeCaged: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      citation: { ...techForm, section: "Item 13" },
+      confidence: "medium",
+      notes:
+        "This ruleset's own definition is a car that is 'fully caged, track prepped, or [a] racecar' (tech form item 13: 'Track prepped car means: Vehicle in which the cockpit has been altered or modified in any way so that any part of the chassis or any firewall has been exposed'), so a cage/rollover structure is present by definition of qualifying for this tier — a street-prepared car with an intact interior falls under the other SCDA ruleset instead. The tech form doesn't itself give a construction/tubing spec for the cage (unlike the street ruleset's convertible-specific 'broomstick test' clearance check) — confidence is medium since this is inferred from the class definition rather than a standalone cage-construction rule.",
+    },
   },
 };
 

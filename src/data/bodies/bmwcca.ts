@@ -251,6 +251,24 @@ const clubRacing: Ruleset = {
       notes:
         "Not mentioned anywhere in the rulebook. The Driver Egress Requirement (must be able to exit within 15 seconds with all safety equipment in place, harnesses buckled, and nets in place) and the window net's own quick one-handed release are the closest related provisions, but no window-breaker tool or seatbelt cutter is required.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 1500, minSizes: [{ outerDiameterIn: 1.375, wallThicknessIn: 0.095 }], materialNote: "Source rulebook prints this tier as '.375\" x 0.095\"' — almost certainly a scan-dropped leading digit, since every other body's under-1500lb tier uses 1.25-1.375\" OD; treated here as 1.375\" x 0.095\" DOM/chromoly/seamless. Verify against the original PDF if precision matters." },
+        { underWeightLbs: 2501, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }], materialNote: "DOM/chromoly/seamless. ERW 1.5\"x0.120\" also referenced but only for grandfathered vehicles — no ERW logbooks issued after 07/01/03." },
+        { underWeightLbs: 3001, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }], materialNote: "DOM/chromoly/seamless. ERW 1.75\"x0.120\" also referenced but only for grandfathered vehicles." },
+        { underWeightLbs: 4001, minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.12 }], materialNote: "DOM/chromoly/seamless only, no ERW allowed." },
+        { minSizes: [{ outerDiameterIn: 2.0, wallThicknessIn: 0.12 }], materialNote: "For over 4000 lbs. DOM/chromoly/seamless only, no ERW allowed." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      citation: { ...sourceDoc, section: "III.B Roll Cages; Appendix A" },
+      confidence: "high",
+      notes:
+        "'All classes require a full roll cage' — mandatory outright, no class exemption. FIA-approved (not bolt-in) or documented Factory/BMW Motorsport cages are allowed with required braces added; bolt-in cages are barred for logbooks issued after 1/1/2007. Requires a diagonal brace in the rear hoop, metal-to-metal mounting at 6-8 points, at least one door bar per side, and (if the car runs without a solidly-affixed roof/hard top) 2\" of helmet clearance below the front/main-hoop plane. Sport/Prepared/SpecE36/E30-M3-Touring classes get a more prescriptive 6-point spec (Appendix A); Modified/PWR classes have free cage construction provided it meets the basic Appendix A structure. Padding: half-round SFI 45.1 or FIA 8857-2001 Type A required on any tube within 12\" of the head; lower-density padding permitted elsewhere (door bars, shin bars) but not in head-contact zones.",
+    },
   },
 };
 
@@ -444,6 +462,23 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the Driving Schools/HPDE section.",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 2000, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.075 }] },
+        { underWeightLbs: 3501, minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.12 }, { outerDiameterIn: 2.0, wallThicknessIn: 0.075 }] },
+        { minSizes: [{ outerDiameterIn: 2.0, wallThicknessIn: 0.12 }], materialNote: "For over 3500 lbs curb weight." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      condition:
+        "§2.3.18: convertibles (retractable soft top and/or fully removable hard top — NOT cars with an integrated retractable factory hardtop) may not run any session requiring helmets unless equipped with a roll bar/cage meeting Appendix 1. A car with factory-fixed rollover protection and a removable roof section may be allowed at the chapter's discretion if that structure clears the same Helmet Reference Plane spec. Chapters may also elect to exclude convertibles/removable-roof cars from helmet-required sessions entirely, avoiding the requirement. A fixed hard-roof car isn't addressed by this section at all.",
+      citation: { ...deSourceDoc, section: "2.3.18 Convertibles; Appendix 1" },
+      confidence: "high",
+      notes:
+        "Appendix 1 spec: full cockpit width; Helmet Reference Plane (top of roll bar to structural chassis points ahead of the windshield base) must clear both occupants' helmets by 2\"; seamless ERW or DOM mild steel (SAE 1010/1020/1025) or chromoly (SAE 4125/4130); one continuous hoop, max 4 bends totaling 180°±10°; two fore/aft braces plus a diagonal brace, sized per the same weight table; mounting plates ≥3/16\" thick, welded full-perimeter or bolted with a same-size backup plate and ≥3 bolts. AWS D1.1 welding standard. A 3/16\" inspection hole is required in the hoop. Padding (§1.4): any portion of the roll bar/bracing that might contact an occupant's helmet must be covered with non-resilient material (Ethafoam, Ensolite, or similar), minimum 1/2\" thick, firmly attached — no SFI/FIA certification number is cited, just the plain-material minimum.",
+    },
   },
 };
 
@@ -591,6 +626,13 @@ const autocross: Ruleset = {
       citation: { ...deSourceDoc },
       confidence: "high",
       notes: "Not mentioned for autocross/gymkhana/car-control clinics.",
+    },
+    rollover_protection: {
+      requirement: "conditional",
+      condition:
+        "§2.4.8.10: 'Roll bars, if installed, must be properly and securely mounted' — never mandatory for autocross/gymkhana/car-control clinics (unlike HPDE's convertible-specific Appendix 1 mandate, §2.3.18), but regulated for mounting security if a competitor chooses to fit one voluntarily. No construction, tubing, or padding spec is given.",
+      citation: { ...deSourceDoc, section: "2.4.8.10" },
+      confidence: "high",
     },
   },
 };
@@ -740,6 +782,13 @@ const iceAutocross: Ruleset = {
       citation: { ...deSourceDoc },
       confidence: "high",
       notes: "Not mentioned for ice autocross or, via inheritance, for regular autocross.",
+    },
+    rollover_protection: {
+      requirement: "conditional",
+      condition:
+        "Inherited from Autocross (§2.5.1: 'All minimum standards in this manual for autocross also apply to ice autocross, except as detailed below' — roll bars aren't among the listed ice-autocross exceptions). §2.4.8.10: 'Roll bars, if installed, must be properly and securely mounted' — never mandatory, only regulated for mounting security if voluntarily fitted. No construction, tubing, or padding spec is given.",
+      citation: { ...deSourceDoc, section: "2.4.8.10 (inherited via 2.5.1)" },
+      confidence: "high",
     },
   },
 };

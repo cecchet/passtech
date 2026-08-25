@@ -311,6 +311,20 @@ const endurance: Ruleset = {
       notes:
         "Confirmed via full read of the current rulebook: no window-breaker/seatbelt-cutter tool requirement is mentioned anywhere in the current text. WRL does require a separate SFI 27.1-rated window net (a containment device, not a breaker/cutter tool) on essentially all cars — see the arm_restraint entry's notes above for that requirement, which also isn't modeled as its own category since 'window net' isn't one of this app's tracked categories.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: false,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 2500, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }], materialNote: "Seamless mild steel or DOM — ERW not acceptable without a waiver for an existing cage." },
+        { minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }], materialNote: "For 2501 lbs and over. Seamless mild steel or DOM — ERW not acceptable without a waiver for an existing cage." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      citation: { ...sourceDoc, section: "B.2, Appendix B" },
+      confidence: "high",
+      notes:
+        "§B.2.a: 'A full roll cage is required, equivalent to those generally required by SCCA, NASA, LeMons, and others' — existing cages from those sanctions, if properly built and inspected, are treated as meeting the WRL standard; a car with an FIA-homologated safety cell not meeting the letter of this spec may petition WRL for approval. Professionally manufactured bolt-in cages are allowed (bolt-together cages are not); welds must be 360° full-penetration. Requires: continuous main hoop (≤4 bends, following B-pillars/roofline, rake ≤15° off vertical, tall enough that no driver's helmet extends above the line connecting the front-hoop and main-hoop centerlines); a main-hoop diagonal brace; two uncut rear braces at 30-60° off the main-hoop plane; a forward cage section (side hoops, halo, or front hoop — three allowed configurations); minimum two driver-side door bars (X-bars OK, S-bends barred on new 2014+ builds without a valid higher-level logbook) plus at least one passenger-side door bar; a dash bar; mounted at a minimum of 6 points (2 each at main hoop, rear braces, front hoop), with up to 2 additional at the front hoop to firewall/wheel wells. Padding required wherever the driver's helmet, body, or limbs may contact the finished cage — Appendix B just says 'roll bar padding' with no SFI/FIA certification number cited, unlike several other bodies in this app.",
+    },
   },
 };
 

@@ -32,6 +32,33 @@ export function logbookBodyLabel(id: string): string {
   return ROLLOVER_LOGBOOK_BODIES.find((b) => b.id === id)?.label ?? id;
 }
 
+/**
+ * Rollover protection only: recognized roll cage/roll bar TUBE padding certifications. Distinct
+ * from the main STANDARDS registry below since padding isn't itself a tracked EquipmentCategory —
+ * it's a sub-attribute of rollover_protection, evaluated via `rolloverProtectionPaddingCertRequired`
+ * rather than the general certification-list machinery. "none" (plain/uncertified material) is a
+ * legitimate selectable answer, not a placeholder — most bodies accept it since certified padding
+ * is usually only recommended, not required. Deliberately excludes SFI 45.2 / FIA sports car head
+ * rest material: those are flat headrest-padding specs, not for wrapping curved cage/bar tubing —
+ * out of scope for this specific box even though some rulebooks name them as an alternate flat-
+ * padding option elsewhere in their text.
+ */
+export interface RolloverPaddingStandardDef {
+  id: string;
+  label: string;
+}
+
+export const ROLLOVER_PADDING_STANDARDS: RolloverPaddingStandardDef[] = [
+  { id: "sfi-45.1", label: "SFI 45.1" },
+  { id: "fia-8857-2001-type-a", label: "FIA 8857-2001, Type A" },
+];
+
+export function paddingStandardLabel(id: string): string {
+  if (id === "none") return "Plain/uncertified material";
+  if (id === NOT_LISTED) return "Not listed / other";
+  return ROLLOVER_PADDING_STANDARDS.find((s) => s.id === id)?.label ?? id;
+}
+
 const APPAREL: EquipmentCategory[] = ["gloves", "shoes", "socks", "undergarment", "arm_restraint", "balaclava"];
 
 /**

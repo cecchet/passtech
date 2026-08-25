@@ -217,6 +217,21 @@ const performanceRally: Ruleset = {
       notes:
         "A comprehensive, itemized first-aid kit (CARS specifies an extensive contents list — bandages, gauze, gloves, scissors, tweezers, space blankets, etc.) must be carried in the passenger compartment, easily accessible and clearly identified with a first-aid-kit label (available through CARS) on the outside of the vehicle.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: false,
+      rolloverProtectionTubingSpec: [
+        { minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }], materialNote: "CDS (Cold Drawn Seamless) or DOM (Drawn Over Mandrel). Main/front/lateral roll bars, lateral half roll bars, their connections, and one continuous door bar per side: minimum 1.75\"x0.095\". All other cage parts: minimum 1.5\"x0.095\"." },
+      ],
+      rolloverProtectionAcceptedLogbookBodies: ["cars"],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      citation: { ...sourceDoc, section: "Technical Rule 12.3.2.1-12.3.2.6" },
+      confidence: "high",
+      notes:
+        "Technical Rule 12.3.2.1: 'Roll cages are mandatory for all vehicles' — exact design is subject to scrutineer approval at each event (12.3.2.2). All new vehicles with log-books issued after January 1, 2009 must be fitted with a safety cage built to FIA Article 253 specifications or FIA-homologated under the latest international regulations, with original certification documentation (older homologated cages aren't automatically valid for a newly built vehicle). A material certificate or original sales receipt for the cage material must be presented, plus an unpainted 45cm sample bent 60° for each tube size used. Padding is required wherever occupants' bodies could contact the cage (flame-retardant material); where a crash helmet could contact the cage, padding must meet FIA 8857-2001 Type A or SFI 45.1.",
+    },
   },
 };
 
@@ -395,6 +410,18 @@ const rallySprint: Ruleset = {
       confidence: "high",
       notes: "Same comprehensive, itemized kit requirement as Performance Rally.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: false,
+      rolloverProtectionAcceptedLogbookBodies: ["cars"],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      citation: { ...sourceDoc, section: "NRR 28.3.3e" },
+      confidence: "high",
+      notes:
+        "NRR 28.3.3e: 'All vehicles must be fitted with a roll cage. All cages must be of a minimum six-point mounting design, must include two door bars per side and two diagonal members within the main hoop.' Meeting Technical Rule 12.3.2 (Performance Rally's cage spec) is recommended but not mandatory here — Rally Sprint instead accepts a broader set of cages: any currently CARS-approved cage or one used in a vehicle with a CARS logbook issued since 2000; a pre-2000-logbook cage if it's 6-point with two door bars and at least two main-hoop diagonals; a cage logbooked by another Canadian motorsport territory or sanctioning body, or any other cage, each subject to approval by a CARS National Scrutineer and/or the CARS Technical Director. Cages and roll bars may be bolted to the floor (mounting-plate requirements are the same as for a welded cage). Padding must comply with Technical Rule 12.3.2.6.",
+    },
   },
 };
 
@@ -558,6 +585,13 @@ const rallyCross: Ruleset = {
       confidence: "high",
       notes: "No first-aid-kit requirement found for Rally Cross.",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      condition:
+        "This app's three Rally Cross classes track exactly this category: passenger cars/light trucks WITHOUT roll-over protection have none required unless the car is open-top (a convertible must fit a hard top and/or scrutineer-approved roll-over protection, NRR 27.3.2.1g); passenger cars/light trucks WITH roll-over protection have it by class definition, but Rally Cross states no minimum cage/bar construction spec for that vehicle type; ROV/UTV must retain at minimum its OEM upper tubular passenger-compartment structure or roll cage, with the roll structure's top not below the driver's helmet (NRR 27.3.2.2c).",
+      citation: { ...sourceDoc, section: "NRR 27.3.2.1g, 27.3.2.2c" },
+      confidence: "high",
+    },
   },
   classOverrides: {
     "passenger-no-rollover": {
@@ -588,6 +622,14 @@ const rallyCross: Ruleset = {
         confidence: "high",
         notes: "Window nets are only mandated for ROV/UTV (NRR 27.3.2.2g) — not addressed for passenger cars/light trucks. Open-top convertibles in this class must instead fit a hard top and/or scrutineer-approved roll-over protection (see arm_restraint).",
       },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+        condition:
+          "This class is defined by NOT having roll-over protection, so by definition no cage/bar spec applies — except NRR 27.3.2.1g: 'Open top (convertible) vehicles must have a fitted hard top and/or roll over protection approved by the regional scrutineer.' A convertible without a hard top can't stay in this no-rollover class at all; a closed-roof car has no rollover requirement whatsoever.",
+        citation: { ...sourceDoc, section: "NRR 27.3.2.1g" },
+        confidence: "high",
+      },
     },
     "passenger-with-rollover": {
       helmet: {
@@ -610,6 +652,13 @@ const rallyCross: Ruleset = {
         confidence: "high",
         notes: "Window nets are only mandated for ROV/UTV (NRR 27.3.2.2g) — not addressed for passenger cars/light trucks. Open-top convertibles in this class must instead fit a hard top and/or scrutineer-approved roll-over protection (see arm_restraint).",
       },
+      rollover_protection: {
+        requirement: "required",
+        citation: { ...sourceDoc, section: "NRR 27.3.2.1g" },
+        confidence: "medium",
+        notes:
+          "This class is defined by HAVING roll-over protection fitted, so the equipment itself is present by class selection — but Rally Cross's passenger-car/light-truck vehicle rules (NRR 27.3.2.1) state no minimum cage/bar construction spec (no tubing size, mounting-point count, or material requirement), unlike the detailed six-point/two-door-bar/two-diagonal spec Rally Sprint requires (NRR 28.3.3e) or the FIA Article 253 spec Performance Rally requires (Technical Rule 12.3.2). Confidence is medium because this is inferred from the class's own definition rather than from an explicit construction rule in the text.",
+      },
     },
     "rov-utv": {
       belts_harness: {
@@ -627,6 +676,14 @@ const rallyCross: Ruleset = {
           "NRR 27.3.2.2g: 'The vehicle must be equipped with side window nets. Window nets must meet FIA and/or SFI Certification.' No specific generation/version number is cited, so both registered window-net standards are listed as the practical options — a plain uncertified net does not satisfy this rule.",
         citation: { ...sourceDoc, section: "NRR 27.3.2.2g" },
         confidence: "high",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionFactoryExempt: true,
+        citation: { ...sourceDoc, section: "NRR 27.3.2.2c" },
+        confidence: "high",
+        notes:
+          "NRR 27.3.2.2c: 'As a minimum the OEM upper tubular passenger compartment structure or roll cage shall be retained' — inherently satisfied by an unmodified eligible ROV/UTV, since the stock chassis (which every ROV/UTV in this class must retain per §27.3.2.2b) already includes this structure. The top of the roll structure must not be below the top of the driver's helmet in the normal driving position, and no vehicle with structural damage to the roll cage or frame members may compete.",
       },
     },
   },

@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory } from "@/data/categoryMeta";
-import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, standardLabel, standardsFor } from "@/data/standards";
+import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { useTagScanner } from "@/lib/useTagScanner";
@@ -55,7 +55,15 @@ interface Props {
   showPhotoUpload?: boolean;
 }
 
-const MAX_ITEM_PHOTOS = 3;
+const DEFAULT_MAX_ITEM_PHOTOS = 3;
+// Rollover protection often needs multiple angles (cage overview, tags/labels, logbook page,
+// padding close-up) to document — everything else keeps the default 3.
+const MAX_ITEM_PHOTOS_BY_CATEGORY: Partial<Record<EquipmentCategory, number>> = {
+  rollover_protection: 5,
+};
+function maxPhotosFor(category: EquipmentCategory): number {
+  return MAX_ITEM_PHOTOS_BY_CATEGORY[category] ?? DEFAULT_MAX_ITEM_PHOTOS;
+}
 
 function ItemPhotoThumb({
   category,
@@ -115,7 +123,8 @@ function ItemPhotos({
 }) {
   const inputId = useId();
   const photos = entry.photoDataUrls ?? [];
-  const canAddMore = photos.length < MAX_ITEM_PHOTOS;
+  const maxPhotos = maxPhotosFor(category);
+  const canAddMore = photos.length < maxPhotos;
 
   return (
     <div className="flex flex-col gap-2">
@@ -138,7 +147,7 @@ function ItemPhotos({
           htmlFor={inputId}
           className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
         >
-          📷 Add a photo of this item ({photos.length}/{MAX_ITEM_PHOTOS})
+          📷 Add a photo of this item ({photos.length}/{maxPhotos})
           <input
             id={inputId}
             type="file"
@@ -570,23 +579,17 @@ function RolloverProtectionFields({
       <p className="text-xs text-neutral-500">Weight/tube size mainly matter for road racing and hillclimb bodies, which size the cage to the car. Logbook year mainly matters for rally bodies.</p>
 
       <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
-        <div className="flex flex-wrap items-end gap-3">
-          <label className="flex flex-col gap-1 text-xs text-neutral-400">
-            Cage logbooked/built (year)
-            <input
-              type="number"
-              min={1970}
-              max={2100}
-              placeholder="e.g. 2018"
-              className={`${numberInputClass} w-28`}
-              value={entry.cageLogbookYear ?? ""}
-              onChange={(e) => onChange({ cageLogbookYear: e.target.value === "" ? undefined : Number(e.target.value) })}
-            />
-          </label>
-          <label className="flex cursor-pointer items-center gap-1 pb-2 text-xs text-neutral-300">
-            <input type="checkbox" checked={!!entry.fiaHomologated} onChange={(e) => onChange({ fiaHomologated: e.target.checked || undefined })} />
-            FIA-homologated
-          </label>
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static bundled icon */}
+          <img
+            src="/logbook.jpg"
+            alt=""
+            className="h-6 w-6 shrink-0 rounded object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+          <span className="text-xs font-semibold text-neutral-300">Cage logbook</span>
         </div>
 
         {!entry.fiaHomologated && (
@@ -615,6 +618,25 @@ function RolloverProtectionFields({
           </label>
         )}
 
+        <div className="flex flex-wrap items-end gap-3">
+          <label className="flex flex-col gap-1 text-xs text-neutral-400">
+            Cage logbooked/built (year)
+            <input
+              type="number"
+              min={1970}
+              max={2100}
+              placeholder="e.g. 2018"
+              className={`${numberInputClass} w-28`}
+              value={entry.cageLogbookYear ?? ""}
+              onChange={(e) => onChange({ cageLogbookYear: e.target.value === "" ? undefined : Number(e.target.value) })}
+            />
+          </label>
+          <label className="flex cursor-pointer items-center gap-1 pb-2 text-xs text-neutral-300">
+            <input type="checkbox" checked={!!entry.fiaHomologated} onChange={(e) => onChange({ fiaHomologated: e.target.checked || undefined })} />
+            FIA-homologated
+          </label>
+        </div>
+
         {entry.cageLogbookBody === NOT_LISTED && (
           <div className="flex flex-col gap-1">
             <input
@@ -631,6 +653,119 @@ function RolloverProtectionFields({
                 onClick={() => onReportMissing(category, entry.cageLogbookBodyCustom || "(no description entered)")}
               >
                 Report this logbook issuer for review
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static bundled icon */}
+          <img
+            src="/rollcage-padding.jpg"
+            alt=""
+            className="h-6 w-6 shrink-0 rounded object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+          <span className="text-xs font-semibold text-neutral-300">Rollcage padding</span>
+        </div>
+
+        <div className="flex items-center gap-3 text-xs text-neutral-300">
+          <span className="text-neutral-400">Padding installed wherever an occupant could contact the cage/bar?</span>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input type="radio" name="cage-padding-present" checked={entry.cagePaddingPresent === true} onChange={() => onChange({ cagePaddingPresent: true })} />
+            Yes
+          </label>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input
+              type="radio"
+              name="cage-padding-present"
+              checked={entry.cagePaddingPresent === false}
+              onChange={() =>
+                onChange({
+                  cagePaddingPresent: false,
+                  ...(entry.cageForwardHoopPaddingPresent ? {} : { cagePaddingStandardId: undefined, cagePaddingStandardCustom: undefined }),
+                })
+              }
+            />
+            No
+          </label>
+        </div>
+
+        <div className="flex items-center gap-3 text-xs text-neutral-300">
+          <span className="text-neutral-400">
+            Padding installed on all tubing forward of and including the main hoop in the roofline — regardless of contact?
+          </span>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input
+              type="radio"
+              name="cage-forward-hoop-padding-present"
+              checked={entry.cageForwardHoopPaddingPresent === true}
+              onChange={() => onChange({ cageForwardHoopPaddingPresent: true })}
+            />
+            Yes
+          </label>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input
+              type="radio"
+              name="cage-forward-hoop-padding-present"
+              checked={entry.cageForwardHoopPaddingPresent === false}
+              onChange={() =>
+                onChange({
+                  cageForwardHoopPaddingPresent: false,
+                  ...(entry.cagePaddingPresent ? {} : { cagePaddingStandardId: undefined, cagePaddingStandardCustom: undefined }),
+                })
+              }
+            />
+            No
+          </label>
+        </div>
+
+        {(entry.cagePaddingPresent || entry.cageForwardHoopPaddingPresent) && (
+          <label className="flex flex-col gap-1">
+            <span className="text-xs text-neutral-400">What does the padding&apos;s tag/label say?</span>
+            <select
+              className={selectClass}
+              value={entry.cagePaddingStandardId ?? ""}
+              onChange={(e) => onChange({ cagePaddingStandardId: e.target.value || undefined, cagePaddingStandardCustom: undefined })}
+            >
+              <option className={optionClass} value="">
+                Select…
+              </option>
+              <option className={optionClass} value="none">
+                No certification — plain/uncertified material
+              </option>
+              {ROLLOVER_PADDING_STANDARDS.map((s) => (
+                <option key={s.id} className={optionClass} value={s.id}>
+                  {s.label}
+                </option>
+              ))}
+              <option className={optionClass} value={NOT_LISTED}>
+                Not listed / other…
+              </option>
+            </select>
+          </label>
+        )}
+
+        {entry.cagePaddingStandardId === NOT_LISTED && (
+          <div className="flex flex-col gap-1">
+            <input
+              type="text"
+              placeholder="What does the tag say?"
+              className={`${numberInputClass} placeholder:text-neutral-500`}
+              value={entry.cagePaddingStandardCustom ?? ""}
+              onChange={(e) => onChange({ cagePaddingStandardCustom: e.target.value })}
+            />
+            {onReportMissing && (
+              <button
+                type="button"
+                className="self-start rounded border border-amber-700 bg-amber-950 px-2 py-1 text-xs text-amber-200 hover:bg-amber-900"
+                onClick={() => onReportMissing(category, entry.cagePaddingStandardCustom || "(no description entered)")}
+              >
+                Report this padding certification for review
               </button>
             )}
           </div>

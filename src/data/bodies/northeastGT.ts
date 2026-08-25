@@ -305,6 +305,16 @@ const raceGear: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the rulebook (fully read this pass — see file-level note).",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionAcceptedLogbookBodies: ["nasa", "scca"],
+      citation: { ...rulebook, section: "Chapter 6, Section I — Roll Cage Requirements (Sprint & Endurance Racing)" },
+      confidence: "high",
+      notes:
+        "'Every vehicle is required to have a properly built roll cage.' Existing cages already logbooked/approved by NASA, SCCA, WRL, AER, ChampCar, or other national road racing sanctions are generally accepted as-is if properly built and inspected; a cage NEGT is inspecting/approving for the first time is instead measured against the NASA Club Codes and Regulations roll cage design requirements. Homemade cages fail tech if not built properly regardless of what other series passed the cage — no ERW tubing allowed for required structure. Final tech-pass authority rests solely with NEGT officials. Attachment points and extra cage bars aren't restricted. Time Attack cars are exempt from this section entirely — see the time-attack class override.",
+    },
   },
   classOverrides: {
     "time-attack": {
@@ -399,6 +409,12 @@ const raceGear: Ruleset = {
       fire_suppression: { requirement: "not_addressed", citation: { ...rulebook, section: "Chapter 6 intro; 6E title" }, confidence: "high", notes: TIME_ATTACK_CAR_GEAR_NOTE },
       kill_switch: { requirement: "not_addressed", citation: { ...rulebook, section: "Chapter 6 intro; 6E title" }, confidence: "high", notes: TIME_ATTACK_CAR_GEAR_NOTE },
       tow_hook: { requirement: "not_addressed", citation: { ...rulebook, section: "Chapter 6 intro; 6E title" }, confidence: "high", notes: TIME_ATTACK_CAR_GEAR_NOTE },
+      rollover_protection: {
+        requirement: "not_addressed",
+        citation: { ...rulebook, section: "Chapter 6 intro; 6E title" },
+        confidence: "high",
+        notes: TIME_ATTACK_CAR_GEAR_NOTE + " Chapter 6 Section I (Roll Cage Requirements) is nested inside Section E, so it's exempt for Time Attack cars along with the rest of that section.",
+      },
     },
   },
 };

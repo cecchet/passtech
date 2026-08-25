@@ -252,6 +252,47 @@ const roadRacing: Ruleset = {
       confidence: "high",
       notes: "Full document search found no requirement for competitors to carry a first aid kit in their car.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionTubingSpec: [
+        {
+          underWeightLbs: 1501,
+          minSizes: [
+            { outerDiameterIn: 1.375, wallThicknessIn: 0.095 },
+            { outerDiameterIn: 1.5, wallThicknessIn: 0.08 },
+          ],
+          materialNote: "Seamless alloy (4130), seamless mild steel (CDS), DOM, or Docol R8 only",
+        },
+        {
+          underWeightLbs: 2501,
+          minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }],
+          materialNote: "Seamless alloy/mild steel/DOM/Docol R8 only — 1.5\"x0.120\" ERW is grandfathered for existing logbooks only, no longer issued",
+        },
+        {
+          underWeightLbs: 3001,
+          minSizes: [
+            { outerDiameterIn: 1.5, wallThicknessIn: 0.12 },
+            { outerDiameterIn: 1.75, wallThicknessIn: 0.095 },
+          ],
+          materialNote: "Seamless alloy/mild steel/DOM/Docol R8 only — 1.75\"x0.120\" ERW is grandfathered for existing logbooks only, no longer issued",
+        },
+        {
+          underWeightLbs: 4001,
+          minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.12 }],
+          materialNote: "Seamless alloy/mild steel/DOM/Docol R8 only — no ERW allowed at this weight",
+        },
+        {
+          minSizes: [{ outerDiameterIn: 2.0, wallThicknessIn: 0.12 }],
+          materialNote: "Over 4000 lbs — seamless alloy/mild steel/DOM/Docol R8 only, no ERW allowed",
+        },
+      ],
+      citation: { title: "NASA CCR", version: "2026.3", section: "15.6, 15.6.21" },
+      confidence: "high",
+      notes:
+        "Full cage required for competition: main hoop, forward hoops (or halo/front-hoop alternative), rear braces, at least 2 driver-side + 1 passenger-side door bars, 6-8 floor mounting points, seatback support, shoulder harness bar. May be welded, bolt-in, or a mix (§15.6.3) — bolt-in cages need reinforcing plates sandwiching the body with at least 3 SAE Grade 5+ bolts per plate (§15.6.16), so this isn't modeled as weld-required. Wall thickness has a -0.010\" manufacturing tolerance. §11.4.7 separately says open cars in the (non-competition) HPDE tier merely 'should' have a roll bar — a softer recommendation that doesn't apply to this Racing-class ruleset. Padding (§15.6.4): all cage surfaces that may contact the driver's head, knees, or elbows must be padded with high-density padding such as Ethafoam or Ensolite, or other material labeled 'high density padding' and manufactured for road racing use — NASA doesn't itself cite an SFI 45.1 or FIA 8857-2001 certification number for this padding, unlike several other bodies in this app.",
+    },
   },
   classOverrides: {
     formula: {
@@ -519,6 +560,21 @@ const rallySport: Ruleset = {
         "GRR §3.16: a comprehensive first aid kit must be carried in the passenger compartment, containing at minimum: antiseptic (ointment or liquid), gauze pads or rolls, adhesive tape, an arm sling, safety pins, scissors, two 'space' blankets, and a first aid manual. A tourniquet is currently optional but flagged in the GRR as something that 'may be required in the future.'",
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.16" },
       confidence: "high",
+    },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionRequiresLogbook: true,
+      rolloverProtectionAcceptedLogbookBodies: ["nasa-rallysport", "fia"],
+      rolloverProtectionRequiresPadding: true,
+      rolloverProtectionPaddingCertRequired: true,
+      condition:
+        "For a logbook issued after Jan 1, 2025: either an FIA-homologated cage (current homologation, exactly to spec, unmodified), or fabricated to 2020 FIA Appendix J Article 253 Chapter 8 using NRS's own listed acceptable materials/minimum sizes — bolted or dismountable joints aren't permitted anywhere in the structure or to the body shell for new construction. Cars logbooked before Dec 31, 2024 may instead meet older FIA-homologation, an earlier-year Article 253 spec, or NRS's March 2014 GRR Appendix B grandfathering rules.",
+      citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.7-3.7.5" },
+      confidence: "high",
+      notes:
+        "GRR §3.7: 'Roll cages and logbooks are mandatory for all vehicles.' Structure: main roll bar, front roll bar, lateral roll bars (or lateral half roll bars), base-structure traverse bars, and at least one continuous door bar per side — a full multi-point cage, not a simple bar. Minimum tube sizes are keyed to the tube's ROLE in the cage rather than car weight (doesn't fit this app's weight-tiered tubing-spec field, so given here instead): primary members (main/front/lateral roll bars, traverse bars, the required door bar) need 1.75\"x0.095\" or 2.00\"x0.083\" CDS/DOM steel, 1.75\"x0.083\" CHS steel, or 1.75\"x0.083\" Docol R8; secondary members (backstays, diagonals, extra door bars, A-pillar/windscreen reinforcement, roof reinforcement) need 1.5\"x0.095\" or 1.6\"x0.083\" CDS/DOM/CHS, or 1.5\"x0.083\" Docol R8. Heat-treated/high-carbon steels aren't allowed. Docol R8 cages must keep the material markings on the main hoop visible/photographed for logbook issuance. Padding (§3.8.1, required): wherever an occupant's helmet could contact the cage, padding to FIA 8857-2001 Type A or SFI 45.1 must be installed. §3.8.2 (recommended only): padding is also advised wherever an occupant's body could contact the cage, particularly around lower-leg contact areas — no certification required for that broader body-contact padding.",
     },
   },
 };

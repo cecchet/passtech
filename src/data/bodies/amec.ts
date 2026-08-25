@@ -148,6 +148,13 @@ const iceRacing: Ruleset = {
         "Deliberately NOT modeled with satisfiedByAlternative to arm_restraint, unlike the clean bidirectional either/or at bodies like PHA (src/data/bodies/pha.ts). This is a genuine 3-way, class-and-condition-scoped choice that breaks the simple bidirectional pattern in three ways: (1) there's a third alternative — a Lexan window — that isn't a category this app tracks at all, so a driver satisfying the rule with Lexan wouldn't have a qualifying entry under window_net OR arm_restraint; (2) the arm-restraint leg is narrower than the window-net leg — arm restraint only qualifies on 'open top cars,' while a Lexan window or window net qualifies on any SMC/AWD car with its door glass removed — so the two categories aren't symmetrically interchangeable; (3) the whole choice is itself conditional on the driver having removed their door glass in the first place, unlike PHA's unconditional closed-cockpit framing. arm_restraint's existing entry in this file (marked not_addressed, since this SMC-only vehicle-equipment choice isn't a universal driver PPE mandate) and this window_net entry each document the real mechanic in full independently rather than cross-referencing.",
     },
 
+    rollover_protection: {
+      requirement: "conditional",
+      condition:
+        "Street Legal (SL/SLS/SL4/SLS4) only needs a roll-bar/roll-cage if the car is a convertible without an OEM-or-stronger hard top or factory rollover protection (§3.1.3.2) — otherwise not addressed for this class. Every other class requires a roll structure outright: Street Legal Modified needs a roll bar with two rear-facing braces and at least one front-facing driver-side door bar (§3.2.2.3, not a full cage); Stock Sportsman, Modified Class, and Super Modified Closed each require the same minimum 6-point cage spec with class-specific side-bar counts (§3.3.3.7, §3.4.2.5, §3.5.2.9); AWD follows SMC rules (§3.6); Super Modified Open requires a full roll cage on any scratch-built car whose body has been cut/altered to reduce structural integrity, while professionally built sprint-car/dirt-modified-style chassis come with their own built-in roll bar/nerf bar structure by design (§3.7.1.13-§3.7.2.6).",
+      citation: { ...sourceDoc, section: "3.1.3.2, 3.2.2.3, 3.3.3.7, 3.4.2.5, 3.5.2.9, 3.7.2.6" },
+      confidence: "high",
+    },
     fire_extinguisher: {
       requirement: "conditional",
       condition:
@@ -261,6 +268,15 @@ const iceRacing: Ruleset = {
         confidence: "high",
         notes: "AMEC's only window-net clause (§3.5.2.7) is scoped to the Super Modified Closed class (and AWD, which follows SMC rules) — it doesn't reach Street Legal.",
       },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionByBodyStyle: { convertible: "required", closed_roof: "not_addressed", open_no_windshield: "not_addressed", open_wheel: "not_addressed" },
+        rolloverProtectionFactoryExempt: true,
+        condition:
+          "§3.1.3.2: 'If a convertible does not have an OEM or stronger hard top installed or factory rollover protection, a roll-bar or roll-cage must be installed.' A convertible with its factory hard top on, or with factory rollover protection (e.g., pop-up bars), is exempt outright. Hard-roof Street Legal cars aren't addressed at all — no roll-bar/cage rule reaches them.",
+        citation: { ...sourceDoc, section: "3.1.3.2" },
+        confidence: "high",
+      },
     },
     "street-legal-modified": {
       belts_harness: {
@@ -305,6 +321,14 @@ const iceRacing: Ruleset = {
         confidence: "high",
         notes: "AMEC's only window-net clause (§3.5.2.7) is scoped to the Super Modified Closed class (and AWD, which follows SMC rules) — it doesn't reach Street Legal Modified.",
       },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: false,
+        citation: { ...sourceDoc, section: "3.2.2.3" },
+        confidence: "high",
+        notes:
+          "§3.2.2.3: 'Street Legal Modified cars must have a roll bar with two rear-facing braces and at least one front-facing door bar on the driver's side.' A single roll bar with bracing, not the full 6-point cage spec required at the Stock Sportsman/Modified/Super Modified tiers — no tubing material or O.D./wall-thickness spec is given at this class level.",
+      },
     },
     "stock-sportsman": {
       belts_harness: {
@@ -347,6 +371,17 @@ const iceRacing: Ruleset = {
         citation: { ...sourceDoc, section: "3.5.2.7" },
         confidence: "high",
         notes: "AMEC's only window-net clause (§3.5.2.7) is scoped to the Super Modified Closed class (and AWD, which follows SMC rules) — it doesn't reach Stock Sportsman.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresWelded: true,
+        rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }] }],
+        rolloverProtectionRequiresPadding: true,
+        citation: { ...sourceDoc, section: "3.3.3.7.1-3.3.3.7.7" },
+        confidence: "high",
+        notes:
+          "Regular steel tubing (.095 hot roll), minimum 1½\" O.D.; corner welds need steel gusset plates; cage must be full width and not lower than the driver's helmet. Minimum required is a 6-point cage: front and rear hoop connected top and side with a diagonal on top from right-front to left-rear (or left-front to right-rear if head clearance requires), rear hoop braced back to the chassis with two angled rear bars, plus at least one door bar. All roll cages must be padded in the head, arm, and leg areas. Prefab/bolt-in kits allowed at the Chief Tech Inspector's discretion.",
       },
     },
     modified: {
@@ -392,6 +427,17 @@ const iceRacing: Ruleset = {
         confidence: "high",
         notes: "AMEC's only window-net clause (§3.5.2.7) is scoped to the Super Modified Closed class (and AWD, which follows SMC rules) — it doesn't reach the Modified Class.",
       },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresWelded: true,
+        rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }] }],
+        rolloverProtectionRequiresPadding: true,
+        citation: { ...sourceDoc, section: "3.4.2.5.1-3.4.2.5.6" },
+        confidence: "high",
+        notes:
+          "Same base spec as Stock Sportsman: regular steel tubing (.095 hot roll), minimum 1½\" O.D.; steel gusset corner plates; full width, not lower than the driver's helmet; minimum 6-point cage (front/rear hoop connected top and side with a diagonal, rear hoop braced with two angled rear bars); padded in head/arm/leg areas; prefab/bolt-in kits at Chief Tech Inspector's discretion. Modified Class additionally requires a minimum of two side bars on the driver's side and one bar on the passenger side (§3.4.2.5.4) — one more driver-side bar than Stock Sportsman's single door-bar minimum.",
+      },
     },
     ...smcClassOverrides("super-modified-closed"),
     "super-modified-open": {
@@ -436,6 +482,18 @@ const iceRacing: Ruleset = {
         citation: { ...sourceDoc, section: "3.5.2.7" },
         confidence: "high",
         notes: "AMEC's only window-net clause (§3.5.2.7) is scoped to the Super Modified Closed class (and AWD, which follows SMC rules) — Super Modified Open, despite the similar name, is not included.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresWelded: true,
+        rolloverProtectionFactoryExempt: true,
+        rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.09 }], materialNote: "Round steel tubing, welded construction" }],
+        rolloverProtectionRequiresPadding: true,
+        citation: { ...sourceDoc, section: "3.7.1.13-3.7.1.18, 3.7.2.6" },
+        confidence: "high",
+        notes:
+          "SMO cars with a professionally built chassis (e.g. sprint car or dirt-modified style, with a visible manufacturer's tag) come with their own built-in roll bar/nerf-bar structure as part of the chassis, using 1\" 0.090 chrome-moly tubing — treated as factory-exempt since the structure is inherent to the eligible chassis, not separately installed. A scratch-built SMO car whose body has been cut or altered so as to reduce structural integrity must instead have a full welded roll cage: front and rear roll bar with side rails tied together top-left/top-right plus side interior bars, braced into the frame front and rear, minimum 1¼\" OD round steel tubing with 0.090\" minimum wall thickness. Side bars (top bar ≥20\" from the ground, lower bar at/near frame level) are required on all SMO cars; ¾\" minimum side-protection bars are additionally required on open-wheel cars. Roll bars/cages must be padded in the head, arm, and leg areas (§3.7.2.6).",
       },
     },
     ...smcClassOverrides("awd"),
@@ -497,6 +555,17 @@ function smcClassOverrides(key: "super-modified-closed" | "awd"): Record<string,
         confidence: "high",
         notes:
           "Deliberately NOT modeled with satisfiedByAlternative to arm_restraint (see src/data/bodies/pha.ts for that pattern). This is a genuine 3-way choice that breaks the simple bidirectional pattern: a Lexan window isn't a category this app tracks, and the arm-restraint leg is narrower (open-top cars only) than the window-net leg (any car with its door glass removed) — the two aren't symmetrically interchangeable.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresWelded: true,
+        rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }] }],
+        rolloverProtectionRequiresPadding: true,
+        citation: { ...sourceDoc, section: "3.5.2.9.1-3.5.2.9.7" },
+        confidence: "high",
+        notes:
+          "Same base spec as Stock Sportsman/Modified Class: regular steel tubing (.095 hot roll), minimum 1½\" O.D.; steel gusset corner plates; full width, not lower than the driver's helmet; minimum 6-point cage (front/rear hoop connected top and side with a diagonal, rear hoop braced with two angled rear bars); padded in head/arm/leg areas; prefab/bolt-in kits at Chief Tech Inspector's discretion. Like Modified Class, requires a minimum of two side bars on the driver's side and one bar on the passenger side (§3.5.2.9.4). On closed-wheel cars, installed side bars must stay within the bodywork — top bar no lower than 20\" from the ground, lower bar at or near frame level, middle bar above or below hip level (§3.5.2.9.5). AWD Class cars must comply with all SMC Class rules (§3.6), so this cage spec applies to AWD unchanged.",
       },
     },
   };

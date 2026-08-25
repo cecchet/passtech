@@ -245,6 +245,20 @@ const endurance: Ruleset = {
       notes:
         "No requirement for a car- or team-carried first aid kit was found in the rules page. An on-site ambulance crew is provided by Lemons as part of entry (per the Prices section), but that's an event service, not a car/team equipment requirement.",
     },
+    rollover_protection: {
+      requirement: "required",
+      rolloverProtectionRequiresFullCage: true,
+      rolloverProtectionRequiresWelded: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 3000, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }] },
+        { minSizes: [{ outerDiameterIn: 1.75, wallThicknessIn: 0.12 }], materialNote: "For over 3000 lbs as raced." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      citation: { ...sourceDoc, section: "3.5 Roll Cage Regulations" },
+      confidence: "high",
+      notes:
+        "§3.5.1: 'Professional-quality full roll cage required... Cages originally created as bolt-ins are not allowed.' Minimum required: full front and rear hoop braced to each other along the roofline (halo or side/downbar type also acceptable); dual door bars per side (X-design OK); at least two bendless main-hoop backstays near 45° from horizontal; at least one main-hoop diagonal; spreader plates and gussets; complete 360° welds at every joint including car-to-cage joints, each major member a single continuous tube. DOM mild steel strongly recommended over ERW. Spreader plates: mild steel, ≥24 sq in, ≥0.125\" thick. Padding required with high-density rollbar padding wherever a driver may contact a tube. All drivers' helmeted heads must sit at least 2\" inside the cage's enclosed area on all sides.",
+    },
   },
 };
 

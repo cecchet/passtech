@@ -18,10 +18,13 @@ const timeTrialHillclimb: Ruleset = {
   // PHA's own class table (§9.1, §9.37) splits every car into three top-level buckets: GCR Classes
   // (§9.37 table), Supplemental Classes (§9.38 — Vintage/Historic, Rally, Special, INEX, FVCC, Solo
   // V, SMR, Electric, Club Ford), and Solo & Time Trial Derived Classes (§9.39 — Sport/Super
-  // Sport/Sport Max/Sport Unlimited/Modified/Super Modified/Outlaw). Only fuel_cell (§9.11) and
-  // kill_switch (§9.24) genuinely diverge by class — both are framed by PHA as "GCR class car vs.
+  // Sport/Sport Max/Sport Unlimited/Modified/Super Modified/Outlaw). fuel_cell (§9.11) , kill_switch (§9.24), and rollover_protection (§10.1)
+  // genuinely diverge by class — fuel_cell and kill_switch are framed by PHA as "GCR class car vs.
   // everything else," with §9.11 additionally carving a handful of specific GCR classes back OUT of
-  // its own fuel-cell mandate. Seat (§8.3.L) and belts_harness (§11.1) apply identically to every
+  // its own fuel-cell mandate; rollover_protection instead splits on its own named list of
+  // cage-required classes (see that category's own overrides below), which cuts across these class
+  // buckets differently than fuel_cell/kill_switch do — several buckets mix cage-required and
+  // roll-bar-only classes together. Seat (§8.3.L) and belts_harness (§11.1) apply identically to every
   // class with no carve-out in PHA's own text (the Safety Level 2/3 tiers referenced in the shared
   // SCCA-TT lineage — src/data/bodies/scca-time-trial-base.ts, appalachian.ts — are a different
   // club's rules, not PHA's; PHA's SUPPS restate its own equipment rules independent of those
@@ -273,6 +276,22 @@ const timeTrialHillclimb: Ruleset = {
       notes:
         "Full document search found no requirement for competitors to carry a first aid kit in their car. PHA does mandate event-level medical provisions — a BLS unit with at least two certified caregivers including one EMT, a course response vehicle, and a wrecker (§5.16.2) — but nothing about driver-carried first aid supplies.",
     },
+    rollover_protection: {
+      requirement: "conditional",
+      rolloverProtectionRequiresFullCage: false,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 1500, minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.09 }] },
+        { underWeightLbs: 2700, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.625, wallThicknessIn: 0.08 }] },
+        { minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.12 }, { outerDiameterIn: 1.75, wallThicknessIn: 0.095 }, { outerDiameterIn: 2.0, wallThicknessIn: 0.08 }], materialNote: "For 2700 lbs and up." },
+      ],
+      rolloverProtectionRequiresPadding: true,
+      condition:
+        "§10.1: 'Roll cages are STRONGLY RECOMMENDED in all automobiles; however specific roll structure requirements depend on the car class.' A minimum roll BAR (main hoop + two braces, per this base rule) is required for every PHA class as the floor. A full roll CAGE (main hoop + at least 4 additional mounting points including aft braces, plus a front halo/hoop with diagonals, built to current GCR spec for the specific class) is required outright for GT, Improved Touring, Super Touring, Touring 1 (T1), Production, American Sedan, Specials, Super Production, all Formula classes, all Sports Racer classes, Rally, Outlaw, and Modified Electric. For Sport Max, Sport Unlimited, Modified, Super Modified, and SMR, a cage is required only if the car has an engine block from a different manufacturer AND that swap changes the cylinder count or adds forced induction — otherwise the roll-bar floor applies. All other classes (including Sport, Super Sport, T2-T4/ET, B-Spec, C-Spec, Spec Miata, and PHA's own INEX/FVCC/Solo V/Club Ford classes) need only the roll-bar floor. Vintage/Historic-class cars may run roll-bar-only even in an otherwise cage-required class, if no cage was used when the car was originally raced (not for kit cars, replicas, or significantly modified cars). Breakout times (§10.1.1) can also force an upgrade to a full cage for a driver/car combination that beats a course-specific breakout time at a Hillclimb event (Time Trial/track events exempted) — see this app's class picker notes/citation for the specific class you're evaluating; exact class-by-class treatment is refined in classOverrides.",
+      citation: { ...sourceDoc, section: "10. Roll Bar / Cage" },
+      confidence: "high",
+      notes:
+        "Roll bar spec (§10.2-10.6, §10.10): top must clear the driver's helmet by ≥2\" and sit no more than 6\" behind the driver; the two vertical hoop members must be ≥15\" apart (inside dimension), full cockpit width strongly recommended; seamless/DOM mild steel (SAE 1010/1020/1025) or alloy steel (SAE 4130) or Docol R8 — ERW barred; a 3/16\" inspection hole is required; two fore/aft braces of equal-or-greater tubing dimension plus diagonal lateral bracing (a 'V'/double-diagonal design is specifically allowed for the Mazda Miata, §10.5.C); mounting plates ≥3/16\" thick if bolted (with an equal-size backup plate and ≥3 bolts) or ≥0.080\" thick if welded; padding ≥1/2\" non-resilient material (SFI 45.1/FIA 8857-2001 strongly recommended) wherever a helmet/body could contact the structure. Where a full cage is required instead, PHA defers entirely to 'current GCR requirements for the specific class' (external document, not independently modeled here) rather than publishing its own cage-specific tubing table.",
+    },
   },
   classOverrides: {
     "solo-tt-derived": {
@@ -288,6 +307,15 @@ const timeTrialHillclimb: Ruleset = {
         confidence: "high",
         notes: "Not a GCR class, so PHA's §9.24 kill-switch mandate ('any GCR class car') doesn't apply — STRONGLY RECOMMENDED, per the same section, for all non-GCR cars.",
       },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionRequiresPadding: true,
+        condition:
+          "This bucket mixes three different rollover treatments: Outlaw is on §10.1's cage-required list outright (full GCR-spec cage). Sport Max, Sport Unlimited, Modified, and Super Modified need a cage only if the engine block is sourced from a different manufacturer AND that swap changes the cylinder count or adds forced induction — otherwise the roll-bar floor (this ruleset's base rollover_protection rule) applies. Sport and Super Sport aren't named in either list, so they fall under §10.1.4's roll-bar-only floor. Any of these classes can be bumped to a full cage by PHA's breakout-time rule (§10.1.1) if the driver/car combination beats the course breakout time at a Hillclimb event. Vintage/Historic-prepared cars may stay roll-bar-only even in Outlaw if no cage was used when originally raced.",
+        citation: { ...sourceDoc, section: "10.1" },
+        confidence: "medium",
+        notes: "Confidence is medium because this app's class picker doesn't distinguish Sport/Super Sport/Sport Max/Sport Unlimited/Modified/Super Modified/Outlaw from each other — check your specific class against the condition above.",
+      },
     },
     "special-supplemental": {
       fuel_cell: {
@@ -301,6 +329,15 @@ const timeTrialHillclimb: Ruleset = {
         citation: { ...sourceDoc, section: "9.24" },
         confidence: "high",
         notes: "Not a GCR class, so PHA's §9.24 kill-switch mandate ('any GCR class car') doesn't apply — STRONGLY RECOMMENDED, per the same section, for all non-GCR cars.",
+      },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionRequiresPadding: true,
+        condition:
+          "This bucket also mixes several treatments: Rally and Specials (Special S1-S3) are on §10.1's cage-required list outright. SMR is grouped with Modified/Super Modified — a cage is required only on a different-manufacturer engine swap that changes cylinder count or adds forced induction, otherwise the roll-bar floor applies. 'Electric' here may or may not correspond to §10.1's specifically-named 'Modified Electric' cage-required class — not confirmed against PHA's own class definitions, so treat with caution. INEX, FVCC, Solo V, and Club Ford aren't named in §10.1 at all, so they fall under the roll-bar-only floor (§10.1.4). Vintage/Historic-prepared cars may stay roll-bar-only even in an otherwise cage-required class (e.g. Rally, Specials) if no cage was used when the car was originally raced — not for kit cars, replicas, or significantly modified cars.",
+        citation: { ...sourceDoc, section: "10.1" },
+        confidence: "medium",
+        notes: "Confidence is medium because this app's class picker groups nine PHA classes together with genuinely different rollover treatments — check your specific class against the condition above, and confirm whether your 'Electric' class maps to §10.1's 'Modified Electric.'",
       },
     },
     "gcr-touring-bspec-cspec": {
@@ -316,6 +353,15 @@ const timeTrialHillclimb: Ruleset = {
         confidence: "medium",
         notes:
           "PHA §9.24 requires a kill switch on 'any GCR class car unless otherwise specified as exempt in the current GCR.' The underlying SCCA GCR's own kill-switch rule (§9.3.35, modeled in this app's SCCA Road Racing ruleset) exempts Touring/B-Spec/C-Spec — so these classes fall under PHA's 'STRONGLY RECOMMENDED, but not mandatory' language for non-required cars rather than the hard mandate.",
+      },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionRequiresPadding: true,
+        condition:
+          "Only Touring 1 (T1) is on §10.1's cage-required list by name — Touring 2-4 (T2-T4), Electric Touring (ET), B-Spec, and C-Spec aren't named anywhere in §10.1, so they fall under the roll-bar-only floor (§10.1.4). A driver in T1 needs a full GCR-spec cage; every other class in this bucket needs only the roll-bar floor (this ruleset's base rollover_protection rule) unless bumped up by the breakout-time rule (§10.1.1).",
+        citation: { ...sourceDoc, section: "10.1" },
+        confidence: "medium",
+        notes: "Confidence is medium because this app's class picker groups T1 together with T2-T4/ET/B-Spec/C-Spec, which have a genuinely different rollover requirement — confirm which specific Touring tier you're in.",
       },
     },
     "gcr-fuel-exempt-other": {
@@ -333,6 +379,16 @@ const timeTrialHillclimb: Ruleset = {
         confidence: "high",
         notes:
           "These classes are exempted from PHA's fuel-cell mandate (§9.11) but are NOT among the classes the underlying SCCA GCR exempts from the kill-switch mandate (§9.3.35, unlike Touring/B-Spec/C-Spec) — so the §9.24 'any GCR class car' requirement still applies in full here.",
+      },
+      rollover_protection: {
+        requirement: "conditional",
+        rolloverProtectionRequiresPadding: true,
+        condition:
+          "Improved Touring and American Sedan are both on §10.1's cage-required list by name — a full GCR-spec cage is required for those. Spec Miata isn't named in §10.1 at all, so it falls under the roll-bar-only floor (§10.1.4); note §10.5.C separately allows a 'V'/double-diagonal brace design specifically for the Mazda Miata's roll bar. All three remain subject to the breakout-time upgrade rule (§10.1.1) at Hillclimb events.",
+        citation: { ...sourceDoc, section: "10.1" },
+        confidence: "medium",
+        notes:
+          "Confidence is medium because this app's class picker groups Spec Miata (roll-bar floor) together with Improved Touring and American Sedan (full cage required) — confirm which of the three you're in. This class's label notes 'American Sedan (restricted prep)' specifically (matching its fuel-cell exemption scope, §9.11), but §10.1's roll cage list just says 'American Sedan' with no restricted-prep qualifier — treated here as reaching the same restricted-prep American Sedan cars this class covers.",
       },
     },
     "gcr-other": {
@@ -353,6 +409,17 @@ const timeTrialHillclimb: Ruleset = {
         citation: { ...sourceDoc, section: "9.24" },
         confidence: "high",
         notes: "GCR class car with no stated exemption — the §9.24 'any GCR class car' requirement applies in full.",
+      },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresPadding: true,
+        condition:
+          "Grand Touring, Production, Super Touring, Super Production, all Sports Racer classes, and all Formula classes are each individually named on §10.1's cage-required list — a full GCR-spec cage is required outright for every class in this bucket. §10.1 also gives a catch-all for any GCR class not individually named: 'the cage should be prepared to the GCR equivalent or greater' (e.g. a tube-frame Special compared to a GT-class cage, or a street car landing in Special compared to a Production/IT cage), which covers this bucket's 'Sedan, etc.' catch-all label too.",
+        citation: { ...sourceDoc, section: "10.1" },
+        confidence: "high",
+        notes:
+          "Unlike the other four PHA classOverrides, every class in this bucket lands on the same answer — full GCR-spec cage, no roll-bar-only exception except for a genuine Vintage/Historic-prepared car that never had a cage when originally raced (§10.1.3). Still subject to the general roll-bar spec (this ruleset's base rollover_protection rule) as the underlying construction floor whenever a cage isn't itself already dictating a stricter GCR spec.",
       },
     },
   },

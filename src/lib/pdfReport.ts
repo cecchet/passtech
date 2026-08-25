@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
-import { NOT_LISTED, logbookBodyLabel, standardLabel, standardsFor } from "@/data/standards";
+import { NOT_LISTED, logbookBodyLabel, paddingStandardLabel, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResult, CategoryResults, EquipmentEntry, bodyStyleLabel, describeExtinguisherOptions, effectiveCategories, isPendingConditional, isViolation } from "@/lib/matcher";
 import { CATEGORY_ICON_SPEC } from "@/components/icons/CategoryIcons";
 import { BUILD_DATE } from "@/lib/version";
@@ -494,6 +494,25 @@ function groupTitle(ruleset: Ruleset, group: CategoryGroup): string {
   return group === "driver" && ruleset.supportsCodriver ? "Driver & Codriver Safety Gear" : GROUP_LABELS[group];
 }
 
+/** Rollover protection only: one-line summary of the driver's own recorded padding answers (contact-area and forward-hoop are asked and tracked separately), shown regardless of pass/fail so it's confirmed on the report even when padding wasn't the deciding factor in the result. */
+function describeCagePadding(entry: EquipmentEntry): string {
+  const parts: string[] = [];
+  if (entry.cagePaddingPresent !== undefined) {
+    parts.push(`contact-area padding ${entry.cagePaddingPresent ? "installed" : "not installed"}`);
+  }
+  if (entry.cageForwardHoopPaddingPresent !== undefined) {
+    parts.push(`forward-hoop padding ${entry.cageForwardHoopPaddingPresent ? "installed" : "not installed"}`);
+  }
+  let certNote = "";
+  if (entry.cagePaddingPresent || entry.cageForwardHoopPaddingPresent) {
+    if (!entry.cagePaddingStandardId) certNote = ", certification not specified";
+    else if (entry.cagePaddingStandardId === "none") certNote = ", no certification (plain/uncertified material)";
+    else if (entry.cagePaddingStandardId === NOT_LISTED) certNote = `, ${entry.cagePaddingStandardCustom || "unlisted certification"}`;
+    else certNote = `, ${paddingStandardLabel(entry.cagePaddingStandardId)}`;
+  }
+  return `Padding: ${parts.join("; ")}${certNote}.`;
+}
+
 // ---------------------------------------------------------------------------
 // Option 1 — "Check the rules" reference report
 // ---------------------------------------------------------------------------
@@ -556,6 +575,18 @@ function writeReferenceCategory(w: PdfReportWriter, category: EquipmentCategory,
     if (rule.rolloverProtectionLogbookCutoffYear) {
       w.bullet(
         `Cages logbooked/built ${rule.rolloverProtectionLogbookCutoffYear} or later (or FIA-homologated) are accepted as-is; older cages typically need a retrofit/grandfathering step.`,
+        { size: 9 }
+      );
+    }
+    const paddingCertNote = rule.rolloverProtectionPaddingCertRequired
+      ? " Certified padding (e.g. SFI 45.1 or FIA 8857-2001) is required — plain material isn't accepted."
+      : "";
+    if (rule.rolloverProtectionRequiresPadding) {
+      w.bullet(`Padding required wherever an occupant's helmet or body could contact the cage/roll bar.${paddingCertNote}`, { size: 9 });
+    }
+    if (rule.rolloverProtectionRequiresForwardHoopPadding) {
+      w.bullet(
+        `Padding also required across all tubing forward of and including the main hoop in the roofline, regardless of whether it would actually be contacted.${rule.rolloverProtectionRequiresPadding ? "" : paddingCertNote}`,
         { size: 9 }
       );
     }
@@ -624,6 +655,9 @@ function writeCategoryResult(w: PdfReportWriter, result: CategoryResult, entry?:
     certBadges
   );
   w.text(result.reason, { size: 8.5, color: COLOR.muted, indent: 3 });
+  if (result.category === "rollover_protection" && entry && (entry.cagePaddingPresent !== undefined || entry.cageForwardHoopPaddingPresent !== undefined)) {
+    w.bullet(describeCagePadding(entry), { size: 8, indent: 3, color: COLOR.faint });
+  }
   result.certBreakdown?.forEach((c) => {
     w.bullet(`${c.label}: ${STATUS_LABEL[c.status]} — ${c.reason}`, { size: 8, indent: 6, color: COLOR.faint });
   });
