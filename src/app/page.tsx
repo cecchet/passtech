@@ -40,6 +40,7 @@ const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Endurance Racing",
   "HPDE / Track Day",
   "Drag Racing",
+  "Karting",
 ];
 
 const DISCIPLINE_GROUPS = DISCIPLINE_GROUP_ORDER.map((group) => ({
@@ -709,8 +710,8 @@ export default function Home() {
           SCCNH (Gravel Trials, Climb to the Clouds), NEHA, Pikes Peak, SCCA Time Trial (PHA, Appalachian HillClimb Series), 24 Hours of
           Lemons, ChampCar, American Endurance Racing, World Racing League, SCDA, PCA, Hooked on Driving, NEQ,
           MassTuning, Northeast GT, AMEC Ice Racing, GRIDLIFE, BMW CCA Club Racing, BMW CCA
-          Driving Events (HPDE, Autocross, Ice Autocross), and NHRA, WDRA, IHRA, and PDRA (Drag
-          Racing).
+          Driving Events (HPDE, Autocross, Ice Autocross), NHRA, WDRA, IHRA, and PDRA (Drag
+          Racing), and NKA, SKUSA, USPKS, AKRA, and WKA (Karting).
         </p>
         <p className="mt-2">
           Know a ruleset we should add, or spot a missing certification or an error in one we already cover? Email{" "}
@@ -1033,26 +1034,38 @@ function CodriverGearSection({
 
 function SourceLine({ ruleset }: { ruleset: Ruleset }) {
   return (
-    <p id="tutorial-source-line" className="mb-6 mt-4 rounded-lg border border-sky-900 bg-sky-950/40 p-3 text-sm text-sky-200">
-      Source:{" "}
-      {ruleset.sourceDocuments.map((d, i) => (
-        <span key={i}>
-          {i > 0 && "; "}
-          {d.url ? (
-            <a href={d.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">
-              {d.title}
-              {d.version ? ` (${d.version})` : ""}
-            </a>
-          ) : (
-            <>
-              {d.title}
-              {d.version ? ` (${d.version})` : ""}
-            </>
-          )}
-        </span>
-      ))}{" "}
-      — last reviewed {ruleset.lastReviewed}
-    </p>
+    <>
+      <p id="tutorial-source-line" className="mb-6 mt-4 rounded-lg border border-sky-900 bg-sky-950/40 p-3 text-sm text-sky-200">
+        Source:{" "}
+        {ruleset.sourceDocuments.map((d, i) => (
+          <span key={i}>
+            {i > 0 && "; "}
+            {d.url ? (
+              <a href={d.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">
+                {d.title}
+                {d.version ? ` (${d.version})` : ""}
+              </a>
+            ) : (
+              <>
+                {d.title}
+                {d.version ? ` (${d.version})` : ""}
+              </>
+            )}
+          </span>
+        ))}{" "}
+        — last reviewed {ruleset.lastReviewed}
+      </p>
+      {ruleset.knownGaps && ruleset.knownGaps.length > 0 && (
+        <div className="-mt-4 mb-6 rounded-lg border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-200">
+          <p className="font-semibold">⚠️ Not tracked by this app:</p>
+          <ul className="mt-1 list-disc space-y-1 pl-5">
+            {ruleset.knownGaps.map((gap, i) => (
+              <li key={i}>{gap}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 

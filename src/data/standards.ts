@@ -94,9 +94,17 @@ export const STANDARDS: StandardDef[] = [
   { id: "sfi-41.1-2020", label: "SFI 41.1/2020", family: "sfi", categories: ["helmet"] },
   { id: "sfi-41.1-2015", label: "SFI 41.1/2015", family: "sfi", categories: ["helmet"] },
   { id: "sfi-41.1-2010", label: "SFI 41.1/2010", family: "sfi", categories: ["helmet"] },
-  { id: "sfi-24.1-2020", label: "SFI 24.1/2020", family: "sfi", categories: ["helmet"] },
-  { id: "sfi-24.1-2015", label: "SFI 24.1/2015", family: "sfi", categories: ["helmet"] },
-  { id: "sfi-24.1-2010", label: "SFI 24.1/2010", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-24.1-2025", label: "SFI 24.1/2025 (youth)", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-24.1-2021", label: "SFI 24.1/2021 (youth)", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-24.1-2020", label: "SFI 24.1/2020 (youth)", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-24.1-2015", label: "SFI 24.1/2015 (youth)", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-24.1-2010", label: "SFI 24.1/2010 (youth)", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-31.1-2025", label: "SFI 31.1/2025", family: "sfi", categories: ["helmet"] },
+  { id: "sfi-41.1-2025", label: "SFI 41.1/2025", family: "sfi", categories: ["helmet"] },
+
+  // Helmet - youth karting (Snell's dedicated child-motorsport ratings)
+  { id: "snell-cmr2016", label: "Snell CMR2016 (youth kart)", family: "snell", categories: ["helmet"] },
+  { id: "snell-cms2016", label: "Snell CMS2016 (youth kart)", family: "snell", categories: ["helmet"] },
   { id: "sfi-31.1a", label: "SFI 31.1A", family: "sfi", categories: ["helmet"] },
   { id: "sfi-31.2", label: "SFI 31.2", family: "sfi", categories: ["helmet"] },
   { id: "sfi-31.2a", label: "SFI 31.2A", family: "sfi", categories: ["helmet"] },
@@ -140,6 +148,11 @@ export const STANDARDS: StandardDef[] = [
   { id: "fia-8856-2000", label: "FIA 8856-2000", family: "fia", categories: ["firesuit", ...APPAREL] },
   { id: "fia-8856-2018", label: "FIA 8856-2018", family: "fia", categories: ["firesuit", ...APPAREL] },
   { id: "fia-1986", label: "FIA 1986 Standard", family: "fia", categories: ["firesuit"] },
+  // CIK-FIA's karting suit rating — primarily an abrasion/tear-resistance construction spec, not a
+  // fire-resistance spec the way FIA 8856/SFI 3.2A are. Not listed as an accepted standard by any
+  // car-racing body in this app's registry, so a kart racer's CIK Level 2 suit correctly reads as
+  // "not accepted" when checked against a car-racing ruleset, and vice versa.
+  { id: "cik-level-2", label: "CIK-FIA Level 2 (karting suit)", family: "cik", categories: ["firesuit"] },
   { id: "sfi-3.2a-1", label: "SFI 3.2A/1 (single layer)", family: "sfi", categories: ["firesuit"] },
   { id: "sfi-3.2a-3", label: "SFI 3.2A/3", family: "sfi", categories: ["firesuit"] },
   { id: "sfi-3.2a-5", label: "SFI 3.2A/5", family: "sfi", categories: ["firesuit"] },

@@ -25,6 +25,11 @@ import { nhraRulesets } from "./bodies/nhra";
 import { wdraRulesets } from "./bodies/wdra";
 import { ihraRulesets } from "./bodies/ihra";
 import { pdraRulesets } from "./bodies/pdra";
+import { nkaRulesets } from "./bodies/nka";
+import { skusaRulesets } from "./bodies/skusa";
+import { uspksRulesets } from "./bodies/uspks";
+import { akraRulesets } from "./bodies/akra";
+import { wkaRulesets } from "./bodies/wka";
 
 export const ALL_RULESETS: Ruleset[] = [
   ...sccaRulesets,
@@ -53,6 +58,11 @@ export const ALL_RULESETS: Ruleset[] = [
   ...wdraRulesets,
   ...ihraRulesets,
   ...pdraRulesets,
+  ...nkaRulesets,
+  ...skusaRulesets,
+  ...uspksRulesets,
+  ...akraRulesets,
+  ...wkaRulesets,
 ];
 
 export function getRuleset(id: string): Ruleset | undefined {

@@ -260,7 +260,8 @@ export type DisciplineGroup =
   | "Ice Racing"
   | "Endurance Racing"
   | "HPDE / Track Day"
-  | "Drag Racing";
+  | "Drag Racing"
+  | "Karting";
 
 /** One selectable car/competitor class within a ruleset whose rules differ enough from the ruleset's general picture to warrant refining by class (e.g. AMEC's Street Legal vs. Super Modified Closed). */
 export interface RulesetClass {
@@ -285,11 +286,21 @@ export interface Ruleset {
   classes?: RulesetClass[];
   /** Per-class rule overrides, keyed by the matching `classes[].id`. For a selected class, any category present here replaces the base `categories` entry for both evaluation and the reference view; categories not listed fall back to the base rule. */
   classOverrides?: Partial<Record<string, Partial<Record<EquipmentCategory, CategoryRule>>>>;
+  /**
+   * Real requirements this body's rules address that this app doesn't track as their own category
+   * at all (distinct from a tracked category's own `requirement: "not_addressed"` — this is for
+   * gear the app has no category for, so there's nowhere else to surface the gap). Shown as a
+   * prominent warning banner near the top of every view for this ruleset, regardless of which
+   * class is selected. Example: karting bodies' chest/rib protector rules (SFI 20.1, age-gated) —
+   * this app has no chest-protector category, so a racer relying only on this app could miss a
+   * real requirement without this banner.
+   */
+  knownGaps?: string[];
 }
 
 export interface StandardDef {
   id: string;
   label: string;
-  family: "snell" | "sfi" | "fia" | "dot" | "ece" | "astm" | "bs";
+  family: "snell" | "sfi" | "fia" | "dot" | "ece" | "astm" | "bs" | "cik";
   categories: EquipmentCategory[];
 }
