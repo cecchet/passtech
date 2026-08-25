@@ -23,6 +23,7 @@ export const CATEGORY_ICON_SPEC: Record<EquipmentCategory, IconSpec> = {
   helmet: { src: "/frog-helmet.jpg", objectPosition: "62% 42%" },
   balaclava: { src: "/frog-balaclava.jpg", objectPosition: "50% 45%" },
   hnr: { src: "/frog-hans.png", objectPosition: "50% 45%" },
+  neck_collar: { src: "/neck-collar.jpg", objectPosition: "50% 45%" },
   firesuit: { src: "/frog-firesuit.png", objectPosition: "50% 45%" },
   gloves: { src: "/frog-gloves.png", objectPosition: "50% 38%" },
   shoes: { src: "/frog-shoes.jpg", objectPosition: "50% 55%" },
@@ -41,6 +42,7 @@ export const CATEGORY_ICON_SPEC: Record<EquipmentCategory, IconSpec> = {
   tow_rope: { src: "/tow-rope.jpg", objectPosition: "50% 45%" },
   emergency_triangle: { src: "/triangles.jpg", objectPosition: "50% 45%" },
   first_aid_kit: { src: "/first-aid.jpg", objectPosition: "50% 45%" },
+  parachute: { src: "/parachute.jpg", objectPosition: "50% 45%" },
   rollover_protection: { src: "/rollcage-diagram.png", objectPosition: "50% 50%", fit: "contain" },
 };
 

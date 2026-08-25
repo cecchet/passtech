@@ -2,6 +2,7 @@ export type EquipmentCategory =
   | "helmet"
   | "balaclava"
   | "hnr"
+  | "neck_collar"
   | "firesuit"
   | "gloves"
   | "shoes"
@@ -20,6 +21,7 @@ export type EquipmentCategory =
   | "tow_rope"
   | "emergency_triangle"
   | "first_aid_kit"
+  | "parachute"
   | "rollover_protection";
 
 /** Top-level section a category is displayed under. */
@@ -121,6 +123,18 @@ export interface CategoryRule {
    * trigger can't be expressed as specific standard IDs (e.g. it depends on suit layer count).
    */
   undergarmentTriggerStandards?: string[];
+  /**
+   * Balaclava only: this body requires a fire-resistant head sock/balaclava specifically when the
+   * driver satisfies a neck-collar requirement via a head-and-neck restraint (HANS-style) device
+   * instead of a plain collar — a rigid HANS bar doesn't cover the same neck gap a padded fabric
+   * collar does (e.g. NHRA: "If SFI Spec 3.3 neck collar is required and driver opts to use head
+   * and neck restraint system instead, then SFI Spec 3.3 head sock or skirted helmet mandatory").
+   * Only meaningful when hnr/neck_collar are modeled as a satisfiedByAlternative pair — a driver
+   * who instead satisfies the requirement via the plain neck collar isn't held to this. When set,
+   * this category's requirement escalates to "required" only once the driver has a currently-valid
+   * hnr entry; pair with `requirement: "conditional"` (not "required") as the unescalated default.
+   */
+  balaclavaRequiredIfHnrUsed?: boolean;
   /**
    * Fire extinguisher only: acceptable (quantity, minimum rating) combinations — satisfied if the
    * driver's entered units satisfy ANY one option (e.g. one 10-B:C, or two each 5-B:C). Omit for
@@ -245,7 +259,8 @@ export type DisciplineGroup =
   | "Hillclimb"
   | "Ice Racing"
   | "Endurance Racing"
-  | "HPDE / Track Day";
+  | "HPDE / Track Day"
+  | "Drag Racing";
 
 /** One selectable car/competitor class within a ruleset whose rules differ enough from the ruleset's general picture to warrant refining by class (e.g. AMEC's Street Legal vs. Super Modified Closed). */
 export interface RulesetClass {

@@ -31,6 +31,7 @@ export const PER_OCCUPANT_CATEGORIES: EquipmentCategory[] = [
   "helmet",
   "balaclava",
   "hnr",
+  "neck_collar",
   "firesuit",
   "undergarment",
   "gloves",
@@ -51,6 +52,7 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "helmet",
   "balaclava",
   "hnr",
+  "neck_collar",
   "firesuit",
   "undergarment",
   "gloves",
@@ -70,6 +72,7 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "emergency_triangle",
   "first_aid_kit",
   "window_breaker",
+  "parachute",
   // Rollover protection
   "rollover_protection",
 ];
@@ -99,7 +102,13 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: true,
     hint: "Often required for open-cockpit/open-wheel cars, or conditional if the driver has facial hair. Some bodies accept plain fire-resistant material; others require SFI or FIA certification.",
   },
-  hnr: { label: "Head & Neck Restraint (HANS/HNR)", group: "driver", hybrid: false, hint: "Standard printed on the device's conformance label." },
+  hnr: { label: "Head & Neck Restraint (HANS/HNR)", group: "driver", hybrid: false, hint: "Standard printed on the device's conformance label. A rigid HANS-style device, distinct from a padded neck collar — see the separate Neck Collar category." },
+  neck_collar: {
+    label: "Neck Collar",
+    group: "driver",
+    hybrid: false,
+    hint: "A padded fabric/foam collar worn around the neck — distinct from a HANS-style head & neck restraint device. Standard printed on the collar's certification label, where the body requires one.",
+  },
   firesuit: {
     label: "Firesuit / Driving Suit",
     group: "driver",
@@ -205,6 +214,13 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+  },
+  parachute: {
+    label: "Parachute",
+    group: "car",
+    hybrid: false,
+    presenceOnly: true,
+    hint: "Drag racing only — mandatory past a body's speed threshold (e.g. NHRA requires one at 150 mph and up). No certification standard involved.",
   },
 
   // Rollover protection

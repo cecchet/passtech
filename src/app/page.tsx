@@ -39,6 +39,7 @@ const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Ice Racing",
   "Endurance Racing",
   "HPDE / Track Day",
+  "Drag Racing",
 ];
 
 const DISCIPLINE_GROUPS = DISCIPLINE_GROUP_ORDER.map((group) => ({
@@ -707,8 +708,9 @@ export default function Home() {
           Road Racing), NASA (Road Racing, RallySport), American Rally Association, CARS (Canadian Rally Championship),
           SCCNH (Gravel Trials, Climb to the Clouds), NEHA, Pikes Peak, SCCA Time Trial (PHA, Appalachian HillClimb Series), 24 Hours of
           Lemons, ChampCar, American Endurance Racing, World Racing League, SCDA, PCA, Hooked on Driving, NEQ,
-          MassTuning, Northeast GT, AMEC Ice Racing, GRIDLIFE, BMW CCA Club Racing, and BMW CCA
-          Driving Events (HPDE, Autocross, Ice Autocross).
+          MassTuning, Northeast GT, AMEC Ice Racing, GRIDLIFE, BMW CCA Club Racing, BMW CCA
+          Driving Events (HPDE, Autocross, Ice Autocross), and NHRA, WDRA, IHRA, and PDRA (Drag
+          Racing).
         </p>
         <p className="mt-2">
           Know a ruleset we should add, or spot a missing certification or an error in one we already cover? Email{" "}

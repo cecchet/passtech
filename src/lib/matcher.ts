@@ -321,6 +321,8 @@ function evaluatePieceCerts(category: EquipmentCategory, rule: CategoryRule, cer
 export interface EvaluationContext {
   /** Undergarment only: standardIds currently valid on the driver's entered firesuit, if resolvable. */
   firesuitStandardIds?: string[];
+  /** Balaclava only: whether the driver has a currently-valid hnr (head-and-neck restraint) entry — see CategoryRule.balaclavaRequiredIfHnrUsed. */
+  hnrSatisfied?: boolean;
 }
 
 /** How recent a manufacture/certification date must be, for options that require a current date, when no explicit due date is printed. */
@@ -713,9 +715,14 @@ export function evaluateCategory(
 
   const effectiveRequirement = effectiveRequirementLevel(category, rule);
 
+  // Balaclava only: a conditional "required only if you're using an HNR instead of a plain neck
+  // collar" rule escalates to a hard requirement once the driver actually has a currently-valid
+  // hnr entry — see CategoryRule.balaclavaRequiredIfHnrUsed.
+  const balaclavaEscalated = category === "balaclava" && rule.balaclavaRequiredIfHnrUsed === true && context?.hnrSatisfied === true;
+
   const base = {
     category,
-    requirement: effectiveRequirement,
+    requirement: balaclavaEscalated ? "required" : effectiveRequirement,
     citation: rule.citation,
     confidence: rule.confidence,
   };
@@ -871,10 +878,19 @@ export function evaluateRuleset(
   const firesuitResult = evaluateCategory("firesuit", categories.firesuit, entries.firesuit, asOf);
   if (firesuitResult) results.firesuit = firesuitResult;
 
+  // HNR next — balaclava's requirement can depend on whether the driver is using a head-and-neck
+  // restraint device (vs. a plain neck collar) instead. See CategoryRule.balaclavaRequiredIfHnrUsed.
+  const hnrResult = evaluateCategory("hnr", categories.hnr, entries.hnr, asOf);
+  if (hnrResult) results.hnr = hnrResult;
+
   (Object.keys(categories) as EquipmentCategory[]).forEach((category) => {
-    if (category === "firesuit") return;
+    if (category === "firesuit" || category === "hnr") return;
     const context: EvaluationContext | undefined =
-      category === "undergarment" ? { firesuitStandardIds: firesuitResult?.resolvedStandardIds } : undefined;
+      category === "undergarment"
+        ? { firesuitStandardIds: firesuitResult?.resolvedStandardIds }
+        : category === "balaclava"
+          ? { hnrSatisfied: hnrResult?.status === "ok" || hnrResult?.status === "recommended_only" }
+          : undefined;
     const result = evaluateCategory(category, categories[category], entries[category], asOf, context);
     if (result) results[category] = result;
   });

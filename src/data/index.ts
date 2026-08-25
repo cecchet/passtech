@@ -21,6 +21,10 @@ import { northeastGTRulesets } from "./bodies/northeastgt";
 import { amecRulesets } from "./bodies/amec";
 import { gridlifeRulesets } from "./bodies/gridlife";
 import { bmwccaRulesets } from "./bodies/bmwcca";
+import { nhraRulesets } from "./bodies/nhra";
+import { wdraRulesets } from "./bodies/wdra";
+import { ihraRulesets } from "./bodies/ihra";
+import { pdraRulesets } from "./bodies/pdra";
 
 export const ALL_RULESETS: Ruleset[] = [
   ...sccaRulesets,
@@ -45,6 +49,10 @@ export const ALL_RULESETS: Ruleset[] = [
   ...amecRulesets,
   ...gridlifeRulesets,
   ...bmwccaRulesets,
+  ...nhraRulesets,
+  ...wdraRulesets,
+  ...ihraRulesets,
+  ...pdraRulesets,
 ];
 
 export function getRuleset(id: string): Ruleset | undefined {

@@ -133,6 +133,9 @@ export const STANDARDS: StandardDef[] = [
   { id: "fia-8858-2010", label: "FIA 8858-2010", family: "fia", categories: ["hnr"] },
   { id: "sfi-38.1", label: "SFI 38.1", family: "sfi", categories: ["hnr"] },
 
+  // Neck collar — a padded fabric/foam collar, distinct from the rigid HANS-style device above.
+  { id: "sfi-3.3-collar", label: "SFI 3.3", family: "sfi", categories: ["neck_collar"] },
+
   // Firesuit
   { id: "fia-8856-2000", label: "FIA 8856-2000", family: "fia", categories: ["firesuit", ...APPAREL] },
   { id: "fia-8856-2018", label: "FIA 8856-2018", family: "fia", categories: ["firesuit", ...APPAREL] },
