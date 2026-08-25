@@ -197,12 +197,25 @@ const hpde: Ruleset = {
       requirement: "conditional",
       rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
       rolloverProtectionFactoryExempt: true,
+      rolloverProtectionTubingSpec: [
+        { underWeightLbs: 1000, minSizes: [{ outerDiameterIn: 1.0, wallThicknessIn: 0.06 }] },
+        { underWeightLbs: 1501, minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.09 }, { outerDiameterIn: 1.375, wallThicknessIn: 0.08 }] },
+        { underWeightLbs: 2501, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.625, wallThicknessIn: 0.08 }] },
+        {
+          minSizes: [
+            { outerDiameterIn: 1.5, wallThicknessIn: 0.12 },
+            { outerDiameterIn: 1.75, wallThicknessIn: 0.095 },
+            { outerDiameterIn: 2.0, wallThicknessIn: 0.08 },
+          ],
+          materialNote: "For over 2500 lbs.",
+        },
+      ],
       condition:
         "Self-Tech Sheet: 'Convertibles on track: Hooked On Driving allows convertibles on track assuming the manufacturer states they have rollover protection, or if they have aftermarket rollover protection meeting or exceeding the most current SCCA Solo1 standards.' The checklist itself lists 'Open cars with roll bar or other rollover protection' as an item to verify. Not addressed for fixed-roof/closed cars, which have no rollover-protection line item on the checklist.",
       citation: { ...techSheet, section: "Convertibles on track; Safety Equipment checklist" },
-      confidence: "high",
+      confidence: "medium",
       notes:
-        "'Hooked On Driving makes no judgment as to the safety of allowed convertibles compared to hardtop cars.' No specific tubing/material spec is given directly — instead the aftermarket path is required to meet or exceed 'the most current SCCA Solo1 standards' (SCCA's own Solo roll bar/cage appendix), an external reference this app doesn't independently model for HOD.",
+        "'Hooked On Driving makes no judgment as to the safety of allowed convertibles compared to hardtop cars.' No specific tubing/material spec is given directly by HOD itself — instead the aftermarket path is required to meet or exceed 'the most current SCCA Solo1 standards.' 'Solo1' is an older/informal SCCA autocross-program name; SCCA's current National Solo Rules Appendix C (its own roll bar standard, since read in full for this app's SCCA Solo ruleset) is the closest current equivalent and is what the tubing spec above reflects — confidence is medium rather than high because HOD's own text uses the retired 'Solo1' name rather than citing Appendix C directly, so this mapping is inferred, not verbatim-confirmed. Appendix C has no padding requirement.",
     },
   },
 };

@@ -1,5 +1,22 @@
-import { Ruleset } from "../types";
+import { RolloverTubingTier, Ruleset } from "../types";
 import { GENERIC_APPAREL_STANDARDS, GENERIC_SEAT_STANDARDS } from "../standards";
+
+// SCCA National Solo Rules, Appendix C.B.2 — weight-tiered roll bar tubing sizes, shared by every
+// Solo class (base "strongly recommended" rule plus the Prepared/Modified overrides that make it
+// outright required). Read in full this pass (previously flagged as not locally cached).
+const SOLO_APPENDIX_C_TUBING_SPEC: RolloverTubingTier[] = [
+  { underWeightLbs: 1000, minSizes: [{ outerDiameterIn: 1.0, wallThicknessIn: 0.06 }] },
+  { underWeightLbs: 1501, minSizes: [{ outerDiameterIn: 1.25, wallThicknessIn: 0.09 }, { outerDiameterIn: 1.375, wallThicknessIn: 0.08 }] },
+  { underWeightLbs: 2501, minSizes: [{ outerDiameterIn: 1.5, wallThicknessIn: 0.095 }, { outerDiameterIn: 1.625, wallThicknessIn: 0.08 }] },
+  {
+    minSizes: [
+      { outerDiameterIn: 1.5, wallThicknessIn: 0.12 },
+      { outerDiameterIn: 1.75, wallThicknessIn: 0.095 },
+      { outerDiameterIn: 2.0, wallThicknessIn: 0.08 },
+    ],
+    materialNote: "For over 2500 lbs.",
+  },
+];
 
 const solo: Ruleset = {
   id: "scca-solo",
@@ -194,10 +211,11 @@ const solo: Ruleset = {
     },
     rollover_protection: {
       requirement: "recommended",
-      citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2" },
+      rolloverProtectionTubingSpec: SOLO_APPENDIX_C_TUBING_SPEC,
+      citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2, Appendix C" },
       confidence: "high",
       notes:
-        "§3.3.2: 'Roll bars or roll cages are strongly recommended in all cars' — a roll bar meeting Appendix C (Solo's own roll bar standard — not locally cached, so its tube/material table isn't modeled here) or a roll cage meeting Club Racing GCR §9.4/9.4.5. Becomes REQUIRED for specific Modified sub-classes and for open cars in Prepared/DM/EM — see the Prepared and Modified class overrides. If built to the GCR §9.4 cage path, that spec's own padding rule applies (min 1\" material, or SFI 45.1/FIA 8857-2001 curved or SFI 45.2/FIA headrest-material flat padding recommended — see this app's SCCA Road Racing ruleset). Appendix C's own padding requirement for the roll-bar path isn't locally cached.",
+        "§3.3.2: 'Roll bars or roll cages are strongly recommended in all cars' — a roll bar meeting Appendix C (Solo's own roll bar standard, now read in full) or a roll cage meeting Club Racing GCR §9.4/9.4.5. Becomes REQUIRED for specific Modified sub-classes and for open cars in Prepared/DM/EM — see the Prepared and Modified class overrides. Appendix C.A: top of the bar must not be below the top of the driver's helmet in normal position and no more than 6\" behind the driver (3\" clearance strongly suggested); the two vertical hoop members must be ≥15\" apart (inside dimension), full cockpit width desirable; a 3/16\" inspection hole is required; post/tripod-style bars aren't acceptable; aluminum hasn't been an acceptable material since 9/22/1985 (pre-1985-approved aluminum structures are grandfathered with filed proof). Appendix C.C-D: one continuous length of tubing for the hoop, full-penetration welds, braces attached within the top third of the hoop at ≥30° from vertical (two braces recommended). No padding requirement is stated anywhere in Appendix C — confirmed via a full read, not just uncached. If built to the GCR §9.4 cage path instead, that spec's own padding rule applies (min 1\" material, or SFI 45.1/FIA 8857-2001 recommended — see this app's SCCA Road Racing ruleset).",
     },
   },
   classOverrides: {
@@ -270,9 +288,10 @@ const solo: Ruleset = {
       rollover_protection: {
         requirement: "conditional",
         rolloverProtectionByBodyStyle: { closed_roof: "recommended", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
+        rolloverProtectionTubingSpec: SOLO_APPENDIX_C_TUBING_SPEC,
         condition:
           "§3.3.2 requires a roll bar/cage outright for open cars in Prepared Category (closed Prepared cars fall back to the base 'strongly recommended' treatment). A full original-equipment windshield + securely bolted standard hardtop lets the required height be reduced to the highest point that fits under the hardtop.",
-        citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2" },
+        citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2, Appendix C" },
         confidence: "high",
       },
     },
@@ -301,7 +320,8 @@ const solo: Ruleset = {
       },
       rollover_protection: {
         requirement: "required",
-        citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2" },
+        rolloverProtectionTubingSpec: SOLO_APPENDIX_C_TUBING_SPEC,
+        citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "3.3.2, Appendix C" },
         confidence: "high",
         notes:
           "§3.3.2 requires a roll bar/cage outright for A/B/C/F Modified (AM/BM/CM/FM); D Modified (DM) and E Modified (EM) only require it for OPEN cars specifically (a closed DM/EM car falls back to the base 'strongly recommended' treatment). AM-FM sub-classes aren't broken out separately in this app's Modified bucket, so this defaults to Required — a closed DM/EM driver should treat this as a caveat to double-check rather than a hard fail.",

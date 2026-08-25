@@ -17,7 +17,7 @@ const timeTrialHillclimb: Ruleset = {
   sourceDocuments: [{ ...sourceDoc, section: "9.20 Required Driver Safety Equipment" }],
   // PHA's own class table (§9.1, §9.37) splits every car into three top-level buckets: GCR Classes
   // (§9.37 table), Supplemental Classes (§9.38 — Vintage/Historic, Rally, Special, INEX, FVCC, Solo
-  // V, SMR, Electric, Club Ford), and Solo & Time Trial Derived Classes (§9.39 — Sport/Super
+  // V, SMR, Modified Electric, Stock Electric, Club Ford), and Solo & Time Trial Derived Classes (§9.39 — Sport/Super
   // Sport/Sport Max/Sport Unlimited/Modified/Super Modified/Outlaw). fuel_cell (§9.11) , kill_switch (§9.24), and rollover_protection (§10.1)
   // genuinely diverge by class — fuel_cell and kill_switch are framed by PHA as "GCR class car vs.
   // everything else," with §9.11 additionally carving a handful of specific GCR classes back OUT of
@@ -39,7 +39,7 @@ const timeTrialHillclimb: Ruleset = {
   // fuel-cell one.
   classes: [
     { id: "solo-tt-derived", label: "Solo & Time Trial Derived Classes (Sport, Super Sport, Sport Max, Sport Unlimited, Modified, Super Modified, Outlaw)" },
-    { id: "special-supplemental", label: "PHA Supplemental Classes (Vintage/Historic, Rally, Special S1-S3, INEX, FVCC, Solo V, SMR, Electric, Club Ford)" },
+    { id: "special-supplemental", label: "PHA Supplemental Classes (Vintage/Historic, Rally, Special S1-S3, INEX, FVCC, Solo V, SMR, Modified/Stock Electric, Club Ford)" },
     { id: "gcr-touring-bspec-cspec", label: "GCR Touring (T1-T4/ET) / B-Spec / C-Spec" },
     { id: "gcr-fuel-exempt-other", label: "GCR Spec Miata / Improved Touring / American Sedan (restricted prep)" },
     { id: "gcr-other", label: "Other GCR Classes (Grand Touring, Production, Super Touring, Super Production, Sports Racing, Formula, Sedan, etc.)" },
@@ -334,10 +334,11 @@ const timeTrialHillclimb: Ruleset = {
         requirement: "conditional",
         rolloverProtectionRequiresPadding: true,
         condition:
-          "This bucket also mixes several treatments: Rally and Specials (Special S1-S3) are on §10.1's cage-required list outright. SMR is grouped with Modified/Super Modified — a cage is required only on a different-manufacturer engine swap that changes cylinder count or adds forced induction, otherwise the roll-bar floor applies. 'Electric' here may or may not correspond to §10.1's specifically-named 'Modified Electric' cage-required class — not confirmed against PHA's own class definitions, so treat with caution. INEX, FVCC, Solo V, and Club Ford aren't named in §10.1 at all, so they fall under the roll-bar-only floor (§10.1.4). Vintage/Historic-prepared cars may stay roll-bar-only even in an otherwise cage-required class (e.g. Rally, Specials) if no cage was used when the car was originally raced — not for kit cars, replicas, or significantly modified cars.",
-        citation: { ...sourceDoc, section: "10.1" },
-        confidence: "medium",
-        notes: "Confidence is medium because this app's class picker groups nine PHA classes together with genuinely different rollover treatments — check your specific class against the condition above, and confirm whether your 'Electric' class maps to §10.1's 'Modified Electric.'",
+          "This bucket mixes several treatments, now fully resolved against PHA's own §9.38 class definitions: Rally (RALNA/RALFI) doesn't use PHA's own GCR-based cage rule at all — §9.38.2 requires Rally cars to 'possess a current rule book from' NASA Rally Sport, CARS, or ARA and meet THAT body's classing/safety requirements, so the applicable cage spec is whichever of those three rally bodies issued the car's logbook (see this app's own NASA RallySport/CARS/ARA rulesets for that spec). Specials (S1/S2/S3) are on §10.1's cage-required list outright (full GCR-spec cage) — additionally, §9.38.3.E requires kit cars and cars with original factory body panels removed (e.g. Miata Kart, Vette Kart, Goblin, Exocet, and similar builds) to have a minimum of 2 roll cage door-area bars per side (uppermost bar landing between the driver's shoulder and elbow), plus body panels (.035\" steel, .060\" aluminum, or comparable composite) from the floor/sill up to that bar where no doors/panels exist — a car already PHA/SCCA-hillclimb-approved before 3/10/2024 may continue as originally built. PHA's two electric classes split cleanly: Modified Electric (ME1/ME2, §9.38.9) IS named on §10.1's cage-required list; Stock Electric (SE, §9.38.10) is NOT named there, so it falls under the roll-bar-only floor (§10.1.4) like the rest of this bucket. SMR is grouped with Modified/Super Modified — a cage is required only on a different-manufacturer engine swap that changes cylinder count or adds forced induction, otherwise the roll-bar floor applies. INEX, FVCC, Solo V, and Club Ford aren't named in §10.1 at all, so they fall under the roll-bar-only floor. Vintage/Historic-prepared cars may stay roll-bar-only even in an otherwise cage-required class (e.g. Rally, Specials) if no cage was used when the car was originally raced — not for kit cars, replicas, or significantly modified cars (§9.38.1 additionally caps a non-conforming Vintage/Historic car to exhibition-only runs at posted road speed, no time posted, no exhibition runs at track events).",
+        citation: { ...sourceDoc, section: "9.38.1-9.38.10, 10.1" },
+        confidence: "high",
+        notes:
+          "Confidence upgraded from medium to high: this app's class picker still groups nine PHA classes together with genuinely different rollover treatments, but every one of them is now confirmed against PHA's own §9.38 class definitions rather than inferred — check your specific class against the condition above.",
       },
     },
     "gcr-touring-bspec-cspec": {

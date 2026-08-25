@@ -480,7 +480,7 @@ const trackBattleTimeAttack: Ruleset = {
       citation: { ...sourceDoc, section: "8. Roll cage construction and design" },
       confidence: "high",
       notes:
-        "'We strongly recommend that all GRIDLIFE Time Attack cars meet the rollcage rules and utilize additional driver safety versus just using street car based equipment' — a recommendation only, not a requirement, for standard/non-Unlimited TrackBattle Time Attack. A full roll cage IS required for the 'Unlimited TA' tier specifically (same construction spec as GLTC/GLGT, see that ruleset) — the source doesn't define the Unlimited threshold (see file-level note), so that stricter tier isn't modeled as the general rule here.",
+        "'We strongly recommend that all GRIDLIFE Time Attack cars meet the rollcage rules and utilize additional driver safety versus just using street car based equipment' — a recommendation only, not a requirement, for standard/non-Unlimited TrackBattle Time Attack. A full roll cage IS required for the 'Unlimited TA' tier specifically (same construction spec as GLTC/GLGT, see that ruleset). The GTCR safety-rules document itself never defines 'Unlimited,' but grid.life/time-attack (GRIDLIFE's own TrackBattle class page, checked separately from the GTCR document) confirms TrackBattle actually runs 8 named classes — ClubSC, ClubTR, Street, Street GT, StreetMod, TrackMod, Unlimited, and Super Unlimited — and describes Unlimited/Super Unlimited specifically as 'racing slicks allowed, no aero restrictions... extensive safety equipment required,' aimed at cars 'consistently exceeding 800whp,' versus the other six classes which sound street/limited-mod based. That's strong circumstantial confirmation Unlimited is a real top class (not an undefined vague threshold) whose 'extensive safety equipment' plausibly IS this §6/§8 full-cage tier, but the class page and the GTCR safety document don't explicitly cross-reference each other, so the exact linkage still isn't a verbatim-confirmed match — and this app's GRIDLIFE class picker doesn't currently offer a separate 'Unlimited/Super Unlimited TrackBattle' selection to model it as its own class anyway.",
     },
   },
 };
@@ -587,10 +587,10 @@ const rushSr: Ruleset = {
     first_aid_kit: notAddressedFirstAidKit,
     rollover_protection: {
       requirement: "not_addressed",
-      citation: { ...sourceDoc, section: "GLRSR (RUSH SR)" },
-      confidence: "medium",
+      citation: { title: "2026 RUSH SR Spec Series Technical Regulations (RUSH Auto Works)", version: "V1.9 2026", section: "5.0 Chassis and Frame; 15.0-15.1 Safety Equipment" },
+      confidence: "high",
       notes:
-        "The main GTCR rules' §8 roll cage construction/design section names only GLTC, GLGT, and Unlimited TA — RUSH SR isn't included in that list. GRIDLIFE instead defers: 'FOR GLRSR the Vehicle Must comply with the 2026 RUSH SR SPEC SERIES TECHNICAL REGULATIONS' — a separate document not covered by this research pass, so the actual cage requirement for RUSH SR (a full cage is very likely mandatory for a spec racing series, but unconfirmed here) is not modeled as a guess.",
+        "Now confirmed directly against the actual '2026 RUSH SR Spec Series Technical Regulations' PDF (previously deferred/unread). §15.1's mandatory safety equipment list (homologated 6-point harness, fire extinguisher, arm restraints, camber plate upgrade, case saver, clutch switch) does NOT include a roll cage or roll bar — and the list's own 'Additional intentions for 2027, subject to change' sub-note names a 'Mandated trident rollbar' as a FUTURE addition, confirming no rollover structure is mandated for the current 2026 season. §5.1: 'No chassis modifications shall be permitted under any circumstance' — the welded chassis frame and front/rear crash structures must stay exactly as supplied by RAW, so whatever rollover protection the spec car's chassis inherently has is fixed and non-competitor-installed; RUSH SR is a single-model spec series (all cars built and sold by RUSH Auto Works Inc, no aftermarket substitutions permitted per §1.1-1.4), so there's no rollbar/cage question for the driver to answer either way at this tier.",
     },
   },
 };
