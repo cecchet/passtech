@@ -8,7 +8,44 @@ import { EquipmentCategory } from "@/data/types";
  * file loading fine — not worth depending on Sharp handling every future asset.
  */
 
-function CategoryIcon({ src, objectPosition, fit = "cover" }: { src: string; objectPosition: string; fit?: "cover" | "contain" }) {
+interface IconSpec {
+  src: string;
+  objectPosition: string;
+  fit?: "cover" | "contain";
+}
+
+/**
+ * Single source of truth for each category's icon file — both the on-screen <img> components
+ * below and the PDF report generator (src/lib/pdfReport.ts, which has no JSX to render) read
+ * from this map instead of duplicating the file paths.
+ */
+export const CATEGORY_ICON_SPEC: Record<EquipmentCategory, IconSpec> = {
+  helmet: { src: "/frog-helmet.jpg", objectPosition: "62% 42%" },
+  balaclava: { src: "/frog-balaclava.jpg", objectPosition: "50% 45%" },
+  hnr: { src: "/frog-hans.png", objectPosition: "50% 45%" },
+  firesuit: { src: "/frog-firesuit.png", objectPosition: "50% 45%" },
+  gloves: { src: "/frog-gloves.png", objectPosition: "50% 38%" },
+  shoes: { src: "/frog-shoes.jpg", objectPosition: "50% 55%" },
+  socks: { src: "/frog-socks.jpg", objectPosition: "50% 45%" },
+  undergarment: { src: "/frog-undergarment.png", objectPosition: "50% 45%" },
+  arm_restraint: { src: "/frog-arm-restraints.png", objectPosition: "50% 45%" },
+  seat: { src: "/race-seat.jpg", objectPosition: "50% 50%", fit: "contain" },
+  belts_harness: { src: "/racing-harness.jpg", objectPosition: "50% 50%", fit: "contain" },
+  window_net: { src: "/window-net.jpg", objectPosition: "50% 45%" },
+  fire_extinguisher: { src: "/frog-extinguisher.jpg", objectPosition: "50% 45%" },
+  fire_suppression: { src: "/frog-fire-suppression.jpg", objectPosition: "50% 45%" },
+  fuel_cell: { src: "/fuel-cell.jpg", objectPosition: "50% 45%" },
+  window_breaker: { src: "/window-breaker.jpg", objectPosition: "50% 45%" },
+  kill_switch: { src: "/kill-switch.jpg", objectPosition: "50% 45%" },
+  tow_hook: { src: "/tow-hook.jpg", objectPosition: "50% 45%" },
+  tow_rope: { src: "/tow-rope.jpg", objectPosition: "50% 45%" },
+  emergency_triangle: { src: "/triangles.jpg", objectPosition: "50% 45%" },
+  first_aid_kit: { src: "/first-aid.jpg", objectPosition: "50% 45%" },
+  rollover_protection: { src: "/rollcage-diagram.png", objectPosition: "50% 50%", fit: "contain" },
+};
+
+function CategoryIcon({ category }: { category: EquipmentCategory }) {
+  const { src, objectPosition, fit = "cover" } = CATEGORY_ICON_SPEC[category];
   return (
     // eslint-disable-next-line @next/next/no-img-element -- static bundled icon, optimizer unreliable on these (see file comment)
     <img
@@ -20,52 +57,12 @@ function CategoryIcon({ src, objectPosition, fit = "cover" }: { src: string; obj
   );
 }
 
-const HelmetIcon = () => <CategoryIcon src="/frog-helmet.jpg" objectPosition="62% 42%" />;
-const BalaclavaIcon = () => <CategoryIcon src="/frog-balaclava.jpg" objectPosition="50% 45%" />;
-const HnrIcon = () => <CategoryIcon src="/frog-hans.png" objectPosition="50% 45%" />;
-const FiresuitIcon = () => <CategoryIcon src="/frog-firesuit.png" objectPosition="50% 45%" />;
-const GlovesIcon = () => <CategoryIcon src="/frog-gloves.png" objectPosition="50% 38%" />;
-const ShoesIcon = () => <CategoryIcon src="/frog-shoes.jpg" objectPosition="50% 55%" />;
-const SocksIcon = () => <CategoryIcon src="/frog-socks.jpg" objectPosition="50% 45%" />;
-const UndergarmentIcon = () => <CategoryIcon src="/frog-undergarment.png" objectPosition="50% 45%" />;
-const ArmRestraintIcon = () => <CategoryIcon src="/frog-arm-restraints.png" objectPosition="50% 45%" />;
-
-const SeatIcon = () => <CategoryIcon src="/race-seat.jpg" objectPosition="50% 50%" fit="contain" />;
-const BeltsHarnessIcon = () => <CategoryIcon src="/racing-harness.jpg" objectPosition="50% 50%" fit="contain" />;
-const WindowNetIcon = () => <CategoryIcon src="/window-net.jpg" objectPosition="50% 45%" />;
-const FireExtinguisherIcon = () => <CategoryIcon src="/frog-extinguisher.jpg" objectPosition="50% 45%" />;
-const FireSuppressionIcon = () => <CategoryIcon src="/frog-fire-suppression.jpg" objectPosition="50% 45%" />;
-const FuelCellIcon = () => <CategoryIcon src="/fuel-cell.jpg" objectPosition="50% 45%" />;
-const WindowBreakerIcon = () => <CategoryIcon src="/window-breaker.jpg" objectPosition="50% 45%" />;
-const KillSwitchIcon = () => <CategoryIcon src="/kill-switch.jpg" objectPosition="50% 45%" />;
-const TowHookIcon = () => <CategoryIcon src="/tow-hook.jpg" objectPosition="50% 45%" />;
-const TowRopeIcon = () => <CategoryIcon src="/tow-rope.jpg" objectPosition="50% 45%" />;
-const EmergencyTriangleIcon = () => <CategoryIcon src="/triangles.jpg" objectPosition="50% 45%" />;
-const FirstAidKitIcon = () => <CategoryIcon src="/first-aid.jpg" objectPosition="50% 45%" />;
-
-const RolloverProtectionIcon = () => <CategoryIcon src="/rollcage-diagram.png" objectPosition="50% 50%" fit="contain" />;
-
-export const CATEGORY_ICONS: Record<EquipmentCategory, () => React.JSX.Element> = {
-  helmet: HelmetIcon,
-  balaclava: BalaclavaIcon,
-  hnr: HnrIcon,
-  firesuit: FiresuitIcon,
-  gloves: GlovesIcon,
-  shoes: ShoesIcon,
-  socks: SocksIcon,
-  undergarment: UndergarmentIcon,
-  arm_restraint: ArmRestraintIcon,
-  seat: SeatIcon,
-  belts_harness: BeltsHarnessIcon,
-  window_net: WindowNetIcon,
-  fire_extinguisher: FireExtinguisherIcon,
-  fire_suppression: FireSuppressionIcon,
-  fuel_cell: FuelCellIcon,
-  window_breaker: WindowBreakerIcon,
-  kill_switch: KillSwitchIcon,
-  tow_hook: TowHookIcon,
-  tow_rope: TowRopeIcon,
-  emergency_triangle: EmergencyTriangleIcon,
-  first_aid_kit: FirstAidKitIcon,
-  rollover_protection: RolloverProtectionIcon,
-};
+export const CATEGORY_ICONS: Record<EquipmentCategory, () => React.JSX.Element> = (
+  Object.keys(CATEGORY_ICON_SPEC) as EquipmentCategory[]
+).reduce(
+  (acc, category) => {
+    acc[category] = () => <CategoryIcon category={category} />;
+    return acc;
+  },
+  {} as Record<EquipmentCategory, () => React.JSX.Element>
+);

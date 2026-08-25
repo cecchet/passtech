@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, RulesetClass, getRuleset } from "@/data";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
-import { EquipmentSummary } from "@/components/EquipmentSummary";
+import { EquipmentSummary, FilledEquipmentSummary } from "@/components/EquipmentSummary";
 import { GarageManager } from "@/components/GarageManager";
 import { ReferenceView } from "@/components/ReferenceView";
 import { ResultRow } from "@/components/ResultRow";
@@ -20,11 +20,15 @@ import {
   overallEligibility,
 } from "@/lib/matcher";
 import { GarageProfile, newGarageProfile, loadGarage, saveGarage } from "@/lib/garage";
+import { BUILD_DATE } from "@/lib/version";
+import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
+
+const reportButtonClass = "mb-4 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800";
 
 const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Autocross",
@@ -50,7 +54,6 @@ interface MissingReport {
 
 // Bump this by hand whenever a new build is deployed — it's shown next to the app title so we can
 // tell at a glance whether a user reporting an issue is on the latest version or a stale cached one.
-const BUILD_DATE = "2026/08/22";
 
 const STORAGE_KEY = "safety-gear-check:v2";
 const TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
@@ -62,6 +65,8 @@ export default function Home() {
   const [entries, setEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
   const [codriverEntries, setCodriverEntries] = useState<Partial<Record<EquipmentCategory, EquipmentEntry>>>({});
   const [hasCodriver, setHasCodriver] = useState(false);
+  const [carPhotoDataUrl, setCarPhotoDataUrl] = useState<string | undefined>(undefined);
+  const [carNote, setCarNote] = useState<string | undefined>(undefined);
   const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [onlyHaveEquipment, setOnlyHaveEquipment] = useState(false);
@@ -79,6 +84,8 @@ export default function Home() {
         if (saved.entries) setEntries(saved.entries);
         if (saved.codriverEntries) setCodriverEntries(saved.codriverEntries);
         if (typeof saved.hasCodriver === "boolean") setHasCodriver(saved.hasCodriver);
+        if (saved.carPhotoDataUrl) setCarPhotoDataUrl(saved.carPhotoDataUrl);
+        if (saved.carNote) setCarNote(saved.carNote);
         if (saved.activeGroups) setActiveGroups(new Set(saved.activeGroups));
         if (saved.rulesetId) setRulesetId(saved.rulesetId);
         if (saved.classId) setClassId(saved.classId);
@@ -107,6 +114,8 @@ export default function Home() {
         entries,
         codriverEntries,
         hasCodriver,
+        carPhotoDataUrl,
+        carNote,
         rulesetId,
         classId,
         mode,
@@ -115,7 +124,7 @@ export default function Home() {
         activeGroups: Array.from(activeGroups),
       })
     );
-  }, [entries, codriverEntries, hasCodriver, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups, hydrated]);
+  }, [entries, codriverEntries, hasCodriver, carPhotoDataUrl, carNote, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups, hydrated]);
 
   const handleRulesetChange = (id: string) => {
     setRulesetId(id);
@@ -147,17 +156,32 @@ export default function Home() {
     setEntries({ ...profile.entries });
     setCodriverEntries({ ...(profile.codriverEntries ?? {}) });
     setHasCodriver(!!profile.hasCodriver);
+    setCarPhotoDataUrl(profile.carPhotoDataUrl);
+    setCarNote(profile.carNote);
     setMode(target);
   };
 
   const handleSaveToGarage = (name: string) => {
-    const profile = { ...newGarageProfile(name), entries: { ...entries }, hasCodriver, codriverEntries: { ...codriverEntries } };
+    const profile = {
+      ...newGarageProfile(name),
+      entries: { ...entries },
+      hasCodriver,
+      codriverEntries: { ...codriverEntries },
+      carPhotoDataUrl,
+      carNote,
+    };
     saveGarage([...loadGarage(), profile]);
+  };
+
+  const handleCarPhotoChange = async (file: File) => {
+    setCarPhotoDataUrl(await resizeImageToDataUrl(file, 800, 0.75));
   };
 
   const clearAll = () => {
     setEntries({});
     setCodriverEntries({});
+    setCarPhotoDataUrl(undefined);
+    setCarNote(undefined);
     window.localStorage.removeItem(STORAGE_KEY);
   };
 
@@ -255,6 +279,55 @@ export default function Home() {
   const eligible = allResults.filter((r) => r.status === "eligible");
   const eligibleConditional = allResults.filter((r) => r.status === "eligible_conditional");
   const notEligible = allResults.filter((r) => r.status === "not_eligible");
+
+  // For each provided category: how many of the 36 rulesets currently accept it (status
+  // ok/recommended_only) — the little green badge on the Equipment Summary icons in Option 3.
+  // Driver and codriver items are counted independently since they're different physical pieces
+  // of gear that can each satisfy a different set of bodies.
+  const filledCategoryEligibility = useMemo(() => {
+    const counts: Partial<Record<EquipmentCategory, number>> = {};
+    CATEGORY_ORDER.forEach((category) => {
+      if (isEntryEmpty(category, entries[category])) return;
+      counts[category] = allResults.filter(({ results }) => {
+        const result = results[category];
+        return result && (result.status === "ok" || result.status === "recommended_only");
+      }).length;
+    });
+    return counts;
+  }, [allResults, entries]);
+
+  const codriverFilledEligibility = useMemo(() => {
+    if (!hasCodriver) return {};
+    const counts: Partial<Record<EquipmentCategory, number>> = {};
+    CATEGORY_ORDER.forEach((category) => {
+      if (isEntryEmpty(category, codriverEntries[category])) return;
+      counts[category] = allResults.filter(({ codriverResults }) => {
+        const result = codriverResults?.[category];
+        return result && (result.status === "ok" || result.status === "recommended_only");
+      }).length;
+    });
+    return counts;
+  }, [allResults, codriverEntries, hasCodriver]);
+
+  // jsPDF is only needed once someone actually asks for a report, so it's dynamically imported
+  // here rather than pulled into the main bundle for every visitor.
+  const handleDownloadReferenceReport = async () => {
+    if (!ruleset) return;
+    const { downloadReferenceReport } = await import("@/lib/pdfReport");
+    await downloadReferenceReport(ruleset, activeClassId, activeGroups);
+  };
+
+  const handleDownloadBodyFirstReport = async () => {
+    if (!ruleset) return;
+    const { downloadBodyFirstReport } = await import("@/lib/pdfReport");
+    const withCodriver = showCodriver && hasCodriver;
+    await downloadBodyFirstReport(ruleset, resultsForSelected, withCodriver, codriverResultsForSelected, withCodriver, entries, codriverEntries, carPhotoDataUrl, carNote);
+  };
+
+  const handleDownloadEquipmentFirstReport = async () => {
+    const { downloadEquipmentFirstReport } = await import("@/lib/pdfReport");
+    await downloadEquipmentFirstReport(allResults, onlyHaveEquipment, entries, codriverEntries, carPhotoDataUrl, carNote);
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -379,7 +452,18 @@ export default function Home() {
 
           {ruleset && <SourceLine ruleset={ruleset} />}
 
-          {ruleset && <EquipmentSummary ruleset={ruleset} classId={activeClassId} activeGroups={activeGroups} />}
+          {ruleset && (
+            <EquipmentSummary
+              ruleset={ruleset}
+              classId={activeClassId}
+              activeGroups={activeGroups}
+              actions={
+                <button type="button" onClick={handleDownloadReferenceReport} className={`${reportButtonClass} mb-0`}>
+                  📄 Download PDF report
+                </button>
+              }
+            />
+          )}
 
           {ruleset && <ReferenceView ruleset={ruleset} activeGroups={activeGroups} classId={activeClassId} />}
         </section>
@@ -402,8 +486,6 @@ export default function Home() {
             </label>
           )}
 
-          <SaveToGarageButton onSave={handleSaveToGarage} />
-
           {ruleset && <SourceLine ruleset={ruleset} />}
 
           {ruleset && (
@@ -414,6 +496,19 @@ export default function Home() {
               results={resultsForSelected}
               hasCodriver={showCodriver && hasCodriver}
               codriverResults={codriverResultsForSelected}
+              carPhotoDataUrl={carPhotoDataUrl}
+              carNote={carNote}
+              onCarPhotoChange={handleCarPhotoChange}
+              onRemoveCarPhoto={() => setCarPhotoDataUrl(undefined)}
+              onCarNoteChange={(note) => setCarNote(note || undefined)}
+              actions={
+                <>
+                  <SaveToGarageButton onSave={handleSaveToGarage} />
+                  <button type="button" onClick={handleDownloadBodyFirstReport} className={`${reportButtonClass} mb-0`}>
+                    📄 Download PDF report
+                  </button>
+                </>
+              }
             />
           )}
 
@@ -487,6 +582,28 @@ export default function Home() {
             <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
             Add codriver gear (only affects rally bodies that require one)
           </label>
+
+          <FilledEquipmentSummary
+            entries={entries}
+            codriverEntries={codriverEntries}
+            hasCodriver={hasCodriver}
+            activeGroups={activeGroups}
+            eligibilityCounts={filledCategoryEligibility}
+            codriverEligibilityCounts={codriverFilledEligibility}
+            carPhotoDataUrl={carPhotoDataUrl}
+            carNote={carNote}
+            onCarPhotoChange={handleCarPhotoChange}
+            onRemoveCarPhoto={() => setCarPhotoDataUrl(undefined)}
+            onCarNoteChange={(note) => setCarNote(note || undefined)}
+            actions={
+              <>
+                <SaveToGarageButton onSave={handleSaveToGarage} />
+                <button type="button" onClick={handleDownloadEquipmentFirstReport} className={`${reportButtonClass} mb-0`}>
+                  📄 Download PDF report
+                </button>
+              </>
+            }
+          />
 
           {hasCodriver ? (
             <>
