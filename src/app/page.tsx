@@ -358,13 +358,6 @@ export default function Home() {
             >
               How it works
             </button>
-            <button
-              type="button"
-              onClick={() => setMode("garage")}
-              className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
-            >
-              My Garage
-            </button>
             {(mode === "body-first" || mode === "equipment-first") && (
               <button
                 type="button"
@@ -427,6 +420,21 @@ export default function Home() {
               onClick={() => setMode("equipment-first")}
             />
           </section>
+          <button
+            type="button"
+            onClick={() => setMode("garage")}
+            className="mt-4 flex w-full items-center gap-4 rounded-lg border border-neutral-700 p-5 text-left hover:border-neutral-400 hover:bg-neutral-900"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, optimizer unreliable on these (see CategoryIcons.tsx) */}
+            <img src="/frog-mygear.jpg" alt="" className="h-16 w-16 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+            <span className="flex flex-col gap-1">
+              <span className="text-sm font-semibold">My Gear</span>
+              <span className="text-xs text-neutral-400">
+                My gear is your personal space where you can store your different gear sets. Import/export gear sets and check them against
+                rulesets.
+              </span>
+            </span>
+          </button>
         </>
       )}
 
@@ -644,7 +652,7 @@ export default function Home() {
 
       {mode === "garage" && (
         <section>
-          <h2 className="mb-4 text-lg font-semibold text-amber-400">My Garage</h2>
+          <h2 className="mb-4 text-lg font-semibold text-amber-400">My Gear</h2>
           <GarageManager onLoadProfile={handleLoadGarageProfile} />
         </section>
       )}

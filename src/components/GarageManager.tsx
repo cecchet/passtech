@@ -159,14 +159,6 @@ export function GarageManager({
     setConfirmDeleteId(null);
   };
 
-  const handleExport = () => {
-    downloadJson(exportGarageToJson(profiles), garageExportFilename());
-  };
-
-  const handleExportEmail = () => {
-    shareOrEmailJson(exportGarageToJson(profiles), garageExportFilename(), "PassTech garage export");
-  };
-
   const handleExportProfile = (profile: GarageProfile) => {
     downloadJson(exportGarageToJson([profile]), garageExportFilename(profile.name));
   };
@@ -220,26 +212,10 @@ export function GarageManager({
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+      <div className="mb-4">
         <p className="text-sm text-neutral-400">
           Save named sets of gear here — you can load one straight into a body&apos;s tech check any time, instead of re-entering everything.
         </p>
-        <div className="flex shrink-0 gap-2">
-          <ExportMenu label="Export entire garage" onExportFile={handleExport} onExportEmail={handleExportEmail} disabled={profiles.length === 0} />
-          <label className={`${buttonClass} cursor-pointer`}>
-            Import
-            <input
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                e.target.value = "";
-                if (file) handleImportFile(file);
-              }}
-            />
-          </label>
-        </div>
       </div>
 
       {importStatus && (
@@ -248,9 +224,24 @@ export function GarageManager({
 
       {!selected ? (
         <div>
-          <button type="button" onClick={createProfile} className="mb-4 rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
-            + New gear set
-          </button>
+          <div className="mb-4 flex flex-wrap gap-2">
+            <button type="button" onClick={createProfile} className="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
+              + New gear set
+            </button>
+            <label className="cursor-pointer rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
+              Import
+              <input
+                type="file"
+                accept="application/json"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (file) handleImportFile(file);
+                }}
+              />
+            </label>
+          </div>
 
           {profiles.length === 0 ? (
             <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">
