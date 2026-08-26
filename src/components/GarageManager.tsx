@@ -34,93 +34,19 @@ function downloadJson(json: string, filename: string) {
 }
 
 /**
- * "Share" export. There's no server here to send mail from (see the app's "nothing is sent
- * anywhere" privacy stance), so this uses the device's own share sheet — `navigator.share` with
- * the export file attached, letting the user pick Mail, Gmail, Messages, Drive, AirDrop, etc.
- * themselves. We call `share()` directly rather than gating on `navigator.canShare()` first:
- * canShare is unreliable at reporting whether a given file type is actually shareable, and
- * `share()` itself rejects cleanly when a file truly can't be shared, so the try/catch below is
- * sufficient on its own.
- *
- * Several mobile browsers (iOS Safari in particular) only allow sharing files whose MIME type is
- * on a short allow-list — images, PDF, plain text, a few document formats — and silently reject a
- * generic "application/json" file even though the exact same bytes shared as "text/plain" go
- * through fine and attach correctly in Mail/Messages/Drive/etc. So we retry once with the file
- * relabeled as plain text (same filename/bytes, only the declared type changes) before giving up
- * on attaching a file at all.
- *
- * Where the browser can't share a file at all (most desktop browsers with no share target), a
- * `mailto:` link still can't attach a file — that's a hard limitation of the mailto: URI scheme,
- * not something any fallback here can work around — and silently opening one is actively
- * misleading when the user has no default mail app registered (common for webmail-only desktop
- * users), since nothing visibly happens and the export looks broken. So the fallback just
- * downloads the file and tells the user, unambiguously, to attach it themselves.
+ * Sharing a file via `navigator.share()` turned out not to be reliable enough to keep: on real
+ * devices it silently rejected the file (tried both "application/json" and a "text/plain" retry —
+ * see git history) and fell back to a plain download anyway, so the "Share / Email" option was
+ * just a confusing extra click that landed on the same download every time. Exporting a gear set
+ * is just a download now — on most phones, the browser's own download-complete notification
+ * already offers a native Share action from there, which reaches the same Mail/Messages/Drive
+ * picker without PassTech needing to drive it (and without the reliability problems of doing so).
  */
-async function shareOrEmailJson(json: string, filename: string, title: string) {
-  if (typeof navigator.share === "function") {
-    for (const type of ["application/json", "text/plain"]) {
-      try {
-        const file = new File([json], filename, { type });
-        await navigator.share({ files: [file], title });
-        return;
-      } catch (e) {
-        if (e instanceof Error && e.name === "AbortError") return; // user cancelled the share sheet
-        // This MIME type wasn't shareable (or no share target accepted it) — try the next one, or
-        // fall through to the download below once every attempt has failed.
-      }
-    }
-  }
-  downloadJson(json, filename);
-  window.alert(
-    `"${filename}" was downloaded to your device.\n\nThis browser can't attach files to an email automatically — attach that downloaded file to a new email yourself, in Gmail, Outlook, Mail, or whichever app you normally use.`
-  );
-}
-
-/** Small "Save as file" / "Email" dropdown shared by every export button in this component. */
-function ExportMenu({
-  label,
-  onExportFile,
-  onExportEmail,
-  disabled,
-}: {
-  label: string;
-  onExportFile: () => void;
-  onExportEmail: () => void;
-  disabled?: boolean;
-}) {
-  const close = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.closest("details")?.removeAttribute("open");
-  };
+function ExportButton({ label, onExport }: { label: string; onExport: () => void }) {
   return (
-    <details className={`relative inline-block ${disabled ? "pointer-events-none opacity-50" : ""}`}>
-      <summary
-        className={`${buttonClass} inline-flex cursor-pointer list-none items-center gap-1 marker:content-none [&::-webkit-details-marker]:hidden`}
-      >
-        {label} <span aria-hidden>▾</span>
-      </summary>
-      <div className="absolute right-0 z-10 mt-1 flex flex-col gap-0.5 whitespace-nowrap rounded border border-neutral-600 bg-neutral-900 p-1 shadow-lg">
-        <button
-          type="button"
-          onClick={(e) => {
-            close(e);
-            onExportFile();
-          }}
-          className="rounded px-2 py-1 text-left text-xs text-neutral-200 hover:bg-neutral-800"
-        >
-          📄 Save as file
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            close(e);
-            onExportEmail();
-          }}
-          className="rounded px-2 py-1 text-left text-xs text-neutral-200 hover:bg-neutral-800"
-        >
-          📤 Share / Email
-        </button>
-      </div>
-    </details>
+    <button type="button" onClick={onExport} className={buttonClass}>
+      📄 {label}
+    </button>
   );
 }
 
@@ -176,10 +102,6 @@ export function GarageManager({
 
   const handleExportProfile = (profile: GarageProfile) => {
     downloadJson(exportGarageToJson([profile]), garageExportFilename(profile.name));
-  };
-
-  const handleExportProfileEmail = (profile: GarageProfile) => {
-    shareOrEmailJson(exportGarageToJson([profile]), garageExportFilename(profile.name), `PassTech gear set: ${profile.name}`);
   };
 
   const handleImportFile = async (file: File) => {
@@ -305,7 +227,7 @@ export function GarageManager({
                           <img src="/frog-option3.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
                           Where can my equipment race?
                         </button>
-                        <ExportMenu label="Export gear set" onExportFile={() => handleExportProfile(p)} onExportEmail={() => handleExportProfileEmail(p)} />
+                        <ExportButton label="Export gear set" onExport={() => handleExportProfile(p)} />
                       </>
                     )}
                     <button
@@ -336,7 +258,7 @@ export function GarageManager({
             <button type="button" onClick={() => setSelectedId(null)} className="text-sm font-semibold text-amber-400 hover:text-amber-300">
               ← Back to My Gear
             </button>
-            <ExportMenu label="Export this gear set" onExportFile={() => handleExportProfile(selected)} onExportEmail={() => handleExportProfileEmail(selected)} />
+            <ExportButton label="Export this gear set" onExport={() => handleExportProfile(selected)} />
           </div>
 
           <label className="mb-3 block">
