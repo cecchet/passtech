@@ -36,12 +36,18 @@ function downloadJson(json: string, filename: string) {
 /**
  * "Share" export. There's no server here to send mail from (see the app's "nothing is sent
  * anywhere" privacy stance), so this uses the device's own share sheet — `navigator.share` with
- * the export file attached, letting the user pick Mail, Gmail, Messages, AirDrop, etc. themselves.
- * We call `share()` directly rather than gating on `navigator.canShare()` first: canShare is
- * unreliable at reporting whether a given file type is actually shareable (it under-reports
- * support for plain-JSON files on several browsers, which was silently forcing every export onto
- * the fallback below on both desktop and mobile), and `share()` itself rejects cleanly when a
- * file truly can't be shared, so the try/catch below is sufficient on its own.
+ * the export file attached, letting the user pick Mail, Gmail, Messages, Drive, AirDrop, etc.
+ * themselves. We call `share()` directly rather than gating on `navigator.canShare()` first:
+ * canShare is unreliable at reporting whether a given file type is actually shareable, and
+ * `share()` itself rejects cleanly when a file truly can't be shared, so the try/catch below is
+ * sufficient on its own.
+ *
+ * Several mobile browsers (iOS Safari in particular) only allow sharing files whose MIME type is
+ * on a short allow-list — images, PDF, plain text, a few document formats — and silently reject a
+ * generic "application/json" file even though the exact same bytes shared as "text/plain" go
+ * through fine and attach correctly in Mail/Messages/Drive/etc. So we retry once with the file
+ * relabeled as plain text (same filename/bytes, only the declared type changes) before giving up
+ * on attaching a file at all.
  *
  * Where the browser can't share a file at all (most desktop browsers with no share target), a
  * `mailto:` link still can't attach a file — that's a hard limitation of the mailto: URI scheme,
@@ -51,14 +57,17 @@ function downloadJson(json: string, filename: string) {
  * downloads the file and tells the user, unambiguously, to attach it themselves.
  */
 async function shareOrEmailJson(json: string, filename: string, title: string) {
-  const file = new File([json], filename, { type: "application/json" });
   if (typeof navigator.share === "function") {
-    try {
-      await navigator.share({ files: [file], title });
-      return;
-    } catch (e) {
-      if (e instanceof Error && e.name === "AbortError") return; // user cancelled the share sheet
-      // Unsupported file type, no share target for it, etc. — fall through to the download below.
+    for (const type of ["application/json", "text/plain"]) {
+      try {
+        const file = new File([json], filename, { type });
+        await navigator.share({ files: [file], title });
+        return;
+      } catch (e) {
+        if (e instanceof Error && e.name === "AbortError") return; // user cancelled the share sheet
+        // This MIME type wasn't shareable (or no share target accepted it) — try the next one, or
+        // fall through to the download below once every attempt has failed.
+      }
     }
   }
   downloadJson(json, filename);
