@@ -34,31 +34,37 @@ function downloadJson(json: string, filename: string) {
 }
 
 /**
- * "Email" export. There's no server here to send mail from (see the app's "nothing is sent
- * anywhere" privacy stance), so this uses the device's own share sheet — on phones/modern
- * browsers that's `navigator.share` with the export file attached, letting the user pick Mail,
- * Gmail, Messages, etc. themselves. Where the browser can't share a file (most desktop browsers),
- * a `mailto:` link can't attach a file either — so we download it instead and open a pre-filled
- * email asking the user to attach the file that just downloaded.
+ * "Share" export. There's no server here to send mail from (see the app's "nothing is sent
+ * anywhere" privacy stance), so this uses the device's own share sheet — `navigator.share` with
+ * the export file attached, letting the user pick Mail, Gmail, Messages, AirDrop, etc. themselves.
+ * We call `share()` directly rather than gating on `navigator.canShare()` first: canShare is
+ * unreliable at reporting whether a given file type is actually shareable (it under-reports
+ * support for plain-JSON files on several browsers, which was silently forcing every export onto
+ * the fallback below on both desktop and mobile), and `share()` itself rejects cleanly when a
+ * file truly can't be shared, so the try/catch below is sufficient on its own.
+ *
+ * Where the browser can't share a file at all (most desktop browsers with no share target), a
+ * `mailto:` link still can't attach a file — that's a hard limitation of the mailto: URI scheme,
+ * not something any fallback here can work around — and silently opening one is actively
+ * misleading when the user has no default mail app registered (common for webmail-only desktop
+ * users), since nothing visibly happens and the export looks broken. So the fallback just
+ * downloads the file and tells the user, unambiguously, to attach it themselves.
  */
 async function shareOrEmailJson(json: string, filename: string, title: string) {
   const file = new File([json], filename, { type: "application/json" });
-  const canShareFile = typeof navigator.share === "function" && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] });
-  if (canShareFile) {
+  if (typeof navigator.share === "function") {
     try {
       await navigator.share({ files: [file], title });
       return;
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return; // user cancelled the share sheet
-      // Any other failure (e.g. no share target installed) — fall through to the mailto fallback.
+      // Unsupported file type, no share target for it, etc. — fall through to the download below.
     }
   }
   downloadJson(json, filename);
-  const subject = encodeURIComponent(title);
-  const body = encodeURIComponent(
-    `${title}\n\nYour browser can't attach the exported file to an email automatically, so it just downloaded as "${filename}" instead — attach that file to this email before sending.`
+  window.alert(
+    `"${filename}" was downloaded to your device.\n\nThis browser can't attach files to an email automatically — attach that downloaded file to a new email yourself, in Gmail, Outlook, Mail, or whichever app you normally use.`
   );
-  window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
 
 /** Small "Save as file" / "Email" dropdown shared by every export button in this component. */
@@ -102,7 +108,7 @@ function ExportMenu({
           }}
           className="rounded px-2 py-1 text-left text-xs text-neutral-200 hover:bg-neutral-800"
         >
-          📧 Email
+          📤 Share / Email
         </button>
       </div>
     </details>
