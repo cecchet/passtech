@@ -61,8 +61,8 @@ const TOURS: Record<TourId, Tour> = {
       },
       { targetId: "tutorial-source-line", text: "Click here to download the official rulebook for the selected body and class." },
       {
-        targetId: "category-helmet",
-        text: "Each category shows its requirement, accepted certifications, and any conditions — straight from the rulebook. Standards the body doesn't list are collapsed under a red “Not accepted” panel, so gaps are easy to spot.",
+        targetId: "category-seat",
+        text: "Each category shows its requirement, a plain-language note, and any accepted certifications — straight from the rulebook. Some, like Seat here, accept plain stock/OEM equipment with no certification at all; standards the body doesn't list are collapsed under a red “Not accepted” panel, so gaps are easy to spot.",
       },
     ],
   },
@@ -269,17 +269,42 @@ export function TutorialModal({
     : { display: "none" };
 
   const calloutWidth = 320;
-  const spaceBelow = rect ? window.innerHeight - rect.bottom : 0;
-  const showBelow = rect ? spaceBelow > 160 || rect.top < 160 : true;
-  const calloutStyle: CSSProperties = rect
-    ? {
-        position: "fixed",
-        top: showBelow ? rect.bottom + pad + 12 : undefined,
-        bottom: showBelow ? undefined : window.innerHeight - rect.top + pad + 12,
-        left: Math.max(8, Math.min(rect.left, window.innerWidth - calloutWidth - 8)),
-        zIndex: 52,
-      }
-    : { display: "none" };
+  const viewportH = window.innerHeight;
+  const viewportW = window.innerWidth;
+  const calloutLeft = rect ? Math.max(8, Math.min(rect.left, viewportW - calloutWidth - 8)) : 8;
+  // A target element can be taller than the viewport itself (a long reference card, a fully-filled-in
+  // equipment form) — clamping to the visible slice of it before measuring space above/below keeps the
+  // below/above decision sane, and docking to the bottom of the screen when the target eats the whole
+  // viewport (so neither side has room) guarantees the callout — and its Next/Exit buttons — is always
+  // on screen, never positioned past the fold where a fixed-position element can't be scrolled to.
+  const visTop = rect ? Math.max(rect.top, 0) : 0;
+  const visBottom = rect ? Math.min(rect.bottom, viewportH) : 0;
+  const spaceBelow = rect ? viewportH - visBottom : 0;
+  const spaceAbove = rect ? visTop : 0;
+  const minSpace = 100;
+  const dockToBottom = rect ? spaceBelow < minSpace && spaceAbove < minSpace : false;
+  const showBelow = !dockToBottom && spaceBelow >= spaceAbove;
+  const calloutStyle: CSSProperties = !rect
+    ? { display: "none" }
+    : dockToBottom
+      ? { position: "fixed", bottom: 8, left: calloutLeft, maxHeight: "60vh", overflowY: "auto", zIndex: 52 }
+      : showBelow
+        ? {
+            position: "fixed",
+            top: visBottom + pad + 12,
+            left: calloutLeft,
+            maxHeight: `calc(100vh - ${visBottom + pad + 12 + 8}px)`,
+            overflowY: "auto",
+            zIndex: 52,
+          }
+        : {
+            position: "fixed",
+            bottom: viewportH - visTop + pad + 12,
+            left: calloutLeft,
+            maxHeight: `calc(100vh - ${viewportH - visTop + pad + 12 + 8}px)`,
+            overflowY: "auto",
+            zIndex: 52,
+          };
 
   return (
     <>
