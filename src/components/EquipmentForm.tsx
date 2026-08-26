@@ -951,7 +951,11 @@ export function EquipmentForm({
                 <img src={entry.photoDataUrls[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
               )}
               {isEmpty && <NoDataBadge />}
-              {result && <StatusPill status={result.status} requirement={result.requirement} />}
+              {result ? (
+                <StatusPill status={result.status} requirement={result.requirement} />
+              ) : (
+                results && <StatusPill status="not_required" requirement="not_addressed" />
+              )}
             </summary>
             <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
 

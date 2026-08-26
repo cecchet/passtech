@@ -25,7 +25,7 @@ const POINTER_STEPS: PointerStep[] = [
   { targetId: "tutorial-option-3", text: "Click Option 3 if you want to see where you can race with your safety gear!" },
   {
     targetId: "tutorial-group-filter",
-    text: "By default, PassTech checks both driver and car safety gear. If you're only interested in the driver safety gear, you can uncheck “Car safety gear.”",
+    text: "By default, PassTech checks driver, car, and rollover-protection safety gear all at once. Uncheck any of the three if you're only interested in the others — for example, uncheck “Car safety gear” to focus on just what you're wearing.",
     onEnter: (actions) => actions.goToReference(),
   },
   {
@@ -45,6 +45,11 @@ const POINTER_STEPS: PointerStep[] = [
   {
     targetId: "tutorial-equipment-summary",
     text: "This box summarizes everything at a glance — one line for required equipment, one for conditional. Click any icon to jump straight to that item further down the page.",
+  },
+  {
+    targetId: "tutorial-mygear",
+    text: "My Gear is your personal space to save named gear sets, so you don't have to re-enter everything each time — check any saved set against a sanctioning body, or against all of them at once.",
+    onEnter: (actions) => actions.goToLanding(),
   },
 ];
 

@@ -69,7 +69,7 @@ export default function Home() {
   const [hasCodriver, setHasCodriver] = useState(false);
   const [carPhotoDataUrl, setCarPhotoDataUrl] = useState<string | undefined>(undefined);
   const [carNote, setCarNote] = useState<string | undefined>(undefined);
-  const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car"]));
+  const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car", "rollcage"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [onlyHaveEquipment, setOnlyHaveEquipment] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -209,7 +209,7 @@ export default function Home() {
   // loading an older saved session) rather than silently applying another body's class overrides.
   const activeClassId = ruleset?.classes?.some((c) => c.id === classId) ? classId : undefined;
   const resultsForSelected = useMemo(
-    () => (ruleset ? filterResultsByGroups(evaluateRuleset(ruleset, entries, undefined, activeClassId), activeGroups) : {}),
+    () => (ruleset ? filterResultsByGroups(evaluateRuleset(ruleset, entries, undefined, activeClassId), activeGroups) : undefined),
     [ruleset, entries, activeGroups, activeClassId]
   );
   const showCodriver = !!ruleset?.supportsCodriver;
@@ -323,7 +323,7 @@ export default function Home() {
     if (!ruleset) return;
     const { downloadBodyFirstReport } = await import("@/lib/pdfReport");
     const withCodriver = showCodriver && hasCodriver;
-    await downloadBodyFirstReport(ruleset, resultsForSelected, withCodriver, codriverResultsForSelected, withCodriver, entries, codriverEntries, carPhotoDataUrl, carNote);
+    await downloadBodyFirstReport(ruleset, resultsForSelected ?? {}, withCodriver, codriverResultsForSelected, withCodriver, entries, codriverEntries, carPhotoDataUrl, carNote);
   };
 
   const handleDownloadEquipmentFirstReport = async () => {
@@ -424,6 +424,7 @@ export default function Home() {
           </section>
           <button
             type="button"
+            id="tutorial-mygear"
             onClick={() => setMode("garage")}
             className="mt-4 flex w-full items-center gap-4 rounded-lg border border-neutral-700 p-5 text-left hover:border-neutral-400 hover:bg-neutral-900"
           >
@@ -454,7 +455,11 @@ export default function Home() {
 
       {mode === "reference" && (
         <section>
-          <h2 className="mb-4 text-lg font-semibold text-amber-400">Sanctioning body requirements</h2>
+          <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+            <img src="/frog-option1.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+            Sanctioning body requirements
+          </h2>
 
           <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
 
@@ -481,7 +486,11 @@ export default function Home() {
 
       {mode === "body-first" && (
         <section>
-          <h2 className="mb-4 text-lg font-semibold text-amber-400">Will my equipment pass tech?</h2>
+          <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+            <img src="/frog-option2.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+            Will my equipment pass tech?
+          </h2>
 
           <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
 
@@ -524,7 +533,7 @@ export default function Home() {
 
           {ruleset && (
             <PassTechVerdict
-              results={resultsForSelected}
+              results={resultsForSelected ?? {}}
               codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined}
               perOccupantAsDriverGroup={showCodriver && hasCodriver}
             />
@@ -579,7 +588,11 @@ export default function Home() {
 
       {mode === "equipment-first" && (
         <section>
-          <h2 className="mb-4 text-lg font-semibold text-amber-400">Where can my equipment race?</h2>
+          <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+            <img src="/frog-option3.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+            Where can my equipment race?
+          </h2>
 
           <label className="mb-4 flex items-center gap-2 text-sm text-neutral-300">
             <input type="checkbox" checked={onlyHaveEquipment} onChange={(e) => setOnlyHaveEquipment(e.target.checked)} />
@@ -654,7 +667,11 @@ export default function Home() {
 
       {mode === "garage" && (
         <section>
-          <h2 className="mb-4 text-lg font-semibold text-amber-400">My Gear</h2>
+          <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+            <img src="/frog-mygear.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+            My Gear
+          </h2>
           <GarageManager onLoadProfile={handleLoadGarageProfile} />
         </section>
       )}

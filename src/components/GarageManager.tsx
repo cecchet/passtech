@@ -273,18 +273,22 @@ export function GarageManager({
                         <button
                           type="button"
                           onClick={() => onLoadProfile(p, "body-first")}
-                          className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
-                          title="Check against one sanctioning body"
+                          className="flex items-center gap-1.5 rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
+                          title="Enter your current safety gear and check it against the current rules of a sanctioning body"
                         >
-                          Check against a body
+                          {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                          <img src="/frog-option2.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
+                          Will my equipment pass tech?
                         </button>
                         <button
                           type="button"
                           onClick={() => onLoadProfile(p, "equipment-first")}
-                          className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
-                          title="Check against every sanctioning body at once"
+                          className="flex items-center gap-1.5 rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
+                          title="Enter your current safety gear once and see which sanctioning bodies it's eligible, incomplete, or rejected for"
                         >
-                          Check against all bodies
+                          {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                          <img src="/frog-option3.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
+                          Where can my equipment race?
                         </button>
                         <ExportMenu label="Export gear set" onExportFile={() => handleExportProfile(p)} onExportEmail={() => handleExportProfileEmail(p)} />
                       </>
@@ -412,16 +416,20 @@ export function GarageManager({
             <button
               type="button"
               onClick={() => onLoadProfile(selected, "body-first")}
-              className="flex-1 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-medium text-emerald-200 hover:bg-emerald-900"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-medium text-emerald-200 hover:bg-emerald-900"
             >
-              Check against a sanctioning body
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/frog-option2.jpg" alt="" className="h-8 w-8 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+              Will my equipment pass tech?
             </button>
             <button
               type="button"
               onClick={() => onLoadProfile(selected, "equipment-first")}
-              className="flex-1 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-medium text-emerald-200 hover:bg-emerald-900"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-medium text-emerald-200 hover:bg-emerald-900"
             >
-              Check against every sanctioning body
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/frog-option3.jpg" alt="" className="h-8 w-8 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+              Where can my equipment race?
             </button>
           </div>
         </div>

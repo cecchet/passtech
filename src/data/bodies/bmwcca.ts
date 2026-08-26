@@ -58,7 +58,11 @@ const clubRacing: Ruleset = {
       requirement: "required",
       acceptedStandards: [
         { standardId: "sfi-38.1", validityYearsFromLabel: 5, note: "Must be inspected and recertified by the original manufacturer every 5 years from the date of manufacture." },
-        { standardId: "fia-8858-2002", noExpiration: true, note: "Tethers must be replaced 5 years after the date of manufacture; no other recertification is required unless the device is damaged." },
+        {
+          standardId: "fia-8858-2002",
+          noExpiration: true,
+          note: "⚠️ The device itself doesn't expire and needs no recertification unless damaged — but its tethers are dated separately and must be replaced 5 years after their own manufacture date. This app only tracks one date for this entry (the device's), so check your tether's date independently even if the device passes here.",
+        },
         { standardId: "fia-8858-2010", noExpiration: true, note: "Not explicitly named by the rulebook (which only cites FIA 8858-2002), but assumed acceptable as the current FIA generation, matching this app's usual convention for bodies with this gap." },
       ],
       citation: { ...sourceDoc, section: "III.B.3 Head and Neck Restraints" },

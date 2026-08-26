@@ -373,7 +373,11 @@ const rallySport: Ruleset = {
       acceptedStandards: [
         { standardId: "sfi-38.1", note: "GRR: 'SFI rated devices must not be expired' — a hard requirement, but the GRR does not itself state a numeric years-old cutoff the way it does for helmets; follow the date on the SFI tag." },
         { standardId: "fia-8858-2002", noExpiration: true },
-        { standardId: "fia-8858-2010", noExpiration: true, note: "An FIA sticker supersedes an SFI sticker. FIA devices don't expire, but tethers are dated and expire at (manufacture year + 5) — not modeled separately here; check tether date independently." },
+        {
+          standardId: "fia-8858-2010",
+          noExpiration: true,
+          note: "⚠️ An FIA sticker supersedes an SFI sticker, and the device itself doesn't expire — but its tethers are dated separately and expire 5 years after their own manufacture date. This app only tracks one date for this entry (the device's), so check your tether's date independently even if the device passes here.",
+        },
       ],
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.36.1.3" },
       confidence: "high",

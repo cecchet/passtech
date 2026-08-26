@@ -247,9 +247,17 @@ const ihraSportsmanET: Ruleset = {
       hnr: {
         requirement: "conditional",
         condition: "May be used in lieu of the SFI 3.3 neck collar once that becomes mandatory (9.00 sec quarter mile / 6.00 sec eighth mile or quicker) — see Neck Collar.",
-        acceptedStandards: [{ standardId: "fia-8858-2002" }, { standardId: "fia-8858-2010" }, { standardId: "sfi-38.1" }],
+        acceptedStandards: [
+          { standardId: "fia-8858-2002" },
+          { standardId: "fia-8858-2010" },
+          {
+            standardId: "sfi-38.1",
+            validityYearsFromLabel: 3,
+            note: "⚠️ IHRA's own SFI Specifications appendix lists Spec 38.1 (Head and Neck Restraint System) at a 3-year recertification interval — shorter than the 5-year interval most other bodies in this app cite for the same spec. Possibly a document error, but this app models what IHRA's own rulebook states; confirm with IHRA tech if your device's label is between 3 and 5 years old.",
+          },
+        ],
         satisfiedByAlternative: "neck_collar",
-        citation: { ...sSportsman, section: "Sportsman Safety and General Guidelines, PROTECTIVE CLOTHING" },
+        citation: { ...sGeneral, section: "General Regulations - All Classes, SFI Specifications" },
         confidence: "high",
       },
       neck_collar: {
