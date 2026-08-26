@@ -533,6 +533,7 @@ export default function Home() {
                   Only check the equipment I have
                 </label>
                 <label
+                  id="tutorial-hide-not-required"
                   className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
                     hideNotRequired ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
                   }`}

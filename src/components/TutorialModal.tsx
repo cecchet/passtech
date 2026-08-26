@@ -99,6 +99,10 @@ const TOURS: Record<TourId, Tour> = {
         text: "Check “Only check the equipment I have” once you've entered your real gear, to hide any category you haven't filled in yet instead of counting it against you.",
       },
       {
+        targetId: "tutorial-hide-not-required",
+        text: "Check “Hide Not Required Gear” to collapse each ruleset's results — and the PDF export — down to just what it actually requires or conditionally requires, instead of listing all 24 categories.",
+      },
+      {
         targetId: "tutorial-codriver-toggle",
         text: "Add a codriver's own gear — this only matters for rally bodies that require one.",
       },
