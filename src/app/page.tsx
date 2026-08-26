@@ -24,7 +24,7 @@ import { BUILD_DATE } from "@/lib/version";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { BrandLogo } from "@/components/BrandLogo";
 import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
-import { TutorialActions, TutorialModal } from "@/components/TutorialModal";
+import { TourId, TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
@@ -46,7 +46,8 @@ interface MissingReport {
 // tell at a glance whether a user reporting an issue is on the latest version or a stale cached one.
 
 const STORAGE_KEY = "safety-gear-check:v2";
-const TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
+const LEGACY_TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
+const TOURS_SEEN_KEY = "safety-gear-check:tours-seen";
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("landing");
@@ -64,7 +65,8 @@ export default function Home() {
   const [activeDisciplines, setActiveDisciplines] = useState<Set<DisciplineGroup>>(new Set(DISCIPLINE_GROUP_ORDER));
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
-  const [showTutorial, setShowTutorial] = useState(false);
+  const [activeTour, setActiveTour] = useState<TourId | null>(null);
+  const [toursSeen, setToursSeen] = useState<Partial<Record<TourId, boolean>>>({});
 
   // One-time hydration from localStorage on mount (must run client-side only, after SSR's default-state render).
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -87,7 +89,14 @@ export default function Home() {
         if (typeof saved.hideNotRequired === "boolean") setHideNotRequired(saved.hideNotRequired);
         if (saved.activeDisciplines) setActiveDisciplines(new Set(saved.activeDisciplines));
       }
-      if (!window.localStorage.getItem(TUTORIAL_SEEN_KEY)) setShowTutorial(true);
+      const rawToursSeen = window.localStorage.getItem(TOURS_SEEN_KEY);
+      if (rawToursSeen) {
+        setToursSeen(JSON.parse(rawToursSeen));
+      } else if (window.localStorage.getItem(LEGACY_TUTORIAL_SEEN_KEY)) {
+        // Pre-dates the per-page tours — the visitor has already seen the landing intro, but every
+        // page-specific tour below is new to them and should still auto-launch on first visit.
+        setToursSeen({ landing: true });
+      }
     } catch {
       // ignore corrupt/unavailable storage
     }
@@ -95,9 +104,33 @@ export default function Home() {
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  // Auto-launches each page's own tour the first time it's visited — but never interrupts a tour
+  // already in progress, and garage/My Gear has no tour of its own to offer.
+  /* eslint-disable react-hooks/set-state-in-effect -- opens a tour in response to a mode change (an external-ish navigation event), not something derivable during render */
+  useEffect(() => {
+    if (!hydrated || activeTour || mode === "garage") return;
+    if (!toursSeen[mode]) setActiveTour(mode);
+  }, [mode, hydrated, activeTour, toursSeen]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
   const closeTutorial = () => {
-    setShowTutorial(false);
-    window.localStorage.setItem(TUTORIAL_SEEN_KEY, "1");
+    if (activeTour) {
+      setToursSeen((prev) => {
+        const next = { ...prev, [activeTour]: true };
+        window.localStorage.setItem(TOURS_SEEN_KEY, JSON.stringify(next));
+        return next;
+      });
+    }
+    setActiveTour(null);
+  };
+
+  const showTutorialForCurrentPage = () => {
+    if (mode === "garage") {
+      setMode("landing");
+      setActiveTour("landing");
+    } else {
+      setActiveTour(mode);
+    }
   };
 
   useEffect(() => {
@@ -152,8 +185,6 @@ export default function Home() {
   };
 
   const tutorialActions: TutorialActions = {
-    goToReference: () => setMode("reference"),
-    goToLanding: () => setMode("landing"),
     selectRuleset: handleRulesetChange,
     selectClass: setClassId,
   };
@@ -389,10 +420,7 @@ export default function Home() {
           <div className="flex shrink-0 gap-2">
             <button
               type="button"
-              onClick={() => {
-                setMode("landing");
-                setShowTutorial(true);
-              }}
+              onClick={showTutorialForCurrentPage}
               className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
             >
               How it works
@@ -495,6 +523,7 @@ export default function Home() {
           extra={
             mode === "equipment-first" ? (
               <label
+                id="tutorial-only-have-equipment"
                 className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
                   onlyHaveEquipment ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
                 }`}
@@ -504,6 +533,7 @@ export default function Home() {
               </label>
             ) : mode === "body-first" ? (
               <label
+                id="tutorial-hide-not-required"
                 className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
                   hideNotRequired ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
                 }`}
@@ -595,11 +625,13 @@ export default function Home() {
           )}
 
           {ruleset && (
-            <PassTechVerdict
-              results={resultsForSelected ?? {}}
-              codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined}
-              perOccupantAsDriverGroup={showCodriver && hasCodriver}
-            />
+            <div id="tutorial-verdict">
+              <PassTechVerdict
+                results={resultsForSelected ?? {}}
+                codriverResults={showCodriver && hasCodriver ? codriverResultsForSelected : undefined}
+                perOccupantAsDriverGroup={showCodriver && hasCodriver}
+              />
+            </div>
           )}
 
           {showCodriver ? (
@@ -661,14 +693,14 @@ export default function Home() {
             Where can my equipment race?
           </h2>
 
-          <label className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
+          <label id="tutorial-codriver-toggle" className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
             <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
             {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
             <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
             Add codriver gear (only affects rally bodies that require one)
           </label>
 
-          <div className="mb-4 rounded-lg border border-neutral-700 p-3">
+          <div id="tutorial-discipline-filter" className="mb-4 rounded-lg border border-neutral-700 p-3">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
             <div className="flex flex-wrap gap-2">
               {DISCIPLINE_GROUPS.map(({ group }) => {
@@ -758,6 +790,9 @@ export default function Home() {
           )}
 
           <div className="mt-6 space-y-6">
+            <p id="tutorial-eligibility-results" className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+              Results, grouped by discipline
+            </p>
             <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
             <ResultGroup
               title={`Eligible under condition (${eligibleConditional.length})`}
@@ -874,7 +909,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <TutorialModal open={showTutorial} onClose={closeTutorial} actions={tutorialActions} />
+      <TutorialModal tour={activeTour ?? "landing"} open={activeTour !== null} onClose={closeTutorial} actions={tutorialActions} />
     </div>
   );
 }

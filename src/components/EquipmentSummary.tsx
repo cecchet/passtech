@@ -274,7 +274,7 @@ export function FilledEquipmentSummary({
   if (items.length === 0 && !actions && !showCarRow) return null;
 
   return (
-    <div className="mb-6 rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
+    <div id="tutorial-equipment-summary" className="mb-6 rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Equipment summary</p>
         {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
