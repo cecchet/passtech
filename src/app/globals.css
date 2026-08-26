@@ -30,18 +30,3 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-
-/*
- * `color-scheme: dark` above makes the browser draw native form controls (select, in particular)
- * with its own dark-mode widget chrome. On Android Chrome that native dark select widget has
- * different internal text-layout metrics than the light one, and they don't line up with our own
- * padding/border/background styling — the visible symptom is the top of the selected option's
- * text getting clipped against the box, since the browser is positioning it for a differently-
- * sized native control than the one actually on screen. Every select in this app is already fully
- * custom-colored (bg-neutral-900, text-neutral-100, etc.), so we don't want or need the native dark
- * widget at all — opting back to the light native layout here fixes the text position without
- * changing how it looks, since our own CSS colors repaint it dark regardless.
- */
-select {
-  color-scheme: light;
-}
