@@ -215,7 +215,7 @@ export function TutorialModal({
           aria-modal="true"
           aria-labelledby="tutorial-title"
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-md rounded-lg border border-neutral-700 bg-neutral-900 p-6"
+          className="flex max-h-[85vh] w-full max-w-md flex-col overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 p-6"
         >
           <div className="flex items-start justify-between gap-4">
             <h2 id="tutorial-title" className="text-lg font-bold">
@@ -233,7 +233,11 @@ export function TutorialModal({
 
           {current.intro.image && (
             // eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img>
-            <img src={current.intro.image} alt="" className="mt-3 w-full rounded-lg border border-neutral-700" />
+            <img
+              src={current.intro.image}
+              alt=""
+              className="mx-auto mt-3 max-h-48 w-auto rounded-lg border border-neutral-700 object-contain"
+            />
           )}
 
           <p className="mt-3 text-sm text-neutral-300">{current.intro.text}</p>
