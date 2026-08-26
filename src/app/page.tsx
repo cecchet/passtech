@@ -425,6 +425,14 @@ export default function Home() {
             >
               How it works
             </button>
+            <a
+              href="https://cecchet.github.io/passtech/passtech-user-manual.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+            >
+              User manual
+            </a>
             {(mode === "body-first" || mode === "equipment-first") && (
               <button
                 type="button"
