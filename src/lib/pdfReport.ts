@@ -863,7 +863,8 @@ export async function downloadEquipmentFirstReport(
   entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>,
   codriverEntries?: Partial<Record<EquipmentCategory, EquipmentEntry>>,
   carPhotoDataUrl?: string,
-  carNote?: string
+  carNote?: string,
+  hideNotRequired?: boolean
 ) {
   const allCategories = new Set<EquipmentCategory>();
   items.forEach((i) => categoriesIn(i.results, i.codriverResults).forEach((c) => allCategories.add(c)));
@@ -889,10 +890,16 @@ export async function downloadEquipmentFirstReport(
           size: 10.5,
         });
         w.text(formatSourceLine(rs), { size: 7.5, color: COLOR.faint, italic: true });
-        writeResultsByGroup(w, rs, results, false, entries);
+        writeResultsByGroup(w, rs, results, false, entries, hideNotRequired);
         if (codriverResults && Object.keys(codriverResults).length > 0) {
-          w.subheading("Codriver", COLOR.teal);
-          sortedResultCategories(codriverResults).forEach((category) => writeCategoryResult(w, codriverResults[category]!, codriverEntries?.[category]));
+          const codriverCategories = sortedResultCategories(codriverResults).filter(
+            (category) =>
+              !hideNotRequired || codriverResults[category]!.requirement === "required" || codriverResults[category]!.requirement === "conditional"
+          );
+          if (codriverCategories.length > 0) {
+            w.subheading("Codriver", COLOR.teal);
+            codriverCategories.forEach((category) => writeCategoryResult(w, codriverResults[category]!, codriverEntries?.[category]));
+          }
         }
         w.hr();
       });

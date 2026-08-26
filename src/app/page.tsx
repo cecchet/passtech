@@ -396,7 +396,7 @@ export default function Home() {
 
   const handleDownloadEquipmentFirstReport = async () => {
     const { downloadEquipmentFirstReport } = await import("@/lib/pdfReport");
-    await downloadEquipmentFirstReport(disciplineFilteredResults, onlyHaveEquipment, entries, codriverEntries, carPhotoDataUrl, carNote);
+    await downloadEquipmentFirstReport(disciplineFilteredResults, onlyHaveEquipment, entries, codriverEntries, carPhotoDataUrl, carNote, hideNotRequired);
   };
 
   return (
@@ -522,15 +522,25 @@ export default function Home() {
           onChange={setActiveGroups}
           extra={
             mode === "equipment-first" ? (
-              <label
-                id="tutorial-only-have-equipment"
-                className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                  onlyHaveEquipment ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
-                }`}
-              >
-                <input type="checkbox" checked={onlyHaveEquipment} onChange={(e) => setOnlyHaveEquipment(e.target.checked)} />
-                Only check the equipment I have
-              </label>
+              <>
+                <label
+                  id="tutorial-only-have-equipment"
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
+                    onlyHaveEquipment ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
+                  }`}
+                >
+                  <input type="checkbox" checked={onlyHaveEquipment} onChange={(e) => setOnlyHaveEquipment(e.target.checked)} />
+                  Only check the equipment I have
+                </label>
+                <label
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
+                    hideNotRequired ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
+                  }`}
+                >
+                  <input type="checkbox" checked={hideNotRequired} onChange={(e) => setHideNotRequired(e.target.checked)} />
+                  Hide <b>Not Required</b> Gear
+                </label>
+              </>
             ) : mode === "body-first" ? (
               <label
                 id="tutorial-hide-not-required"
@@ -793,14 +803,27 @@ export default function Home() {
             <p id="tutorial-eligibility-results" className="text-xs font-medium uppercase tracking-wide text-neutral-500">
               Results, grouped by discipline
             </p>
-            <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
+            <ResultGroup
+              title={`Eligible (${eligible.length})`}
+              items={eligible}
+              accent="border-emerald-700"
+              titleColor="text-emerald-400"
+              hideNotRequired={hideNotRequired}
+            />
             <ResultGroup
               title={`Eligible under condition (${eligibleConditional.length})`}
               items={eligibleConditional}
               accent="border-yellow-700"
               titleColor="text-yellow-400"
+              hideNotRequired={hideNotRequired}
             />
-            <ResultGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-700" titleColor="text-red-400" />
+            <ResultGroup
+              title={`Does not meet the requirements (${notEligible.length})`}
+              items={notEligible}
+              accent="border-red-700"
+              titleColor="text-red-400"
+              hideNotRequired={hideNotRequired}
+            />
           </div>
         </section>
       )}
@@ -1294,11 +1317,18 @@ function ClassPicker({
   );
 }
 
+/** Keeps a category row if it has a result at all, and — unless hideNotRequired is on — unless this ruleset doesn't mark it required or conditional. Same rule EquipmentForm's "Hide Not Required Gear" uses for the single-ruleset form. */
+function keepForHideNotRequired(result: CategoryResults[EquipmentCategory] | undefined, hideNotRequired?: boolean): boolean {
+  if (!result) return false;
+  return !hideNotRequired || result.requirement === "required" || result.requirement === "conditional";
+}
+
 function ResultGroup({
   title,
   items,
   accent,
   titleColor,
+  hideNotRequired,
 }: {
   title: string;
   items: {
@@ -1309,6 +1339,7 @@ function ResultGroup({
   }[];
   accent: string;
   titleColor: string;
+  hideNotRequired?: boolean;
 }) {
   if (items.length === 0) return null;
   const groups = DISCIPLINE_GROUP_ORDER.map((discipline) => ({ discipline, items: items.filter((i) => i.rs.disciplineGroup === discipline) })).filter(
@@ -1325,35 +1356,45 @@ function ResultGroup({
               {discipline}
             </h3>
             <div className="space-y-3">
-              {items.map(({ rs, results, codriverResults, needsMoreGear }) => (
-                <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
-                  <summary className="cursor-pointer text-sm font-medium">
-                    {rs.bodyName} — {rs.disciplineName}
-                    {needsMoreGear && (
-                      <span className="ml-2 rounded border border-amber-700 bg-amber-950 px-1.5 py-0.5 text-xs font-normal text-amber-300">
-                        Additional equipment required to compete
-                      </span>
-                    )}
-                  </summary>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {CATEGORY_ORDER.map((category) => {
-                      const result = results[category];
-                      return result ? <ResultRow key={category} result={result} /> : null;
-                    })}
-                  </div>
-                  {codriverResults && Object.keys(codriverResults).length > 0 && (
-                    <div className="mt-3">
-                      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
-                      <div className="grid gap-2 sm:grid-cols-2">
-                        {CATEGORY_ORDER.map((category) => {
-                          const result = codriverResults[category];
-                          return result ? <ResultRow key={`${category}-codriver`} result={result} /> : null;
-                        })}
+              {items.map(({ rs, results, codriverResults, needsMoreGear }) => {
+                const shownCategories = CATEGORY_ORDER.filter((category) => keepForHideNotRequired(results[category], hideNotRequired));
+                const shownCodriverCategories = codriverResults
+                  ? CATEGORY_ORDER.filter((category) => keepForHideNotRequired(codriverResults[category], hideNotRequired))
+                  : [];
+                return (
+                  <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
+                    <summary className="cursor-pointer text-sm font-medium">
+                      {rs.bodyName} — {rs.disciplineName}
+                      {needsMoreGear && (
+                        <span className="ml-2 rounded border border-amber-700 bg-amber-950 px-1.5 py-0.5 text-xs font-normal text-amber-300">
+                          Additional equipment required to compete
+                        </span>
+                      )}
+                    </summary>
+                    {shownCategories.length > 0 ? (
+                      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                        {shownCategories.map((category) => (
+                          <ResultRow key={category} result={results[category]!} />
+                        ))}
                       </div>
-                    </div>
-                  )}
-                </details>
-              ))}
+                    ) : (
+                      <p className="mt-3 text-xs text-neutral-400">
+                        Nothing required or conditional for this body — uncheck &ldquo;Hide Not Required Gear&rdquo; to see the rest.
+                      </p>
+                    )}
+                    {codriverResults && shownCodriverCategories.length > 0 && (
+                      <div className="mt-3">
+                        <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {shownCodriverCategories.map((category) => (
+                            <ResultRow key={`${category}-codriver`} result={codriverResults[category]!} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </details>
+                );
+              })}
             </div>
           </div>
         ))}
