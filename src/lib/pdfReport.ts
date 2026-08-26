@@ -1,9 +1,10 @@
 import jsPDF from "jspdf";
-import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
-import { CATEGORY_META, CATEGORY_ORDER, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
+import { CarBodyStyle, CategoryGroup, CategoryRule, DisciplineGroup, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
+import { CATEGORY_META, CATEGORY_ORDER, DISCIPLINE_GROUP_ORDER, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
 import { NOT_LISTED, logbookBodyLabel, paddingStandardLabel, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResult, CategoryResults, EquipmentEntry, bodyStyleLabel, describeExtinguisherOptions, effectiveCategories, isPendingConditional, isViolation } from "@/lib/matcher";
 import { CATEGORY_ICON_SPEC } from "@/components/icons/CategoryIcons";
+import { DISCIPLINE_ICON_SRC } from "@/components/icons/DisciplineIcons";
 import { BUILD_DATE } from "@/lib/version";
 
 const MARGIN = 15;
@@ -217,6 +218,17 @@ async function preloadCategoryIcons(categories: readonly EquipmentCategory[]): P
   );
 }
 
+const disciplineIconDataUrlCache = new Map<DisciplineGroup, string | null>();
+
+async function preloadDisciplineIcons(disciplines: readonly DisciplineGroup[]): Promise<void> {
+  const need = disciplines.filter((d) => !disciplineIconDataUrlCache.has(d));
+  await Promise.all(
+    need.map(async (d) => {
+      disciplineIconDataUrlCache.set(d, await loadIconDataUrl(DISCIPLINE_ICON_SRC[d]));
+    })
+  );
+}
+
 interface LogoImage {
   dataUrl: string;
   aspect: number;
@@ -317,6 +329,27 @@ class PdfReportWriter {
     this.spacer(2);
     this.text(value.toUpperCase(), { size: 9.5, bold: true, color });
     this.spacer(0.5);
+  }
+
+  /** Same styling as subheading(), with a small mascot icon (when it loaded successfully) to the left — used for the discipline group headers in the Option 3 report. */
+  subheadingWithIcon(value: string, color: RGB, iconDataUrl: string | null) {
+    this.spacer(2);
+    const size = 9.5;
+    const iconSize = 5;
+    const textX = MARGIN + (iconDataUrl ? iconSize + ICON_GAP : 0);
+    this.ensureSpace(iconSize + 1);
+    if (iconDataUrl) {
+      try {
+        this.doc.addImage(iconDataUrl, "PNG", MARGIN, this.y - 3.6, iconSize, iconSize);
+      } catch {
+        // A malformed data URL shouldn't take the whole report down — just skip this one icon.
+      }
+    }
+    this.doc.setFont("helvetica", "bold");
+    this.doc.setFontSize(size);
+    this.doc.setTextColor(...color);
+    this.doc.text(sanitizeForPdf(value.toUpperCase()), textX, this.y);
+    this.y += Math.max(iconSize - 1, size * 0.42) + 0.8;
   }
 
   /**
@@ -680,7 +713,8 @@ function writeResultsByGroup(
   ruleset: Ruleset,
   results: CategoryResults,
   perOccupantAsDriverGroup: boolean,
-  entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>
+  entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>,
+  hideNotRequired?: boolean
 ) {
   const groupFor = (category: EquipmentCategory): CategoryGroup =>
     perOccupantAsDriverGroup && isPerOccupantCategory(category) ? "driver" : CATEGORY_META[category].group;
@@ -689,6 +723,7 @@ function writeResultsByGroup(
   CATEGORY_ORDER.forEach((category) => {
     const result = results[category];
     if (!result) return;
+    if (hideNotRequired && result.requirement !== "required" && result.requirement !== "conditional") return;
     const group = groupFor(category);
     const last = sections[sections.length - 1];
     if (last && last.group === group) last.categories.push(category);
@@ -764,7 +799,8 @@ export async function downloadBodyFirstReport(
   entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>,
   codriverEntries?: Partial<Record<EquipmentCategory, EquipmentEntry>>,
   carPhotoDataUrl?: string,
-  carNote?: string
+  carNote?: string,
+  hideNotRequired?: boolean
 ) {
   const [, logo] = await Promise.all([preloadCategoryIcons(categoriesIn(results, codriverResults)), loadLogo()]);
 
@@ -786,11 +822,17 @@ export async function downloadBodyFirstReport(
   writeVerdictSummary(w, ruleset, results, codriverResults, perOccupantAsDriverGroup);
 
   w.heading("Driver & Car Safety Gear");
-  writeResultsByGroup(w, ruleset, results, perOccupantAsDriverGroup, entries);
+  writeResultsByGroup(w, ruleset, results, perOccupantAsDriverGroup, entries, hideNotRequired);
 
   if (hasCodriver && codriverResults && Object.keys(codriverResults).length > 0) {
-    w.heading("Codriver Safety Gear", { color: COLOR.teal });
-    sortedResultCategories(codriverResults).forEach((category) => writeCategoryResult(w, codriverResults[category]!, codriverEntries?.[category]));
+    const codriverCategories = sortedResultCategories(codriverResults).filter(
+      (category) =>
+        !hideNotRequired || codriverResults[category]!.requirement === "required" || codriverResults[category]!.requirement === "conditional"
+    );
+    if (codriverCategories.length > 0) {
+      w.heading("Codriver Safety Gear", { color: COLOR.teal });
+      codriverCategories.forEach((category) => writeCategoryResult(w, codriverResults[category]!, codriverEntries?.[category]));
+    }
   }
 
   w.save(`passtech-tech-check-${ruleset.id}.pdf`);
@@ -825,29 +867,35 @@ export async function downloadEquipmentFirstReport(
 ) {
   const allCategories = new Set<EquipmentCategory>();
   items.forEach((i) => categoriesIn(i.results, i.codriverResults).forEach((c) => allCategories.add(c)));
-  const [, logo] = await Promise.all([preloadCategoryIcons([...allCategories]), loadLogo()]);
+  const disciplinesPresent = DISCIPLINE_GROUP_ORDER.filter((d) => items.some((i) => i.rs.disciplineGroup === d));
+  const [, , logo] = await Promise.all([preloadCategoryIcons([...allCategories]), preloadDisciplineIcons(disciplinesPresent), loadLogo()]);
 
   const w = new PdfReportWriter();
   header(w, logo, "Where Can My Equipment Race?", onlyHaveEquipment ? "Checked against the equipment you have entered only" : "Checked against every category, entered or not");
   w.carInfo(carPhotoDataUrl, carNote);
 
   ELIGIBILITY_SECTION.forEach(({ status, title, color }) => {
-    const group = items.filter((i) => i.status === status);
-    if (group.length === 0) return;
-    w.heading(`${title} (${group.length})`, { color });
-    group.forEach(({ rs, results, codriverResults, needsMoreGear }) => {
-      w.spacer(2);
-      w.text(`${rs.bodyName} — ${rs.disciplineName}${needsMoreGear ? "  [additional equipment required to compete]" : ""}`, {
-        bold: true,
-        size: 10.5,
+    const bucket = items.filter((i) => i.status === status);
+    if (bucket.length === 0) return;
+    w.heading(`${title} (${bucket.length})`, { color });
+    DISCIPLINE_GROUP_ORDER.forEach((discipline) => {
+      const group = bucket.filter((i) => i.rs.disciplineGroup === discipline);
+      if (group.length === 0) return;
+      w.subheadingWithIcon(discipline, COLOR.muted, disciplineIconDataUrlCache.get(discipline) ?? null);
+      group.forEach(({ rs, results, codriverResults, needsMoreGear }) => {
+        w.spacer(2);
+        w.text(`${rs.bodyName} — ${rs.disciplineName}${needsMoreGear ? "  [additional equipment required to compete]" : ""}`, {
+          bold: true,
+          size: 10.5,
+        });
+        w.text(formatSourceLine(rs), { size: 7.5, color: COLOR.faint, italic: true });
+        writeResultsByGroup(w, rs, results, false, entries);
+        if (codriverResults && Object.keys(codriverResults).length > 0) {
+          w.subheading("Codriver", COLOR.teal);
+          sortedResultCategories(codriverResults).forEach((category) => writeCategoryResult(w, codriverResults[category]!, codriverEntries?.[category]));
+        }
+        w.hr();
       });
-      w.text(formatSourceLine(rs), { size: 7.5, color: COLOR.faint, italic: true });
-      writeResultsByGroup(w, rs, results, false, entries);
-      if (codriverResults && Object.keys(codriverResults).length > 0) {
-        w.subheading("Codriver", COLOR.teal);
-        sortedResultCategories(codriverResults).forEach((category) => writeCategoryResult(w, codriverResults[category]!, codriverEntries?.[category]));
-      }
-      w.hr();
     });
   });
 

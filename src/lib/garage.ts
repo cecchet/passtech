@@ -73,10 +73,10 @@ function slugify(name: string): string {
   return slug || "gear-set";
 }
 
-/** Export filename — includes the gear set's own name (slugified) when exporting a single profile, otherwise a generic "garage" name for a full multi-profile backup. */
+/** Export filename — includes the gear set's own name (slugified) when exporting a single profile, otherwise a generic "my-gear" name for a full multi-profile backup. */
 export function garageExportFilename(profileName?: string): string {
   const date = new Date().toISOString().slice(0, 10);
-  return profileName ? `passtech-garage-${slugify(profileName)}-${date}.json` : `passtech-garage-${date}.json`;
+  return profileName ? `passtech-gear-${slugify(profileName)}-${date}.json` : `passtech-my-gear-${date}.json`;
 }
 
 /** Parses a previously-exported garage file. Throws with a user-presentable message on anything that doesn't look like a valid export. */
@@ -88,7 +88,7 @@ export function parseGarageImport(json: string): GarageProfile[] {
     throw new Error("That file isn't valid JSON.");
   }
   const profiles = (parsed as { profiles?: unknown })?.profiles;
-  if (!Array.isArray(profiles)) throw new Error("That file doesn't look like a PassTech garage export.");
+  if (!Array.isArray(profiles)) throw new Error("That file doesn't look like a PassTech My Gear export.");
   return profiles.filter(
     (p): p is GarageProfile => p && typeof p === "object" && typeof p.id === "string" && typeof p.name === "string" && typeof p.entries === "object"
   );

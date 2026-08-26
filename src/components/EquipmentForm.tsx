@@ -53,6 +53,10 @@ interface Props {
    * uncluttered.
    */
   showPhotoUpload?: boolean;
+  /** Body-first only: hide any category this ruleset doesn't mark "required" (recommended, conditional, not-addressed, or with no result at all). */
+  hideNotRequired?: boolean;
+  /** Equipment-first only: hide any category with nothing entered — mirrors "Only check the equipment I have" so the form only shows what's actually being evaluated. */
+  hideEmpty?: boolean;
 }
 
 const DEFAULT_MAX_ITEM_PHOTOS = 3;
@@ -885,6 +889,8 @@ export function EquipmentForm({
   orderResetKey,
   perOccupantAsDriverGroup,
   showPhotoUpload,
+  hideNotRequired,
+  hideEmpty,
 }: Props) {
   const groupOf = (c: EquipmentCategory): CategoryGroup =>
     occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
@@ -892,7 +898,13 @@ export function EquipmentForm({
   // category's raw CATEGORY_META group — otherwise a caller restricting activeGroups to just
   // {"driver"} (to render the driver-only section, with a codriver section slotted in after it)
   // would miss seat/belts/window net even though they're displaying as "driver" group right now.
-  const visibleCategories = CATEGORY_ORDER.filter((c) => activeGroups.has(groupOf(c)) && (occupant === "driver" || isPerOccupantCategory(c)));
+  const visibleCategories = CATEGORY_ORDER.filter(
+    (c) =>
+      activeGroups.has(groupOf(c)) &&
+      (occupant === "driver" || isPerOccupantCategory(c)) &&
+      (!hideNotRequired || results?.[c]?.requirement === "required" || results?.[c]?.requirement === "conditional") &&
+      (!hideEmpty || !isEntryEmpty(c, entries[c]))
+  );
 
   // Compute the status-sorted order once per orderResetKey (the current ruleset) and hold it
   // fixed after that, even as entries/results change the underlying statuses — otherwise a card
@@ -908,7 +920,14 @@ export function EquipmentForm({
   }
 
   if (orderedCategories.length === 0) {
-    return <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">No categories selected — check a safety gear section above.</p>;
+    const message =
+      hideNotRequired && results
+        ? "Nothing required in the sections checked above — uncheck “Hide Not Required Gear” to see the rest."
+        : hideEmpty
+          ? "No gear data available — Uncheck “Only check the equipment I have” to add some."
+          : "No categories selected — check a safety gear section above.";
+    const colorClass = hideEmpty ? "text-red-400" : "text-neutral-400";
+    return <p className={`rounded-lg border border-neutral-700 p-4 text-sm ${colorClass}`}>{message}</p>;
   }
 
   return (

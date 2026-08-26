@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, RulesetClass, getRuleset } from "@/data";
-import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
+import { CATEGORY_META, CATEGORY_ORDER, DISCIPLINE_GROUP_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { EquipmentSummary, FilledEquipmentSummary } from "@/components/EquipmentSummary";
 import { GarageManager } from "@/components/GarageManager";
@@ -23,25 +23,13 @@ import { GarageProfile, newGarageProfile, loadGarage, saveGarage } from "@/lib/g
 import { BUILD_DATE } from "@/lib/version";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { BrandLogo } from "@/components/BrandLogo";
+import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
 import { TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
 
 const reportButtonClass = "mb-4 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800";
-
-const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
-  "Autocross",
-  "RallyCross",
-  "Rally",
-  "Road Racing",
-  "Hillclimb",
-  "Ice Racing",
-  "Endurance Racing",
-  "HPDE / Track Day",
-  "Drag Racing",
-  "Karting",
-];
 
 const DISCIPLINE_GROUPS = DISCIPLINE_GROUP_ORDER.map((group) => ({
   group,
@@ -72,6 +60,8 @@ export default function Home() {
   const [activeGroups, setActiveGroups] = useState<Set<CategoryGroup>>(new Set(["driver", "car", "rollcage"]));
   const [missingReports, setMissingReports] = useState<MissingReport[]>([]);
   const [onlyHaveEquipment, setOnlyHaveEquipment] = useState(false);
+  const [hideNotRequired, setHideNotRequired] = useState(false);
+  const [activeDisciplines, setActiveDisciplines] = useState<Set<DisciplineGroup>>(new Set(DISCIPLINE_GROUP_ORDER));
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
@@ -94,6 +84,8 @@ export default function Home() {
         if (saved.mode) setMode(saved.mode);
         if (saved.missingReports) setMissingReports(saved.missingReports);
         if (typeof saved.onlyHaveEquipment === "boolean") setOnlyHaveEquipment(saved.onlyHaveEquipment);
+        if (typeof saved.hideNotRequired === "boolean") setHideNotRequired(saved.hideNotRequired);
+        if (saved.activeDisciplines) setActiveDisciplines(new Set(saved.activeDisciplines));
       }
       if (!window.localStorage.getItem(TUTORIAL_SEEN_KEY)) setShowTutorial(true);
     } catch {
@@ -123,10 +115,36 @@ export default function Home() {
         mode,
         missingReports,
         onlyHaveEquipment,
+        hideNotRequired,
         activeGroups: Array.from(activeGroups),
+        activeDisciplines: Array.from(activeDisciplines),
       })
     );
-  }, [entries, codriverEntries, hasCodriver, carPhotoDataUrl, carNote, rulesetId, classId, mode, missingReports, onlyHaveEquipment, activeGroups, hydrated]);
+  }, [
+    entries,
+    codriverEntries,
+    hasCodriver,
+    carPhotoDataUrl,
+    carNote,
+    rulesetId,
+    classId,
+    mode,
+    missingReports,
+    onlyHaveEquipment,
+    hideNotRequired,
+    activeGroups,
+    activeDisciplines,
+    hydrated,
+  ]);
+
+  const toggleDiscipline = (group: DisciplineGroup) => {
+    setActiveDisciplines((prev) => {
+      const next = new Set(prev);
+      if (next.has(group)) next.delete(group);
+      else next.add(group);
+      return next;
+    });
+  };
 
   const handleRulesetChange = (id: string) => {
     setRulesetId(id);
@@ -278,11 +296,19 @@ export default function Home() {
     [entries, codriverEntries, hasCodriver, activeGroups, onlyHaveEquipment]
   );
 
-  const eligible = allResults.filter((r) => r.status === "eligible");
-  const eligibleConditional = allResults.filter((r) => r.status === "eligible_conditional");
-  const notEligible = allResults.filter((r) => r.status === "not_eligible");
+  const disciplineFilteredResults = useMemo(
+    () => allResults.filter((r) => activeDisciplines.has(r.rs.disciplineGroup)),
+    [allResults, activeDisciplines]
+  );
 
-  // For each provided category: how many of the 36 rulesets currently accept it (status
+  const hasAnyEquipmentEntered =
+    CATEGORY_ORDER.some((c) => !isEntryEmpty(c, entries[c])) || (hasCodriver && CATEGORY_ORDER.some((c) => !isEntryEmpty(c, codriverEntries[c])));
+
+  const eligible = disciplineFilteredResults.filter((r) => r.status === "eligible");
+  const eligibleConditional = disciplineFilteredResults.filter((r) => r.status === "eligible_conditional");
+  const notEligible = disciplineFilteredResults.filter((r) => r.status === "not_eligible");
+
+  // For each provided category: how many of the currently-filtered rulesets accept it (status
   // ok/recommended_only) — the little green badge on the Equipment Summary icons in Option 3.
   // Driver and codriver items are counted independently since they're different physical pieces
   // of gear that can each satisfy a different set of bodies.
@@ -290,26 +316,26 @@ export default function Home() {
     const counts: Partial<Record<EquipmentCategory, number>> = {};
     CATEGORY_ORDER.forEach((category) => {
       if (isEntryEmpty(category, entries[category])) return;
-      counts[category] = allResults.filter(({ results }) => {
+      counts[category] = disciplineFilteredResults.filter(({ results }) => {
         const result = results[category];
         return result && (result.status === "ok" || result.status === "recommended_only");
       }).length;
     });
     return counts;
-  }, [allResults, entries]);
+  }, [disciplineFilteredResults, entries]);
 
   const codriverFilledEligibility = useMemo(() => {
     if (!hasCodriver) return {};
     const counts: Partial<Record<EquipmentCategory, number>> = {};
     CATEGORY_ORDER.forEach((category) => {
       if (isEntryEmpty(category, codriverEntries[category])) return;
-      counts[category] = allResults.filter(({ codriverResults }) => {
+      counts[category] = disciplineFilteredResults.filter(({ codriverResults }) => {
         const result = codriverResults?.[category];
         return result && (result.status === "ok" || result.status === "recommended_only");
       }).length;
     });
     return counts;
-  }, [allResults, codriverEntries, hasCodriver]);
+  }, [disciplineFilteredResults, codriverEntries, hasCodriver]);
 
   // jsPDF is only needed once someone actually asks for a report, so it's dynamically imported
   // here rather than pulled into the main bundle for every visitor.
@@ -323,12 +349,23 @@ export default function Home() {
     if (!ruleset) return;
     const { downloadBodyFirstReport } = await import("@/lib/pdfReport");
     const withCodriver = showCodriver && hasCodriver;
-    await downloadBodyFirstReport(ruleset, resultsForSelected ?? {}, withCodriver, codriverResultsForSelected, withCodriver, entries, codriverEntries, carPhotoDataUrl, carNote);
+    await downloadBodyFirstReport(
+      ruleset,
+      resultsForSelected ?? {},
+      withCodriver,
+      codriverResultsForSelected,
+      withCodriver,
+      entries,
+      codriverEntries,
+      carPhotoDataUrl,
+      carNote,
+      hideNotRequired
+    );
   };
 
   const handleDownloadEquipmentFirstReport = async () => {
     const { downloadEquipmentFirstReport } = await import("@/lib/pdfReport");
-    await downloadEquipmentFirstReport(allResults, onlyHaveEquipment, entries, codriverEntries, carPhotoDataUrl, carNote);
+    await downloadEquipmentFirstReport(disciplineFilteredResults, onlyHaveEquipment, entries, codriverEntries, carPhotoDataUrl, carNote);
   };
 
   return (
@@ -451,7 +488,33 @@ export default function Home() {
         </button>
       )}
 
-      {mode !== "landing" && mode !== "garage" && <GroupFilter active={activeGroups} onChange={setActiveGroups} />}
+      {mode !== "landing" && mode !== "garage" && (
+        <GroupFilter
+          active={activeGroups}
+          onChange={setActiveGroups}
+          extra={
+            mode === "equipment-first" ? (
+              <label
+                className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
+                  onlyHaveEquipment ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
+                }`}
+              >
+                <input type="checkbox" checked={onlyHaveEquipment} onChange={(e) => setOnlyHaveEquipment(e.target.checked)} />
+                Only check the equipment I have
+              </label>
+            ) : mode === "body-first" ? (
+              <label
+                className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
+                  hideNotRequired ? "border-amber-700 text-amber-400 bg-neutral-900" : "border-neutral-700 text-neutral-500"
+                }`}
+              >
+                <input type="checkbox" checked={hideNotRequired} onChange={(e) => setHideNotRequired(e.target.checked)} />
+                Hide <b>Not Required</b> Gear
+              </label>
+            ) : undefined
+          }
+        />
+      )}
 
       {mode === "reference" && (
         <section>
@@ -550,6 +613,7 @@ export default function Home() {
                 orderResetKey={rulesetId}
                 perOccupantAsDriverGroup={hasCodriver}
                 showPhotoUpload
+                hideNotRequired={hideNotRequired}
               />
               {hasCodriver && (
                 <CodriverGearSection
@@ -559,6 +623,7 @@ export default function Home() {
                   results={codriverResultsForSelected}
                   activeGroups={activeGroups}
                   orderResetKey={rulesetId}
+                  hideNotRequired={hideNotRequired}
                 />
               )}
               <EquipmentForm
@@ -570,6 +635,7 @@ export default function Home() {
                 orderResetKey={rulesetId}
                 perOccupantAsDriverGroup={hasCodriver}
                 showPhotoUpload
+                hideNotRequired={hideNotRequired}
               />
             </>
           ) : (
@@ -581,6 +647,7 @@ export default function Home() {
               activeGroups={activeGroups}
               orderResetKey={rulesetId}
               showPhotoUpload
+              hideNotRequired={hideNotRequired}
             />
           )}
         </section>
@@ -594,17 +661,33 @@ export default function Home() {
             Where can my equipment race?
           </h2>
 
-          <label className="mb-4 flex items-center gap-2 text-sm text-neutral-300">
-            <input type="checkbox" checked={onlyHaveEquipment} onChange={(e) => setOnlyHaveEquipment(e.target.checked)} />
-            Only check the equipment I have
-          </label>
-
           <label className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
             <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
             {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
             <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
             Add codriver gear (only affects rally bodies that require one)
           </label>
+
+          <div className="mb-4 rounded-lg border border-neutral-700 p-3">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+            <div className="flex flex-wrap gap-2">
+              {DISCIPLINE_GROUPS.map(({ group }) => {
+                const isActive = activeDisciplines.has(group);
+                return (
+                  <label
+                    key={group}
+                    className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[21px] font-medium ${
+                      isActive ? "border-neutral-500 text-neutral-200 bg-neutral-900" : "border-neutral-700 text-neutral-500"
+                    }`}
+                  >
+                    <input type="checkbox" checked={isActive} onChange={() => toggleDiscipline(group)} />
+                    <DisciplineIcon group={group} className="h-9 w-9" />
+                    {group}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
 
           <FilledEquipmentSummary
             entries={entries}
@@ -628,6 +711,13 @@ export default function Home() {
             }
           />
 
+          {onlyHaveEquipment && hasAnyEquipmentEntered && (
+            <p className="mb-4 text-xs font-bold italic text-yellow-400">
+              Uncheck &ldquo;Only check the equipment I have&rdquo; above if you want to add new equipment — items with nothing entered stay hidden below
+              until then.
+            </p>
+          )}
+
           {hasCodriver ? (
             <>
               <EquipmentForm
@@ -637,12 +727,14 @@ export default function Home() {
                 activeGroups={intersectGroups(activeGroups, ["driver"])}
                 perOccupantAsDriverGroup
                 showPhotoUpload
+                hideEmpty={onlyHaveEquipment}
               />
               <CodriverGearSection
                 entries={codriverEntries}
                 onChange={handleCodriverChange}
                 onReportMissing={handleCodriverReportMissing}
                 activeGroups={activeGroups}
+                hideEmpty={onlyHaveEquipment}
               />
               <EquipmentForm
                 entries={entries}
@@ -651,16 +743,29 @@ export default function Home() {
                 activeGroups={intersectGroups(activeGroups, ["car", "rollcage"])}
                 perOccupantAsDriverGroup
                 showPhotoUpload
+                hideEmpty={onlyHaveEquipment}
               />
             </>
           ) : (
-            <EquipmentForm entries={entries} onChange={handleChange} onReportMissing={handleReportMissing} activeGroups={activeGroups} showPhotoUpload />
+            <EquipmentForm
+              entries={entries}
+              onChange={handleChange}
+              onReportMissing={handleReportMissing}
+              activeGroups={activeGroups}
+              showPhotoUpload
+              hideEmpty={onlyHaveEquipment}
+            />
           )}
 
           <div className="mt-6 space-y-6">
-            <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" />
-            <ResultGroup title={`Eligible under condition (${eligibleConditional.length})`} items={eligibleConditional} accent="border-yellow-700" />
-            <ResultGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-700" />
+            <ResultGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
+            <ResultGroup
+              title={`Eligible under condition (${eligibleConditional.length})`}
+              items={eligibleConditional}
+              accent="border-yellow-700"
+              titleColor="text-yellow-400"
+            />
+            <ResultGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-700" titleColor="text-red-400" />
           </div>
         </section>
       )}
@@ -774,7 +879,15 @@ export default function Home() {
   );
 }
 
-function GroupFilter({ active, onChange }: { active: Set<CategoryGroup>; onChange: (next: Set<CategoryGroup>) => void }) {
+function GroupFilter({
+  active,
+  onChange,
+  extra,
+}: {
+  active: Set<CategoryGroup>;
+  onChange: (next: Set<CategoryGroup>) => void;
+  extra?: ReactNode;
+}) {
   const toggle = (group: CategoryGroup) => {
     const next = new Set(active);
     if (next.has(group)) next.delete(group);
@@ -802,6 +915,7 @@ function GroupFilter({ active, onChange }: { active: Set<CategoryGroup>; onChang
             </label>
           );
         })}
+        {extra}
       </div>
     </div>
   );
@@ -956,7 +1070,7 @@ function SaveToGarageButton({ onSave }: { onSave: (name: string) => void }) {
     const trimmed = name.trim();
     if (!trimmed) return;
     onSave(trimmed);
-    setSavedMessage(`Saved "${trimmed}" to your garage.`);
+    setSavedMessage(`Saved "${trimmed}" to My Gear.`);
     setOpen(false);
     setName("");
     setTimeout(() => setSavedMessage(null), 4000);
@@ -973,7 +1087,7 @@ function SaveToGarageButton({ onSave }: { onSave: (name: string) => void }) {
         onClick={() => setOpen(true)}
         className="mb-4 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
       >
-        💾 Save this gear to my garage
+        💾 Save this gear to My Gear
       </button>
     );
   }
@@ -1024,6 +1138,8 @@ function CodriverGearSection({
   results,
   activeGroups,
   orderResetKey,
+  hideNotRequired,
+  hideEmpty,
 }: {
   entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
   onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
@@ -1031,6 +1147,8 @@ function CodriverGearSection({
   results?: CategoryResults;
   activeGroups: ReadonlySet<CategoryGroup>;
   orderResetKey?: string;
+  hideNotRequired?: boolean;
+  hideEmpty?: boolean;
 }) {
   return (
     <div className="my-6">
@@ -1044,6 +1162,8 @@ function CodriverGearSection({
         orderResetKey={orderResetKey}
         occupant="codriver"
         showPhotoUpload
+        hideNotRequired={hideNotRequired}
+        hideEmpty={hideEmpty}
       />
     </div>
   );
@@ -1143,6 +1263,7 @@ function ResultGroup({
   title,
   items,
   accent,
+  titleColor,
 }: {
   title: string;
   items: {
@@ -1152,40 +1273,54 @@ function ResultGroup({
     needsMoreGear?: boolean;
   }[];
   accent: string;
+  titleColor: string;
 }) {
   if (items.length === 0) return null;
+  const groups = DISCIPLINE_GROUP_ORDER.map((discipline) => ({ discipline, items: items.filter((i) => i.rs.disciplineGroup === discipline) })).filter(
+    (g) => g.items.length > 0
+  );
   return (
     <div>
-      <h2 className="mb-2 text-sm font-semibold">{title}</h2>
-      <div className="space-y-3">
-        {items.map(({ rs, results, codriverResults, needsMoreGear }) => (
-          <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
-            <summary className="cursor-pointer text-sm font-medium">
-              {rs.bodyName} — {rs.disciplineName}
-              {needsMoreGear && (
-                <span className="ml-2 rounded border border-amber-700 bg-amber-950 px-1.5 py-0.5 text-xs font-normal text-amber-300">
-                  Additional equipment required to compete
-                </span>
-              )}
-            </summary>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              {CATEGORY_ORDER.map((category) => {
-                const result = results[category];
-                return result ? <ResultRow key={category} result={result} /> : null;
-              })}
+      <h2 className={`mb-2 text-lg font-bold ${titleColor}`}>{title}</h2>
+      <div className="space-y-5">
+        {groups.map(({ discipline, items }) => (
+          <div key={discipline}>
+            <h3 className="mb-2 flex items-center gap-2 text-lg font-semibold uppercase tracking-wide text-neutral-500">
+              <DisciplineIcon group={discipline} className="h-[30px] w-[30px]" />
+              {discipline}
+            </h3>
+            <div className="space-y-3">
+              {items.map(({ rs, results, codriverResults, needsMoreGear }) => (
+                <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
+                  <summary className="cursor-pointer text-sm font-medium">
+                    {rs.bodyName} — {rs.disciplineName}
+                    {needsMoreGear && (
+                      <span className="ml-2 rounded border border-amber-700 bg-amber-950 px-1.5 py-0.5 text-xs font-normal text-amber-300">
+                        Additional equipment required to compete
+                      </span>
+                    )}
+                  </summary>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {CATEGORY_ORDER.map((category) => {
+                      const result = results[category];
+                      return result ? <ResultRow key={category} result={result} /> : null;
+                    })}
+                  </div>
+                  {codriverResults && Object.keys(codriverResults).length > 0 && (
+                    <div className="mt-3">
+                      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {CATEGORY_ORDER.map((category) => {
+                          const result = codriverResults[category];
+                          return result ? <ResultRow key={`${category}-codriver`} result={result} /> : null;
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </details>
+              ))}
             </div>
-            {codriverResults && Object.keys(codriverResults).length > 0 && (
-              <div className="mt-3">
-                <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {CATEGORY_ORDER.map((category) => {
-                    const result = codriverResults[category];
-                    return result ? <ResultRow key={`${category}-codriver`} result={result} /> : null;
-                  })}
-                </div>
-              </div>
-            )}
-          </details>
+          </div>
         ))}
       </div>
     </div>

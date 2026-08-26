@@ -245,7 +245,7 @@ export function GarageManager({
 
           {profiles.length === 0 ? (
             <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">
-              Nothing saved yet — click &quot;+ New gear set&quot; to start building your garage.
+              Nothing saved yet — click &quot;+ New gear set&quot; to start building your My Gear collection.
             </p>
           ) : (
             <div className="flex flex-col gap-2">
@@ -319,7 +319,7 @@ export function GarageManager({
         <div>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <button type="button" onClick={() => setSelectedId(null)} className="text-sm font-semibold text-amber-400 hover:text-amber-300">
-              ← Back to garage
+              ← Back to My Gear
             </button>
             <ExportMenu label="Export this gear set" onExportFile={() => handleExportProfile(selected)} onExportEmail={() => handleExportProfileEmail(selected)} />
           </div>
@@ -374,7 +374,7 @@ export function GarageManager({
               <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
               Add codriver gear
             </label>
-            <label className={`${buttonClass} cursor-pointer`} title="Import a gear-set file your codriver exported from their own PassTech garage">
+            <label className={`${buttonClass} cursor-pointer`} title="Import a gear-set file your codriver exported from their own PassTech My Gear">
               Import codriver gear set from file
               <input
                 type="file"

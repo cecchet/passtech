@@ -1,6 +1,20 @@
-import { CategoryGroup, EquipmentCategory } from "./types";
+import { CategoryGroup, DisciplineGroup, EquipmentCategory } from "./types";
 
 export const GROUP_ORDER: CategoryGroup[] = ["driver", "car", "rollcage"];
+
+/** Canonical display order for the 10 discipline groups — used by the main ruleset picker, the Option 3 discipline filter/grouping, and the matching PDF report. */
+export const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
+  "Autocross",
+  "RallyCross",
+  "Rally",
+  "Road Racing",
+  "Hillclimb",
+  "Ice Racing",
+  "Endurance Racing",
+  "HPDE / Track Day",
+  "Drag Racing",
+  "Karting",
+];
 
 export const GROUP_LABELS: Record<CategoryGroup, string> = {
   driver: "Driver Safety Gear",
