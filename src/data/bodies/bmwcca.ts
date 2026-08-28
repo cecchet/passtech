@@ -255,6 +255,22 @@ const clubRacing: Ruleset = {
       notes:
         "Not mentioned anywhere in the rulebook. The Driver Egress Requirement (must be able to exit within 15 seconds with all safety equipment in place, harnesses buckled, and nets in place) and the window net's own quick one-handed release are the closest related provisions, but no window-breaker tool or seatbelt cutter is required.",
     },
+    hood_pins: {
+      requirement: "conditional",
+      condition:
+        "Not required outright — the stock hood latch may be retained. Only triggered if the stock latching mechanism is removed: at least two hood pins are then required to hold the hood closed. Applies identically across all classes.",
+      citation: { ...sourceDoc, section: "III.B, Hood Pins" },
+      confidence: "high",
+      notes:
+        "\"Hood pins are allowed in all classes, but this does not permit the removal of stock hinges where not permitted under other rules. The stock latching mechanism may be removed when at least two hood pins are used to hold the hood closed.\" A genuine rulebook-native car-prep rule (its own named subsection, immediately after the Electrical Cut-off Switch clause), not a certification-standard item — no SFI/FIA spec is cited for the pins themselves.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "IV.B, Pit Stop and Pit Lane — Fueling" },
+      confidence: "high",
+      notes:
+        "Checked the rulebook for spill kit / spill containment / absorbent material language — no requirement to carry an onboard spill kit in the car was found. The only related clause is pit-lane hot-fueling procedure: \"Fuel spills larger than 9 inches in diameter will be penalized. A fuel catch pan is allowed to be placed on the ground below the car's fuel filler neck... This is encouraged when required by the specific track for protection of the pavement.\" That's a permissive (not mandatory), fueling-crew/pit-lane provision — not equipment carried in the race car — matching this file's existing fire_extinguisher entry's treatment of the parallel fueling-crew item as out of scope for the car.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,
@@ -466,6 +482,19 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the Driving Schools/HPDE section.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes:
+        "Checked the manual (read directly and in full, 32 pages) for hood pin / hood fastener / hood latch language — not addressed for Driving Schools/HPDE. The only 'hood' references anywhere in the manual are a generic pre-event tech-inspection checklist item ('Hood & Deck lids: Secure') and car-numbering placement/size rules — neither is a hood-pin/positive-latch requirement.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the Driving Schools/HPDE section — no spill kit, absorbent material, oil dry, or drip pan requirement of any kind was found.",
+    },
     rollover_protection: {
       requirement: "conditional",
       rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
@@ -631,6 +660,19 @@ const autocross: Ruleset = {
       confidence: "high",
       notes: "Not mentioned for autocross/gymkhana/car-control clinics.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes: "Not mentioned for autocross/gymkhana/car-control clinics — no hood pin / hood fastener / hood latch language of any kind was found in the manual (read directly and in full).",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc, section: "2.4.2.21" },
+      confidence: "high",
+      notes:
+        "'Appropriate fire extinguishers, flags, and material for cleaning up fluid spills must be present' — this is course/event-level equipment the organizer must provide, not a requirement that each competing car carry its own spill kit. No car-carried absorbent-material/oil-dry/drip-pan requirement was found. Same low-speed/low-fluid-risk reasoning that already applies to fire_extinguisher for this discipline.",
+    },
     rollover_protection: {
       requirement: "conditional",
       condition:
@@ -786,6 +828,19 @@ const iceAutocross: Ruleset = {
       citation: { ...deSourceDoc },
       confidence: "high",
       notes: "Not mentioned for ice autocross or, via inheritance, for regular autocross.",
+    },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc },
+      confidence: "high",
+      notes: "Not mentioned for ice autocross or, via inheritance, for regular autocross — no hood pin / hood fastener / hood latch language of any kind was found in the manual (read directly and in full).",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...deSourceDoc, section: "2.4.2.21 (applies via 2.5.1)" },
+      confidence: "high",
+      notes:
+        "Inherited from regular Autocross: 'Appropriate fire extinguishers, flags, and material for cleaning up fluid spills must be present' — event/course-level equipment the organizer must provide, not a per-car requirement. No car-carried spill-kit requirement was found; a 40 mph max low-speed event with no meaningful fuel-spill risk profile beyond what Autocross already presents.",
     },
     rollover_protection: {
       requirement: "conditional",

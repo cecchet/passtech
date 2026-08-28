@@ -131,6 +131,19 @@ const gravelTrials: Ruleset = {
       notes:
         "Re-checked the complete 2026 document (all numbered sections 1-35 plus Appendix A) — 'window net' still does not appear anywhere, matching the arm_restraint category's finding. Independently verified for this ruleset (not assumed from Climb to the Clouds' window-net-or-arm-restraint rule) — no either/or relationship exists here since neither item is addressed at all.",
     },
+    hood_pins: {
+      requirement: "required",
+      citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025", section: "9.9" },
+      confidence: "high",
+      notes:
+        "Rule 9.9 ('Hood pins'): 'Hoods shall be fixed closed with hood pins accessible from the outside. Other fastening devices (inside or outside) shall be rendered inoperative, except for the secondary catch, which may be retained.'",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025" },
+      confidence: "high",
+      notes: "Full document reviewed (sections 1-35 plus Appendix A) — no spill kit / absorbent material requirement found anywhere in the document.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresWelded: true,
@@ -473,6 +486,19 @@ const climbToTheClouds: Ruleset = {
         "Rule 1.2.1: a seatbelt cutter must be in the vehicle and within reach of the driver. No separate window-breaking tool is addressed beyond the polycarbonate (Lexan) window material requirement (Rule 1.4.2).",
       citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "1.2" },
       confidence: "high",
+    },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026" },
+      confidence: "high",
+      notes:
+        "Full-document search for 'hood pin'/'hood latch'/'hood strap'/'positive latch' and for the bare word 'pin'/'pins' found zero matches. The only hood-adjacent text is Rule 2.3.8's fire-retardant hood/helmet skirt (a driver-worn item, not a fastener) and Rule 8.6.3's under-hood insulation allowance — neither addresses securing the hood itself. Not addressed.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026" },
+      confidence: "high",
+      notes: "Full-document search found no spill kit / absorbent material requirement anywhere in the document.",
     },
     rollover_protection: {
       requirement: "required",

@@ -175,6 +175,20 @@ const trackfest: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the tech form's 10-item checklist.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "medium",
+      notes:
+        "Not mentioned in the tech form's 10-item checklist ('Snell certified helmet, closed toe shoes and valid driver's license' is the entire published safety-equipment requirement). Confidence is medium rather than high given how thin MassTuning's published rules are generally (masstuning.com itself redirects straight to the MotorsportReg registration hub, with no standalone rulebook) — no hood pin requirement is stated, but it's plausible an individual event/track could impose one that isn't reflected in this club-level checklist.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...techForm },
+      confidence: "medium",
+      notes:
+        "Not mentioned in the tech form's 10-item checklist. Same caveat as hood_pins above — MassTuning's published rules are thin/informal (no standalone rulebook beyond the per-event tech/waiver form), so this reflects what's actually published rather than a confirmed absence at every host track.",
+    },
     rollover_protection: {
       requirement: "not_addressed",
       citation: { ...techForm },

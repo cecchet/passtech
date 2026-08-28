@@ -86,6 +86,8 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "emergency_triangle",
   "first_aid_kit",
   "window_breaker",
+  "hood_pins",
+  "spill_kit",
   "parachute",
   // Rollover protection
   "rollover_protection",
@@ -380,6 +382,20 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     youtubeVideoTitle: "Stage Rally First Aid Kit — Dan Shirley",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
+  },
+  hood_pins: {
+    label: "Hood Pins",
+    group: "car",
+    hybrid: false,
+    presenceOnly: true,
+    hint: "Usually a presence requirement above some speed/discipline threshold — securing the hood beyond the stock latch so it can't fly open or off. No certification standard involved.",
+  },
+  spill_kit: {
+    label: "Spill Kit",
+    group: "car",
+    hybrid: false,
+    presenceOnly: true,
+    hint: "An onboard kit of absorbent material to contain a fluid spill (oil, coolant, fuel) — usually a presence requirement, most common in endurance and drag racing. No certification standard involved.",
   },
   parachute: {
     label: "Parachute",

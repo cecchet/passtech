@@ -245,6 +245,20 @@ const endurance: Ruleset = {
       notes:
         "No requirement for a car- or team-carried first aid kit was found in the rules page. An on-site ambulance crew is provided by Lemons as part of entry (per the Prices section), but that's an event service, not a car/team equipment requirement.",
     },
+    hood_pins: {
+      requirement: "required",
+      citation: { ...sourceDoc, section: "3.10.3" },
+      confidence: "medium",
+      notes:
+        "Rule text (§3.10.3): 'OE hoods with enough strength and area to reasonably contain flying parts, fire, and fluids. Hoods must be securely mounted by OE hardware and/or strong fasteners at all corners.' Lemons never uses the term 'hood pins,' and OE hardware alone can satisfy this if it already secures every corner — but requiring fastening 'at all corners' goes beyond what a typical stock front latch provides, so in practice most cars end up adding hood pins or equivalent positive fasteners at the rear corners to comply. Confidence is medium because this is a general secure-mounting requirement rather than a rule naming hood pins specifically.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "3.3.2-3.3.3" },
+      confidence: "high",
+      notes:
+        "Checked the rulebook for spill kit / absorbent-material language — not addressed as a team-carried requirement. §3.3.2 (Fuel Spills): 'Fuel spills should be quickly diluted with water or Cold Fire... Officials are happy to give you free clean-up supplies—come find one ASAP.' §3.3.3 (Fluid Spills and Disposal): 'Please prevent and contain fluid spills. If you do spill, come to Lemons HQ or alert any track official ASAP. We'll help you get it cleaned up.' Both rules put the actual absorbent/clean-up supplies in Lemons officials' hands rather than requiring each team to carry its own spill kit, so no presence requirement is modeled here.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,

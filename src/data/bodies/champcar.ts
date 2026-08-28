@@ -294,6 +294,20 @@ const endurance: Ruleset = {
       notes:
         "No first aid kit requirement was found anywhere in the BCCR. §1.3.4 requires competitors to carry personal health/medical insurance, but that's an insurance mandate, not an equipment requirement for a first aid kit.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "9.5.1" },
+      confidence: "medium",
+      notes:
+        "No hood-pin-specific requirement found. §9.5.1 (Body Panels): 'All operable components of the vehicle's body (e.g. - hood, doors, hatch or trunk lid) shall have a latching mechanism or be securely fastened.' This is a general body-panel rule satisfied by a functioning stock latch alone (it's phrased as latch OR secure fastening, not a mandate to go beyond the stock latch), so it isn't modeled as a hood_pins requirement — flagged here since a driver adding hood pins would obviously also satisfy it.",
+    },
+    spill_kit: {
+      requirement: "required",
+      citation: { ...sourceDoc, section: "8.1.2.2" },
+      confidence: "high",
+      notes:
+        "Rule text (§8.1.2): 'While in the pits, each team entered in the event is REQUIRED to have ready a minimum of one (1) each: ... 8.1.2.2. Ten (10) pound bag of grease sweep, kitty litter or other absorbent for oil leaks and/or fuel spillage in their fuel storage area.' This is pit/paddock-area team equipment (kept at the fuel storage area) rather than something mounted in the car itself, but it is an explicit, mandatory absorbent spill-containment kit every team must have on hand. Separately, §8.1.2.3 requires a metal or chemical-resistant fueling catch pan (≥3\" deep, ≥1 gal capacity) — related but distinct fueling equipment, not modeled here since it has no absorbent-material component of its own.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,

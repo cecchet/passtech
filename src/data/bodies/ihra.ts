@@ -202,6 +202,19 @@ const ihraSportsmanET: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned in the chapters reviewed.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sGeneral },
+      confidence: "medium",
+      notes: "The official ihra.com rules page and rulebook PDFs returned a Cloudflare access-denied response and could not be fetched directly; checked instead against a third-party-hosted mirror of the 2024 IHRA Rulebook (one year older than this ruleset's cited 2026 edition). That copy's class-specific HOOD entries only cross-reference \"See General Regulations,\" but General Regulations itself has no HOOD entry (alphabetically it jumps straight from HARMONIC BALANCERS to IGNITION) — an apparent gap in the rulebook's own cross-reference. A full-text search of that mirror found no \"hood pin,\" \"hood fastener,\" \"hood latch,\" or \"positive latch\" requirement anywhere. Confirm directly with IHRA tech given the unverified current-edition source.",
+    },
+    spill_kit: {
+      requirement: "conditional",
+      condition: "Mandatory (an Engine Containment System — diaper or belly pan — with a non-flammable absorbent pad) only for supercharged/nitrous-assisted vehicles running 5.00 sec (eighth mile) / 7.99 sec (quarter mile) or quicker. Not required for naturally-aspirated cars or slower forced-induction/nitrous cars.",
+      citation: { ...sGeneral, section: "General Regulations - All Classes, ENGINE CONTAINMENT SYSTEM" },
+      confidence: "medium",
+      notes: "The official ihra.com rules page and rulebook PDFs returned a Cloudflare access-denied response and could not be fetched directly; checked instead against a third-party-hosted mirror of the 2024 IHRA Rulebook (one year older than this ruleset's cited 2026 edition). That copy's General Regulations separately require a coolant catch-can (min. 1 pint) for every car regardless of E.T. band — but that's a fixed container plumbed to the cooling system, not a portable kit of absorbent material, so it's treated as a related-but-distinct requirement rather than satisfying this category (consistent with how this app treats similar catch-tank/catch-can rules elsewhere, e.g. SCCA GCR's coolant catch tank). The actual match for a portable absorbent spill kit is the mandatory non-flammable absorbent pad in the Engine Containment System required of quicker supercharged/nitrous cars. Confirm directly with IHRA tech given the unverified current-edition source.",
+    },
     kill_switch: {
       requirement: "conditional",
       condition: "Mandatory if the battery is relocated or a class specifically requires it (\"Mandatory if the battery is relocated or is specified by class requirements\"). Unconditionally mandatory in the quickest E.T. band regardless of battery location — see that band.",

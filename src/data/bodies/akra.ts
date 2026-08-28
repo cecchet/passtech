@@ -121,6 +121,22 @@ const akraKarting: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned anywhere in the tech manual — not a typical kart safety item given the open cockpit design.",
     },
+    // hood_pins/spill_kit are car-group categories, unlike the driver-gear-only categories above
+    // (see the file-header note on why car categories are otherwise omitted entirely for karting).
+    // These two are newly tracked app-wide, so they're checked and recorded explicitly here even
+    // though the answer for karting is a confident "not applicable."
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "Section 4, Kart Types and Construction" },
+      confidence: "high",
+      notes: "AKRA karts (sit-up and laydown enduro/shifter classes alike) have no hood/engine cover — bodywork is a nose cone, side panels, and belly pans attached per the detailed bodywork rules in Section 4, with no mention of hood pins or a comparable fastener-security requirement.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "Section 3.B.8, Fuel Systems" },
+      confidence: "high",
+      notes: "No onboard spill-kit requirement anywhere in the manual, and no adjacent catch-container/overflow rule either (unlike some other karting bodies) — the fuel system section covers puncture-resistant tanks and secure leak-proof closures but says nothing about spill containment or cleanup.",
+    },
   },
 };
 

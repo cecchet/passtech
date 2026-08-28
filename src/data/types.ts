@@ -16,6 +16,8 @@ export type EquipmentCategory =
   | "fire_extinguisher"
   | "fire_suppression"
   | "window_breaker"
+  | "hood_pins"
+  | "spill_kit"
   | "kill_switch"
   | "tow_hook"
   | "tow_rope"

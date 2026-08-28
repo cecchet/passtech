@@ -209,6 +209,18 @@ const de: Ruleset = {
       notes:
         "No personal/car-carried first aid kit is required. The document requires event-level medical coverage instead: 'At minimum, one EMT trained attendant and one emergency equipped vehicle must be on-site at all times while cars are on track' (§5(m)).",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "No hood pin, hood fastener, or positive hood-latching requirement found anywhere in the national Minimum Standards document (17-page document searched in full).",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "No spill kit, spill containment, or absorbent-material requirement found anywhere in the national Minimum Standards document.",
+    },
     rollover_protection: {
       requirement: "conditional",
       rolloverProtectionByBodyStyle: {

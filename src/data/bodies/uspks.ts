@@ -126,6 +126,22 @@ const uspksKarting: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned anywhere in the rulebook — not a typical kart safety item given the open cockpit design.",
     },
+    // hood_pins/spill_kit are car-group categories, unlike the driver-gear-only categories above
+    // (see the file-header note on why car categories are otherwise omitted entirely for karting).
+    // These two are newly tracked app-wide, so they're checked and recorded explicitly here even
+    // though the answer for karting is a confident "not applicable."
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "201.16, Bodywork Components" },
+      confidence: "high",
+      notes: "USPKS karts have no hood/engine cover — bodywork is defined as two side pods, a nose cone, and a driver fairing, with the nose cone secured by OEM butterfly clamps (CIK-homologated push-back mounts on IAME classes). The rulebook covers bodywork attachment in detail and never mentions hood pins or an equivalent fastener-security requirement.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "506.14, Radiator" },
+      confidence: "medium",
+      notes: "No requirement for a driver-carried spill kit (absorbent material) anywhere in the rulebook. Water-cooled classes (X30, KZ) do require \"a radiator catch container for overflow\" (506.14, 507.11) — a narrower, built-in overflow-catch requirement rather than a portable absorbent spill-cleanup kit, so it isn't modeled as satisfying this category.",
+    },
   },
   classOverrides: {
     junior: {

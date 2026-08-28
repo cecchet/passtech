@@ -252,6 +252,19 @@ const roadRacing: Ruleset = {
       confidence: "high",
       notes: "Full document search found no requirement for competitors to carry a first aid kit in their car.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { title: "NASA CCR", version: "2026.3" },
+      confidence: "high",
+      notes:
+        "Full-document search of the CCR (all ~100 pages) for 'hood pin'/'hood latch'/'hood strap'/'positive latch' and for the bare word 'pin'/'pins' found only one unrelated hit ('Petty bar... may pin or trap' a passenger, §4.5) — no hood-fastening requirement anywhere in the CCR.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "NASA CCR", version: "2026.3" },
+      confidence: "high",
+      notes: "Full-document search found no spill-kit/absorbent-material requirement anywhere in the CCR.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,
@@ -564,6 +577,18 @@ const rallySport: Ruleset = {
         "GRR §3.16: a comprehensive first aid kit must be carried in the passenger compartment, containing at minimum: antiseptic (ointment or liquid), gauze pads or rolls, adhesive tape, an arm sling, safety pins, scissors, two 'space' blankets, and a first aid manual. A tourniquet is currently optional but flagged in the GRR as something that 'may be required in the future.'",
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.16" },
       confidence: "high",
+    },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0" },
+      confidence: "high",
+      notes: "Full-document search of GRR Section 3 for 'hood pin'/'hood latch'/'hood strap'/'positive latch' and for the bare word 'pin'/'pins' found zero matches — not addressed.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0" },
+      confidence: "high",
+      notes: "Full-document search of GRR Section 3 for spill-kit/spill-containment/absorbent-material language found zero matches — not addressed.",
     },
     rollover_protection: {
       requirement: "required",

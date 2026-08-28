@@ -235,6 +235,18 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
     confidence: "high",
     notes: "Not mentioned anywhere across Safety Levels 1-3 of this document.",
   },
+  hood_pins: {
+    requirement: "not_addressed",
+    citation: SCCA_TT_LEVEL2_SOURCE,
+    confidence: "high",
+    notes: "Not mentioned anywhere across Safety Levels 1-3 of this document — confirmed via a direct read of the full rules page, including the Safety Level 1/2 vehicle-equipment and body-panel clauses.",
+  },
+  spill_kit: {
+    requirement: "not_addressed",
+    citation: SCCA_TT_LEVEL2_SOURCE,
+    confidence: "high",
+    notes: "Not mentioned anywhere across Safety Levels 1-3 of this document.",
+  },
   rollover_protection: {
     requirement: "required",
     rolloverProtectionRequiresFullCage: false,

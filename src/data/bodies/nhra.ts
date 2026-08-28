@@ -355,6 +355,19 @@ const nhraSportsmanET: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned in the Section 5A/5B text reviewed.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...s5a, section: "Section 5A, BODY (HOOD)" },
+      confidence: "high",
+      notes: "Checked the rulebook for hood pin / hood fastener language — not addressed. Section 5A/5B's HOOD rule states only \"Optional. Carburetors must be covered by flash shield or scoop. Hood scoop permitted.\" A full-text search of the entire 2026 NHRA Rulebook (every section, not just 5A/5B) found no \"hood pin,\" \"hood fastener,\" \"hood latch,\" or \"positive latch\" requirement anywhere — the concept simply isn't addressed at this level.",
+    },
+    spill_kit: {
+      requirement: "conditional",
+      condition: "Mandatory (with an oil-absorbent liner) only once a car runs 7.49 seconds or quicker; merely permitted, not required, at 7.50 sec and slower.",
+      citation: { ...s5a, section: "Section 5A, ENGINE (LOWER ENGINE CONTAINMENT)" },
+      confidence: "high",
+      notes: "A coolant catch-can (min. 1 pint, per Section 5A's LIQUID OVERFLOW rule and General Regulations 1:7) is separately mandatory across every E.T. band — but that's a fixed container plumbed to the cooling system, not a portable kit of absorbent material, so it's treated as a related-but-distinct requirement rather than satisfying this category (consistent with how this app treats similar catch-tank/catch-can rules elsewhere, e.g. SCCA GCR's coolant catch tank). The actual match for a portable absorbent spill kit is the lower engine oil-retention device: permitted (optional) at 7.50 sec and slower, but mandatory with an oil-absorbent liner at 7.49 sec or quicker.",
+    },
     kill_switch: KILL_SWITCH_RULE,
     tow_hook: {
       requirement: "not_addressed",

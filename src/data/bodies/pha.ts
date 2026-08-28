@@ -276,6 +276,20 @@ const timeTrialHillclimb: Ruleset = {
       notes:
         "Full document search found no requirement for competitors to carry a first aid kit in their car. PHA does mandate event-level medical provisions — a BLS unit with at least two certified caregivers including one EMT, a course response vehicle, and a wrecker (§5.16.2) — but nothing about driver-carried first aid supplies.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "8.3.H" },
+      confidence: "high",
+      notes:
+        "PHA §8.3.H (Technical & Safety Inspection Points, applies to 'all competition vehicles' regardless of class): 'Hood and Engine Compartment - Shall be securely fastened.' A general secure-fastening requirement satisfied by a functioning stock hood latch — PHA doesn't separately mandate hood pins or another positive fastener beyond that anywhere in the document.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "5.15.3.D, 5.16.2.2.C, 5.16.2.5.H" },
+      confidence: "high",
+      notes:
+        "No onboard spill-kit / absorbent-material requirement is placed on the competitor's own car. PHA requires absorbent materials (e.g. grease sweep, oil dry) as corner-station equipment (§5.15.3.D), and requires the event's Course Response Vehicle to carry absorbent materials and oil dry compound (§5.16.2.2.C, §5.16.2.5.H) — event/course-level equipment, not something each driver's car must carry.",
+    },
     rollover_protection: {
       requirement: "conditional",
       rolloverProtectionRequiresFullCage: false,

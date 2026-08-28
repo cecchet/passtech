@@ -193,6 +193,18 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in HOD's public materials.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...techSheet, section: "Safety Equipment / Miscellaneous checklist" },
+      confidence: "high",
+      notes: "No hood pin, hood fastener, or positive hood-latching requirement found in the Self-Tech Sheet's checklist (full-text search), the FAQ, or the policies page.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...techSheet, section: "Safety Equipment / Miscellaneous checklist" },
+      confidence: "high",
+      notes: "No spill kit, spill containment, or absorbent-material requirement found in the Self-Tech Sheet's checklist, the FAQ, or the policies page. The checklist's 'Catch container on radiator overflow' item covers coolant catch-tanks specifically, not a general onboard spill kit.",
+    },
     rollover_protection: {
       requirement: "conditional",
       rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },

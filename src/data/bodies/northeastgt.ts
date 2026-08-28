@@ -305,6 +305,22 @@ const raceGear: Ruleset = {
       confidence: "high",
       notes: "Not mentioned anywhere in the rulebook (fully read this pass — see file-level note).",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...rulebook },
+      confidence: "high",
+      notes:
+        "Checked the rulebook for hood pin / hood fastener language — not addressed; no requirement, recommendation, or mention found. The only 'hood' references anywhere in the document are unrelated bodywork/aero classification items (e.g. 'hood vents' listed as an allowed OEM-Plus modifier under vehicle classification) — not a hood-securing/latching rule.",
+    },
+    spill_kit: {
+      requirement: "conditional",
+      condition:
+        "Not addressed as a car-carried item for any format, and pit lane refueling itself is Endurance-only ('No pitlane refueling is allowed, except for endurance races' — 3F.5), so this doesn't reach Sprint or Time Attack teams/cars at all. Endurance-format teams specifically ARE required to have pit spill-cleanup equipment on hand: 'a supply of oil dry, a broom, dustpan and a bucket or waste can' plus 'a fuel catch pan or drip pan, of a minimum of 1.5 sq. ft. in area and a minimum capacity of 1.5 gallons. No cookie sheets or pizza pans.' (3F.11.a, c).",
+      citation: { ...rulebook, section: "Chapter 3, Section F.11 — Pit Stall & Pit Equipment" },
+      confidence: "high",
+      notes:
+        "This is pit-box/pit-lane equipment tied to the endurance format's hot-pit fueling stops, not something installed in the car — but it's the closest and only real match to this app's spill_kit category found anywhere in the document. The general fueling section separately (and non-endurance-specific in wording, though pit lane refueling itself is endurance-only) also states 'A fuel catch pan must be used where fuel may spill onto the ground during fueling' and 'All spills shall be cleaned up immediately and liquids disposed of properly' (3B.12-13), reinforcing that spill containment is a real, if pit-equipment-scoped, requirement rather than an oversight. See the Time Attack class override for why this doesn't reach that format at all.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,
@@ -409,6 +425,13 @@ const raceGear: Ruleset = {
       fire_suppression: { requirement: "not_addressed", citation: { ...rulebook, section: "Chapter 6 intro; 6E title" }, confidence: "high", notes: TIME_ATTACK_CAR_GEAR_NOTE },
       kill_switch: { requirement: "not_addressed", citation: { ...rulebook, section: "Chapter 6 intro; 6E title" }, confidence: "high", notes: TIME_ATTACK_CAR_GEAR_NOTE },
       tow_hook: { requirement: "not_addressed", citation: { ...rulebook, section: "Chapter 6 intro; 6E title" }, confidence: "high", notes: TIME_ATTACK_CAR_GEAR_NOTE },
+      spill_kit: {
+        requirement: "not_addressed",
+        citation: { ...rulebook, section: "Chapter 3, Section F — Pit Stall & Pit Equipment; F.5" },
+        confidence: "high",
+        notes:
+          "The base rules' spill_kit entry is conditional on the Endurance format's pit equipment list (3F.11), not on Chapter 6 Section E like the rest of this override block — but the conclusion is the same for a different reason: '5. No pitlane refueling is allowed, except for endurance races' (3F.5) means Time Attack cars never do the hot-pit fueling stop that the spill-kit equipment list is tied to, so the requirement doesn't reach Time Attack either way.",
+      },
       rollover_protection: {
         requirement: "not_addressed",
         citation: { ...rulebook, section: "Chapter 6 intro; 6E title" },

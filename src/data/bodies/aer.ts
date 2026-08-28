@@ -238,6 +238,20 @@ const endurance: Ruleset = {
       confidence: "high",
       notes: "No first aid kit requirement was found anywhere in the rulebook.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "Checked the rulebook for hood pin / hood fastener / hood latch / positive latch language (both a fetch of the rulebook page and a direct download-and-grep of the underlying rulebook HTML for 'hood') — not addressed; no requirement, recommendation, or mention found anywhere in the current text.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "8.10" },
+      confidence: "high",
+      notes:
+        "Checked the rulebook for spill kit / spill containment / absorbent-material / oil-dry / kitty-litter language (both a fetch of the rulebook page and a direct download-and-grep of the underlying rulebook HTML) — not addressed; no requirement for teams to carry an absorbent spill-containment kit was found. Separately, §8.10 requires 'a sturdy metal, non-sparking catch pan at least two and a half inches deep' positioned to catch spilled fuel during all fueling operations — that's fueling-procedure equipment with no absorbent-material component, so it isn't treated as satisfying this category (the same catch-pan-without-absorbent distinction drawn for other bodies in this app).",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,

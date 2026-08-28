@@ -209,6 +209,20 @@ const solo: Ruleset = {
       confidence: "high",
       notes: "Not required and not mentioned anywhere in the rulebook — confirmed via full-document search.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "13.2.C" },
+      confidence: "high",
+      notes:
+        "§13.2.C (Street Category, Bodywork): 'Hood straps or fasteners may be added.' Similar optional-addition language recurs for other categories (e.g. Prepared: 'Alternate attachment devices may be added to hood and deck lid to supplement or replace the latches'). Always framed as a permitted addition, never a requirement — no Solo class mandates hood pins/straps, confirmed via full-document search.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA National Solo Rules", version: "2026 Edition", section: "2.2.N" },
+      confidence: "high",
+      notes:
+        "§2.2.N (Course Safety and Layout Rules) requires the host Region to provide 'appropriate fire extinguishers, flags, and material for cleaning up fluid spills' — an event/site-operational requirement on the organizing Region, not a requirement that a competitor carry an onboard spill kit in their car. No car-carried spill kit is required or mentioned anywhere in the rulebook — confirmed via full-document search.",
+    },
     rollover_protection: {
       requirement: "recommended",
       rolloverProtectionTubingSpec: SOLO_APPENDIX_C_TUBING_SPEC,
@@ -555,9 +569,29 @@ const rallycross: Ruleset = {
       confidence: "high",
       notes: "No requirement for a first aid kit carried in the car, and no event-level medical-provision rule either — confirmed via full-document search.",
     },
+    hood_pins: {
+      requirement: "conditional",
+      condition:
+        "Required only for Modified category vehicles (§3.3.E.19: 'Hoods, trunk lids, and rear hatches must be securely latched/fastened.'). Stock category permits (but doesn't require) adding hood/trunk latches (§3.3.C.4.e: 'Additional or replacement hood and trunk latches are permitted. All latch systems must be secure.'). Not required and not mentioned for Prepared, Truck, Constructors, or UTV categories.",
+      citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.3.C.4.e; 3.3.E.19" },
+      confidence: "high",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA RallyCross Rules", version: "RX2026" },
+      confidence: "high",
+      notes:
+        "Not required and not mentioned anywhere in RX2026 — confirmed via full-document search. No onboard absorbent-material spill kit, and no refueling-area spill-cleanup provision either (contrast SCCA Solo §2.2.N, which requires the host Region to provide fluid-spill cleanup material).",
+    },
   },
   classOverrides: {
     stock: {
+      hood_pins: {
+        requirement: "not_addressed",
+        citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.3.C.4.e" },
+        confidence: "high",
+        notes: "§3.3.C.4.e permits adding or replacing hood and trunk latches ('All latch systems must be secure') but doesn't require it — the stock latch remains sufficient.",
+      },
       seat: {
         requirement: "required",
         materialOnlyAccepted: true,
@@ -587,6 +621,13 @@ const rallycross: Ruleset = {
       },
     },
     modified: {
+      hood_pins: {
+        requirement: "required",
+        citation: { title: "SCCA RallyCross Rules", version: "RX2026", section: "3.3.E.19" },
+        confidence: "high",
+        notes:
+          "§3.3.E.19: 'Hoods, trunk lids, and rear hatches must be securely latched/fastened.' The only RallyCross category with an outright hood-fastening requirement — an intact, functional stock latch or added hood pins/clips would both satisfy 'securely latched/fastened,' but some positive fastening method is mandatory.",
+      },
       seat: {
         requirement: "required",
         materialOnlyAccepted: true,
@@ -977,6 +1018,22 @@ const roadRacing: Ruleset = {
       citation: { title: "SCCA GCR", version: "2026, TB 26-08" },
       confidence: "high",
       notes: "No requirement for a first aid kit carried in the car — confirmed via full-document search. (Event-level medical staffing/facilities are addressed elsewhere in the GCR but are an event-organizational requirement, not car equipment, and out of scope for this app.)",
+    },
+    hood_pins: {
+      requirement: "conditional",
+      condition:
+        "Not independently mandatory for any class. GCR §9.3.9 (Body Panels) requires only that 'the hood and engine compartment shall be securely fastened' with fasteners 'removable with simple tools' (no fastener requiring a key) — an intact, functional factory hood latch satisfies this on its own. Hood pins/clips become required only as a substitute where a class's general modification allowances permit disabling or removing the stock hood latch (e.g. the Touring category's general allowances offer, as one of two options: 'disconnect the stock hood release cable and remove the stock hood latch and use hood pins to retain the hood in place' — the other option being simply relocating the release cable while leaving the stock latch in place).",
+      citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.9" },
+      confidence: "high",
+      notes:
+        "Multiple class-specific spec lines confirm hood pins are consistently optional, never independently mandatory, across every class actually checked: Electric Touring §9.1.9.3: 'Optional Hood Pins may be added to supplement the original hood latch system. All parts of the original hood latch system must remain in the car.' Spec MX-5 §9.1.7.1: 'Hood and trunk pins or clips are permitted. Factory hood and trunk latches must remain intact and operational and may not be removed, disabled or altered.' Many Production/GT-category model spec lines use near-identical boilerplate: 'Hood and trunk pins, clips, or positive action external latches are permitted. Stock hood and trunk latches and hinges may be disabled or removed; if so, a positive action external fastening method shall be used.' No class was found that flatly mandates hood pins outright regardless of whether the stock latch stays in place — not modeled as a classOverride since every class checked (including this ruleset's 7 selectable classes) lands on this same conditional-on-latch-removal answer.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.14" },
+      confidence: "high",
+      notes:
+        "No onboard absorbent-material spill kit is required or mentioned anywhere in the GCR — confirmed via full-document search for 'spill kit', 'absorbent', 'oil dry', and 'drip pan'. The GCR instead addresses fluid containment through engineering requirements: §9.3.14 mandates coolant catch tanks ('Cooling systems shall be equipped with coolant catch tanks to prevent the spillage of coolant onto the racing surface' — a 1 U.S. quart oil catch tank may do double duty, or a dedicated coolant catch tank of 1 U.S. pint minimum) and fuel/oil tank bulkhead-isolation rules (e.g. §9.3.26 fuel cell, and the oil tank rule requiring isolation 'so that in case of spillage, leakage, or failure, oil will not reach the driver'). Those are distinct, out-of-scope engineering requirements from this app's spill_kit definition (an onboard absorbent-material kit for cleanup), not the same requirement.",
     },
     rollover_protection: {
       requirement: "required",

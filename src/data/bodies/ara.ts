@@ -221,6 +221,20 @@ const performanceRally: Ruleset = {
       notes:
         "One or more belt cutters and glass breakers must be carried within reach of both driver and co-driver while harnesses are worn; the seat belt cutter must be designed specifically for cutting seat belts. Related: RTR 2.2.6.b requires one or more window-breakers accessible to driver and co-driver for vehicles with glass side windows, and 2.2.6.d requires window nets (FIA Art. 253 or SFI 27.1) in lieu of rolled-up windows during stages.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition, through Bulletin 2026-8" },
+      confidence: "high",
+      notes:
+        "Checked the full text of the 2026 RTR (through Bulletin 2026-8) for hood pin / hood fastener / hood latch / hood strap / positive latch language — not addressed. A full-document search for 'pin'/'pins' found zero matches anywhere in the rulebook; the only hood-related text concerns hood scoops, cowl-induction hoods, engine cover openings, and the reserved sponsor-decal space on the hood (§3.2.5) — none of it touches fastening.",
+    },
+    spill_kit: {
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition, through Bulletin 2026-8", section: "2.3.11" },
+      confidence: "high",
+      notes:
+        "RTR 2.3.11 ('Spill Kit'): 'All vehicles in ARA events must carry a spill kit consisting of at least: a minimum of 2 - 15\" x 19\" (standard) absorbent pads, 1 - 3\" x 48\" hydrocarbon absorbent sock, and a 13 gallon plastic bag. All items will be contained in a heavy duty plastic bag that is re-sealable.'",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,

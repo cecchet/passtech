@@ -217,6 +217,20 @@ const performanceRally: Ruleset = {
       notes:
         "A comprehensive, itemized first-aid kit (CARS specifies an extensive contents list — bandages, gauze, gloves, scissors, tweezers, space blankets, etc.) must be carried in the passenger compartment, easily accessible and clearly identified with a first-aid-kit label (available through CARS) on the outside of the vehicle.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "Technical Rule 12" },
+      confidence: "high",
+      notes:
+        "Full-document search of the CARS Rule Book for 'hood pin'/'hood latch'/'hood strap'/'positive latch' and for the bare word 'pin'/'pins' found zero matches anywhere — not addressed for Performance Rally.",
+    },
+    spill_kit: {
+      requirement: "required",
+      citation: { ...sourceDoc, section: "Technical Rule 12.3.25" },
+      confidence: "high",
+      notes:
+        "Technical Rule 12.3.25 ('Spill Kit'): 'All competition vehicles must carry a spill kit consisting of at least: a minimum of 2 -15\" x 19\" (standard) absorbent pads, 1- 3\" X 48\" Hydrocarbon sock. All items will be contained in a heavy-duty plastic bag that is re-sealable.' A two-item list (pads + hydrocarbon sock) — CARS doesn't add ARA's third named component (a separate 13-gallon plastic bag), though functionally similar.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,
@@ -410,6 +424,20 @@ const rallySprint: Ruleset = {
       confidence: "high",
       notes: "Same comprehensive, itemized kit requirement as Performance Rally.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 28.3.2-28.3.3" },
+      confidence: "high",
+      notes:
+        "Same as Performance Rally: full-document search found zero 'pin'/'pins' matches anywhere in the CARS Rule Book. Rally Sprint's mandatory/recommended equipment list (28.3.2-28.3.3) cross-references specific CARS Technical Rule numbers item by item but has no hood-pin equivalent to cross-reference in the first place.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 28.3.2-28.3.3" },
+      confidence: "high",
+      notes:
+        "Rally Sprint's mandatory/recommended equipment list (28.3.2-28.3.3) cross-references specific CARS Technical Rule numbers item by item (fire extinguishers, first aid, triangles, tow rope, tow eyes, harnesses, roll cage) but never cross-references Technical Rule 12.3.25 (Spill Kit) — same not-addressed pattern already found for window_net/window_breaker/kill_switch in this discipline.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,
@@ -584,6 +612,20 @@ const rallyCross: Ruleset = {
       citation: { ...sourceDoc, section: "NRR 27.3.2-27.3.3" },
       confidence: "high",
       notes: "No first-aid-kit requirement found for Rally Cross.",
+    },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 27.3.2-27.3.3" },
+      confidence: "high",
+      notes:
+        "Full-document search of the CARS Rule Book found zero 'pin'/'pins' matches — no hood-pin requirement anywhere, and Rally Cross's own vehicle/equipment rules (27.3.2-27.3.3) don't address it.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "NRR 27.3.2-27.3.3" },
+      confidence: "high",
+      notes:
+        "Rally Cross's own vehicle/equipment rules (NRR 27.3.2-27.3.3) don't cross-reference Technical Rule 12.3.25 (Spill Kit) or contain an equivalent of their own — not addressed, consistent with fire_extinguisher/fire_suppression/tow_hook/tow_rope/first_aid_kit all being not_addressed for this discipline.",
     },
     rollover_protection: {
       requirement: "conditional",

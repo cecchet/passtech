@@ -226,6 +226,21 @@ const iceRacing: Ruleset = {
       notes:
         "Not mentioned anywhere in the current rulebook. Pit equipment requirements (§5.4) cover spill pillows and an empty bucket/shovel for fluid cleanup only — no first aid kit is mandated for drivers or teams.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes: "Not mentioned anywhere in the current rulebook, for any class — no 'hood' reference of any kind appears in the document, including in the car-construction and tech-inspection sections.",
+    },
+    spill_kit: {
+      requirement: "required",
+      materialNote:
+        "Rule text (§5.3.5): 'All drivers must have spill pillows with them at tech inspection.' Rule text (§5.4.1, Pit Equipment): 'All racers must bring their own spill pillows (at least two for each race day).' Applies to every driver/class uniformly, not scoped to any one car class.",
+      citation: { ...sourceDoc, section: "5.3.5, 5.4.1" },
+      confidence: "high",
+      notes:
+        "Spill pillows (absorbent material) must be presented at tech inspection and brought to every race day, minimum two per day. Related but separate: §5.4.2 additionally requires each racer to bring an empty bucket and shovel for removing spilled fluids from the ice, and to clean up/remove any spilled materials or trash — not modeled here as it's a cleanup-tool requirement rather than the absorbent-material kit itself.",
+    },
   },
   classOverrides: {
     "street-legal": {

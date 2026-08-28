@@ -290,6 +290,20 @@ const hillClimb: Ruleset = {
       notes:
         "No requirement for competitors to carry a first aid kit was found. PPIHC instead states that PPAHCEM itself secures medical facilities, ambulances, and medical support for the event (§100 intro) rather than requiring one on board or in the pit.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "No hood pin / positive hood-latching requirement is stated in the General Competition Rules (Section 100). Some divisions' own technical regs carry a general 'all body work must be securely latched or fastened' clause (Time Attack 1, §301.5; the Production Records Appendix, §1901.5) — that's satisfied by a functioning stock latch, not a hood-pin-specific mandate, and isn't restated as a general-rule requirement. The Pikes Peak GT4 Division has its own explicit bonnet/boot-lid fastener rule instead — see classOverrides.gt4.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "No onboard spill-kit / absorbent-material requirement found anywhere in the Rule Book. §120.4-120.5 cover what to do if fuel spills during refueling (immediate dilution, reporting to officials, and proper hazmat disposal of contaminated fuel) but don't require the competitor to carry any onboard spill-containment kit.",
+    },
   },
   classOverrides: {
     gt4: {
@@ -376,6 +390,15 @@ const hillClimb: Ruleset = {
         confidence: "high",
         notes:
           "Rule Book §415.1: 'The safety cage must have no more than six mounting points... must be certified or homologated by an ASN or homologated by the FIA' — an authentic copy of the homologation document/certificate, signed by qualified technicians representing the manufacturer, must be presented to scrutineers. Cars homologated in GT4 after 01/01/2016 use the cage defined in the car's Homologation Form (VO). Unlike the general §105 weight-tiered tubing spec, GT4's cage is accepted purely on FIA/ASN homologation paperwork, not measured tube dimensions — rolloverProtectionTubingSpec isn't carried over from the base rule. Padding must comply with FIA 8857-2001 Type A per Appendix J art. 253-8.3 (FIA Technical List n°23).",
+      },
+      hood_pins: {
+        requirement: "required",
+        materialNote:
+          "Rule Book §403.1.1 ('Bonnet and boot lids'): 'They must have at least two safety fasteners, both of which are clearly indicated by red (or contrasting color) arrows. It must be possible to remove or open them without the use of tools.' A waiver for special constructions can be granted by the SRO Technical Department, described in the car's homologation document.",
+        citation: { ...sourceDoc, section: "403.1.1" },
+        confidence: "high",
+        notes:
+          "Replaces the general division's plain 'all body work must be securely latched or fastened' language (§301.5/§1901.5, neither of which reaches GT4 specifically) with an explicit positive-fastener mandate: at least two quick-release (no-tools) safety fasteners on both the bonnet (hood) and boot (trunk) lid, each marked with a contrasting-color arrow.",
       },
     },
   },

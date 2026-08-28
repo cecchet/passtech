@@ -147,6 +147,22 @@ const nkaKarting: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned anywhere in the regulations reviewed — not a typical kart safety item given the open cockpit design.",
     },
+    // hood_pins/spill_kit are car-group categories, unlike the driver-gear-only categories above
+    // (see the file-header note on why car categories are otherwise omitted entirely for karting).
+    // These two are newly tracked app-wide, so they're checked and recorded explicitly here even
+    // though the answer for karting is a confident "not applicable."
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "Section 20.2.11, Bodywork" },
+      confidence: "high",
+      notes: "NKA karts have no hood/engine cover in the automotive sense — bodywork is CIK-style side boxes, bumpers, and driver fairing attached with standard mounting hardware. The bodywork rules (attachment, loss-of-bodywork penalties) never mention pins or an equivalent fastener-security requirement.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "Section 20.2.18, Fuel System" },
+      confidence: "high",
+      notes: "No onboard spill-kit requirement anywhere in the regulations. The closest related text is the fuel system rule that fuel caps \"shall be able to be affixed tightly to prevent fuel spillage\" — leak prevention by design, not a requirement to carry absorbent material to contain a spill.",
+    },
   },
   classOverrides: {
     "rookie-junior": {

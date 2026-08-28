@@ -311,6 +311,20 @@ const endurance: Ruleset = {
       notes:
         "Confirmed via full read of the current rulebook: no window-breaker/seatbelt-cutter tool requirement is mentioned anywhere in the current text. WRL does require a separate SFI 27.1-rated window net (a containment device, not a breaker/cutter tool) on essentially all cars — see the arm_restraint entry's notes above for that requirement, which also isn't modeled as its own category since 'window net' isn't one of this app's tracked categories.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc },
+      confidence: "high",
+      notes:
+        "Checked the current 2026.1.3 rulebook PDF (downloaded directly and full-text searched for 'hood', 'pin', 'latch', 'fastener') — not addressed; no hood-pin, hood-fastener, or positive-hood-latching requirement found. The word 'hood' only appears in unrelated contexts: front-hood refueling systems (D.3.n), general body-panel-intact rules (Appx. A: 'Body panels including hood and trunk/hatch lid must be in place'), parc-ferme impound handling, and under-hood boost-controller disclosure.",
+    },
+    spill_kit: {
+      requirement: "required",
+      citation: { ...sourceDoc, section: "D.3.i" },
+      confidence: "high",
+      notes:
+        "Rule text (§D.3.i, 'No Spill Rule'): 'Fuel spills are not permitted on the pavement. A catch pan, drip pan or absorbent mat must be used where fuel may spill onto the ground. Pans or mats must cover a minimum of 3 sq. ft. in area and/or have a minimum capacity of 3 gallons. All pans must contain an absorbent material covering the bottom of the pan.' Unlike some other endurance bodies' plain fueling catch-pan rules, WRL explicitly requires the pan/mat itself to contain absorbent material, so this is modeled as a genuine spill-kit requirement rather than just a bare catch pan. Applies during fueling/pit stops specifically, not as a general onboard-at-all-times item.",
+    },
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,

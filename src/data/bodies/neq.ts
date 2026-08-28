@@ -231,6 +231,20 @@ const hpde: Ruleset = {
       confidence: "high",
       notes: "No first aid kit requirement found anywhere in NEQ's materials.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes:
+        "No hood pin, hood fastener, or positive hood-latching requirement found anywhere across the 3-page Pre-Event Tech Inspection / Event Tech Confirmation / Responsibility Statement PDF (full-text search), the Vehicle Requirements page, or the Open Top Cars / Convertibles page.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...techForms },
+      confidence: "high",
+      notes:
+        "No spill kit, spill containment, or absorbent-material requirement found anywhere across the tech forms PDF, the Vehicle Requirements page, or the Open Top Cars / Convertibles page.",
+    },
     rollover_protection: {
       requirement: "conditional",
       condition:

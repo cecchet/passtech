@@ -166,6 +166,20 @@ const notAddressedFirstAidKit = {
   notes: "No first aid kit requirement found in the tech inspection form or the FAQ, for any car type.",
 };
 
+const notAddressedHoodPins = {
+  requirement: "not_addressed" as const,
+  citation: { title: "SCDA Tech Inspection Form / SCDA FAQ" },
+  confidence: "high" as const,
+  notes: "No hood pin, hood fastener, or positive hood-latching requirement found in the tech inspection form (all 14 items, including item 13's caged/track-prepped/race-car equipment list) or the FAQ, for any car type.",
+};
+
+const notAddressedSpillKit = {
+  requirement: "not_addressed" as const,
+  citation: { title: "SCDA Tech Inspection Form / SCDA FAQ" },
+  confidence: "high" as const,
+  notes: "No spill kit, spill containment, or absorbent-material requirement found in the tech inspection form or the FAQ, for any car type.",
+};
+
 // Street-prepared / stock cockpit cars: general Dress Code (FAQ) plus base helmet rule.
 const hpdeStreet: Ruleset = {
   id: "scda-hpde-street",
@@ -226,6 +240,8 @@ const hpdeStreet: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    hood_pins: notAddressedHoodPins,
+    spill_kit: notAddressedSpillKit,
     rollover_protection: {
       requirement: "conditional",
       rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
@@ -315,6 +331,8 @@ const hpdeCaged: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    hood_pins: notAddressedHoodPins,
+    spill_kit: notAddressedSpillKit,
     rollover_protection: {
       requirement: "required",
       rolloverProtectionRequiresFullCage: true,

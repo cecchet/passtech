@@ -292,6 +292,22 @@ const notAddressedFirstAidKit: CategoryRule = {
   notes: "No driver/car-carried first aid kit requirement was found anywhere in the document, for any discipline.",
 };
 
+const notAddressedHoodPins: CategoryRule = {
+  requirement: "not_addressed",
+  citation: { ...sourceDoc },
+  confidence: "medium",
+  notes:
+    "No hood pin / hood fastener / hood latch / positive hood latch requirement was found anywhere in the document, for any discipline (checked specifically this pass, alongside the spill_kit check below). Same source-quality caveat as the rest of this file (HTML/AI-summarized, not a direct verbatim PDF read).",
+};
+
+const notAddressedSpillKit: CategoryRule = {
+  requirement: "not_addressed",
+  citation: { ...sourceDoc, section: "Vehicle Prep — Fueling and Fluids" },
+  confidence: "medium",
+  notes:
+    "No onboard spill-kit / absorbent-material requirement was found anywhere in the document, for any discipline. The closest related text is prevention-only, not an equipment mandate: \"Spilling fuel or other fluids that damages asphalt surfaces should be absolutely avoided with the use of drip pans or other measures\" (Vehicle Prep, paddock/pit care) and \"Fueling of cars should be done in proper areas, with adequate measures for safety, and from approved containers... Oil and other fluids from fluid changes must be disposed of properly\" (Vehicle Prep, Fueling and Fluids) — neither clause requires a competitor to carry or have on hand any specific spill-containment kit. Same source-quality caveat as the rest of this file applies.",
+};
+
 // HPDE: beginner/intermediate/advanced run groups share identical driver-equipment rules per
 // the source (no tiered PPE by skill level, only by driving-privilege/passing protocols, which
 // are out of this app's scope).
@@ -374,6 +390,8 @@ const hpde: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    hood_pins: notAddressedHoodPins,
+    spill_kit: notAddressedSpillKit,
     rollover_protection: {
       requirement: "conditional",
       rolloverProtectionByBodyStyle: { closed_roof: "not_addressed", convertible: "required", open_no_windshield: "required", open_wheel: "required" },
@@ -475,6 +493,8 @@ const trackBattleTimeAttack: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    hood_pins: notAddressedHoodPins,
+    spill_kit: notAddressedSpillKit,
     rollover_protection: {
       requirement: "recommended",
       citation: { ...sourceDoc, section: "8. Roll cage construction and design" },
@@ -521,6 +541,8 @@ const gltcGlgt: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    hood_pins: notAddressedHoodPins,
+    spill_kit: notAddressedSpillKit,
     rollover_protection: competitiveRollCageRule,
   },
 };
@@ -585,6 +607,8 @@ const rushSr: Ruleset = {
     tow_rope: notAddressedTowRope,
     emergency_triangle: notAddressedEmergencyTriangle,
     first_aid_kit: notAddressedFirstAidKit,
+    hood_pins: notAddressedHoodPins,
+    spill_kit: notAddressedSpillKit,
     rollover_protection: {
       requirement: "not_addressed",
       citation: { title: "2026 RUSH SR Spec Series Technical Regulations (RUSH Auto Works)", version: "V1.9 2026", section: "5.0 Chassis and Frame; 15.0-15.1 Safety Equipment" },

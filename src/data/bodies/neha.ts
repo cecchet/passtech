@@ -128,6 +128,20 @@ const notAddressedCarCategories = {
     confidence: "high" as const,
     notes: "A medical form is required from each participant (§3.1.3), but no in-car first aid kit requirement is stated.",
   },
+  hood_pins: {
+    requirement: "not_addressed" as const,
+    citation: { ...sourceDoc, section: "1. Technical and Safety Requirements" },
+    confidence: "high" as const,
+    notes:
+      "No hood pin / positive hood-latching requirement found anywhere in the rulebook, and no general 'bodywork must be securely fastened' clause either. The only 'hood' reference is §1.4.1.8's 'Fire-retardant hood or helmet skirt in open-engine vehicles' — driver headwear (a balaclava-equivalent item), not a car hood fastener.",
+  },
+  spill_kit: {
+    requirement: "not_addressed" as const,
+    citation: { ...sourceDoc, section: "1.1.5, 1.3.10.3" },
+    confidence: "high" as const,
+    notes:
+      "No onboard spill-kit (absorbent material) requirement found. NEHA requires each vehicle to carry a disposal (trash) bag for removing fluid spill debris (§1.3.10.3), and makes drivers responsible for timely cleanup/disposal of any hazmat spill, noting sorbents/brooms are supplied by the club at START and after FINISH rather than carried in the car (§1.1.5) — neither is the same as requiring the car to carry its own absorbent-material kit, so this remains not_addressed for the tracked category.",
+  },
 };
 
 // "X" / non-competitive entrants: NEHA General Rules for All Vehicles (section 1.3)

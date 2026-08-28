@@ -126,6 +126,22 @@ const wkaKarting: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned anywhere in the rules reviewed — not a typical kart safety item given the open cockpit design.",
     },
+    // hood_pins/spill_kit are car-group categories, unlike the driver-gear-only categories above
+    // (see the file-header note on why car categories are otherwise omitted entirely for karting).
+    // These two are newly tracked app-wide, so they're checked and recorded explicitly here even
+    // though the answer for karting is a confident "not applicable."
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...s409, section: "404, Bodywork" },
+      confidence: "high",
+      notes: "WKA dirt karts have no hood/engine cover — bodywork is a nosecone, side panels, and fairing. Section 404.2.11 explicitly prohibits adding extra fasteners (\"bolts, screws, pop rivets, etc.\") to attach bolt-on pieces to the nose, the opposite of a hood-pin requirement, confirming this is genuinely not addressed rather than an oversight.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...s409, section: "405.1, Fuel System" },
+      confidence: "high",
+      notes: "No onboard spill-kit requirement anywhere in the rulebook. Section 409.43 only prohibits disposing of fuel/oil on the ground, and Section 405.1 just requires fuel caps that \"prevent fuel spillage\" by design — neither amounts to a requirement to carry absorbent material to contain a spill.",
+    },
   },
 };
 

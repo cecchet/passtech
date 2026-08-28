@@ -37,6 +37,8 @@ export const CATEGORY_ICON_SPEC: Record<EquipmentCategory, IconSpec> = {
   fire_suppression: { src: "/frog-fire-suppression.jpg", objectPosition: "50% 45%" },
   fuel_cell: { src: "/fuel-cell.jpg", objectPosition: "50% 45%" },
   window_breaker: { src: "/window-breaker.jpg", objectPosition: "50% 45%" },
+  hood_pins: { src: "/hood-pin.jpg", objectPosition: "50% 45%" },
+  spill_kit: { src: "/spill-kit.jpg", objectPosition: "50% 45%" },
   kill_switch: { src: "/kill-switch.jpg", objectPosition: "50% 45%" },
   tow_hook: { src: "/tow-hook.jpg", objectPosition: "50% 45%" },
   tow_rope: { src: "/tow-rope.jpg", objectPosition: "50% 45%" },

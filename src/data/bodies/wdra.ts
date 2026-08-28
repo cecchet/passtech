@@ -205,6 +205,19 @@ const wdraSportsmanET: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned in the chapters reviewed.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sGeneral },
+      confidence: "high",
+      notes: "Checked the rulebook for hood pin / hood fastener language — not addressed. The Elapsed Time Specific Rules chapter cross-references \"HOOD: See General Technical Regulations\" in multiple E.T. bands, but General Technical Regulations itself has no HOOD entry (alphabetically it jumps straight from GROUND CLEARANCE to HARMONIC DAMPER/BALANCER) — an apparent gap in the rulebook's own cross-reference, not a substantive hood requirement. A full-text search of the entire rulebook found no \"hood pin,\" \"hood fastener,\" \"hood latch,\" or \"positive latch\" requirement anywhere.",
+    },
+    spill_kit: {
+      requirement: "conditional",
+      condition: "Mandatory (a lower engine containment system — belly pan or diaper — with an oil-absorbing mat) only for forced-induction vehicles running 4.99 sec (eighth mile) / 7.99 sec (quarter mile) or quicker. Not required for naturally-aspirated cars or slower forced-induction cars.",
+      citation: { ...sGeneral, section: "General Technical Regulations, LOWER ENGINE CONTAINMENT" },
+      confidence: "high",
+      notes: "A coolant catch-can (min. 1 pint, per General Technical Regulations' LIQUID OVERFLOW rule) is separately mandatory for every car regardless of E.T. band — but that's a fixed container plumbed to the cooling system, not a portable kit of absorbent material, so it's treated as a related-but-distinct requirement rather than satisfying this category (consistent with how this app treats similar catch-tank/catch-can rules elsewhere, e.g. SCCA GCR's coolant catch tank). The actual match for a portable absorbent spill kit is the mandatory oil-absorbing mat in the lower engine containment system required of quicker forced-induction cars.",
+    },
     kill_switch: {
       requirement: "conditional",
       condition: "Only triggers if the battery is relocated (\"If battery is relocated or if guidelines require it, a master electrical kill switch is required\"). Unconditionally mandatory in the quickest E.T. band regardless of battery location — see that band.",

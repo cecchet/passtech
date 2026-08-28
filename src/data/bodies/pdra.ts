@@ -236,6 +236,18 @@ const pdraBracketBash: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned anywhere in the Bracket Bash rules.",
     },
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sBB },
+      confidence: "high",
+      notes: "Checked the rulebook for hood pin / hood fastener language — not addressed. Bracket Bash's own HOOD rule states only \"Optional. Carburetors must be covered by flash shield or scoop. Hood scoop permitted.\" A full-text search of the entire Bracket Bash rules PDF found no \"hood pin,\" \"hood fastener,\" \"hood latch,\" or \"positive latch\" requirement anywhere.",
+    },
+    spill_kit: {
+      requirement: "recommended",
+      citation: { ...sBB, section: "Bracket Bash, ENGINE (LOWER ENGINE CONTAINMENT)" },
+      confidence: "high",
+      notes: "A coolant catch-can (min. 1 pint) is separately mandatory throughout the class (no E.T.-gated exception found) — but that's a fixed container plumbed to the cooling system, not a portable kit of absorbent material, so it's treated as a related-but-distinct requirement rather than satisfying this category (consistent with how this app treats similar catch-tank/catch-can rules elsewhere, e.g. SCCA GCR's coolant catch tank). The actual match for a portable absorbent spill kit is the NHRA-accepted lower engine oil-retention device, which Bracket Bash lists as merely \"requested\" — i.e. recommended, not mandatory.",
+    },
     kill_switch: KILL_SWITCH_NOT_YET,
     tow_hook: {
       requirement: "not_addressed",

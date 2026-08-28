@@ -124,6 +124,22 @@ const skusaKarting: Ruleset = {
       confidence: "medium",
       notes: "Not mentioned anywhere in the rulebook — not a typical kart safety item given the open cockpit design.",
     },
+    // hood_pins/spill_kit are car-group categories, unlike the driver-gear-only categories above
+    // (see the file-header note on why car categories are otherwise omitted entirely for karting).
+    // These two are newly tracked app-wide, so they're checked and recorded explicitly here even
+    // though the answer for karting is a confident "not applicable."
+    hood_pins: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "303.5, Bumpers and Bodywork" },
+      confidence: "high",
+      notes: "SKUSA karts have no hood/engine cover — bodywork is CIK/SKUSA-approved side pods, nose, and driver fairing secured with homologated mounting hardware (including Push Back Bumper clamps for the nose). The rulebook is detailed about bodywork attachment and never uses \"hood pin\" or an equivalent fastener-security requirement.",
+    },
+    spill_kit: {
+      requirement: "not_addressed",
+      citation: { ...sourceDoc, section: "307.7, Fluid Capture" },
+      confidence: "medium",
+      notes: "No requirement for a driver-carried spill kit (absorbent material) anywhere in the rulebook. SKUSA does require \"a functional catch tank/container...on the fuel tank and radiator for overflow\" (307.7) — a narrower, built-in overflow-catch requirement rather than a portable absorbent spill-cleanup kit, so it isn't modeled as satisfying this category.",
+    },
   },
   classOverrides: {
     junior: {
