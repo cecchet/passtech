@@ -389,6 +389,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually a presence requirement above some speed/discipline threshold — securing the hood beyond the stock latch so it can't fly open or off. No certification standard involved.",
+    productUrl: "https://rally.build/collections/rally-build-fabricated-rally-parts/products/metal-hood-pin-kit",
+    productTitle: "Shop Hood Pin Kits — Rally Build",
   },
   spill_kit: {
     label: "Spill Kit",
@@ -396,6 +398,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "An onboard kit of absorbent material to contain a fluid spill (oil, coolant, fuel) — usually a presence requirement, most common in endurance and drag racing. No certification standard involved.",
+    productUrl: "https://rally.build/collections/rally-build-fabricated-rally-parts/products/rally-spill-kit",
+    productTitle: "Shop Spill Kits — Rally Build",
   },
   parachute: {
     label: "Parachute",

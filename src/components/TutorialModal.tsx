@@ -64,6 +64,10 @@ const TOURS: Record<TourId, Tour> = {
         targetId: "category-seat",
         text: "Each category shows its requirement, a plain-language note, and any accepted certifications — straight from the rulebook. Some, like Seat here, accept plain stock/OEM equipment with no certification at all; standards the body doesn't list are collapsed under a red “Not accepted” panel, so gaps are easy to spot.",
       },
+      {
+        targetId: "category-firesuit",
+        text: "Some categories also show up to four small logos, in this fixed order: a globe linking to Frog Racing's own write-up on that piece of gear, a Frog Racing video, a plain YouTube logo for a good outside video that isn't from Frog Racing, and a cart linking to somewhere to buy it. These are just optional research links — none of them are printed on the PDF report.",
+      },
     ],
   },
   "body-first": {
