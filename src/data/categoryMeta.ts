@@ -302,6 +302,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+    videoUrl: "https://youtu.be/ZuHoN8IQPd0",
+    videoTitle: "Rally Car Safety Equipment Install & Toolbox Content — Frog Racing",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
