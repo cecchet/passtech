@@ -36,7 +36,11 @@ export function CategoryMediaLinks({
       {meta.videoUrl && (
         <a href={meta.videoUrl} target="_blank" rel="noopener noreferrer" title={meta.videoTitle ?? "Watch a related video"} className={ICON_CLASS}>
           {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
-          <img src="/frog-racing-video.jpg" alt={meta.videoTitle ?? "Watch a related video"} className="h-full w-full object-cover" />
+          <img
+            src={meta.videoIcon === "youtube" ? "/youtube-logo.png" : "/frog-racing-video.jpg"}
+            alt={meta.videoTitle ?? "Watch a related video"}
+            className={meta.videoIcon === "youtube" ? "h-full w-full object-contain p-0.5" : "h-full w-full object-cover"}
+          />
         </a>
       )}
       {meta.productUrl && (

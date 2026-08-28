@@ -109,10 +109,12 @@ interface CategoryMeta {
   webUrl?: string;
   /** Hover title / accessible label for webUrl. */
   webTitle?: string;
-  /** Link to a Frog Racing YouTube video explaining this category (e.g. SFI vs FIA ratings) — shown as a small clickable logo in the corner of the category's card, where present. */
+  /** Link to a YouTube video explaining this category (e.g. SFI vs FIA ratings) — shown as a small clickable logo in the corner of the category's card, where present. */
   videoUrl?: string;
   /** Hover title / accessible label for videoUrl — what the tooltip shows on hover. */
   videoTitle?: string;
+  /** Set to "youtube" when videoUrl isn't a Frog Racing channel upload, so the icon shown is a plain YouTube logo instead of the Frog Racing one. Omit (defaults to the Frog Racing icon) for videos confirmed uploaded by the Frog Racing channel. */
+  videoIcon?: "frog" | "youtube";
   /** Link to a Frog Racing Store product page for this category — same small-logo treatment as videoUrl. */
   productUrl?: string;
   /** Hover title / accessible label for productUrl. */
@@ -130,6 +132,7 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     webTitle: "Helmets — Frog Racing",
     videoUrl: "https://youtu.be/7I-4aoiB6NU",
     videoTitle: "Racing Helmet Buying Guide — Demon Tweeks",
+    videoIcon: "youtube",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Helmets — Rally Build",
   },
@@ -361,7 +364,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
     videoUrl: "https://youtu.be/DAQ4s8DZH9o",
-    videoTitle: "Stage Rally First Aid Kit — Frog Racing",
+    videoTitle: "Stage Rally First Aid Kit — Dan Shirley",
+    videoIcon: "youtube",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
