@@ -29,6 +29,42 @@ function acceptanceDetail(acceptance: StandardAcceptance): string {
   return parts.join(" — ");
 }
 
+/** Above this many accepted standards, the list collapses behind a click-to-expand summary (mirrors NotAcceptedList) so a card like Helmet's ~30-standard list doesn't dwarf the rest of the reference view. */
+const ACCEPTED_COLLAPSE_THRESHOLD = 6;
+
+function AcceptedList({ rule }: { rule: CategoryRule }) {
+  const standards = rule.acceptedStandards ?? [];
+  if (standards.length === 0) return null;
+
+  const items = standards.map((a, i) => {
+    const detail = acceptanceDetail(a);
+    return (
+      <li key={i}>
+        • {standardLabel(a.standardId)}
+        {detail ? ` (${detail})` : ""}
+      </li>
+    );
+  });
+
+  if (standards.length > ACCEPTED_COLLAPSE_THRESHOLD) {
+    return (
+      <details className="mt-3 rounded border border-emerald-900 bg-emerald-950/30">
+        <summary className="cursor-pointer list-none px-2 py-1.5 text-xs font-semibold text-emerald-300 marker:content-none [&::-webkit-details-marker]:hidden">
+          Accepted certifications ({standards.length}) — click to expand
+        </summary>
+        <ul className="space-y-0.5 px-2 pb-2 text-xs text-emerald-300/90">{items}</ul>
+      </details>
+    );
+  }
+
+  return (
+    <div className="mt-3">
+      <p className="text-xs font-semibold text-neutral-400">Accepted certifications</p>
+      <ul className="mt-1 space-y-0.5 text-xs text-neutral-300">{items}</ul>
+    </div>
+  );
+}
+
 function NotAcceptedList({ category, rule }: { category: EquipmentCategory; rule: CategoryRule }) {
   if (rule.requirement === "not_addressed") return null;
 
@@ -149,22 +185,7 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
         </div>
       )}
 
-      {rule.acceptedStandards && rule.acceptedStandards.length > 0 && (
-        <div className="mt-3">
-          <p className="text-xs font-semibold text-neutral-400">Accepted certifications</p>
-          <ul className="mt-1 space-y-0.5 text-xs text-neutral-300">
-            {rule.acceptedStandards.map((a, i) => {
-              const detail = acceptanceDetail(a);
-              return (
-                <li key={i}>
-                  • {standardLabel(a.standardId)}
-                  {detail ? ` (${detail})` : ""}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+      <AcceptedList rule={rule} />
 
       <NotAcceptedList category={category} rule={rule} />
 
