@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
 import { logbookBodyLabel, standardLabel, standardsFor } from "@/data/standards";
-import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
+import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, SourceDocument, StandardAcceptance } from "@/data/types";
 import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
@@ -87,7 +87,7 @@ function NotAcceptedList({ category, rule }: { category: EquipmentCategory; rule
   );
 }
 
-function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory; rule: CategoryRule }) {
+function CategoryReferenceCard({ category, rule, sourceDocuments }: { category: EquipmentCategory; rule: CategoryRule; sourceDocuments: SourceDocument[] }) {
   const meta = CATEGORY_META[category];
   const Icon = CATEGORY_ICONS[category];
 
@@ -192,9 +192,10 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
 
       {rule.notes && <p className="mt-2 text-xs text-neutral-400">{rule.notes}</p>}
 
-      <CitationLine citation={rule.citation} confidence={rule.confidence} />
-
-      <CategoryMediaLinks category={category} />
+      <div className="mt-2 flex items-end justify-between gap-2">
+        <CitationLine citation={rule.citation} confidence={rule.confidence} sourceDocuments={sourceDocuments} className="text-[11px] text-neutral-500" />
+        <CategoryMediaLinks category={category} />
+      </div>
     </div>
   );
 }
@@ -228,7 +229,7 @@ export function ReferenceView({
                 {group === "driver" && ruleset.supportsCodriver ? "Driver & Codriver Safety Gear" : GROUP_LABELS[group]}
               </h3>
             )}
-            <CategoryReferenceCard category={category} rule={effective[category]!} />
+            <CategoryReferenceCard category={category} rule={effective[category]!} sourceDocuments={ruleset.sourceDocuments} />
           </Fragment>
         );
       })}

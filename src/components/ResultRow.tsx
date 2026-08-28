@@ -1,4 +1,5 @@
 import { CATEGORY_META } from "@/data/categoryMeta";
+import { SourceDocument } from "@/data/types";
 import { CitationLine } from "@/components/CitationLine";
 import { CategoryResult } from "@/lib/matcher";
 
@@ -41,7 +42,7 @@ export function statusStyle(status: CategoryResult["status"], requirement: Categ
   return STATUS_STYLE[status];
 }
 
-export function ResultRow({ result }: { result: CategoryResult }) {
+export function ResultRow({ result, sourceDocuments }: { result: CategoryResult; sourceDocuments?: SourceDocument[] }) {
   return (
     <div className={`rounded-lg border p-3 text-sm ${statusStyle(result.status, result.requirement)}`}>
       <div className="flex items-center justify-between gap-2">
@@ -67,7 +68,7 @@ export function ResultRow({ result }: { result: CategoryResult }) {
           ))}
         </ul>
       )}
-      <CitationLine citation={result.citation} confidence={result.confidence} className="mt-1 text-[11px] opacity-60" />
+      <CitationLine citation={result.citation} confidence={result.confidence} sourceDocuments={sourceDocuments} className="mt-1 text-[11px] opacity-60" />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, RulesetClass, getRuleset } from "@/data";
+import { SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, DISCIPLINE_GROUP_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { EquipmentSummary, FilledEquipmentSummary } from "@/components/EquipmentSummary";
@@ -665,6 +666,8 @@ export default function Home() {
                 perOccupantAsDriverGroup={hasCodriver}
                 showPhotoUpload
                 hideNotRequired={hideNotRequired}
+                showMediaLinks
+                sourceDocuments={ruleset?.sourceDocuments}
               />
               {hasCodriver && (
                 <CodriverGearSection
@@ -675,6 +678,8 @@ export default function Home() {
                   activeGroups={activeGroups}
                   orderResetKey={rulesetId}
                   hideNotRequired={hideNotRequired}
+                  showMediaLinks
+                  sourceDocuments={ruleset?.sourceDocuments}
                 />
               )}
               <EquipmentForm
@@ -687,6 +692,8 @@ export default function Home() {
                 perOccupantAsDriverGroup={hasCodriver}
                 showPhotoUpload
                 hideNotRequired={hideNotRequired}
+                showMediaLinks
+                sourceDocuments={ruleset?.sourceDocuments}
               />
             </>
           ) : (
@@ -699,6 +706,8 @@ export default function Home() {
               orderResetKey={rulesetId}
               showPhotoUpload
               hideNotRequired={hideNotRequired}
+              showMediaLinks
+              sourceDocuments={ruleset?.sourceDocuments}
             />
           )}
         </section>
@@ -779,6 +788,7 @@ export default function Home() {
                 perOccupantAsDriverGroup
                 showPhotoUpload
                 hideEmpty={onlyHaveEquipment}
+                showMediaLinks
               />
               <CodriverGearSection
                 entries={codriverEntries}
@@ -786,6 +796,7 @@ export default function Home() {
                 onReportMissing={handleCodriverReportMissing}
                 activeGroups={activeGroups}
                 hideEmpty={onlyHaveEquipment}
+                showMediaLinks
               />
               <EquipmentForm
                 entries={entries}
@@ -795,6 +806,7 @@ export default function Home() {
                 perOccupantAsDriverGroup
                 showPhotoUpload
                 hideEmpty={onlyHaveEquipment}
+                showMediaLinks
               />
             </>
           ) : (
@@ -805,6 +817,7 @@ export default function Home() {
               activeGroups={activeGroups}
               showPhotoUpload
               hideEmpty={onlyHaveEquipment}
+              showMediaLinks
             />
           )}
 
@@ -1207,6 +1220,8 @@ function CodriverGearSection({
   orderResetKey,
   hideNotRequired,
   hideEmpty,
+  showMediaLinks,
+  sourceDocuments,
 }: {
   entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
   onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
@@ -1216,6 +1231,8 @@ function CodriverGearSection({
   orderResetKey?: string;
   hideNotRequired?: boolean;
   hideEmpty?: boolean;
+  showMediaLinks?: boolean;
+  sourceDocuments?: SourceDocument[];
 }) {
   return (
     <div className="my-6">
@@ -1231,6 +1248,8 @@ function CodriverGearSection({
         showPhotoUpload
         hideNotRequired={hideNotRequired}
         hideEmpty={hideEmpty}
+        showMediaLinks={showMediaLinks}
+        sourceDocuments={sourceDocuments}
       />
     </div>
   );
@@ -1383,7 +1402,7 @@ function ResultGroup({
                     {shownCategories.length > 0 ? (
                       <div className="mt-3 grid gap-2 sm:grid-cols-2">
                         {shownCategories.map((category) => (
-                          <ResultRow key={category} result={results[category]!} />
+                          <ResultRow key={category} result={results[category]!} sourceDocuments={rs.sourceDocuments} />
                         ))}
                       </div>
                     ) : (
@@ -1396,7 +1415,7 @@ function ResultGroup({
                         <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
                         <div className="grid gap-2 sm:grid-cols-2">
                           {shownCodriverCategories.map((category) => (
-                            <ResultRow key={`${category}-codriver`} result={codriverResults[category]!} />
+                            <ResultRow key={`${category}-codriver`} result={codriverResults[category]!} sourceDocuments={rs.sourceDocuments} />
                           ))}
                         </div>
                       </div>

@@ -117,7 +117,14 @@ interface CategoryMeta {
 
 export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
   // Driver safety gear
-  helmet: { label: "Helmet", group: "driver", hybrid: false, hint: "Standard printed on the certification sticker inside the helmet." },
+  helmet: {
+    label: "Helmet",
+    group: "driver",
+    hybrid: false,
+    hint: "Standard printed on the certification sticker inside the helmet.",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop Helmets — Rally Build",
+  },
   balaclava: {
     label: "Balaclava",
     group: "driver",
@@ -133,6 +140,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the device's conformance label. A rigid HANS-style device, distinct from a padded neck collar — see the separate Neck Collar category.",
     videoUrl: "https://youtu.be/SOMf03LizOA",
     videoTitle: "HANS Device Explained — FIA Safety Week",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop HANS Devices — Rally Build",
   },
   neck_collar: {
     label: "Neck Collar",
@@ -147,6 +156,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the suit's homologation label — most bodies require a certified suit, but a few accept plain fire-resistant clothing at lower tiers.",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop Firesuits — Rally Build",
   },
   gloves: {
     label: "Gloves",
@@ -155,6 +166,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Some bodies accept plain fire-resistant material; others require SFI or FIA certification.",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop Gloves — Rally Build",
   },
   shoes: {
     label: "Shoes",
@@ -164,7 +177,14 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
   },
-  socks: { label: "Socks", group: "driver", hybrid: true, hint: "Some bodies accept plain fire-resistant/non-flammable material or don't address socks at all; others require SFI or FIA certification." },
+  socks: {
+    label: "Socks",
+    group: "driver",
+    hybrid: true,
+    hint: "Some bodies accept plain fire-resistant/non-flammable material or don't address socks at all; others require SFI or FIA certification.",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop Socks — Rally Build",
+  },
   undergarment: {
     label: "Fire-resistant Undergarment",
     group: "driver",
@@ -193,6 +213,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Many bodies allow a stock/OEM seat, especially for non-caged cars — a certified racing seat is typically only mandated once a roll cage or higher competition tier is involved. Standard printed on the seat's certification label — FIA/SFI-rated seats expire, check the date. Also confirm separately whether this body allows seat sliders/rails, or requires a fixed mount.",
     videoUrl: "https://youtu.be/O8sN53rURiI",
     videoTitle: "Racing Seats Explained — FIA Safety Week",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop Racing Seats — Rally Build",
   },
   belts_harness: {
     label: "Belts / Harnesses",
@@ -202,12 +224,16 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     certifiedLabel: "Certified harness (SFI or FIA rated)",
     materialOnlyDescription: "Stock/OEM seatbelts accepted, no certification required.",
     hint: "Standard printed on the harness's certification label — most bodies require a certified harness at higher levels; some allow stock OEM belts for entry-level classes. Harnesses expire — check the date on the label.",
+    productUrl: "https://rally.build/collections/safety-equipment",
+    productTitle: "Shop Harnesses — Rally Build",
   },
   window_net: {
     label: "Window Net",
     group: "car",
     hybrid: true,
     hint: "Often interchangeable with an arm restraint — some bodies let you run one or the other, not both. Some accept a plain net; others require SFI or FIA certification.",
+    videoUrl: "https://youtu.be/O8sN53rURiI",
+    videoTitle: "Window Nets Explained — FIA Safety Week",
   },
   fire_extinguisher: {
     label: "Fire Extinguisher",

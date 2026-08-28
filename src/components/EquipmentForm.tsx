@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
+import { CategoryGroup, EquipmentCategory, Occupant, SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory } from "@/data/categoryMeta";
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
@@ -11,6 +11,7 @@ import { PhotoScan } from "@/components/PhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
+import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
 import { CategoryResult } from "@/lib/matcher";
 
 interface Props {
@@ -57,6 +58,16 @@ interface Props {
   hideNotRequired?: boolean;
   /** Equipment-first only: hide any category with nothing entered — mirrors "Only check the equipment I have" so the form only shows what's actually being evaluated. */
   hideEmpty?: boolean;
+  /**
+   * Options 2/3 only: show each category's video/product logos (see CategoryMediaLinks) — in the
+   * collapsed summary while the item still needs attention (required or conditional and not yet
+   * OK, or — with no `results`, i.e. Option 3 — simply not filled in yet), then at the bottom of
+   * the expanded card once it's resolved (OK, or any data entered when there's no `results`). Off
+   * by default so My Gear editing (which has no body to check against) stays uncluttered.
+   */
+  showMediaLinks?: boolean;
+  /** The current ruleset's source documents, forwarded to each category's result citation so it can link out even though CategoryRule.citation almost never sets its own url. Only meaningful together with `results`. */
+  sourceDocuments?: SourceDocument[];
 }
 
 const DEFAULT_MAX_ITEM_PHOTOS = 3;
@@ -891,6 +902,8 @@ export function EquipmentForm({
   showPhotoUpload,
   hideNotRequired,
   hideEmpty,
+  showMediaLinks,
+  sourceDocuments,
 }: Props) {
   const groupOf = (c: EquipmentCategory): CategoryGroup =>
     occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
@@ -945,6 +958,13 @@ export function EquipmentForm({
         const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
         const isEmpty = isEntryEmpty(category, entry);
         const certBadges = showPhotoUpload ? summarizeEntryCerts(category, entry, result) : [];
+        // With a result (Option 2, one ruleset selected): still needs attention while it's actually
+        // required/conditional for this body and not yet accepted. With no result at all (Option 3,
+        // checked against every body at once — there's no single "required" to judge against): just
+        // whether anything's been entered yet.
+        const needsAttention = result
+          ? (result.requirement === "required" || result.requirement === "conditional") && result.status !== "ok"
+          : isEmpty;
 
         return (
           <div key={category} id={domId} className="scroll-mt-4">
@@ -970,6 +990,7 @@ export function EquipmentForm({
                 <img src={entry.photoDataUrls[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
               )}
               {isEmpty && <NoDataBadge />}
+              {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} size="h-6 w-6" className="flex shrink-0 gap-1" />}
               {result ? (
                 <StatusPill status={result.status} requirement={result.requirement} />
               ) : (
@@ -1125,7 +1146,13 @@ export function EquipmentForm({
 
             {result && (
               <div className="mt-3">
-                <ResultRow result={result} />
+                <ResultRow result={result} sourceDocuments={sourceDocuments} />
+              </div>
+            )}
+
+            {showMediaLinks && !needsAttention && (
+              <div className="mt-3 flex justify-end">
+                <CategoryMediaLinks category={category} />
               </div>
             )}
             </details>
