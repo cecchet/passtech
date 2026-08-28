@@ -257,6 +257,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "car",
     hybrid: false,
     hint: "Standard printed on the system's certification label, where required — usually an alternative or addition to a handheld extinguisher.",
+    videoUrl: "https://youtu.be/lmHZVpcb1Yw",
+    videoTitle: "Lifeline ZERO 2000 FIA Fire Suppression Install — Frog Racing",
   },
   fuel_cell: {
     label: "Fuel Cell",
