@@ -105,6 +105,10 @@ interface CategoryMeta {
   /** Hybrid categories only: overrides the reference view's plain-material description sentence. */
   materialOnlyDescription?: string;
   hint: string;
+  /** Link to this category's own section/page on the Frog Racing website (frogracing.us/tech/...) — shown as a small clickable logo, leftmost of the three (web, video, cart). */
+  webUrl?: string;
+  /** Hover title / accessible label for webUrl. */
+  webTitle?: string;
   /** Link to a Frog Racing YouTube video explaining this category (e.g. SFI vs FIA ratings) — shown as a small clickable logo in the corner of the category's card, where present. */
   videoUrl?: string;
   /** Hover title / accessible label for videoUrl — what the tooltip shows on hover. */
@@ -122,6 +126,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: false,
     hint: "Standard printed on the certification sticker inside the helmet.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.z6fq1ip4r155",
+    webTitle: "Helmets — Frog Racing",
     videoUrl: "https://youtu.be/7I-4aoiB6NU",
     videoTitle: "Racing Helmet Buying Guide — Demon Tweeks",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -132,6 +138,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Often required for open-cockpit/open-wheel cars, or conditional if the driver has facial hair. Some bodies accept plain fire-resistant material; others require SFI or FIA certification.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.dlxliywclmq8",
+    webTitle: "Balaclava — Frog Racing",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
   },
@@ -140,6 +148,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: false,
     hint: "Standard printed on the device's conformance label. A rigid HANS-style device, distinct from a padded neck collar — see the separate Neck Collar category.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.nhm52e9cgi3c",
+    webTitle: "Head & Neck Restraint (HANS) — Frog Racing",
     videoUrl: "https://youtu.be/SOMf03LizOA",
     videoTitle: "HANS Device Explained — FIA Safety Week",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -150,12 +160,18 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: false,
     hint: "A padded fabric/foam collar worn around the neck — distinct from a HANS-style head & neck restraint device. Standard printed on the collar's certification label, where the body requires one.",
+    // The safety-gear page doesn't have its own "Neck Collar" heading — it's covered alongside HANS
+    // devices under the combined head & neck restraint section, so that's the closest section link.
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.nhm52e9cgi3c",
+    webTitle: "Head & Neck Restraint — Frog Racing",
   },
   firesuit: {
     label: "Firesuit / Driving Suit",
     group: "driver",
     hybrid: true,
     hint: "Standard printed on the suit's homologation label — most bodies require a certified suit, but a few accept plain fire-resistant clothing at lower tiers.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.nw94q4z5fz2n",
+    webTitle: "Firesuits — Frog Racing",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -166,6 +182,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Some bodies accept plain fire-resistant material; others require SFI or FIA certification.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.1czw04elcuib",
+    webTitle: "Gloves — Frog Racing",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -176,6 +194,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Some bodies accept plain fire-resistant/non-flammable material; others require SFI or FIA certification.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.ijgnu1r3hlu9",
+    webTitle: "Shoes — Frog Racing",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
   },
@@ -184,6 +204,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Some bodies accept plain fire-resistant/non-flammable material or don't address socks at all; others require SFI or FIA certification.",
+    // No dedicated "Socks" heading on the safety-gear page — closest fit is its general "Other
+    // safety equipment" section.
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.eiqvgprzq1ho",
+    webTitle: "Other Safety Equipment — Frog Racing",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -194,6 +218,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Optional/conditional for most bodies — depends on your suit's rating.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.8vowb1wpi2ap",
+    webTitle: "Undergarments — Frog Racing",
     videoUrl: "https://youtu.be/AyHJl86mfNI",
     videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
   },
@@ -202,6 +228,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Typically required for open cars, cars without roll-up windows, or as an alternative to a window net.",
+    webUrl: "https://www.frogracing.us/tech/safety-gear#h.t7gci3rt2g1i",
+    webTitle: "Arm Restraints — Frog Racing",
     videoUrl: "https://youtu.be/hicMMPx9aPk",
     videoTitle: "Arm Restraints in a Stage Rally Car — Frog Racing",
   },
@@ -215,6 +243,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     certifiedLabel: "Certified racing seat (SFI or FIA rated)",
     materialOnlyDescription: "Stock/OEM seat accepted, no certification required.",
     hint: "Many bodies allow a stock/OEM seat, especially for non-caged cars — a certified racing seat is typically only mandated once a roll cage or higher competition tier is involved. Standard printed on the seat's certification label — FIA/SFI-rated seats expire, check the date. Also confirm separately whether this body allows seat sliders/rails, or requires a fixed mount.",
+    webUrl: "https://www.frogracing.us/tech/seat-installation",
+    webTitle: "Seat Installation — Frog Racing",
     videoUrl: "https://youtu.be/O8sN53rURiI",
     videoTitle: "Racing Seats Explained — FIA Safety Week",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -228,6 +258,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     certifiedLabel: "Certified harness (SFI or FIA rated)",
     materialOnlyDescription: "Stock/OEM seatbelts accepted, no certification required.",
     hint: "Standard printed on the harness's certification label — most bodies require a certified harness at higher levels; some allow stock OEM belts for entry-level classes. Harnesses expire — check the date on the label.",
+    webUrl: "https://www.frogracing.us/tech/harness-installation",
+    webTitle: "Harness Installation — Frog Racing",
     videoUrl: "https://youtu.be/I2CKH-Pt0yk",
     videoTitle: "Shoulder Belts Safety Considerations — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
@@ -257,6 +289,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "car",
     hybrid: false,
     hint: "Standard printed on the system's certification label, where required — usually an alternative or addition to a handheld extinguisher.",
+    webUrl: "https://www.frogracing.us/tech/fire-suppression",
+    webTitle: "Fire Suppression — Frog Racing",
     videoUrl: "https://youtu.be/lmHZVpcb1Yw",
     videoTitle: "Lifeline ZERO 2000 FIA Fire Suppression Install — Frog Racing",
   },
@@ -284,6 +318,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually a presence + labeling/accessibility requirement — no certification standard involved.",
+    webUrl: "https://www.frogracing.us/tech/kill-switch",
+    webTitle: "Kill Switch — Frog Racing",
     videoUrl: "https://youtu.be/ByflZEtWLA0",
     videoTitle: "Kill Switch Install: 4-Pole vs Cartek GT — Frog Racing",
   },
@@ -347,6 +383,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     // the form (see EquipmentForm's showCertList).
     presenceOnly: true,
     hint: "Whether a cage/roll bar is required — and what's expected of it — usually depends on your car's body style: closed roof, convertible, open with no windshield frame, or open-wheel. Rally bodies typically also check when the cage was logbooked/built.",
+    webUrl: "https://www.frogracing.us/tech/rollcage",
+    webTitle: "Rollcage — Frog Racing",
     videoUrl: "https://youtu.be/i2VvQxYf9qM",
     videoTitle: "FIA Article 253 Rally Rollcages — Design, Rules, Failures, Logbooks",
   },

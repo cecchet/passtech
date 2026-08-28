@@ -453,18 +453,6 @@ export default function Home() {
             current official rulebook before you rely on this. Entries are saved only in this browser (nothing is sent
             anywhere).
           </p>
-          <p className="mt-2">
-            Learn more about safety gear at{" "}
-            <a
-              href="https://www.frogracing.us/tech/safety-gear"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-amber-100"
-            >
-              frogracing.us/tech/safety-gear
-            </a>
-            .
-          </p>
         </div>
       </header>
 
