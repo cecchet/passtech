@@ -105,17 +105,19 @@ interface CategoryMeta {
   /** Hybrid categories only: overrides the reference view's plain-material description sentence. */
   materialOnlyDescription?: string;
   hint: string;
-  /** Link to this category's own section/page on the Frog Racing website (frogracing.us/tech/...) — shown as a small clickable logo, leftmost of the three (web, video, cart). */
+  /** Link to this category's own section/page on the Frog Racing website (frogracing.us/tech/...) — shown as a small clickable logo, leftmost of the four (web, Frog Racing video, YouTube video, cart). */
   webUrl?: string;
   /** Hover title / accessible label for webUrl. */
   webTitle?: string;
-  /** Link to a YouTube video explaining this category (e.g. SFI vs FIA ratings) — shown as a small clickable logo in the corner of the category's card, where present. */
-  videoUrl?: string;
-  /** Hover title / accessible label for videoUrl — what the tooltip shows on hover. */
-  videoTitle?: string;
-  /** Set to "youtube" when videoUrl isn't a Frog Racing channel upload, so the icon shown is a plain YouTube logo instead of the Frog Racing one. Omit (defaults to the Frog Racing icon) for videos confirmed uploaded by the Frog Racing channel. */
-  videoIcon?: "frog" | "youtube";
-  /** Link to a Frog Racing Store product page for this category — same small-logo treatment as videoUrl. */
+  /** Link to a Frog Racing channel YouTube video explaining this category (e.g. SFI vs FIA ratings) — shown as a small clickable logo, third from the left (after web, before the non-Frog-Racing video). */
+  frogVideoUrl?: string;
+  /** Hover title / accessible label for frogVideoUrl. */
+  frogVideoTitle?: string;
+  /** Link to a non-Frog-Racing YouTube video (a third-party explainer) for this category — shown with the plain YouTube logo, rightmost of the two video slots. */
+  youtubeVideoUrl?: string;
+  /** Hover title / accessible label for youtubeVideoUrl. */
+  youtubeVideoTitle?: string;
+  /** Link to a Frog Racing Store product page for this category — same small-logo treatment as the video links. */
   productUrl?: string;
   /** Hover title / accessible label for productUrl. */
   productTitle?: string;
@@ -130,9 +132,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the certification sticker inside the helmet.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.z6fq1ip4r155",
     webTitle: "Helmets — Frog Racing",
-    videoUrl: "https://youtu.be/7I-4aoiB6NU",
-    videoTitle: "Racing Helmet Buying Guide — Demon Tweeks",
-    videoIcon: "youtube",
+    youtubeVideoUrl: "https://youtu.be/7I-4aoiB6NU",
+    youtubeVideoTitle: "Racing Helmet Buying Guide — Demon Tweeks",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Helmets — Rally Build",
   },
@@ -143,8 +144,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Often required for open-cockpit/open-wheel cars, or conditional if the driver has facial hair. Some bodies accept plain fire-resistant material; others require SFI or FIA certification.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.dlxliywclmq8",
     webTitle: "Balaclava — Frog Racing",
-    videoUrl: "https://youtu.be/AyHJl86mfNI",
-    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    frogVideoUrl: "https://youtu.be/AyHJl86mfNI",
+    frogVideoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    youtubeVideoUrl: "https://youtu.be/BwbCeYkPGY0",
+    youtubeVideoTitle: "Walero Temp Regulating Racewear Review — HMS Motorsport",
   },
   hnr: {
     label: "Head & Neck Restraint (HANS/HNR)",
@@ -153,8 +156,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the device's conformance label. A rigid HANS-style device, distinct from a padded neck collar — see the separate Neck Collar category.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.nhm52e9cgi3c",
     webTitle: "Head & Neck Restraint (HANS) — Frog Racing",
-    videoUrl: "https://youtu.be/SOMf03LizOA",
-    videoTitle: "HANS Device Explained — FIA Safety Week",
+    frogVideoUrl: "https://youtu.be/SOMf03LizOA",
+    frogVideoTitle: "HANS Device Explained — FIA Safety Week",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop HANS Devices — Rally Build",
   },
@@ -175,8 +178,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the suit's homologation label — most bodies require a certified suit, but a few accept plain fire-resistant clothing at lower tiers.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.nw94q4z5fz2n",
     webTitle: "Firesuits — Frog Racing",
-    videoUrl: "https://youtu.be/AyHJl86mfNI",
-    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    frogVideoUrl: "https://youtu.be/AyHJl86mfNI",
+    frogVideoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    youtubeVideoUrl: "https://youtu.be/BR7oSWs7lMw",
+    youtubeVideoTitle: "Driving Suit Guide | How to Choose a Race Suit — Summit Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Firesuits — Rally Build",
   },
@@ -187,8 +192,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Some bodies accept plain fire-resistant material; others require SFI or FIA certification.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.1czw04elcuib",
     webTitle: "Gloves — Frog Racing",
-    videoUrl: "https://youtu.be/AyHJl86mfNI",
-    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    frogVideoUrl: "https://youtu.be/AyHJl86mfNI",
+    frogVideoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    youtubeVideoUrl: "https://youtu.be/XXSRplNwdXI",
+    youtubeVideoTitle: "Driving Gloves Explained — Team O'Neil",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Gloves — Rally Build",
   },
@@ -199,8 +206,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Some bodies accept plain fire-resistant/non-flammable material; others require SFI or FIA certification.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.ijgnu1r3hlu9",
     webTitle: "Shoes — Frog Racing",
-    videoUrl: "https://youtu.be/AyHJl86mfNI",
-    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    frogVideoUrl: "https://youtu.be/AyHJl86mfNI",
+    frogVideoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    youtubeVideoUrl: "https://youtu.be/jSZ3xca4TrU",
+    youtubeVideoTitle: "Rally Driver Explains Driving Shoes — Team O'Neil",
   },
   socks: {
     label: "Socks",
@@ -211,8 +220,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     // safety equipment" section.
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.eiqvgprzq1ho",
     webTitle: "Other Safety Equipment — Frog Racing",
-    videoUrl: "https://youtu.be/AyHJl86mfNI",
-    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    frogVideoUrl: "https://youtu.be/AyHJl86mfNI",
+    frogVideoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Socks — Rally Build",
   },
@@ -223,8 +232,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Optional/conditional for most bodies — depends on your suit's rating.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.8vowb1wpi2ap",
     webTitle: "Undergarments — Frog Racing",
-    videoUrl: "https://youtu.be/AyHJl86mfNI",
-    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    frogVideoUrl: "https://youtu.be/AyHJl86mfNI",
+    frogVideoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
+    youtubeVideoUrl: "https://youtu.be/BwbCeYkPGY0",
+    youtubeVideoTitle: "Walero Temp Regulating Racewear Review — HMS Motorsport",
   },
   arm_restraint: {
     label: "Arm Restraint",
@@ -233,8 +244,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Typically required for open cars, cars without roll-up windows, or as an alternative to a window net.",
     webUrl: "https://www.frogracing.us/tech/safety-gear#h.t7gci3rt2g1i",
     webTitle: "Arm Restraints — Frog Racing",
-    videoUrl: "https://youtu.be/hicMMPx9aPk",
-    videoTitle: "Arm Restraints in a Stage Rally Car — Frog Racing",
+    frogVideoUrl: "https://youtu.be/hicMMPx9aPk",
+    frogVideoTitle: "Arm Restraints in a Stage Rally Car — Frog Racing",
   },
 
   // Car safety gear
@@ -248,8 +259,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Many bodies allow a stock/OEM seat, especially for non-caged cars — a certified racing seat is typically only mandated once a roll cage or higher competition tier is involved. Standard printed on the seat's certification label — FIA/SFI-rated seats expire, check the date. Also confirm separately whether this body allows seat sliders/rails, or requires a fixed mount.",
     webUrl: "https://www.frogracing.us/tech/seat-installation",
     webTitle: "Seat Installation — Frog Racing",
-    videoUrl: "https://youtu.be/O8sN53rURiI",
-    videoTitle: "Racing Seats Explained — FIA Safety Week",
+    frogVideoUrl: "https://youtu.be/O8sN53rURiI",
+    frogVideoTitle: "Racing Seats Explained — FIA Safety Week",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Racing Seats — Rally Build",
   },
@@ -263,8 +274,10 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the harness's certification label — most bodies require a certified harness at higher levels; some allow stock OEM belts for entry-level classes. Harnesses expire — check the date on the label.",
     webUrl: "https://www.frogracing.us/tech/harness-installation",
     webTitle: "Harness Installation — Frog Racing",
-    videoUrl: "https://youtu.be/I2CKH-Pt0yk",
-    videoTitle: "Shoulder Belts Safety Considerations — Frog Racing",
+    frogVideoUrl: "https://youtu.be/I2CKH-Pt0yk",
+    frogVideoTitle: "Shoulder Belts Safety Considerations — Frog Racing",
+    youtubeVideoUrl: "https://youtu.be/xM0hm8V_puE",
+    youtubeVideoTitle: "15 Minutes Can Save Your Life — Simpson Performance Products",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Harnesses — Rally Build",
   },
@@ -273,8 +286,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "car",
     hybrid: true,
     hint: "Often interchangeable with an arm restraint — some bodies let you run one or the other, not both. Some accept a plain net; others require SFI or FIA certification.",
-    videoUrl: "https://youtu.be/O8sN53rURiI",
-    videoTitle: "Window Nets Explained — FIA Safety Week",
+    frogVideoUrl: "https://youtu.be/O8sN53rURiI",
+    frogVideoTitle: "Window Nets Explained — FIA Safety Week",
   },
   fire_extinguisher: {
     label: "Fire Extinguisher",
@@ -282,8 +295,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Minimum size/rating and mounting requirements vary by body — check the notes for specifics.",
-    videoUrl: "https://youtu.be/QMHmXz211uI",
-    videoTitle: "Fire Extinguisher Mounting & Anti-Torpedo Tabs — Frog Racing",
+    frogVideoUrl: "https://youtu.be/QMHmXz211uI",
+    frogVideoTitle: "Fire Extinguisher Mounting & Anti-Torpedo Tabs — Frog Racing",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
@@ -294,8 +307,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Standard printed on the system's certification label, where required — usually an alternative or addition to a handheld extinguisher.",
     webUrl: "https://www.frogracing.us/tech/fire-suppression",
     webTitle: "Fire Suppression — Frog Racing",
-    videoUrl: "https://youtu.be/lmHZVpcb1Yw",
-    videoTitle: "Lifeline ZERO 2000 FIA Fire Suppression Install — Frog Racing",
+    frogVideoUrl: "https://youtu.be/lmHZVpcb1Yw",
+    frogVideoTitle: "Lifeline ZERO 2000 FIA Fire Suppression Install — Frog Racing",
   },
   fuel_cell: {
     label: "Fuel Cell",
@@ -323,8 +336,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Usually a presence + labeling/accessibility requirement — no certification standard involved.",
     webUrl: "https://www.frogracing.us/tech/kill-switch",
     webTitle: "Kill Switch — Frog Racing",
-    videoUrl: "https://youtu.be/ByflZEtWLA0",
-    videoTitle: "Kill Switch Install: 4-Pole vs Cartek GT — Frog Racing",
+    frogVideoUrl: "https://youtu.be/ByflZEtWLA0",
+    frogVideoTitle: "Kill Switch Install: 4-Pole vs Cartek GT — Frog Racing",
   },
   tow_hook: {
     label: "Tow Hook",
@@ -341,8 +354,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
-    videoUrl: "https://youtu.be/ZuHoN8IQPd0",
-    videoTitle: "Rally Car Safety Equipment Install & Toolbox Content — Frog Racing",
+    frogVideoUrl: "https://youtu.be/ZuHoN8IQPd0",
+    frogVideoTitle: "Rally Car Safety Equipment Install & Toolbox Content — Frog Racing",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
@@ -352,8 +365,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
-    videoUrl: "https://youtu.be/ZuHoN8IQPd0",
-    videoTitle: "Rally Car Safety Equipment Install & Toolbox Content — Frog Racing",
+    frogVideoUrl: "https://youtu.be/ZuHoN8IQPd0",
+    frogVideoTitle: "Rally Car Safety Equipment Install & Toolbox Content — Frog Racing",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
@@ -363,9 +376,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
-    videoUrl: "https://youtu.be/DAQ4s8DZH9o",
-    videoTitle: "Stage Rally First Aid Kit — Dan Shirley",
-    videoIcon: "youtube",
+    youtubeVideoUrl: "https://youtu.be/DAQ4s8DZH9o",
+    youtubeVideoTitle: "Stage Rally First Aid Kit — Dan Shirley",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
@@ -389,7 +401,7 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hint: "Whether a cage/roll bar is required — and what's expected of it — usually depends on your car's body style: closed roof, convertible, open with no windshield frame, or open-wheel. Rally bodies typically also check when the cage was logbooked/built.",
     webUrl: "https://www.frogracing.us/tech/rollcage",
     webTitle: "Rollcage — Frog Racing",
-    videoUrl: "https://youtu.be/i2VvQxYf9qM",
-    videoTitle: "FIA Article 253 Rally Rollcages — Design, Rules, Failures, Logbooks",
+    frogVideoUrl: "https://youtu.be/i2VvQxYf9qM",
+    frogVideoTitle: "FIA Article 253 Rally Rollcages — Design, Rules, Failures, Logbooks",
   },
 };

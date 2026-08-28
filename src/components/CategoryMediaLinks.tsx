@@ -2,11 +2,11 @@ import { CATEGORY_META } from "@/data/categoryMeta";
 import { EquipmentCategory } from "@/data/types";
 
 /**
- * Small clickable Frog Racing logos — a website icon linking to this category's own section on
- * frogracing.us, a YouTube icon linking to an explainer video (e.g. SFI vs FIA ratings), and/or a
- * shopping-cart icon linking to a product to buy, in that order left to right. Renders nothing when
- * the category has none of the three set in CATEGORY_META. Deliberately not used anywhere in
- * pdfReport.ts — these are on-screen-only affordances, not part of the printable report.
+ * Small clickable logos for this category — in order left to right: this category's own section on
+ * frogracing.us, a Frog Racing channel explainer video, a non-Frog-Racing YouTube video, and a
+ * product to buy. Renders nothing when the category has none of the four set in CATEGORY_META.
+ * Deliberately not used anywhere in pdfReport.ts — these are on-screen-only affordances, not part of
+ * the printable report.
  */
 // One standard icon size everywhere this renders — Option 1, and both the collapsed-summary and
 // resolved-bottom placements in Options 2/3 — so the same logo never appears a different size
@@ -23,7 +23,7 @@ export function CategoryMediaLinks({
   className?: string;
 }) {
   const meta = CATEGORY_META[category];
-  if (!meta.webUrl && !meta.videoUrl && !meta.productUrl) return null;
+  if (!meta.webUrl && !meta.frogVideoUrl && !meta.youtubeVideoUrl && !meta.productUrl) return null;
 
   return (
     <div className={className}>
@@ -33,14 +33,16 @@ export function CategoryMediaLinks({
           <img src="/frog-web.jpg" alt={meta.webTitle ?? "Learn more on frogracing.us"} className="h-full w-full object-cover" />
         </a>
       )}
-      {meta.videoUrl && (
-        <a href={meta.videoUrl} target="_blank" rel="noopener noreferrer" title={meta.videoTitle ?? "Watch a related video"} className={ICON_CLASS}>
+      {meta.frogVideoUrl && (
+        <a href={meta.frogVideoUrl} target="_blank" rel="noopener noreferrer" title={meta.frogVideoTitle ?? "Watch a related video"} className={ICON_CLASS}>
           {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
-          <img
-            src={meta.videoIcon === "youtube" ? "/youtube-logo.png" : "/frog-racing-video.jpg"}
-            alt={meta.videoTitle ?? "Watch a related video"}
-            className={meta.videoIcon === "youtube" ? "h-full w-full object-contain p-0.5" : "h-full w-full object-cover"}
-          />
+          <img src="/frog-racing-video.jpg" alt={meta.frogVideoTitle ?? "Watch a related video"} className="h-full w-full object-cover" />
+        </a>
+      )}
+      {meta.youtubeVideoUrl && (
+        <a href={meta.youtubeVideoUrl} target="_blank" rel="noopener noreferrer" title={meta.youtubeVideoTitle ?? "Watch a related video"} className={ICON_CLASS}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+          <img src="/youtube-logo.png" alt={meta.youtubeVideoTitle ?? "Watch a related video"} className="h-full w-full object-contain p-0.5" />
         </a>
       )}
       {meta.productUrl && (
