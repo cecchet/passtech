@@ -320,6 +320,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+    videoUrl: "https://youtu.be/DAQ4s8DZH9o",
+    videoTitle: "Stage Rally First Aid Kit — Frog Racing",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
