@@ -222,11 +222,11 @@ const performanceRally: Ruleset = {
         "One or more belt cutters and glass breakers must be carried within reach of both driver and co-driver while harnesses are worn; the seat belt cutter must be designed specifically for cutting seat belts. Related: RTR 2.2.6.b requires one or more window-breakers accessible to driver and co-driver for vehicles with glass side windows, and 2.2.6.d requires window nets (FIA Art. 253 or SFI 27.1) in lieu of rolled-up windows during stages.",
     },
     hood_pins: {
-      requirement: "not_addressed",
-      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition, through Bulletin 2026-8" },
-      confidence: "high",
+      requirement: "required",
+      citation: { title: "ARA Rally Technical Rules", version: "2026 Edition, through Bulletin 2026-8", section: "2.2.18" },
+      confidence: "medium",
       notes:
-        "Checked the full text of the 2026 RTR (through Bulletin 2026-8) for hood pin / hood fastener / hood latch / hood strap / positive latch language — not addressed. A full-document search for 'pin'/'pins' found zero matches anywhere in the rulebook; the only hood-related text concerns hood scoops, cowl-induction hoods, engine cover openings, and the reserved sponsor-decal space on the hood (§3.2.5) — none of it touches fastening.",
+        "RTR §2.2.18 ('Engine Covers'): 'Engine covers shall be fixed closed accessible from the outside and accessible without the use of tools. Other fastening devices (inside or outside) shall be rendered inoperative, except for the secondary catch, which may be retained.' The rule never uses the words 'hood' or 'pin' — a plain text search for 'pin'/'pins' finds nothing — but this is functionally the same fastener requirement other bodies title outright as 'hood pins' (compare SCCNH Gravel Trials Rule 9.9, nearly word-for-word identical: fixed closed, accessible from outside without tools, other fasteners disabled except a secondary catch). 'Engine cover' is this rulebook's term for what other bodies call the hood/bonnet. Confidence is medium rather than high because ARA itself never uses hood-pin terminology, so this is an interpretation of a rule written in different words, not a rule that names hood pins directly.",
     },
     spill_kit: {
       requirement: "required",
