@@ -81,12 +81,12 @@ export const CATEGORY_ORDER: EquipmentCategory[] = [
   "fire_extinguisher",
   "fire_suppression",
   "kill_switch",
+  "hood_pins",
   "tow_hook",
   "tow_rope",
   "emergency_triangle",
   "first_aid_kit",
   "window_breaker",
-  "hood_pins",
   "spill_kit",
   "parachute",
   // Rollover protection
