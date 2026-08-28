@@ -182,6 +182,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: true,
     hint: "Some bodies accept plain fire-resistant/non-flammable material or don't address socks at all; others require SFI or FIA certification.",
+    videoUrl: "https://youtu.be/AyHJl86mfNI",
+    videoTitle: "SFI vs. FIA Ratings Explained — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Socks — Rally Build",
   },

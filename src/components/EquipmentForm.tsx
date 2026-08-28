@@ -990,7 +990,7 @@ export function EquipmentForm({
                 <img src={entry.photoDataUrls[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
               )}
               {isEmpty && <NoDataBadge />}
-              {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} size="h-6 w-6" className="flex shrink-0 gap-1" />}
+              {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
               {result ? (
                 <StatusPill status={result.status} requirement={result.requirement} />
               ) : (
