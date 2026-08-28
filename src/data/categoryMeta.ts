@@ -122,6 +122,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "driver",
     hybrid: false,
     hint: "Standard printed on the certification sticker inside the helmet.",
+    videoUrl: "https://youtu.be/7I-4aoiB6NU",
+    videoTitle: "Racing Helmet Buying Guide — Demon Tweeks",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Helmets — Rally Build",
   },
