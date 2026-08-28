@@ -4,6 +4,7 @@ import { logbookBodyLabel, standardLabel, standardsFor } from "@/data/standards"
 import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
 import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
+import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
 import { CitationLine } from "@/components/CitationLine";
 
 const REQUIREMENT_STYLE: Record<CategoryRule["requirement"], string> = {
@@ -192,6 +193,8 @@ function CategoryReferenceCard({ category, rule }: { category: EquipmentCategory
       {rule.notes && <p className="mt-2 text-xs text-neutral-400">{rule.notes}</p>}
 
       <CitationLine citation={rule.citation} confidence={rule.confidence} />
+
+      <CategoryMediaLinks category={category} />
     </div>
   );
 }
