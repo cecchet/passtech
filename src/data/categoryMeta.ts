@@ -228,6 +228,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     certifiedLabel: "Certified harness (SFI or FIA rated)",
     materialOnlyDescription: "Stock/OEM seatbelts accepted, no certification required.",
     hint: "Standard printed on the harness's certification label — most bodies require a certified harness at higher levels; some allow stock OEM belts for entry-level classes. Harnesses expire — check the date on the label.",
+    videoUrl: "https://youtu.be/xM0hm8V_puE",
+    videoTitle: "15 Minutes Can Save Your Life — Frog Racing",
     productUrl: "https://rally.build/collections/safety-equipment",
     productTitle: "Shop Harnesses — Rally Build",
   },
@@ -245,6 +247,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Minimum size/rating and mounting requirements vary by body — check the notes for specifics.",
+    videoUrl: "https://youtu.be/QMHmXz211uI",
+    videoTitle: "Fire Extinguisher Mounting & Anti-Torpedo Tabs — Frog Racing",
     productUrl: "https://amzn.to/4iz90ek",
     productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
@@ -278,6 +282,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually a presence + labeling/accessibility requirement — no certification standard involved.",
+    videoUrl: "https://youtu.be/ByflZEtWLA0",
+    videoTitle: "Kill Switch Install: 4-Pole vs Cartek GT — Frog Racing",
   },
   tow_hook: {
     label: "Tow Hook",
@@ -333,5 +339,7 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     // the form (see EquipmentForm's showCertList).
     presenceOnly: true,
     hint: "Whether a cage/roll bar is required — and what's expected of it — usually depends on your car's body style: closed roof, convertible, open with no windshield frame, or open-wheel. Rally bodies typically also check when the cage was logbooked/built.",
+    videoUrl: "https://youtu.be/i2VvQxYf9qM",
+    videoTitle: "FIA Article 253 Rally Rollcages — Design, Rules, Failures, Logbooks",
   },
 };
