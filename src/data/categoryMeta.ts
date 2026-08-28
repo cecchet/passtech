@@ -245,6 +245,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Minimum size/rating and mounting requirements vary by body — check the notes for specifics.",
+    productUrl: "https://amzn.to/4iz90ek",
+    productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
   fire_suppression: {
     label: "Fire Suppression System",
@@ -267,6 +269,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+    productUrl: "https://amzn.to/4iz90ek",
+    productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
   kill_switch: {
     label: "Kill Switch / Battery Cutoff",
@@ -281,6 +285,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement, sometimes with a color-marking rule — no certification standard involved.",
+    productUrl: "https://amzn.to/4iz90ek",
+    productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
   tow_rope: {
     label: "Tow Rope / Strap",
@@ -288,6 +294,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+    productUrl: "https://amzn.to/4iz90ek",
+    productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
   emergency_triangle: {
     label: "Emergency Triangle",
@@ -295,6 +303,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+    productUrl: "https://amzn.to/4iz90ek",
+    productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
   first_aid_kit: {
     label: "First Aid Kit",
@@ -302,6 +312,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     hybrid: false,
     presenceOnly: true,
     hint: "Usually just a presence requirement — no certification standard involved.",
+    productUrl: "https://amzn.to/4iz90ek",
+    productTitle: "Shop Car Safety Essentials — Frog Racing (Amazon)",
   },
   parachute: {
     label: "Parachute",
