@@ -1,0 +1,116 @@
+{
+  "listNumber": 91,
+  "title": "Technical List n°91 — Competition Seats (FIA 8855-2021)",
+  "standardIds": [
+    "fia-8855-2021"
+  ],
+  "categories": [
+    "seat"
+  ],
+  "sourceUrl": "https://www.fia.com/system/files/documents/l91_approved_competition_seats_-_8855-2021.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "CS.001.21",
+      "manufacturer": "Atech",
+      "model": "AT-FH",
+      "homologationStart": "05.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "CS.002.21"
+    },
+    {
+      "number": "CS.003.21"
+    },
+    {
+      "number": "CS.004.21",
+      "manufacturer": "Sparco",
+      "model": "MASTER",
+      "homologationStart": "07.2021",
+      "homologationEnd": "07.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "CS.005.21",
+      "manufacturer": "Atech",
+      "model": "AT-CH",
+      "homologationStart": "07.2021",
+      "homologationEnd": "07.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "CS.006.21"
+    },
+    {
+      "number": "CS.007.21"
+    },
+    {
+      "number": "CS.008.21",
+      "manufacturer": "Sparco",
+      "model": "ADV XT",
+      "homologationStart": "11.2021",
+      "homologationEnd": "11.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "CS.009.21",
+      "manufacturer": "OMP",
+      "model": "HTC EVO",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "CS.010.22",
+      "manufacturer": "Corbeau",
+      "model": "ECS4",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "CS.011.22",
+      "manufacturer": "Sabelt",
+      "model": "SPINE",
+      "homologationStart": "05.2022",
+      "homologationEnd": "05.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "CS.012.22"
+    },
+    {
+      "number": "CS.013.23",
+      "manufacturer": "TRP",
+      "model": "RST-1200",
+      "homologationStart": "02.2023",
+      "homologationEnd": "02.2028",
+      "validUntil": "2038"
+    },
+    {
+      "number": "CS.014.23"
+    },
+    {
+      "number": "CS.015.23"
+    },
+    {
+      "number": "CS.016.23"
+    },
+    {
+      "number": "CS.017.23",
+      "manufacturer": "Sabelt",
+      "model": "SPINE M",
+      "homologationStart": "02.2023",
+      "homologationEnd": "02.2028",
+      "validUntil": "2038"
+    },
+    {
+      "number": "CS.018.23",
+      "manufacturer": "Sparco",
+      "model": "MATRIX",
+      "homologationStart": "05.2028",
+      "validUntil": "2038"
+    }
+  ]
+}

@@ -7,12 +7,13 @@ import list12 from "./list-12.json";
 import list27 from "./list-27.json";
 import list29 from "./list-29.json";
 import list40 from "./list-40.json";
+import list91 from "./list-91.json";
 
 /**
  * Parsed FIA Technical Lists — see fia-lists/README.md for how these are generated
  * (scripts/parse-fia-list.mjs against a cached PDF). Only the lists whose table format has
  * actually been verified against real entries are wired in here; see that script's
- * LIST_CONFIG for ones still pending (91 — messier layout, not yet trusted).
+ * LIST_CONFIG for the ones still pending.
  *
  * List 24 and List 12 in particular: their tables have extra columns (strap/attachment counts
  * and buckle type for 24; seat-support position and an "S2000" flag for 12) this app doesn't
@@ -38,6 +39,14 @@ import list40 from "./list-40.json";
  * indistinguishable from a real model name once pdftotext collapses the layout. Brand is kept
  * (real brand names are letters-only; every bracket part number here has a digit or a slash) but
  * model is dropped everywhere rather than risk mislabeling a bracket as a product.
+ *
+ * List 91 (FIA 8855-2021 competition seats) is only PARTIALLY parsed — its first section
+ * (CS.001-CS.018) is reliably tabular, but from CS.019 onward the column spacing collapses and
+ * some rows lose their homologation number entirely, which would risk attributing one product's
+ * dates to a different one. Per an explicit user decision, only the clean section is wired up
+ * here; several numbers within it (bracket-variant continuations of an earlier number, e.g.
+ * CS.002.21/CS.003.21 under CS.001.21's Atech AT-FH) are intentionally number-only with no
+ * manufacturer/model/dates, same reasoning as List 40. See fia-lists/README.md.
  */
 export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list74,
@@ -48,6 +57,7 @@ export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list27,
   list29,
   list40,
+  list91,
 ] as FiaTechnicalList[];
 
 /**

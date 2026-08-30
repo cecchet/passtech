@@ -95,6 +95,39 @@ const LIST_CONFIG = {
       return brand && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand) ? { manufacturer: brand } : {};
     },
   },
+  91: {
+    title: "Technical List n°91 — Competition Seats (FIA 8855-2021)",
+    standardIds: ["fia-8855-2021"],
+    categories: ["seat"],
+    sourceUrl: "https://www.fia.com/system/files/documents/l91_approved_competition_seats_-_8855-2021.pdf",
+    numberPattern: /^(CS\.\d{3}\.\d{2})\b/,
+    // Unlike every other list, the dates here are followed by five more space-separated seat
+    // dimension numbers (columns A-E, e.g. "458 919 618 411 513") rather than sitting at the end
+    // of the line — so this pattern is NOT anchored with `$`; parseGenericRow just splits "rest"
+    // at wherever it matches, discarding the dimension numbers along with the matched dates.
+    dateTailPattern: /(?:\s+(\d{2}\.\d{4}))?(?:\s+(\d{2}\.\d{4}))?(?:\s+(\d{4}))\b/,
+    // Several homologation numbers here are grouped bracket-variants of a product already fully
+    // described on an earlier number's row (e.g. CS.002.21/CS.003.21 are ATBRK21 bracket variants
+    // of CS.001.21's Atech AT-FH) — their own line has no real brand at all, just a bracket part
+    // number and a dimension in the same visual columns brand/model would occupy. Real brand
+    // names are letters-only (Atech, Sparco, OMP, Corbeau, Sabelt, TRP); every bracket part
+    // number in this section has a digit or a slash — so only trust the model column when the
+    // brand column next to it validated first.
+    columnParser: (cols) => {
+      const brand = cols[0];
+      if (!brand || !/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand)) return {};
+      return { manufacturer: brand, model: cols[1] };
+    },
+    // From CS.019.24 onward the PDF's column spacing collapses (brand/model/bracket-part text
+    // runs together with single spaces instead of the double-space gaps this parser relies on to
+    // split columns), and several manufacturer/date rows appear with NO homologation number on
+    // their own line at all — a generic parser could silently attribute one product's dates to a
+    // different product there. Per user decision, only the reliably tabular first section
+    // (CS.001-CS.018) is parsed; the rest is left for a future manual pass — see
+    // fia-lists/README.md. Does not affect the WARNING section, which is parsed from the
+    // untruncated file (there happen to be none in this list as of this fetch).
+    truncateBeforeLine: /CS\.019\.24/,
+  },
 };
 
 // A trailing MM.YYYY MM.YYYY YYYY-ish tail — 0-3 of these tokens, in order (start-of-homol,
@@ -231,9 +264,21 @@ function main() {
   const lines = readFileSync(txtPath, "utf-8").split(/\r?\n/);
   const dateTailPattern = config.dateTailPattern ?? DATE_TAIL;
 
+  // Some lists have a reliably tabular section followed by a section whose column formatting
+  // breaks down (see e.g. list 91's config comment); truncateBeforeLine stops the main entries
+  // loop there while still handing parseWarningSection the full, untruncated file below.
+  let entryLines = lines;
+  if (config.truncateBeforeLine) {
+    const cutIdx = lines.findIndex((l) => config.truncateBeforeLine.test(l));
+    if (cutIdx !== -1) {
+      entryLines = lines.slice(0, cutIdx);
+      console.log(`  truncating at line ${cutIdx + 1} (matched ${config.truncateBeforeLine}) — ${lines.length - cutIdx - 1} line(s) after this are not parsed`);
+    }
+  }
+
   const entries = [];
   const seen = new Set();
-  for (const rawLine of lines) {
+  for (const rawLine of entryLines) {
     const line = rawLine.replace(/^\s+/, "");
     const row = parseGenericRow(line, config.numberPattern, dateTailPattern, config.columnParser);
     if (!row) continue;
