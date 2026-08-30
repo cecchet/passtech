@@ -298,6 +298,18 @@ export interface Ruleset {
    * real requirement without this banner.
    */
   knownGaps?: string[];
+  /**
+   * A sample scrutineering/tech inspection sheet for this body — the actual checklist a tech
+   * inspector works from at the event, as opposed to `sourceDocuments` (the rulebook itself).
+   * Shown as a "View sample tech sheet" link in Option 1. Purely a reference sample — event/year
+   * specific fields on it (car number, date, etc.) won't match the user's own event.
+   */
+  techSheet?: {
+    /** Path under /public, e.g. "/tech-sheets/ara-tech-form.jpg". */
+    url: string;
+    /** File format shown to the user, e.g. "JPEG" or "PNG". */
+    format: string;
+  };
 }
 
 export interface StandardDef {

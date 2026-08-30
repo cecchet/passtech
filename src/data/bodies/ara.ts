@@ -17,6 +17,7 @@ const performanceRally: Ruleset = {
       url: "https://www.americanrallyassociation.org/rulesandbulletins",
     },
   ],
+  techSheet: { url: "/tech-sheets/ara-tech-form.jpg", format: "JPEG" },
   categories: {
     helmet: {
       requirement: "required",

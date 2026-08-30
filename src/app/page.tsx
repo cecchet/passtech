@@ -566,7 +566,7 @@ export default function Home() {
 
           {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
-          {ruleset && <SourceLine ruleset={ruleset} />}
+          {ruleset && <SourceLine ruleset={ruleset} showTechSheet />}
 
           {ruleset && (
             <EquipmentSummary
@@ -1243,7 +1243,7 @@ function CodriverGearSection({
   );
 }
 
-function SourceLine({ ruleset }: { ruleset: Ruleset }) {
+function SourceLine({ ruleset, showTechSheet = false }: { ruleset: Ruleset; showTechSheet?: boolean }) {
   return (
     <>
       <p id="tutorial-source-line" className="mb-6 mt-4 rounded-lg border border-sky-900 bg-sky-950/40 p-3 text-sm text-sky-200">
@@ -1265,6 +1265,19 @@ function SourceLine({ ruleset }: { ruleset: Ruleset }) {
           </span>
         ))}{" "}
         — last reviewed {ruleset.lastReviewed}
+        {showTechSheet && ruleset.techSheet && (
+          <>
+            {" · "}
+            <a
+              href={ruleset.techSheet.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-white"
+            >
+              View sample tech sheet ({ruleset.techSheet.format})
+            </a>
+          </>
+        )}
       </p>
       {ruleset.knownGaps && ruleset.knownGaps.length > 0 && (
         <div className="-mt-4 mb-6 rounded-lg border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-200">

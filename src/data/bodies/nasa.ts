@@ -358,6 +358,7 @@ const rallySport: Ruleset = {
       section: "3.36 Personal Safety Items for Occupants",
     },
   ],
+  techSheet: { url: "/tech-sheets/nasa-rallysport-scrutineering-sample.jpg", format: "JPEG" },
   categories: {
     helmet: {
       requirement: "required",

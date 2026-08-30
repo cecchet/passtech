@@ -17,6 +17,7 @@ const gravelTrials: Ruleset = {
       section: "12. Required Personal Safety Equipment",
     },
   ],
+  techSheet: { url: "/tech-sheets/sccnh-gravel-trials-tech-form.png", format: "PNG" },
   categories: {
     helmet: {
       requirement: "required",

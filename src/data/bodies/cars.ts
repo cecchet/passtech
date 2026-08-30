@@ -19,6 +19,7 @@ const performanceRally: Ruleset = {
   supportsCodriver: true,
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "NRR 11.1.6-11.1.8" }],
+  techSheet: { url: "/tech-sheets/cars-scrutineering-form.jpg", format: "JPEG" },
   categories: {
     helmet: {
       requirement: "required",
@@ -258,6 +259,7 @@ const rallySprint: Ruleset = {
   supportsCodriver: true,
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "NRR 28.3.3" }],
+  techSheet: { url: "/tech-sheets/cars-scrutineering-form.jpg", format: "JPEG" },
   categories: {
     helmet: {
       requirement: "required",
@@ -461,6 +463,7 @@ const rallyCross: Ruleset = {
   disciplineGroup: "RallyCross",
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "NRR 27.3.3" }],
+  techSheet: { url: "/tech-sheets/cars-scrutineering-form.jpg", format: "JPEG" },
   // ROV/UTV gets its own class for belts_harness/window_net, where it has genuinely distinct
   // rules — but not for helmet, where the general list already correctly includes its ASTM F3103
   // carve-out alongside everything else, so overriding it wouldn't change anything.
