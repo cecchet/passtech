@@ -52,10 +52,26 @@ const LIST_CONFIG = {
     // since that's what appears on a physical seat's own homologation label.
     numberPattern: /^\.?(CS\.\d{3}\.\d{2})\s*(?:⁽³⁾|³)?\s*\b/,
   },
+  27: {
+    title: "Technical List n°27, Part 1 — Homologated Garments (FIA 8856-2000)",
+    standardIds: ["fia-8856-2000"],
+    // Only Part 1 (numbered overalls/suits) fits this app's number-lookup model. Part 2
+    // (undergarment/balaclava/sock/shoe manufacturers) and Part 3 (gloves) are both "approved
+    // manufacturer/model" lists with NO homologation number at all — there is nothing for a user
+    // to type in or scan for those categories under this standard, so this list is scoped to
+    // firesuit only even though fia-8856-2000 also backs gloves/shoes/socks/undergarment.
+    categories: ["firesuit"],
+    sourceUrl: "https://www.fia.com/system/files/documents/l27_approved_clothing_materials.pdf",
+    numberPattern: /^(RS\.\d{3}\.\d{2})\b/,
+    // Part 1 dates print as DD.MM.YY (e.g. "01.12.01"), not this app's usual MM.YYYY — two
+    // columns only (start/end), no separate "valid until" year.
+    dateTailPattern: /(?:\s+(\d{2}\.\d{2}\.\d{2}))?(?:\s+(\d{2}\.\d{2}\.\d{2}))?\s*$/,
+  },
 };
 
 // A trailing MM.YYYY MM.YYYY YYYY-ish tail — 0-3 of these tokens, in order (start-of-homol,
-// end-of-homol, valid-until). Some rows only have 1 or 2 filled in.
+// end-of-homol, valid-until). Some rows only have 1 or 2 filled in. Lists whose dates print in a
+// different format (see e.g. list 27's config) override this via LIST_CONFIG.dateTailPattern.
 const DATE_TAIL = /(?:\s+(\d{2}\.\d{4}))?(?:\s+(\d{2}\.\d{4}))?(?:\s+(\d{4}))?\s*$/;
 
 const KNOWN_PRODUCT_TYPES = [
@@ -77,13 +93,13 @@ function splitColumns(text) {
     .filter(Boolean);
 }
 
-function parseGenericRow(line, numberPattern) {
+function parseGenericRow(line, numberPattern, dateTailPattern) {
   const m = numberPattern.exec(line);
   if (!m) return null;
   const number = m[1];
   let rest = line.slice(m[0].length);
 
-  const dateMatch = DATE_TAIL.exec(rest);
+  const dateMatch = dateTailPattern.exec(rest);
   const [, start, end, validUntil] = dateMatch ?? [];
   if (dateMatch) rest = rest.slice(0, dateMatch.index);
 
@@ -116,9 +132,18 @@ function parseWarningSection(lines, numberPattern) {
   if (/no warnings? for this (list|product)/i.test(tail)) return [];
 
   const revocations = [];
-  const blocks = tail.split(/\n\s*\n/);
+  const seenNumbers = new Set();
+  // Split on "IMPORTANT" (the literal word every notice opens with), not blank lines — some
+  // lists (27) put a blank line between EVERY field of a single notice (Fabricant / Modèle /
+  // Homologation no, each its own paragraph), which would otherwise fragment one notice into
+  // several blank-line blocks, none containing all three fields together.
+  const blocks = tail.split(/\bIMPORTANT\b/i);
   for (const block of blocks) {
-    const numberLineMatch = /Homologation\s+n\S{0,2}\s*:?\s*([^\n]+)/i.exec(block);
+    // Requires the colon: real revocation notices read "Homologation n° : XYZ" / "Homologation
+    // no: XYZ". Without anchoring on the colon, this also matches footnote prose that happens to
+    // contain "...homologation number..." (e.g. list 27's embroidering-correction footnote),
+    // which isn't a revocation at all and has no real number to extract.
+    const numberLineMatch = /Homologation\s+n[°o]?\.?\s*:\s*([^\n]+)/i.exec(block);
     if (!numberLineMatch) continue;
     const candidateLine = numberLineMatch[1].trim();
     const numMatch = numberPattern.exec(candidateLine);
@@ -126,9 +151,20 @@ function parseWarningSection(lines, numberPattern) {
       console.warn(`  WARNING SECTION: found a "Homologation n:" line but couldn't extract a number from it: "${candidateLine}"`);
       continue;
     }
-    const manufacturer = /Manufacturer:\s*([^\n]+)/i.exec(block)?.[1]?.trim();
-    const model = /Model:\s*([^\n]+)/i.exec(block)?.[1]?.trim();
-    const reasonMatch = /(For (?:reliability|safety) reasons[\s\S]*?mandatory\.)/i.exec(block.replace(/\s+/g, " "));
+    // The same notice can appear more than once in the source PDF (a short WARNING section
+    // sometimes gets reprinted across a page break); keep only the first occurrence per number.
+    if (seenNumbers.has(numMatch[1])) continue;
+    seenNumbers.add(numMatch[1]);
+    // Some notices (e.g. list 27's) are French-first: "Fabricant :" / "Modèle:" instead of
+    // "Manufacturer:" / "Model:".
+    const manufacturer = /(?:Manufacturer|Fabricant)\s*:\s*([^\n]+)/i.exec(block)?.[1]?.trim();
+    const model = /(?:Model|Mod[eè]le)\s*:\s*([^\n]+)/i.exec(block)?.[1]?.trim();
+    // Just the consequence sentence ("As this seat can no longer be considered as complying
+    // with..." / French "Cette combinaison ne pouvant plus être considérée..."), not the
+    // "For safety reasons... withdrawn with immediate effect" opener (redundant with `revoked:
+    // true`) or the Manufacturer/Model/Homologation-number restatement in between (redundant
+    // with the dedicated fields already on this entry).
+    const reasonMatch = /((?:As this|Cette)[\s\S]*?(?:mandatory|impos[eé])\.)/i.exec(block.replace(/\s+/g, " "));
     revocations.push({
       number: numMatch[1],
       manufacturer,
@@ -153,12 +189,13 @@ function main() {
     process.exit(1);
   }
   const lines = readFileSync(txtPath, "utf-8").split(/\r?\n/);
+  const dateTailPattern = config.dateTailPattern ?? DATE_TAIL;
 
   const entries = [];
   const seen = new Set();
   for (const rawLine of lines) {
     const line = rawLine.replace(/^\s+/, "");
-    const row = parseGenericRow(line, config.numberPattern);
+    const row = parseGenericRow(line, config.numberPattern, dateTailPattern);
     if (!row) continue;
     if (seen.has(row.number)) {
       console.warn(`  duplicate homologation number seen: ${row.number} — keeping first occurrence`);
@@ -193,6 +230,7 @@ function main() {
     listNumber,
     title: config.title,
     standardIds: config.standardIds,
+    ...(config.categories ? { categories: config.categories } : {}),
     sourceUrl: config.sourceUrl,
     lastFetched: new Date().toISOString().slice(0, 10),
     entries,

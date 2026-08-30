@@ -349,6 +349,18 @@ export interface FiaTechnicalList {
   title: string;
   /** This app's standardId(s) this list is the homologation register for — see standards.ts. Usually one, but a list can back more than one standardId (e.g. a list covering multiple garment types under the same standard). */
   standardIds: string[];
+  /**
+   * Restricts this list's lookup to specific equipment categories, when a standardId is shared
+   * across categories (e.g. fia-8856-2000/2018 back firesuit, gloves, shoes, socks, AND
+   * undergarment) but this particular list only actually assigns homologation numbers to some of
+   * them. Omit when the list's numbers genuinely apply to every category the standardId covers
+   * (e.g. List 74 numbers every garment type together) — only set this when a list's OTHER
+   * categories are identified a different way FIA doesn't give this app a number to check
+   * (List 27's Part 3 gloves and Part 2 undergarment/balaclava/sock/shoe makers are each an
+   * "approved manufacturer" list with no per-product number at all, so List 27 is scoped to
+   * `["firesuit"]` even though fia-8856-2000 also covers those other categories).
+   */
+  categories?: EquipmentCategory[];
   sourceUrl: string;
   /** When this list was last downloaded and re-parsed. */
   lastFetched: string;

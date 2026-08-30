@@ -1,0 +1,2174 @@
+{
+  "listNumber": 27,
+  "title": "Technical List n°27, Part 1 — Homologated Garments (FIA 8856-2000)",
+  "standardIds": [
+    "fia-8856-2000"
+  ],
+  "categories": [
+    "firesuit"
+  ],
+  "sourceUrl": "https://www.fia.com/system/files/documents/l27_approved_clothing_materials.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "RS.001.01",
+      "manufacturer": "TECNICA LUCIDA",
+      "model": "OMP"
+    },
+    {
+      "number": "RS.002.01",
+      "manufacturer": "SUPERFIRST",
+      "homologationStart": "01.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.003.01",
+      "homologationStart": "01.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.004.01",
+      "manufacturer": "NUOVA TREND",
+      "model": "OMP",
+      "homologationStart": "01.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.005.01",
+      "manufacturer": "R-501",
+      "model": "SPARCO",
+      "homologationStart": "06.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.006.01",
+      "manufacturer": "R-506",
+      "model": "SPARCO",
+      "homologationStart": "05.10.04",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.007.01",
+      "manufacturer": "R-505",
+      "model": "SPARCO",
+      "homologationStart": "07.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.008.01",
+      "manufacturer": "R-507",
+      "model": "SPARCO",
+      "homologationStart": "07.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.009.01",
+      "manufacturer": "R-508",
+      "model": "SPARCO",
+      "homologationStart": "14.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.010.01",
+      "manufacturer": "R-503",
+      "model": "SPARCO",
+      "homologationStart": "14.12.01",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.011.01",
+      "manufacturer": "R-502",
+      "model": "SPARCO",
+      "homologationStart": "05.10.04"
+    },
+    {
+      "number": "RS.012.01",
+      "manufacturer": "R-504 or R-509",
+      "model": "SPARCO",
+      "homologationStart": "19.12.01"
+    },
+    {
+      "number": "RS.013.01",
+      "manufacturer": "RED THREE LAYER",
+      "model": "ADVANCED WEAR",
+      "homologationStart": "04.01.02",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.014.02",
+      "manufacturer": "STAND 21",
+      "homologationStart": "07.01.02",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.015.02",
+      "manufacturer": "ST 2000/3",
+      "model": "STAND 21",
+      "homologationStart": "15.01.02",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.016.02",
+      "manufacturer": "ST 015",
+      "model": "STAND 21",
+      "homologationStart": "15.01.02",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.017.02",
+      "manufacturer": "STAND 21",
+      "homologationStart": "15.01.02",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.018.02",
+      "manufacturer": "ST 2000/2",
+      "model": "MOMO",
+      "homologationStart": "15.01.02",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.019.02",
+      "manufacturer": "ST 021",
+      "model": "MOMO",
+      "homologationStart": "15.01.02",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.020.02",
+      "manufacturer": "MOMO",
+      "homologationStart": "15.01.02",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.021.02",
+      "manufacturer": "RUNNER PHANTOM",
+      "model": "MOMO",
+      "homologationStart": "11.02.02",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.022.02",
+      "manufacturer": "SHADOW S",
+      "homologationStart": "11.02.02",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.023.02",
+      "manufacturer": "MOMO",
+      "homologationStart": "11.02.02",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.024.02",
+      "manufacturer": "TOP RACER S",
+      "homologationStart": "11.02.02",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.025.02",
+      "manufacturer": "PHANTOM",
+      "model": "MOMO",
+      "homologationStart": "12.03.02",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.026.02",
+      "manufacturer": "GA",
+      "homologationStart": "30.04.17"
+    },
+    {
+      "number": "RS.027.02",
+      "manufacturer": "TOP RACER L",
+      "model": "GA",
+      "homologationStart": "03.04.02"
+    },
+    {
+      "number": "RS.028.02",
+      "manufacturer": "GA"
+    },
+    {
+      "number": "RS.029.02",
+      "manufacturer": "3NV"
+    },
+    {
+      "number": "RS.030.02",
+      "manufacturer": "SKYHAWK L",
+      "model": "ADVANCED WEAR"
+    },
+    {
+      "number": "RS.031.02"
+    },
+    {
+      "number": "RS.032.02",
+      "manufacturer": "LEONARDO LIGHT",
+      "model": "ADVANCED WEAR"
+    },
+    {
+      "number": "RS.033.02",
+      "manufacturer": "LEONARDO PRO",
+      "homologationStart": "06.09.02",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.034.02",
+      "manufacturer": "AND SAFETY"
+    },
+    {
+      "number": "RS.035.02",
+      "manufacturer": "8.0.10",
+      "model": "LEONARDO",
+      "homologationStart": "30.09.17"
+    },
+    {
+      "number": "RS.036.02",
+      "homologationStart": "30.09.02",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.037.02",
+      "manufacturer": "GI 2700 COMFORT",
+      "homologationStart": "27.09.02",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.038.02",
+      "manufacturer": "DIJON CARS"
+    },
+    {
+      "number": "RS.039.03"
+    },
+    {
+      "number": "RS.040.03",
+      "manufacturer": "R-507-3",
+      "model": "SPARCO",
+      "homologationStart": "04.02.03",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.041.03",
+      "manufacturer": "R-508-3",
+      "model": "SPARCO",
+      "homologationStart": "13.02.03",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.042.03",
+      "manufacturer": "SPRING",
+      "model": "TOORA",
+      "homologationStart": "06.02.03",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.043.03",
+      "manufacturer": "NEW AGE",
+      "model": "TOORA",
+      "homologationStart": "06.02.03",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.044.03",
+      "manufacturer": "YOUNG",
+      "model": "TOORA",
+      "homologationStart": "28.02.03",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.045.03",
+      "manufacturer": "RFC RACE SUIT 2003",
+      "model": "ALPINESTARS",
+      "homologationStart": "05.03.03",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.046.03",
+      "manufacturer": "DRIVER",
+      "model": "SABELT",
+      "homologationStart": "04.03.03",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.047.03",
+      "manufacturer": "GFC RACE SUIT 2003",
+      "model": "ALPINESTARS",
+      "homologationStart": "05.03.03",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.048.03",
+      "manufacturer": "WINNER",
+      "model": "SABELT",
+      "homologationStart": "13.03.03",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.049.03",
+      "manufacturer": "R-511",
+      "model": "SPARCO",
+      "homologationStart": "08.10.03",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.050.03",
+      "manufacturer": "R-513",
+      "model": "SPARCO",
+      "homologationStart": "09.10.03",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.051.03",
+      "manufacturer": "R-512",
+      "model": "SPARCO",
+      "homologationStart": "15.10.03",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.052.03",
+      "manufacturer": "RACE CAT SUIT",
+      "model": "PUMA",
+      "homologationStart": "27.11.03",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.053.03",
+      "manufacturer": "TOP TECH",
+      "model": "Sabelt",
+      "homologationStart": "27.11.03",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.054.03",
+      "manufacturer": "GP TECH SUIT",
+      "model": "ALPINESTARS",
+      "homologationStart": "09.12.03",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.055.03",
+      "manufacturer": "RENNOVERALL – 519N",
+      "model": "JELINEK",
+      "homologationStart": "22.12.03",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.056.04",
+      "manufacturer": "R-514",
+      "model": "SPARCO",
+      "homologationStart": "29.01.04",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.057.04",
+      "manufacturer": "R-515",
+      "model": "SPARCO",
+      "homologationStart": "13.02.04",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.058.04",
+      "manufacturer": "TECNICA LIGHT",
+      "model": "OMP",
+      "homologationStart": "16.02.04",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.059.04",
+      "manufacturer": "THUNDER",
+      "model": "KINGDRAGON",
+      "homologationStart": "19.05.04",
+      "homologationEnd": "31.05.17"
+    },
+    {
+      "number": "RS.060.04",
+      "manufacturer": "FLASH",
+      "model": "KINGDRAGON",
+      "homologationStart": "19.05.04",
+      "homologationEnd": "31.05.17"
+    },
+    {
+      "number": "RS.061.04",
+      "manufacturer": "GP TECH LIGHT",
+      "model": "ALPINESTARS",
+      "homologationStart": "01.06.04",
+      "homologationEnd": "30.06.17"
+    },
+    {
+      "number": "RS.062.04",
+      "manufacturer": "DES-005",
+      "model": "BEAR",
+      "homologationStart": "29.06.04",
+      "homologationEnd": "30.06.17"
+    },
+    {
+      "number": "RS.063.04",
+      "manufacturer": "MIR RACELINE NX 04A CONFEZIONI SABINA",
+      "homologationStart": "19.07.04",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.064.04",
+      "manufacturer": "MIR RACELINE NX04B CONFEZIONI SABINA",
+      "homologationStart": "19.07.04",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.065.04",
+      "manufacturer": "RACE 3",
+      "model": "MOTORQUALITY",
+      "homologationStart": "26.07.04",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.066.04",
+      "manufacturer": "RACE 2",
+      "model": "MOTORQUALITY",
+      "homologationStart": "30.07.04",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.067.04",
+      "manufacturer": "RACE 1",
+      "model": "MOTORQUALITY",
+      "homologationStart": "30.07.04",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.068.04",
+      "manufacturer": "EUROPA COLOR",
+      "model": "CORSA",
+      "homologationStart": "10.09.04",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.069.04",
+      "manufacturer": "EUROPA SHINY",
+      "model": "CORSA",
+      "homologationStart": "10.09.04",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.070.04",
+      "manufacturer": "RPM Trans Am",
+      "model": "REVOLUTION",
+      "homologationStart": "27.09.04",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.071.04",
+      "manufacturer": "RPM Turismo",
+      "model": "REVOLUTION",
+      "homologationStart": "27.09.04",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.072.04",
+      "manufacturer": "RPM Mondial",
+      "model": "REVOLUTION",
+      "homologationStart": "27.09.04",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.073.04",
+      "manufacturer": "RPM Protech",
+      "model": "REVOLUTION",
+      "homologationStart": "27.09.04",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.074.04",
+      "manufacturer": "RPM Turismo GT",
+      "model": "REVOLUTION",
+      "homologationStart": "27.09.04",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.075.04",
+      "manufacturer": "Race light cat",
+      "model": "Puma",
+      "homologationStart": "12.10.04",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.076.04",
+      "manufacturer": "BEBEK Grand Prix",
+      "model": "BEBEK",
+      "homologationStart": "14.12.04",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.077.04",
+      "manufacturer": "SUPER PRO",
+      "model": "LEARS Co",
+      "homologationStart": "24.12.04",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.078.04",
+      "manufacturer": "PRO FORMULA",
+      "model": "LEARS Co",
+      "homologationStart": "24.12.04",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.079.05",
+      "manufacturer": "PRO FORMULA",
+      "model": "LEARS Co",
+      "homologationStart": "12.01.05",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.080.05",
+      "manufacturer": "THE MAN SPIRIT RACING",
+      "model": "YAMADATATSU",
+      "homologationStart": "11.02.05",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.081.05",
+      "manufacturer": "ARD-024 type SX.CD",
+      "model": "5ZIGEN",
+      "homologationStart": "11.02.05",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.082.05",
+      "manufacturer": "MODERN 2",
+      "model": "CHICANE CLOTHING",
+      "homologationStart": "18.02.05",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.083.05",
+      "manufacturer": "SPEEDY",
+      "model": "SABELT"
+    },
+    {
+      "number": "RS.084.05",
+      "manufacturer": "PLUS 2 GP"
+    },
+    {
+      "number": "RS.085.05",
+      "manufacturer": "FIRELEX F-32N",
+      "model": "FLAMECRUSHER",
+      "homologationStart": "25.02.05",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.086.05",
+      "manufacturer": "TUTA INDY",
+      "model": "GruppeM"
+    },
+    {
+      "number": "RS.087.05",
+      "manufacturer": "LEADER / PILOTA FIRST /",
+      "homologationStart": "25.02.05",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.088.05",
+      "manufacturer": "FIRST 2",
+      "homologationStart": "28.02.05",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.089.05",
+      "manufacturer": "ARD-010 FZ-R",
+      "homologationStart": "30.03.05",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.090.05",
+      "manufacturer": "ARD-022 ZX-R"
+    },
+    {
+      "number": "RS.091.05",
+      "manufacturer": "CORDOBA",
+      "homologationStart": "30.03.05",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.092.05"
+    },
+    {
+      "number": "RS.093.05",
+      "manufacturer": "The man Spirit"
+    },
+    {
+      "number": "RS.094.05",
+      "manufacturer": "NCX 500",
+      "model": "5ZIGEN",
+      "homologationStart": "08.07.05",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.095.05",
+      "manufacturer": "5ZIGEN",
+      "homologationStart": "08.07.05",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.095.02",
+      "manufacturer": "(2)",
+      "model": "2NV",
+      "homologationStart": "11.07.05",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.096.05",
+      "manufacturer": "IMPACT RACING (USA)",
+      "model": "S-2",
+      "revoked": true,
+      "revokedNote": "Cette combinaison ne pouvant plus être considérée comme respectant la norme FIA 8856-2000, son utilisation est interdite dans tous les cas où le respect des normes susmentionnées est imposé."
+    },
+    {
+      "number": "RS.097.05",
+      "manufacturer": "S-2",
+      "model": "YAMADATATSU",
+      "homologationStart": "13.07.05",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.099.05"
+    },
+    {
+      "number": "RS.100.05",
+      "manufacturer": "R516 - Sponsor 2006",
+      "model": "AWS",
+      "homologationStart": "17.08.05",
+      "homologationEnd": "31.08.17"
+    },
+    {
+      "number": "RS.101.05",
+      "manufacturer": "DIAMOND"
+    },
+    {
+      "number": "RS.102.05",
+      "manufacturer": "LIGHT"
+    },
+    {
+      "number": "RS.103.05",
+      "manufacturer": "J-S MONZA",
+      "model": "SPARCO",
+      "homologationStart": "04.10.05",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.104.05",
+      "manufacturer": "JS F1",
+      "model": "SABELT",
+      "homologationStart": "06.10.05",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.106.05",
+      "manufacturer": "SABELT",
+      "homologationStart": "06.10.05",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.107.06",
+      "manufacturer": "GP2",
+      "model": "J-S BUZOS",
+      "homologationStart": "06.10.05",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.108.06",
+      "manufacturer": "GP TECH",
+      "model": "ANTIFLAMA"
+    },
+    {
+      "number": "RS.109.06",
+      "manufacturer": "ERG - PROFIA",
+      "model": "J-S BUZOS",
+      "homologationStart": "06.10.05",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.110.06",
+      "manufacturer": "ERG Pro Circuit",
+      "model": "ANTIFLAMA",
+      "homologationStart": "27.10.05",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.111.06",
+      "manufacturer": "JURAN",
+      "model": "beginning"
+    },
+    {
+      "number": "RS.112.06",
+      "manufacturer": "TOP XL"
+    },
+    {
+      "number": "RS.113.06",
+      "manufacturer": "PUMA",
+      "homologationStart": "21.02.06",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.114.06",
+      "manufacturer": "PRO RACER"
+    },
+    {
+      "number": "RS.115.06",
+      "manufacturer": "GT60 CORSA F1",
+      "model": "TANIDA",
+      "homologationStart": "21.02.06",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.116.06",
+      "manufacturer": "GMP Tech 3",
+      "model": "MOMO",
+      "homologationStart": "21.02.06",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.117.06",
+      "manufacturer": "GMP Indy 2000",
+      "model": "MOMO",
+      "homologationStart": "21.02.06",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.118.06",
+      "manufacturer": "FREE MINDS",
+      "homologationStart": "03.03.06",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.119.06",
+      "manufacturer": "MODERN 1"
+    },
+    {
+      "number": "RS.120.06",
+      "manufacturer": "PRODUCTS"
+    },
+    {
+      "number": "RS.121.06",
+      "manufacturer": "GP Pro AS004",
+      "model": "ALPINESTARS",
+      "homologationStart": "07.11.06",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.122.06",
+      "manufacturer": "GP Tech AS005",
+      "model": "ALPINESTARS",
+      "homologationStart": "07.11.06",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.123.06",
+      "manufacturer": "GT61 P-FLASH",
+      "model": "FREE MINDS",
+      "homologationStart": "22.11.06",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.124.06",
+      "homologationStart": "01.12.06",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.125.06",
+      "manufacturer": "SPEEDY 3",
+      "model": "SABELT",
+      "homologationStart": "13.12.06",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.126.06",
+      "manufacturer": "R517 TECH",
+      "model": "SPARCO",
+      "homologationStart": "15.12.06",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.127.06",
+      "homologationStart": "15.12.06",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.128.06",
+      "manufacturer": "ROOKIE",
+      "model": "MOMO",
+      "homologationStart": "20.12.06",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.129.06",
+      "manufacturer": "MOMO TOP LIGHT",
+      "model": "MOMO",
+      "homologationStart": "21.12.06",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.130.07",
+      "manufacturer": "SPARCO",
+      "homologationStart": "15.01.07",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.131.07",
+      "manufacturer": "R519 TOP",
+      "model": "SPARCO",
+      "homologationStart": "05.02.07",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.132.07",
+      "manufacturer": "SABELT",
+      "homologationStart": "13.03.07",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.133.07",
+      "manufacturer": "TOP TECH",
+      "model": "OMP",
+      "homologationStart": "13.03.07",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.134.07",
+      "manufacturer": "DYNAMO / DYNAMO-S /",
+      "model": "OMP",
+      "homologationStart": "13.03.07",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.135.07",
+      "manufacturer": "DYNAMO RACE / TECNICA-S",
+      "homologationStart": "25.04.07",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.136.07",
+      "manufacturer": "TECNICA PLUS",
+      "model": "OMP",
+      "homologationStart": "25.04.07",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.137.07",
+      "manufacturer": "SX 420",
+      "model": "beginning"
+    },
+    {
+      "number": "RS.138.07"
+    },
+    {
+      "number": "RS.139.07"
+    },
+    {
+      "number": "RS.140.07",
+      "manufacturer": "RS400",
+      "model": "SAFETY (AWS)"
+    },
+    {
+      "number": "RS.141.07"
+    },
+    {
+      "number": "RS.142.07",
+      "manufacturer": "TOP EXTRA LIGHT",
+      "model": "ADVANCED WEAR &",
+      "homologationStart": "28.06.07",
+      "homologationEnd": "30.06.17"
+    },
+    {
+      "number": "RS.143.07",
+      "manufacturer": "GP-1 AS007",
+      "model": "SAFETY (AWS)"
+    },
+    {
+      "number": "RS.144.07",
+      "manufacturer": "AIR FORCE"
+    },
+    {
+      "number": "RS.145.07",
+      "manufacturer": "FPI Model 978",
+      "model": "ADVANCED WEAR &",
+      "homologationStart": "30.09.17"
+    },
+    {
+      "number": "RS.146.07",
+      "manufacturer": "SAFETY (AWS"
+    },
+    {
+      "number": "RS.147.07",
+      "manufacturer": "PFIII Model 979"
+    },
+    {
+      "number": "RS.148.07",
+      "manufacturer": "FPIII-mecanic Model 980",
+      "model": "RACETECH",
+      "homologationStart": "18.09.07",
+      "homologationEnd": "31.05.17"
+    },
+    {
+      "number": "RS.149.07",
+      "manufacturer": "SUPER TECH",
+      "model": "MOMOUSA",
+      "homologationStart": "20.09.07",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.150.08",
+      "manufacturer": "STD E.21 / MTO.21",
+      "model": "ALPINESTARS",
+      "homologationStart": "04.10.07",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.151.08"
+    },
+    {
+      "number": "RS.152.08",
+      "manufacturer": "GP TECH F1"
+    },
+    {
+      "number": "RS.153.08",
+      "manufacturer": "K1 - 001"
+    },
+    {
+      "number": "RS.154.08",
+      "manufacturer": "UVEX",
+      "homologationStart": "23.10.07",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.155.08",
+      "manufacturer": "GP TECH 2009"
+    },
+    {
+      "number": "RS.156.08",
+      "manufacturer": "R520 MIRAGE",
+      "model": "UVEX",
+      "homologationStart": "23.10.07",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.157.08",
+      "manufacturer": "R521 FACTORY PILOT"
+    },
+    {
+      "number": "RS.158.08",
+      "manufacturer": "ALPINESTARS",
+      "homologationStart": "12.11.07",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.159.08",
+      "manufacturer": "ARD-110 CHEVRON X",
+      "model": "SIMPSON",
+      "homologationStart": "01.02.08",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.160.08",
+      "manufacturer": "AVANTI"
+    },
+    {
+      "number": "RS.161.08",
+      "manufacturer": "STELLA GP PRO 2009"
+    },
+    {
+      "number": "RS.162.08",
+      "manufacturer": "ONE / SUPER LEGGERA /",
+      "model": "KOBRA",
+      "homologationStart": "29.10.08",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.163.08",
+      "manufacturer": "LE MANS",
+      "model": "LICO",
+      "homologationStart": "17.11.08",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.164.08",
+      "manufacturer": "K2-001",
+      "homologationStart": "09.12.08",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.165.08",
+      "manufacturer": "LICO",
+      "homologationStart": "09.12.08",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.166.08",
+      "manufacturer": "ST221-HSC",
+      "homologationStart": "09.12.08",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.167.08",
+      "manufacturer": "ST215-HSC",
+      "model": "YAMADATATSU",
+      "homologationStart": "12.12.08",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.168.08",
+      "manufacturer": "R525 (F1UXL2009)",
+      "model": "TAIWAN RACING",
+      "homologationStart": "31.12.08",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.169.09",
+      "homologationStart": "21.01.09",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.170.09",
+      "manufacturer": "THE MAN SPIRIT TYPE-X",
+      "model": "ALPINESTARS"
+    },
+    {
+      "number": "RS.171.09",
+      "manufacturer": "RACESPEED RSN-100",
+      "model": "UNI-SAF"
+    },
+    {
+      "number": "RS.172.09",
+      "manufacturer": "RACE CAT 4 SUIT",
+      "model": "FLAMECRUSHER",
+      "homologationStart": "21.08.09",
+      "homologationEnd": "31.08.17"
+    },
+    {
+      "number": "RS.173.09",
+      "manufacturer": "GP-X (2010) / GP-T 2010",
+      "model": "FLAMECRUSHER",
+      "homologationStart": "21.08.09",
+      "homologationEnd": "31.08.17"
+    },
+    {
+      "number": "RS.174.09",
+      "manufacturer": "SPARCO",
+      "homologationStart": "04.12.09",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.175.09",
+      "manufacturer": "GP-TECH F109",
+      "model": "GLORIA – P1",
+      "homologationStart": "06.09.09",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.176.09",
+      "manufacturer": "RACING SUIT",
+      "model": "CORSA",
+      "homologationStart": "09.09.09",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.177.09",
+      "manufacturer": "R526 (SPARCO 2010)",
+      "model": "OAKLEY",
+      "homologationStart": "09.09.09",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.178.09",
+      "manufacturer": "ALPINESTARS",
+      "homologationStart": "23.02.10",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "RS.179.10",
+      "manufacturer": "PLUS 2",
+      "model": "GLORIA",
+      "homologationStart": "26.05.10",
+      "homologationEnd": "31.05.17"
+    },
+    {
+      "number": "RS.180.10",
+      "manufacturer": "PLUS 3",
+      "homologationStart": "26.07.10",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.181.10",
+      "manufacturer": "GLORIA",
+      "homologationStart": "01.09.10",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.182.10",
+      "manufacturer": "R527",
+      "homologationStart": "26.07.10",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.183.10",
+      "manufacturer": "PASSION",
+      "model": "SIMPSON",
+      "homologationStart": "26.07.10",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.184.10",
+      "manufacturer": "X CONFORT RACE 4",
+      "model": "SIMPSON"
+    },
+    {
+      "number": "RS.185.10",
+      "manufacturer": "SP 2010"
+    },
+    {
+      "number": "RS.186.10",
+      "manufacturer": "WORLD SUIT"
+    },
+    {
+      "number": "RS.187.10",
+      "manufacturer": "SUPER SPORT SUIT"
+    },
+    {
+      "number": "RS.188.10"
+    },
+    {
+      "number": "RS.189.10",
+      "manufacturer": "R529",
+      "model": "SPARCO",
+      "homologationStart": "03.09.10",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.190.10",
+      "manufacturer": "R528",
+      "model": "SPARCO",
+      "homologationStart": "24.09.10",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.191.10",
+      "manufacturer": "PRO-TECH SUIT",
+      "model": "OFF ROAD RACING",
+      "homologationStart": "27.09.10",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.192.10",
+      "manufacturer": "R531",
+      "model": "SPARCO",
+      "homologationStart": "19.10.10",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.193.10",
+      "manufacturer": "RACESPEED RSN-200",
+      "model": "TAIWAN RACING",
+      "homologationStart": "28.10.10",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.194.10",
+      "manufacturer": "ULTIMA",
+      "model": "GMP",
+      "homologationStart": "28.10.10",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.195.10",
+      "manufacturer": "BOLT",
+      "model": "OMP RACING",
+      "homologationStart": "16.11.10",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.196.10",
+      "manufacturer": "LITE PLUS",
+      "model": "SABELT",
+      "homologationStart": "16.11.10",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.197.10",
+      "manufacturer": "ELETTRA",
+      "model": "SABELT",
+      "homologationStart": "16.11.10",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.198.11",
+      "manufacturer": "DIAM-DUAL",
+      "model": "SABELT",
+      "homologationStart": "03.03.11",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.199.11",
+      "manufacturer": "NEW CHALLENGE",
+      "model": "ATECH",
+      "homologationStart": "09.03.11",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.200.11",
+      "manufacturer": "GP TECH 2011 / GP TECH",
+      "model": "ALPINESTARS",
+      "homologationStart": "06.04.11",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.201.11",
+      "manufacturer": "ONE EVO",
+      "model": "OMP",
+      "homologationStart": "11.07.11",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.202.11",
+      "manufacturer": "GT-TECH SUIT",
+      "model": "OFF ROAD RACING",
+      "homologationStart": "20.07.11",
+      "homologationEnd": "20.10.17"
+    },
+    {
+      "number": "RS.203.11",
+      "manufacturer": "MONACO CLASS SUIT",
+      "model": "OFF ROAD RACING",
+      "homologationStart": "20.07.11",
+      "homologationEnd": "20.10.17"
+    },
+    {
+      "number": "RS.204.11",
+      "manufacturer": "TA CENTOUNDICI",
+      "model": "FREE MINDS",
+      "homologationStart": "31.10.11",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.205.11",
+      "manufacturer": "R533",
+      "model": "SPARCO",
+      "homologationStart": "28.11.11",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "RS.206.11",
+      "manufacturer": "MODERN 4",
+      "model": "CHICANE CLOTHING",
+      "homologationStart": "09.12.11",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.207.11",
+      "manufacturer": "PODIUM",
+      "model": "REVOLUTION",
+      "homologationStart": "13.12.11",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.208.11",
+      "manufacturer": "SILVERSTONE RACING",
+      "model": "RACING ACCESSORY",
+      "homologationStart": "04.01.12",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.209.11",
+      "manufacturer": "SILVERSTONE RACING",
+      "model": "RACING ACCESSORY",
+      "homologationStart": "04.01.12",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.210.12",
+      "manufacturer": "R534",
+      "model": "SPARCO",
+      "homologationStart": "09.01.12",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "RS.211.12",
+      "manufacturer": "X-PRO",
+      "model": "GLORIA – P1",
+      "homologationStart": "05.03.12",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.212.12",
+      "manufacturer": "CUSTOM",
+      "model": "MASTERCRAFT",
+      "homologationStart": "17.04.12",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.213.12",
+      "manufacturer": "RACER 2 LAYER",
+      "model": "MASTERCRAFT",
+      "homologationStart": "17.04.12",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.214.12",
+      "manufacturer": "RS1",
+      "model": "RACEWEAR24",
+      "homologationStart": "26.04.12",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.215.12",
+      "manufacturer": "R535",
+      "model": "SPARCO"
+    },
+    {
+      "number": "RS.216.12",
+      "homologationStart": "26.04.12",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "RS.217.12",
+      "manufacturer": "GP PRO 2013 /",
+      "model": "ALPINESTARS",
+      "homologationStart": "25.09.12",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.218.12",
+      "manufacturer": "POWER ON RACEWEAR (UK)",
+      "model": "PRO POWER 3",
+      "revoked": true,
+      "revokedNote": "Cette combinaison ne pouvant plus être considérée comme respectant la norme FIA 8856-2000, son utilisation est interdite dans tous les cas où le respect des normes susmentionnées est imposé."
+    },
+    {
+      "number": "RS.219.12",
+      "manufacturer": "RACER 1",
+      "model": "ACTION RACEGEAR",
+      "homologationStart": "27.09.12",
+      "homologationEnd": "30.09.17"
+    },
+    {
+      "number": "RS.220.12",
+      "manufacturer": "AUSTRALIA",
+      "homologationStart": "08.10.12",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.221.12",
+      "manufacturer": "R536",
+      "homologationStart": "22.10.12",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.222.12",
+      "manufacturer": "XL ONE",
+      "model": "SPARCO",
+      "homologationStart": "22.10.12",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.223.12",
+      "manufacturer": "TOP LIGHT EVO",
+      "model": "MOMO",
+      "homologationStart": "29.10.12",
+      "homologationEnd": "31.10.17"
+    },
+    {
+      "number": "RS.224.12",
+      "manufacturer": "ONE BASIS / ONE S /",
+      "model": "PUMA",
+      "homologationStart": "16.11.12",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.225.12",
+      "manufacturer": "TECNICA EVO",
+      "model": "OMP",
+      "homologationStart": "30.11.12",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.226.12",
+      "manufacturer": "ZEAL (PAK)",
+      "model": "ZEAL RACESUIT",
+      "revoked": true,
+      "revokedNote": "Cette combinaison ne pouvant plus être considérée comme respectant la norme FIA 8856-2000, son utilisation est interdite dans tous les cas où le respect des normes susmentionnées est imposé."
+    },
+    {
+      "number": "RS.227.13",
+      "manufacturer": "CHICANE CLOTHING",
+      "homologationStart": "30.11.12"
+    },
+    {
+      "number": "RS.228.13",
+      "manufacturer": "ZEAL RACESUIT",
+      "homologationStart": "31.12.21"
+    },
+    {
+      "number": "RS.229.13",
+      "manufacturer": "ZEAL",
+      "homologationStart": "11.01.13",
+      "homologationEnd": "31.01.18"
+    },
+    {
+      "number": "RS.230.13",
+      "manufacturer": "RSN-300",
+      "homologationStart": "21.01.13",
+      "homologationEnd": "28.02.18"
+    },
+    {
+      "number": "RS.231.13",
+      "manufacturer": "TAIWAN RACING",
+      "homologationStart": "06.02.13",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "RS.232.13",
+      "manufacturer": "HR-T1",
+      "model": "PRODUCTS (TRP)",
+      "homologationStart": "27.03.13",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "RS.233.13",
+      "manufacturer": "HRX / HAPPY RACER",
+      "homologationStart": "27.03.13",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "RS.234.13",
+      "manufacturer": "CR SUIT",
+      "model": "OFF ROAD RACING",
+      "homologationStart": "02.04.13",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.235.13",
+      "manufacturer": "GEAR (ORG RACING)",
+      "homologationStart": "05.04.13",
+      "homologationEnd": "30.04.18"
+    },
+    {
+      "number": "RS.236.13",
+      "manufacturer": "GP START 2014 / GP START",
+      "model": "ALPINESTARS",
+      "homologationStart": "12.06.13",
+      "homologationEnd": "30.06.18"
+    },
+    {
+      "number": "RS.237.13",
+      "manufacturer": "GP TECH 2013 US /",
+      "model": "ALPINESTARS",
+      "homologationStart": "12.06.13",
+      "homologationEnd": "30.06.18"
+    },
+    {
+      "number": "RS.238.13",
+      "manufacturer": "GP TECH 2016 US",
+      "model": "UNI-SAF",
+      "homologationStart": "14.06.13",
+      "homologationEnd": "30.06.18"
+    },
+    {
+      "number": "RS.239.13",
+      "manufacturer": "FIRELEX ZERO-3X",
+      "model": "GruppeM",
+      "homologationStart": "18.06.13",
+      "homologationEnd": "30.06.18"
+    },
+    {
+      "number": "RS.240.13",
+      "manufacturer": "STAGE200",
+      "model": "HPI Co., Ltd",
+      "homologationStart": "11.07.13",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.241.13",
+      "manufacturer": "R537",
+      "model": "SPARCO",
+      "homologationStart": "15.07.13",
+      "homologationEnd": "31.07.18"
+    },
+    {
+      "number": "RS.242.13",
+      "manufacturer": "STAGE300",
+      "model": "HPI Co., Ltd",
+      "homologationStart": "05.08.13",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.243.13",
+      "manufacturer": "FIRST S / DART / CLASSIC",
+      "model": "OMP",
+      "homologationStart": "12.08.13",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.244.13",
+      "manufacturer": "R539",
+      "model": "SPARCO",
+      "homologationStart": "15.08.13",
+      "homologationEnd": "31.08.18"
+    },
+    {
+      "number": "RS.245.13",
+      "manufacturer": "R538",
+      "model": "SPARCO",
+      "homologationStart": "13.09.13",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.246.13",
+      "manufacturer": "ABBEY",
+      "model": "RACING ACCESSORY",
+      "homologationStart": "15.11.13",
+      "homologationEnd": "31.01.18"
+    },
+    {
+      "number": "RS.247.13",
+      "manufacturer": "OS 20",
+      "model": "OMP",
+      "homologationStart": "25.11.13",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.248.14",
+      "manufacturer": "TI-700",
+      "model": "SABELT",
+      "homologationStart": "03.01.14",
+      "homologationEnd": "31.01.19"
+    },
+    {
+      "number": "RS.249.14",
+      "manufacturer": "RB-0001",
+      "model": "JXHRACING",
+      "homologationStart": "16.01.14",
+      "homologationEnd": "31.01.19"
+    },
+    {
+      "number": "RS.250.14",
+      "manufacturer": "AT001",
+      "model": "ARDORTEX",
+      "homologationStart": "31.01.14",
+      "homologationEnd": "31.01.19"
+    },
+    {
+      "number": "RS.251.14",
+      "manufacturer": "EVO",
+      "model": "RRS",
+      "homologationStart": "10.02.14",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.252.14",
+      "manufacturer": "EVO2 FLEX",
+      "model": "RRS",
+      "homologationStart": "10.02.14",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.253.14",
+      "manufacturer": "EVO3 PRO LIGHT",
+      "model": "RRS",
+      "homologationStart": "10.02.14",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.254.14",
+      "manufacturer": "TUTA VF",
+      "model": "VARLION",
+      "homologationStart": "18.02.14",
+      "homologationEnd": "28.02.19"
+    },
+    {
+      "number": "RS.255.14",
+      "manufacturer": "SUPERTECH 2014",
+      "model": "ALPINESTARS",
+      "homologationStart": "24.02.14",
+      "homologationEnd": "28.02.19"
+    },
+    {
+      "number": "RS.256.14",
+      "manufacturer": "LA COUTURE",
+      "model": "STAND 21",
+      "homologationStart": "14.03.14",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.257.14",
+      "manufacturer": "P1310",
+      "model": "GLORIA – P1",
+      "homologationStart": "14.04.14",
+      "homologationEnd": "30.04.19"
+    },
+    {
+      "number": "RS.258.14",
+      "manufacturer": "ST221 AIR-S",
+      "model": "STAND 21",
+      "homologationStart": "15.04.14",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.259.14",
+      "manufacturer": "MARINA GAS",
+      "model": "MARINA",
+      "homologationStart": "02.05.14",
+      "homologationEnd": "31.05.19"
+    },
+    {
+      "number": "RS.260.14",
+      "manufacturer": "SUPERTECH 2014 B",
+      "model": "ALPINESTARS",
+      "homologationStart": "02.05.14",
+      "homologationEnd": "31.05.19"
+    },
+    {
+      "number": "RS.261.14",
+      "manufacturer": "R540",
+      "model": "SPARCO",
+      "homologationStart": "16.05.14",
+      "homologationEnd": "31.05.19"
+    },
+    {
+      "number": "RS.262.14",
+      "manufacturer": "COMBINAISON TURN ONE V- PRO",
+      "model": "ORECA STORE /",
+      "homologationStart": "08.07.14",
+      "homologationEnd": "31.07.19"
+    },
+    {
+      "number": "RS.263.14",
+      "manufacturer": "COMBINAISON TURN ONE V- START",
+      "model": "ORECA STORE /",
+      "homologationStart": "08.07.14",
+      "homologationEnd": "31.07.19"
+    },
+    {
+      "number": "RS.264.14",
+      "manufacturer": "JH12-03",
+      "model": "UNI-SAF",
+      "homologationStart": "09.07.14",
+      "homologationEnd": "31.07.19"
+    },
+    {
+      "number": "RS.265.14",
+      "manufacturer": "TECH RS SUIT",
+      "model": "SIMPSON",
+      "homologationStart": "17.10.14",
+      "homologationEnd": "31.10.19"
+    },
+    {
+      "number": "RS.266.14",
+      "manufacturer": "REVO SUIT",
+      "model": "SIMPSON",
+      "homologationStart": "17.10.14",
+      "homologationEnd": "31.10.19"
+    },
+    {
+      "number": "RS.267.15",
+      "manufacturer": "R541",
+      "model": "SPARCO",
+      "homologationStart": "06.01.15",
+      "homologationEnd": "31.01.20"
+    },
+    {
+      "number": "RS.268.15",
+      "manufacturer": "TI-090",
+      "model": "beginning"
+    },
+    {
+      "number": "RS.269.15",
+      "manufacturer": "R542",
+      "model": "TAIWAN BIKE RACK",
+      "homologationStart": "12.01.15",
+      "homologationEnd": "31.01.20"
+    },
+    {
+      "number": "RS.270.15",
+      "manufacturer": "CO. LTD. (TBRACING)"
+    },
+    {
+      "number": "RS.271.15",
+      "manufacturer": "LA COUTURE HSC"
+    },
+    {
+      "number": "RS.272.15",
+      "manufacturer": "SABELT",
+      "homologationStart": "29.01.15",
+      "homologationEnd": "31.01.20"
+    },
+    {
+      "number": "RS.273.15",
+      "manufacturer": "GP PRO 2016 /",
+      "model": "ALPINESTARS",
+      "homologationStart": "02.07.15",
+      "homologationEnd": "31.07.20"
+    },
+    {
+      "number": "RS.274.15",
+      "manufacturer": "JURAN RACING PRO5000α",
+      "model": "TANIDA",
+      "homologationStart": "22.09.15",
+      "homologationEnd": "30.09.20"
+    },
+    {
+      "number": "RS.275.15",
+      "manufacturer": "JURAN RACING PRO6000",
+      "model": "TANIDA",
+      "homologationStart": "22.09.15",
+      "homologationEnd": "30.09.20"
+    },
+    {
+      "number": "RS.276.15",
+      "manufacturer": "R544 LUNAR GRID RS-6",
+      "model": "SPARCO",
+      "homologationStart": "02.10.15",
+      "homologationEnd": "31.10.20"
+    },
+    {
+      "number": "RS.277.15",
+      "manufacturer": "R543 X-",
+      "model": "SPARCO",
+      "homologationStart": "02.10.15",
+      "homologationEnd": "31.10.20"
+    },
+    {
+      "number": "RS.278.15",
+      "manufacturer": "GP TECH LM 2016",
+      "model": "ALPINESTARS",
+      "homologationStart": "20.10.15",
+      "homologationEnd": "31.10.20"
+    },
+    {
+      "number": "RS.279.15",
+      "manufacturer": "SUPERWHITE LIGHT SUIT",
+      "model": "PUMA",
+      "homologationStart": "24.11.15",
+      "homologationEnd": "30.11.20"
+    },
+    {
+      "number": "RS.280.16",
+      "homologationStart": "11.01.16",
+      "homologationEnd": "31.01.21"
+    },
+    {
+      "number": "RS.281.16",
+      "manufacturer": "SUPERLEGGERA RS9.1",
+      "model": "SPARCO",
+      "homologationStart": "08.02.16",
+      "homologationEnd": "28.02.21"
+    },
+    {
+      "number": "RS.282.16",
+      "manufacturer": "R547-PRIME SP16-SPEC2",
+      "model": "SPARCO",
+      "homologationStart": "11.02.16",
+      "homologationEnd": "28.02.21"
+    },
+    {
+      "number": "RS.283.16",
+      "manufacturer": "PROGRESS A",
+      "model": "LEARS CO",
+      "homologationStart": "16.02.16",
+      "homologationEnd": "28.02.21"
+    },
+    {
+      "number": "RS.284.16",
+      "manufacturer": "RPM MONDIAL 2 RACING SUIT",
+      "model": "REVOLUTION",
+      "homologationStart": "30.03.16",
+      "homologationEnd": "31.03.21"
+    },
+    {
+      "number": "RS.285.16",
+      "manufacturer": "DELTA 2017",
+      "model": "ALPINESTARS",
+      "homologationStart": "25.05.16",
+      "homologationEnd": "31.05.21"
+    },
+    {
+      "number": "RS.286.16",
+      "manufacturer": "GP RACE 2017",
+      "model": "ALPINESTARS",
+      "homologationStart": "26.05.16",
+      "homologationEnd": "31.05.21"
+    },
+    {
+      "number": "RS.287.16",
+      "manufacturer": "R548- SPRINT RS2.1",
+      "model": "SPARCO",
+      "homologationStart": "23.06.16",
+      "homologationEnd": "30.06.21"
+    },
+    {
+      "number": "RS.288.16",
+      "manufacturer": "MONO ARMOUR I-1",
+      "model": "GEOTEX",
+      "homologationStart": "26.07.16",
+      "homologationEnd": "31.07.21"
+    },
+    {
+      "number": "RS.289.16",
+      "manufacturer": "CHAMP SUIT",
+      "model": "K1 RACEGEAR",
+      "homologationStart": "03.08.16",
+      "homologationEnd": "31.08.21"
+    },
+    {
+      "number": "RS.290.16",
+      "manufacturer": "ORECA V-PRO RACING SUIT",
+      "model": "ORECA STORE /",
+      "homologationStart": "05.08.16",
+      "homologationEnd": "31.08.21"
+    },
+    {
+      "number": "RS.291.16",
+      "manufacturer": "ARD-1000 PROGEAR",
+      "model": "5ZIGEN",
+      "homologationStart": "31.10.16",
+      "homologationEnd": "31.10.21"
+    },
+    {
+      "number": "RS.292.16",
+      "manufacturer": "ARD-1100 PROGEAR",
+      "model": "5ZIGEN",
+      "homologationStart": "31.10.16",
+      "homologationEnd": "31.10.21"
+    },
+    {
+      "number": "RS.293.16",
+      "manufacturer": "ARD-1150 PROGEAR",
+      "model": "5ZIGEN",
+      "homologationStart": "31.10.16",
+      "homologationEnd": "31.10.21"
+    },
+    {
+      "number": "RS.294.16",
+      "manufacturer": "R549 – ENERGY RS-5",
+      "model": "SPARCO"
+    },
+    {
+      "number": "RS.295.16"
+    },
+    {
+      "number": "RS.296.16",
+      "manufacturer": "RACER ZERO",
+      "model": "HRX",
+      "homologationStart": "22.11.16",
+      "homologationEnd": "30.11.21"
+    },
+    {
+      "number": "RS.297.16",
+      "manufacturer": "R-IA8-001",
+      "model": "OMP"
+    },
+    {
+      "number": "RS.298.16",
+      "manufacturer": "SABELT",
+      "homologationStart": "25.11.16",
+      "homologationEnd": "30.11.21"
+    },
+    {
+      "number": "RS.299.16",
+      "manufacturer": "CHALLENGE TS-3",
+      "model": "SABELT"
+    },
+    {
+      "number": "RS.300.16",
+      "manufacturer": "DIAMOND TS-7",
+      "model": "SABELT",
+      "homologationStart": "14.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.301.16",
+      "manufacturer": "HERO TS-9",
+      "model": "PUMA"
+    },
+    {
+      "number": "RS.302.16",
+      "manufacturer": "TRIONFO EVO",
+      "model": "GLORIA",
+      "homologationStart": "15.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.303.17",
+      "manufacturer": "P1- SMART",
+      "model": "CORSA"
+    },
+    {
+      "number": "RS.304.17",
+      "manufacturer": "EVOTECH",
+      "model": "ORECA",
+      "homologationStart": "16.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.305.17",
+      "manufacturer": "PUMA"
+    },
+    {
+      "number": "RS.306.17",
+      "manufacturer": "TURN ONE PITLANE",
+      "model": "SIMON",
+      "homologationStart": "16.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.307.17",
+      "manufacturer": "AVANTI DRV",
+      "model": "X'ZUIT"
+    },
+    {
+      "number": "RS.308.17",
+      "manufacturer": "SONG RS-1",
+      "model": "AWS",
+      "homologationStart": "16.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.309.17",
+      "manufacturer": "SKYHAWK",
+      "model": "PRODUCTS (TRP)",
+      "homologationStart": "20.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.310.17",
+      "manufacturer": "RSN-400",
+      "model": "DOGOSPORT",
+      "homologationStart": "22.12.16",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.311.17",
+      "manufacturer": "HRX"
+    },
+    {
+      "number": "RS.312.17",
+      "manufacturer": "AVANTI GT",
+      "model": "GLORIA",
+      "homologationStart": "30.01.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.313.17",
+      "manufacturer": "FULL PROTECT TWO",
+      "model": "ALPINESTARS"
+    },
+    {
+      "number": "RS.314.17",
+      "homologationStart": "03.02.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.315.17",
+      "manufacturer": "RS SPLIT",
+      "homologationStart": "09.02.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.316.17",
+      "manufacturer": "ADIDAS",
+      "model": "MARINA",
+      "homologationStart": "20.02.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.317.17",
+      "manufacturer": "RS CLIMACOOL SUIT",
+      "model": "PUMA"
+    },
+    {
+      "number": "RS.318.17",
+      "manufacturer": "R551 - GRIP RS-4",
+      "homologationStart": "28.02.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.319.17",
+      "manufacturer": "MARINA AIR",
+      "model": "ULV"
+    },
+    {
+      "number": "RS.320.17",
+      "manufacturer": "SPARCO",
+      "homologationStart": "01.03.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.321.17",
+      "manufacturer": "MK2"
+    },
+    {
+      "number": "RS.322.17",
+      "manufacturer": "NSG ULV PHOENIX",
+      "model": "MOMO",
+      "homologationStart": "10.03.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.323.17",
+      "manufacturer": "R552-SUPERSPEED RS-9",
+      "model": "KOBRA"
+    },
+    {
+      "number": "RS.324.17",
+      "manufacturer": "STD E.S.21",
+      "model": "beginning"
+    },
+    {
+      "number": "RS.325.17",
+      "manufacturer": "FLEX SUIT",
+      "homologationStart": "24.11.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.326.17",
+      "manufacturer": "JH16-01",
+      "model": "SIMPSON",
+      "homologationStart": "06.12.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.327.17",
+      "manufacturer": "ADIDAS"
+    },
+    {
+      "number": "RS.328.18",
+      "manufacturer": "TOP ONE",
+      "model": "UNI-SAF",
+      "homologationStart": "07.12.17",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.329.18",
+      "manufacturer": "RPM XTECH 4",
+      "model": "FYSHE",
+      "homologationStart": "03.01.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.330.18",
+      "manufacturer": "CONFORT LIGHT"
+    },
+    {
+      "number": "RS.331.18",
+      "manufacturer": "BODY SCUDO",
+      "model": "TOORACE",
+      "homologationStart": "17.01.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.332.18",
+      "manufacturer": "FULL PRINT",
+      "model": "KOBRA",
+      "homologationStart": "23.01.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.333.18",
+      "manufacturer": "GP PRO COMP",
+      "homologationStart": "07.03.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.334.18",
+      "manufacturer": "STELLA GP PRO COMP",
+      "model": "REVOLUTION",
+      "homologationStart": "13.03.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.335.18",
+      "manufacturer": "GP TECH V2 US",
+      "homologationStart": "18.04.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.336.18",
+      "manufacturer": "STRATOS",
+      "model": "DOGOSPORT"
+    },
+    {
+      "number": "RS.337.18",
+      "manufacturer": "HYPERTECH SUIT"
+    },
+    {
+      "number": "RS.338.18",
+      "manufacturer": "ALPINESTARS",
+      "homologationStart": "07.05.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.339.18",
+      "manufacturer": "R554"
+    },
+    {
+      "number": "RS.340.18",
+      "manufacturer": "RPM SUPERLIGHT",
+      "model": "ALPINESTARS",
+      "homologationStart": "23.05.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.341.18",
+      "manufacturer": "ALPINESTARS",
+      "homologationStart": "04.06.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.342.18",
+      "manufacturer": "JURAN 2000α",
+      "model": "HPI CO., LTD",
+      "homologationStart": "20.06.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.343.18",
+      "manufacturer": "COMPETITION 3",
+      "model": "ALPINESTARS",
+      "homologationStart": "28.06.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.344.19",
+      "manufacturer": "ALPINESTARS",
+      "homologationStart": "06.07.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.345.19",
+      "manufacturer": "CRX-PRO",
+      "homologationStart": "30.07.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.346.19",
+      "manufacturer": "J-RACING",
+      "model": "SPARCO",
+      "homologationStart": "19.09.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.347.19",
+      "manufacturer": "REVOLUTION",
+      "homologationStart": "02.10.18",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.348.19",
+      "manufacturer": "ZAMP",
+      "homologationStart": "15.01.19",
+      "homologationEnd": "31.12.21"
+    },
+    {
+      "number": "RS.349.19",
+      "manufacturer": "GRUPPEM",
+      "model": "TANIDA",
+      "homologationStart": "21.02.19",
+      "homologationEnd": "31.01.21"
+    }
+  ]
+}

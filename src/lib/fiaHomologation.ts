@@ -1,4 +1,4 @@
-import { FiaHomologationEntry } from "@/data/types";
+import { EquipmentCategory, FiaHomologationEntry } from "@/data/types";
 import { fiaListsForStandard } from "@/data/fiaHomologation";
 
 export type HomologationLookupStatus =
@@ -48,8 +48,8 @@ function isPastValidUntil(entry: FiaHomologationEntry): boolean {
  * wired up yet — callers should treat "no_list_for_standard" as "can't check this one yet",
  * not as a negative result.
  */
-export function lookupHomologation(standardId: string, rawNumber: string): HomologationLookupResult {
-  const lists = fiaListsForStandard(standardId);
+export function lookupHomologation(standardId: string, rawNumber: string, category?: EquipmentCategory): HomologationLookupResult {
+  const lists = fiaListsForStandard(standardId, category);
   const listsChecked: FiaListRef[] = lists.map((l) => ({ listNumber: l.listNumber, sourceUrl: l.sourceUrl }));
   if (lists.length === 0) {
     return { status: "no_list_for_standard", listsChecked };

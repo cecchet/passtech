@@ -306,8 +306,13 @@ function CertificationRow({
         </div>
       )}
 
-      {cert.standardId && !notListed && fiaListsForStandard(cert.standardId).length > 0 && (
-        <HomologationCheck standardId={cert.standardId} value={cert.homologationNumber} onChange={(v) => onChange({ homologationNumber: v })} />
+      {cert.standardId && !notListed && fiaListsForStandard(cert.standardId, category).length > 0 && (
+        <HomologationCheck
+          standardId={cert.standardId}
+          category={category}
+          value={cert.homologationNumber}
+          onChange={(v) => onChange({ homologationNumber: v })}
+        />
       )}
     </div>
   );
@@ -323,10 +328,20 @@ function FiaListLink({ listNumber, sourceUrl }: { listNumber: number; sourceUrl:
 }
 
 /** For standards backed by an FIA Technical List (see src/data/fiaHomologation): a free-text field for the number printed on the tag, checked live against the cached list. */
-function HomologationCheck({ standardId, value, onChange }: { standardId: string; value?: string; onChange: (value: string | undefined) => void }) {
+function HomologationCheck({
+  standardId,
+  category,
+  value,
+  onChange,
+}: {
+  standardId: string;
+  category: EquipmentCategory;
+  value?: string;
+  onChange: (value: string | undefined) => void;
+}) {
   const trimmed = (value ?? "").trim();
-  const result = trimmed ? lookupHomologation(standardId, trimmed) : undefined;
-  const listsForStandard = fiaListsForStandard(standardId);
+  const result = trimmed ? lookupHomologation(standardId, trimmed, category) : undefined;
+  const listsForStandard = fiaListsForStandard(standardId, category);
 
   const banner = (() => {
     if (!result) return null;
