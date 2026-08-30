@@ -11,260 +11,333 @@
   "lastFetched": "2026-08-30",
   "entries": [
     {
-      "number": "FHR.001.10-A"
-    },
-    {
-      "number": "FHR.002.10-B",
+      "number": "FHR.001.10-A",
       "manufacturer": "STAND 21",
-      "model": "20XL-RS2"
-    },
-    {
-      "number": "FHR.003.10-A",
-      "manufacturer": "SAFETY SOLUTIONS",
-      "model": "SSI Contoured Med"
-    },
-    {
-      "number": "FHR.004.10-A"
-    },
-    {
-      "number": "FHR.005.10-A",
-      "manufacturer": "STAND 21",
-      "model": "10M-HT"
-    },
-    {
-      "number": "FHR.006.10-A",
-      "manufacturer": "STAND 21",
-      "model": "20S-HT",
+      "model": "20XL-RS2",
       "homologationStart": "29.10.10",
       "homologationEnd": "31.10.22"
     },
     {
-      "number": "FHR.007.10-A",
-      "manufacturer": "STAND 21",
-      "model": "20M-HT"
-    },
-    {
-      "number": "FHR.008.10-A",
-      "manufacturer": "STAND 21",
-      "model": "20M-RS",
+      "number": "FHR.002.10-B",
+      "manufacturer": "SAFETY SOLUTIONS",
+      "model": "SSI Contoured Med",
       "homologationStart": "29.10.10",
       "homologationEnd": "31.10.17"
     },
     {
-      "number": "FHR.009.10-A",
+      "number": "FHR.003.10-A",
       "manufacturer": "STAND 21",
-      "model": "20M-RS2"
+      "model": "10M-HT",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
     },
     {
-      "number": "FHR.010.10-A",
+      "number": "FHR.004.10-A",
+      "manufacturer": "STAND 21",
+      "model": "20S-HT",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
+    },
+    {
+      "number": "FHR.005.10-A",
+      "manufacturer": "STAND 21",
+      "model": "20M-HT",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
+    },
+    {
+      "number": "FHR.006.10-A",
+      "manufacturer": "STAND 21",
+      "model": "20M-RS",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "FHR.007.10-A",
+      "manufacturer": "STAND 21",
+      "model": "20M-RS2",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
+    },
+    {
+      "number": "FHR.008.10-A",
       "manufacturer": "STAND 21",
       "model": "20L-HT",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.22"
     },
     {
-      "number": "FHR.011.10-A",
+      "number": "FHR.009.10-A",
       "manufacturer": "STAND 21",
-      "model": "25XS-HT"
+      "model": "25XS-HT",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
     },
     {
-      "number": "FHR.012.10-A",
+      "number": "FHR.010.10-A",
       "manufacturer": "STAND 21",
       "model": "30M-HT",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.22"
     },
     {
-      "number": "FHR.013.10-A",
+      "number": "FHR.011.10-A",
       "manufacturer": "STAND 21",
-      "model": "30L-HT"
+      "model": "30L-HT",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
     },
     {
-      "number": "FHR.014.10-A",
+      "number": "FHR.012.10-A",
       "manufacturer": "STAND 21",
       "model": "40M-HT",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.22"
     },
     {
-      "number": "FHR.015.10-A",
-      "manufacturer": "HANS PERFORMANCE",
+      "number": "FHR.013.10-A",
+      "manufacturer": "STAND 21",
+      "model": "30MS-HT F1",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.22"
+    },
+    {
+      "number": "FHR.014.10-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20MS",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.17"
     },
     {
-      "number": "FHR.016.10-A"
+      "number": "FHR.015.10-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20LS",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
+    },
+    {
+      "number": "FHR.016.10-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "30MS",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
     },
     {
       "number": "FHR.017.10-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "30MS"
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "30LS",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
     },
     {
       "number": "FHR.018.10-A",
-      "manufacturer": "PRODUCTS",
-      "model": "30LS"
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "10MP",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
     },
     {
       "number": "FHR.019.10-A",
-      "manufacturer": "10MP"
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20SSP",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
     },
     {
       "number": "FHR.020.10-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "20SSP"
-    },
-    {
-      "number": "FHR.021.10-A",
-      "manufacturer": "PRODUCTS",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
       "model": "20SP",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.17"
     },
     {
-      "number": "FHR.022.10-A",
-      "manufacturer": "20MP"
+      "number": "FHR.021.10-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20MP",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
     },
     {
-      "number": "FHR.023.10-A",
-      "manufacturer": "HANS PERFORMANCE",
+      "number": "FHR.022.10-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
       "model": "20LP",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.17"
     },
     {
+      "number": "FHR.023.10-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "30MP",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
+    },
+    {
       "number": "FHR.024.10-A",
-      "manufacturer": "PRODUCTS",
-      "model": "30MP"
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "30LP",
+      "homologationStart": "22.11.10",
+      "homologationEnd": "30.11.17"
     },
     {
       "number": "FHR.025.10-A",
-      "manufacturer": "30LP",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "40MP",
       "homologationStart": "22.11.10",
       "homologationEnd": "30.11.17"
     },
     {
       "number": "FHR.026.10-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "40MP"
-    },
-    {
-      "number": "FHR.027.11-A",
-      "manufacturer": "PRODUCTS",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
       "model": "20SSS",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.028.11-A",
-      "manufacturer": "10° M PRO"
-    },
-    {
-      "number": "FHR.029.11-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "20M PRO",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.030.11-A",
-      "manufacturer": "PRODUCTS",
-      "model": "20L PRO"
-    },
-    {
-      "number": "FHR.031.11-A",
-      "manufacturer": "30M PRO",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.032.11-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "30L PRO"
-    },
-    {
-      "number": "FHR.033.11-A",
-      "manufacturer": "PRODUCTS",
-      "model": "40M F1",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.034.11-A",
-      "manufacturer": "20M-CS"
-    },
-    {
-      "number": "FHR.035.11-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "20MS-II “Sport II”",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.036.12-A",
-      "manufacturer": "PRODUCTS",
-      "model": "20LS-II \"Large Sport II\""
-    },
-    {
-      "number": "FHR.037.12-B",
-      "manufacturer": "20L-CS",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.038.12-B",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "HYC-09"
-    },
-    {
-      "number": "FHR.039.12-B",
-      "manufacturer": "PRODUCTS",
-      "model": "HYPT-12",
-      "homologationStart": "22.11.10",
-      "homologationEnd": "30.11.17"
-    },
-    {
-      "number": "FHR.040.12-A",
-      "manufacturer": "HYPR-12"
-    },
-    {
-      "number": "FHR.041.13-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "20 MPU \"20 Medium Pro Ultra\"",
       "homologationStart": "15.12.10",
       "homologationEnd": "31.12.17"
     },
     {
-      "number": "FHR.042.13-A",
-      "manufacturer": "PRODUCTS",
-      "model": "HANS Adjustable Medium",
+      "number": "FHR.027.11-A",
+      "manufacturer": "SCHROTH",
+      "model": "10 M PRO",
       "homologationStart": "01.04.11",
       "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "FHR.028.11-A",
+      "manufacturer": "SCHROTH",
+      "model": "20M PRO",
+      "homologationStart": "01.04.11",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "FHR.029.11-A",
+      "manufacturer": "SCHROTH",
+      "model": "20L PRO",
+      "homologationStart": "01.04.11",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "FHR.030.11-A",
+      "manufacturer": "SCHROTH",
+      "model": "30M PRO",
+      "homologationStart": "01.04.11",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "FHR.031.11-A",
+      "manufacturer": "SCHROTH",
+      "model": "30L PRO",
+      "homologationStart": "01.04.11",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "FHR.032.11-A",
+      "manufacturer": "SCHROTH",
+      "model": "40M F1",
+      "homologationStart": "01.04.11",
+      "homologationEnd": "30.04.17"
+    },
+    {
+      "number": "FHR.033.11-A",
+      "manufacturer": "STAND 21",
+      "model": "20M-CS",
+      "homologationStart": "12.04.11",
+      "homologationEnd": "30.04.27"
+    },
+    {
+      "number": "FHR.034.11-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20MS-II \"Sport II\"",
+      "homologationStart": "03.06.11",
+      "homologationEnd": "30.06.17"
+    },
+    {
+      "number": "FHR.035.11-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20LS-II \"Large Sport II\"",
+      "homologationStart": "13.07.11",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "FHR.036.12-A",
+      "manufacturer": "STAND 21",
+      "model": "20L-CS",
+      "homologationStart": "10.02.12",
+      "homologationEnd": "28.02.27"
+    },
+    {
+      "number": "FHR.037.12-B",
+      "manufacturer": "SIMPSON",
+      "model": "HYC-09",
+      "homologationStart": "05.06.12",
+      "homologationEnd": "30.06.17"
+    },
+    {
+      "number": "FHR.038.12-B",
+      "manufacturer": "SIMPSON",
+      "model": "HYPT-12",
+      "homologationStart": "13.12.12",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "FHR.039.12-B",
+      "manufacturer": "SIMPSON",
+      "model": "HYPR-12",
+      "homologationStart": "13.12.12",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "FHR.040.12-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20 MPU \"20 Medium Pro Ultra\"",
+      "homologationStart": "14.12.12",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "FHR.041.13-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "HANS Adjustable Medium",
+      "homologationStart": "28.01.13",
+      "homologationEnd": "31.01.18"
+    },
+    {
+      "number": "FHR.042.13-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "HANS Adjustable Large",
+      "homologationStart": "28.01.13",
+      "homologationEnd": "31.01.18"
     },
     {
       "number": "FHR.043.13-B",
-      "manufacturer": "HANS Adjustable Large",
-      "homologationStart": "01.04.11",
-      "homologationEnd": "30.04.17"
+      "manufacturer": "SIMPSON",
+      "model": "HYPKC-12",
+      "homologationStart": "29.01.13",
+      "homologationEnd": "31.01.18"
     },
     {
       "number": "FHR.044.13-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "HYPKC-12",
-      "homologationStart": "01.04.11",
-      "homologationEnd": "30.04.17"
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20 LPU \"20 Large Pro Ultra\"",
+      "homologationStart": "23.04.13",
+      "homologationEnd": "30.04.18"
     },
     {
       "number": "FHR.045.13-A",
-      "manufacturer": "PRODUCTS",
-      "model": "20 LPU \"20 Large Pro Ultra\"",
-      "homologationStart": "01.04.11",
-      "homologationEnd": "30.04.17"
+      "manufacturer": "STAND 21",
+      "model": "30M-UL",
+      "homologationStart": "28.05.13",
+      "homologationEnd": "31.05.23"
     },
     {
       "number": "FHR.046.13-A",
-      "manufacturer": "Manufacturer",
-      "model": "Model"
+      "manufacturer": "STAND 21",
+      "model": "20M-UL",
+      "homologationStart": "28.05.13",
+      "homologationEnd": "31.05.23"
+    },
+    {
+      "number": "FHR.047.13-A",
+      "manufacturer": "SCHROTH",
+      "model": "30M XLT",
+      "homologationStart": "25.07.13",
+      "homologationEnd": "31.07.28"
     },
     {
       "number": "FHR.048.13-A",
@@ -324,38 +397,43 @@
     },
     {
       "number": "FHR.056.14-A",
-      "manufacturer": "HANS III Large / 20LH-III",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "HANS III Large / 20LH-III",
       "homologationStart": "03.11.14",
       "homologationEnd": "30.11.19"
     },
     {
       "number": "FHR.057.14-B",
-      "manufacturer": "HANS PERFORMANCE",
+      "manufacturer": "SIMPSON",
+      "model": "HYPL-14",
       "homologationStart": "04.11.14",
       "homologationEnd": "30.11.19"
     },
     {
       "number": "FHR.058.14-A",
-      "manufacturer": "PRODUCTS",
-      "model": "HYPL-14",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "HANS III Medium / 20MH-III",
       "homologationStart": "28.11.14",
       "homologationEnd": "30.11.19"
     },
     {
       "number": "FHR.059.15-A",
-      "manufacturer": "HANS III Medium / 20MH-III",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20M PRO ULTRA LITE",
       "homologationStart": "13.03.15",
       "homologationEnd": "31.03.20"
     },
     {
       "number": "FHR.060.15-A",
-      "manufacturer": "SIMPSON",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20L PRO ULTRA LITE",
       "homologationStart": "10.04.15",
       "homologationEnd": "30.04.20"
     },
     {
       "number": "FHR.061.15-B",
-      "manufacturer": "20M PRO ULTRA LITE",
+      "manufacturer": "SIMPSON",
+      "model": "HYPL-TK",
       "homologationStart": "03.12.15",
       "homologationEnd": "31.12.30"
     },
@@ -375,13 +453,15 @@
     },
     {
       "number": "FHR.064.16-A",
-      "manufacturer": "30 Med Pro ULTRA Lite",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "30 Med Pro ULTRA Lite",
       "homologationStart": "04.04.16",
       "homologationEnd": "30.04.21"
     },
     {
       "number": "FHR.065.16-B",
-      "manufacturer": "HANS PERFORMANCE",
+      "manufacturer": "SIMPSON",
+      "model": "Hybrid S",
       "homologationStart": "18.10.16",
       "homologationEnd": "31.10.26"
     },
@@ -422,26 +502,29 @@
     },
     {
       "number": "FHR.071.18-A",
-      "manufacturer": "HANS III-30L",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "HANS III-30L",
       "homologationStart": "24.10.18",
       "homologationEnd": "31.10.28"
     },
     {
       "number": "FHR.072.19-A",
-      "manufacturer": "HANS PERFORMANCE",
+      "manufacturer": "SIMPSON",
       "model": "STILO 30M Zero",
       "homologationStart": "31.01.19",
       "homologationEnd": "31.01.29"
     },
     {
       "number": "FHR.073.19-A",
-      "manufacturer": "PRODUCTS",
-      "model": "HANS III–30M",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "HANS III-30M",
       "homologationStart": "04.03.19",
       "homologationEnd": "31.03.29"
     },
     {
       "number": "FHR.074.19-A",
+      "manufacturer": "STAND 21",
+      "model": "30M-FL",
       "homologationStart": "28.05.19",
       "homologationEnd": "31.05.29"
     },
@@ -454,44 +537,59 @@
     },
     {
       "number": "FHR.076.21-A",
-      "manufacturer": "20M Ultra Lite",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "20M Ultra Lite",
       "homologationStart": "22.01.21",
       "homologationEnd": "31.01.31"
     },
     {
       "number": "FHR.077.21-A",
-      "manufacturer": "HANS PERFORMANCE",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
       "model": "20L Ultra Lite",
       "homologationStart": "22.01.21",
       "homologationEnd": "31.01.31"
     },
     {
       "number": "FHR.078.21-A",
-      "manufacturer": "PRODUCTS",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "H-3 Lg 20",
       "homologationStart": "17.02.21",
       "homologationEnd": "28.02.26"
     },
     {
-      "number": "FHR.079.21-A"
+      "number": "FHR.079.21-A",
+      "manufacturer": "HANS PERFORMANCE PRODUCTS",
+      "model": "H-3 Md 20",
+      "homologationStart": "17.02.21",
+      "homologationEnd": "28.02.26"
     },
     {
       "number": "FHR.080.21-A",
-      "manufacturer": "HANS PERFORMANCE",
-      "model": "H-3 Md 20"
+      "manufacturer": "STAND 21",
+      "model": "20L-FL",
+      "homologationStart": "19.11.21",
+      "homologationEnd": "30.11.31"
     },
     {
       "number": "FHR.081.24-A",
-      "manufacturer": "PRODUCTS",
-      "model": "20L-FL"
+      "manufacturer": "SIMPSON",
+      "model": "H4S20",
+      "homologationStart": "30.01.24",
+      "homologationEnd": "31.01.29"
     },
     {
       "number": "FHR.082.25-A",
-      "manufacturer": "STAND 21",
-      "model": "H4S20"
+      "manufacturer": "SIMPSON",
+      "model": "HANS IV MEDIUM 20 Deg (H4M20)",
+      "homologationStart": "10.04.25",
+      "homologationEnd": "31.03.30"
     },
     {
       "number": "FHR.083.26-B",
-      "manufacturer": "SIMPSON"
+      "manufacturer": "SIMPSON",
+      "model": "SIMPSON HYBRID SPORT",
+      "homologationStart": "09.01.26",
+      "homologationEnd": "31.01.31"
     }
   ]
 }

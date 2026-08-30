@@ -48,7 +48,12 @@ import list91 from "./list-91.json";
  * List 29 (FIA 8858-2010) is scoped to `categories: ["hnr"]` — only its Part 1 (numbered FHR
  * devices) is wired up. Its Part 2 (tether systems) and the appended older FIA 8858-2002 section
  * are both non-numbered "approved manufacturer/model" lists, same situation as List 27's Parts
- * 2/3. No revocations found in this list.
+ * 2/3. It's also hand-transcribed, like the lists above — the same drift bug, worsened by "HANS
+ * PERFORMANCE PRODUCTS" being a 2-line manufacturer name that pushes rows further out of
+ * alignment (FHR.027.11-A read as manufacturer "PRODUCTS", a fragment of a different row's brand
+ * name, with model/dates borrowed from FHR.016.10-A entirely). All 83 entries are hand-verified —
+ * see LIST_29_MANUAL_ENTRIES. The true count is 83, not the 82 the old parser found. No
+ * revocations exist in this list (no WARNING section at all).
  *
  * List 40 (FIA 8862-2009 advanced racing seats) is hand-transcribed, like Lists 12 and 91 — a
  * model name (e.g. AS.002.10's RT4129WTHR) can land on a text line disconnected from its own
