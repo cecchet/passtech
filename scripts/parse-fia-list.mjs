@@ -43,6 +43,15 @@ const LIST_CONFIG = {
     sourceUrl: "https://www.fia.com/sites/default/files/tl16_0.pdf",
     numberPattern: /^(Ex\.\d{3}\.\d{2})\s*³?\b/,
   },
+  12: {
+    title: "Technical List n°12 — Seats (FIA 8855-1999)",
+    standardIds: ["fia-8855-1999"],
+    sourceUrl: "https://www.fia.com/sites/default/files/8855.pdf",
+    // Pre-2000 numbers print with a leading dot (".CS.912.98"); 2002+ numbers don't (a real FIA
+    // formatting quirk, not a typo) — both forms are normalized to the no-dot form for storage,
+    // since that's what appears on a physical seat's own homologation label.
+    numberPattern: /^\.?(CS\.\d{3}\.\d{2})\s*(?:⁽³⁾|³)?\s*\b/,
+  },
 };
 
 // A trailing MM.YYYY MM.YYYY YYYY-ish tail — 0-3 of these tokens, in order (start-of-homol,
@@ -165,8 +174,12 @@ function main() {
     if (entry) {
       entry.revoked = true;
       entry.revokedNote = rev.note;
-      if (!entry.manufacturer && rev.manufacturer) entry.manufacturer = rev.manufacturer;
-      if (!entry.model && rev.model) entry.model = rev.model;
+      // The revocation notice is clean prose ("Manufacturer: X" / "Model: Y"); the main table's
+      // own columns for the same row are more prone to wrap/bleed corruption (see e.g. list 12's
+      // CS.972.99, whose table row parses to model "ECO" when the real model, per its own
+      // revocation notice, is "Runner 2000"). Prefer the notice's version whenever it states one.
+      if (rev.manufacturer) entry.manufacturer = rev.manufacturer;
+      if (rev.model) entry.model = rev.model;
     } else {
       console.warn(`  WARNING SECTION: revoked number ${rev.number} not found among parsed entries — adding standalone.`);
       entries.push({ number: rev.number, manufacturer: rev.manufacturer, model: rev.model, revoked: true, revokedNote: rev.note });

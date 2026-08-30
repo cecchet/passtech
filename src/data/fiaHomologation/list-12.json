@@ -1,0 +1,3920 @@
+{
+  "listNumber": 12,
+  "title": "Technical List n°12 — Seats (FIA 8855-1999)",
+  "standardIds": [
+    "fia-8855-1999"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/8855.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "CS.826.97",
+      "manufacturer": "OMP",
+      "model": "GRIP / CHAMP"
+    },
+    {
+      "number": "CS.828.97",
+      "manufacturer": "OMP",
+      "model": "Record"
+    },
+    {
+      "number": "CS.830.97",
+      "manufacturer": "SPARCO",
+      "model": "Lateral",
+      "homologationStart": "12.1997",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.831.97",
+      "manufacturer": "SPARCO",
+      "model": "ATLAS VTR"
+    },
+    {
+      "number": "CS.832.98",
+      "manufacturer": "SPARCO",
+      "model": "EVO 2 VTR",
+      "homologationStart": "12.1997",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.900.98",
+      "manufacturer": "MOMO",
+      "model": "Touring CC"
+    },
+    {
+      "number": "CS.904.98",
+      "manufacturer": "OMP",
+      "model": "Lateral",
+      "homologationStart": "12.1997",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.905.98",
+      "manufacturer": "SPARCO",
+      "model": "Mirage S"
+    },
+    {
+      "number": "CS.909.98",
+      "manufacturer": "EKTOR",
+      "model": "ARS",
+      "homologationStart": "12.1997",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.911.98",
+      "manufacturer": "OMP",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.912.98",
+      "manufacturer": "KINGDRAGON - FIVE RACING",
+      "model": "Master VTR",
+      "homologationStart": "06.1998",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.913.98",
+      "manufacturer": "MOMO",
+      "model": "ektor ho"
+    },
+    {
+      "number": "CS.914.98",
+      "manufacturer": "MOMO",
+      "model": "Lateral",
+      "homologationStart": "04.1998",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.915.98",
+      "manufacturer": "SPARCO",
+      "model": "Grip Carbon"
+    },
+    {
+      "number": "CS.916.98",
+      "manufacturer": "SPARCO",
+      "model": "Master VTR",
+      "homologationStart": "01.1998",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.917.98",
+      "manufacturer": "SPARCO",
+      "model": "Lateral or Lower"
+    },
+    {
+      "number": "CS.918.98",
+      "manufacturer": "SPARCO",
+      "model": "Rooky",
+      "homologationStart": "01.1998",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.919.98",
+      "manufacturer": "MOMO",
+      "model": "Nascar"
+    },
+    {
+      "number": "CS.922.98",
+      "manufacturer": "EKTOR",
+      "model": "Lateral",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.924.98",
+      "manufacturer": "OMP",
+      "model": "Rev"
+    },
+    {
+      "number": "CS.925.98",
+      "manufacturer": "OMP",
+      "model": "Ultra",
+      "homologationStart": "04.1998",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.927.98",
+      "manufacturer": "KINGDRAGON",
+      "model": "Pro 2000"
+    },
+    {
+      "number": "CS.928.98",
+      "manufacturer": "KINGDRAGON",
+      "model": "EVO",
+      "homologationStart": "06.1998",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.929.98",
+      "manufacturer": "MOMO",
+      "model": "Mirage"
+    },
+    {
+      "number": "CS.930.98",
+      "manufacturer": "MOMO",
+      "model": "Start EVO",
+      "homologationStart": "06.1998",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.931.98",
+      "manufacturer": "MOMO",
+      "model": "ARS"
+    },
+    {
+      "number": "CS.932.98",
+      "manufacturer": "KINGDRAGON",
+      "model": "Pista HA/684",
+      "homologationStart": "06.1998",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.933.98",
+      "manufacturer": "MOMO",
+      "model": "Master K/C"
+    },
+    {
+      "number": "CS.934.98",
+      "manufacturer": "MOMO",
+      "model": "Polaris K/C",
+      "homologationStart": "06.1998",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.935.98",
+      "manufacturer": "MOMO",
+      "model": "Acropolis VTR"
+    },
+    {
+      "number": "CS.936.98",
+      "manufacturer": "MOMO",
+      "model": "Top Nascar VTR"
+    },
+    {
+      "number": "CS.937.98",
+      "manufacturer": "SPARCO",
+      "model": "Lateral",
+      "homologationStart": "08.1998",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.938.98",
+      "manufacturer": "SPARCO",
+      "model": "Corsa"
+    },
+    {
+      "number": "CS.940.98",
+      "manufacturer": "OMP",
+      "model": "CHALLENGE VTR",
+      "homologationStart": "08.1998",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.941.98",
+      "manufacturer": "OMP",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.942.98",
+      "manufacturer": "OMP",
+      "model": "Pista HA/686",
+      "homologationStart": "08.1998",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.943.98",
+      "manufacturer": "EKTOR",
+      "model": "RS HA/633"
+    },
+    {
+      "number": "CS.944.98",
+      "manufacturer": "EKTOR",
+      "model": "ECO HA/644",
+      "homologationStart": "07.1998",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.945.98",
+      "manufacturer": "EKTOR",
+      "model": "ektor start"
+    },
+    {
+      "number": "CS.946.98",
+      "manufacturer": "MOMO",
+      "model": "ektor winner",
+      "homologationStart": "10.1998",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.947.99",
+      "manufacturer": "OMP",
+      "model": "ektor rush kevlar/carbone"
+    },
+    {
+      "number": "CS.948.99",
+      "manufacturer": "OMP",
+      "model": "Lower",
+      "homologationStart": "10.1998",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.949.99",
+      "manufacturer": "SPARCO",
+      "model": "Tframe"
+    },
+    {
+      "number": "CS.950.99",
+      "manufacturer": "SPARCO",
+      "model": "GRIP K/C or HA/636",
+      "homologationStart": "10.1998",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.951.99",
+      "manufacturer": "SPARCO",
+      "model": "EXTRA HA 634 or ECO XL"
+    },
+    {
+      "number": "CS.952.99",
+      "manufacturer": "SPARCO",
+      "model": "Lateral",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.953.99",
+      "manufacturer": "SPARCO",
+      "model": "PRO WRC"
+    },
+    {
+      "number": "CS.954.99",
+      "manufacturer": "SPARCO",
+      "model": "Atlas",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.955.99",
+      "manufacturer": "SPARCO",
+      "model": "Lower"
+    },
+    {
+      "number": "CS.956.99",
+      "manufacturer": "EKTOR",
+      "model": "Pro 2000",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.957.99",
+      "manufacturer": "SPARCO",
+      "model": "CORSA"
+    },
+    {
+      "number": "CS.958.99",
+      "manufacturer": "RACETECH",
+      "model": "TECNO",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.959.99",
+      "manufacturer": "TWR",
+      "model": "Junior"
+    },
+    {
+      "number": "CS.960.99",
+      "manufacturer": "NORFOLK",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.961.99",
+      "manufacturer": "MOMO",
+      "model": "INDY"
+    },
+    {
+      "number": "CS.962.99",
+      "manufacturer": "MOMO",
+      "model": "EkTOR RUSH fibre",
+      "homologationStart": "02.1999",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.963.99",
+      "manufacturer": "MOMO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.964.99",
+      "manufacturer": "RECARO",
+      "model": "EVO",
+      "homologationStart": "02.1999",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.965.99",
+      "manufacturer": "ISOMAX",
+      "model": "ISOMAX SHR"
+    },
+    {
+      "number": "CS.966.99",
+      "manufacturer": "SPARCO",
+      "model": "TTE"
+    },
+    {
+      "number": "CS.967.99",
+      "manufacturer": "SPARCO",
+      "model": "Driver",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.968.99",
+      "manufacturer": "GA RACING",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.969.99",
+      "manufacturer": "GA RACING",
+      "model": "CHAMP",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.970.99",
+      "manufacturer": "GA RACING",
+      "model": "SPEEDY"
+    },
+    {
+      "number": "CS.971.99",
+      "manufacturer": "GA RACING",
+      "model": "Lateral",
+      "homologationStart": "05.1999",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.972.99",
+      "manufacturer": "EKTOR",
+      "model": "Runner 2000",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.973.99",
+      "manufacturer": "COBRA",
+      "model": "JET",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.974.99",
+      "manufacturer": "COBRA",
+      "model": "Runner 2000"
+    },
+    {
+      "number": "CS.975.99",
+      "manufacturer": "COBRA",
+      "model": "Imola",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.976.99",
+      "manufacturer": "COBRA",
+      "model": "Evolution"
+    },
+    {
+      "number": "CS.977.99",
+      "manufacturer": "COBRA",
+      "model": "Imola GT",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.978.99",
+      "manufacturer": "COBRA",
+      "model": "Evolution GT"
+    },
+    {
+      "number": "CS.979.99",
+      "manufacturer": "COBRA",
+      "model": "Sportline",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.980.99",
+      "manufacturer": "COBRA SEATS",
+      "model": "Monaco",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.981.99",
+      "manufacturer": "GA RACING",
+      "model": "Suzuka",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.982.99",
+      "manufacturer": "GA RACING",
+      "model": "Monaco"
+    },
+    {
+      "number": "CS.983.99",
+      "manufacturer": "RECARO",
+      "model": "JUMBO",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.984.99",
+      "manufacturer": "SPARCO",
+      "model": "RACE"
+    },
+    {
+      "number": "CS.985.99",
+      "manufacturer": "GIOCAR",
+      "model": "porsche pro racer 99 SPG",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.986.99",
+      "manufacturer": "GA RACING",
+      "model": "PRO WRC"
+    },
+    {
+      "number": "CS.987.99",
+      "manufacturer": "GA RACING",
+      "model": "Skill",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.988.99",
+      "manufacturer": "GA RACING",
+      "model": "SAFARI KC"
+    },
+    {
+      "number": "CS.989.99",
+      "manufacturer": "RACE KC",
+      "model": "Lateral",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.990.00",
+      "manufacturer": "OMP",
+      "model": "SPEEDY KC"
+    },
+    {
+      "number": "CS.991.00",
+      "manufacturer": "KONIG",
+      "model": "WRC HA/640",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.992.00",
+      "manufacturer": "CORBEAU SEATS",
+      "model": "Forza",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.993.00",
+      "manufacturer": "CORBEAU SEATS",
+      "model": "Pro series",
+      "homologationStart": "06.1999",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.994.00",
+      "manufacturer": "CORBEAU SEATS",
+      "model": "Revolution",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.995.00",
+      "manufacturer": "RECARO",
+      "model": "Pro racer 99 SPG"
+    },
+    {
+      "number": "CS.996.00",
+      "manufacturer": "RECARO",
+      "model": "Lateral",
+      "homologationStart": "01.2000",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.997.00",
+      "manufacturer": "RECARO AUTOMOTIVE GMBH & CO. KG",
+      "model": "Pole position",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.998.00",
+      "manufacturer": "MOMO",
+      "model": "Pole position",
+      "homologationStart": "01.2000",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.999.00",
+      "manufacturer": "SABELT",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.003.00",
+      "manufacturer": "SABELT",
+      "model": "CUP",
+      "homologationStart": "01.2000",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.004.00",
+      "manufacturer": "SABELT",
+      "model": "Montecarlo VTR"
+    },
+    {
+      "number": "CS.005.00",
+      "manufacturer": "SABELT",
+      "model": "Montecarlo CARB",
+      "homologationStart": "01.2000",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.006.00",
+      "manufacturer": "N/A"
+    },
+    {
+      "number": "CS.007.00",
+      "manufacturer": "KONIG",
+      "model": "CRONO",
+      "homologationStart": "02.2000",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.008.00",
+      "manufacturer": "MOMO",
+      "model": "GT"
+    },
+    {
+      "number": "CS.009.00",
+      "manufacturer": "RACETECH",
+      "model": "Lateral",
+      "homologationStart": "05.2000",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.010.00",
+      "manufacturer": "RACETECH",
+      "model": "RE01"
+    },
+    {
+      "number": "CS.011.00",
+      "manufacturer": "RACETECH",
+      "model": "CUP VTR",
+      "homologationStart": "05.2000",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.012.00",
+      "manufacturer": "RECARO",
+      "model": "4000W"
+    },
+    {
+      "number": "CS.013.00",
+      "manufacturer": "C-ONE",
+      "model": "9009"
+    },
+    {
+      "number": "CS.014.00",
+      "manufacturer": "RECARO",
+      "model": "Profi SPG"
+    },
+    {
+      "number": "CS.015.00",
+      "manufacturer": "EKTOR",
+      "model": "SPG.N",
+      "homologationStart": "06.2000",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.016.00",
+      "manufacturer": "RECARO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.017.00",
+      "manufacturer": "BOSHOKU",
+      "model": "Lower"
+    },
+    {
+      "number": "CS.018.00",
+      "manufacturer": "BOSHOKU",
+      "model": "ISO 2000"
+    },
+    {
+      "number": "CS.019.00",
+      "manufacturer": "BOSHOKU",
+      "model": "Lower"
+    },
+    {
+      "number": "CS.020.00",
+      "manufacturer": "BOSHOKU",
+      "model": "Lower"
+    },
+    {
+      "number": "CS.021.01",
+      "manufacturer": "MOMO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.022.01",
+      "manufacturer": "AAR RAcing-2 301",
+      "model": "Lower",
+      "homologationStart": "08.2000",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.023.01",
+      "manufacturer": "CARBOSYSTEMS",
+      "model": "Safetycell"
+    },
+    {
+      "number": "CS.024.01",
+      "manufacturer": "MOONCRAFT",
+      "model": "Mooncraft S/No:2"
+    },
+    {
+      "number": "CS.025.01",
+      "manufacturer": "OMP",
+      "model": "BIG HA/703 or WRC XL",
+      "homologationStart": "04.2001",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.026.01",
+      "manufacturer": "KINGDRAGON",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.027.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Vega2",
+      "homologationStart": "04.2001",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.028.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride thrown FG603"
+    },
+    {
+      "number": "CS.029.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FM302",
+      "homologationStart": "03.2001",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.030.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FM303"
+    },
+    {
+      "number": "CS.031.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FS301",
+      "homologationStart": "04.2001",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.032.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FL301"
+    },
+    {
+      "number": "CS.033.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride thrown FG601",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.034.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FM301"
+    },
+    {
+      "number": "CS.035.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FM304",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.036.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "Bride Divine FM305"
+    },
+    {
+      "number": "CS.037.01",
+      "manufacturer": "MOMO",
+      "model": "Bride Divine FL303",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.038.01",
+      "manufacturer": "SHIN NAGOYA"
+    },
+    {
+      "number": "CS.039.01",
+      "manufacturer": "SHIN NAGOYA",
+      "model": "MONTE CARLO",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.040.01",
+      "manufacturer": "MOMO",
+      "model": "bride MArvel FG607"
+    },
+    {
+      "number": "CS.041.01",
+      "manufacturer": "MOMO",
+      "model": "BRIDE FAME FM307",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.042.01",
+      "manufacturer": "OMP",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.043.01",
+      "manufacturer": "OMP",
+      "model": "CUP HI-TECH",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.044.01",
+      "manufacturer": "OMP",
+      "model": "Nascar GT diablo"
+    },
+    {
+      "number": "CS.045.01",
+      "manufacturer": "OMP",
+      "model": "Lateral",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.046.01",
+      "manufacturer": "MOMO",
+      "model": "WRC HA/705"
+    },
+    {
+      "number": "CS.047.02",
+      "manufacturer": "KONIG",
+      "model": "SPORT HA/649",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.048.01",
+      "manufacturer": "MOMO",
+      "model": "Lower"
+    },
+    {
+      "number": "CS.050.01",
+      "manufacturer": "MOMO",
+      "model": "RS HA/633",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.051.01",
+      "manufacturer": "MOMO",
+      "model": "ECO HA/644"
+    },
+    {
+      "number": "CS.052.01",
+      "manufacturer": "MOMO",
+      "model": "Monte Carlo 1 VTR",
+      "homologationStart": "06.2001",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.053.02",
+      "manufacturer": "CORBEAU SEATS",
+      "model": "Sprint",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.054.02",
+      "manufacturer": "KONIG",
+      "model": "RE-02"
+    },
+    {
+      "number": "CS.055.02",
+      "manufacturer": "SABELT",
+      "model": "Racer",
+      "homologationStart": "01.2002",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.056.02",
+      "manufacturer": "TOORA",
+      "model": "RACE"
+    },
+    {
+      "number": "CS.057.02",
+      "manufacturer": "BIMARCO",
+      "model": "EXPERT",
+      "homologationStart": "04.2002",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.058.02",
+      "manufacturer": "BIMARCO",
+      "model": "DAKAR"
+    },
+    {
+      "number": "CS.059.02",
+      "manufacturer": "BIMARCO",
+      "model": "BASIC",
+      "homologationStart": "05.2002",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.060.02",
+      "manufacturer": "CONCEPT",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.061.02",
+      "manufacturer": "TOORA",
+      "model": "Lateral",
+      "homologationStart": "06.2002",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.062.02",
+      "manufacturer": "TOORA",
+      "model": "ST"
+    },
+    {
+      "number": "CS.063.02",
+      "manufacturer": "SABELT",
+      "model": "4009W",
+      "homologationStart": "07.2002",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.064.02",
+      "manufacturer": "RACETECH",
+      "model": "4009HR"
+    },
+    {
+      "number": "CS.065.02",
+      "manufacturer": "RACETECH",
+      "model": "4009WHRV",
+      "homologationStart": "07.2002",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.066.02",
+      "manufacturer": "RACETECH",
+      "model": "4009HRV"
+    },
+    {
+      "number": "CS.067.02",
+      "manufacturer": "RACETECH",
+      "model": "PROJECT CARBON",
+      "homologationStart": "07.2002",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.068.02",
+      "manufacturer": "TOORA",
+      "model": "PROJECT VTR"
+    },
+    {
+      "number": "CS.069.03",
+      "manufacturer": "TOORA",
+      "model": "PROFI SPG",
+      "homologationStart": "07.2002",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.070.03",
+      "manufacturer": "RECARO",
+      "model": "HURRICANE"
+    },
+    {
+      "number": "CS.071.03",
+      "manufacturer": "MONACO S",
+      "model": "Lateral",
+      "homologationStart": "09.2002",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.072.03",
+      "manufacturer": "LICO",
+      "model": "DCM CS01"
+    },
+    {
+      "number": "CS.073.03",
+      "manufacturer": "DOME",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.074.03",
+      "manufacturer": "TEE'S",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.075.03",
+      "manufacturer": "CORPORATION",
+      "model": "RECORD 2",
+      "homologationStart": "10.2002",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.076.03",
+      "manufacturer": "PRO RACER SPG XL",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.077.03",
+      "manufacturer": "RECARO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.078.03",
+      "manufacturer": "Lateral"
+    },
+    {
+      "number": "CS.079.03",
+      "manufacturer": "MOTORDRIVE",
+      "model": "Pro WC2",
+      "homologationStart": "12.2002",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.080.03",
+      "manufacturer": "PRO HYBRID/CARBON",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.081.03",
+      "manufacturer": "RECARO",
+      "model": "POLE POSITION JAPAN"
+    },
+    {
+      "number": "CS.082.03",
+      "manufacturer": "OMP",
+      "model": "RS P.T."
+    },
+    {
+      "number": "CS.083.03",
+      "manufacturer": "Lateral",
+      "model": "X",
+      "homologationStart": "11.2003",
+      "homologationEnd": "11.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.084.03",
+      "manufacturer": "SPARCO",
+      "model": "CIRCUIT VTR"
+    },
+    {
+      "number": "CS.085.04",
+      "manufacturer": "SPARCO",
+      "model": "EVO XL",
+      "homologationStart": "12.2003",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.086.04",
+      "manufacturer": "RECARO AUTOMOTIVE GMBH & CO. KG",
+      "model": "Profi SPG XL",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.087.04",
+      "manufacturer": "RECARO",
+      "model": "GT COMPETITION II",
+      "homologationStart": "12.2003",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.088.04",
+      "manufacturer": "VROOM",
+      "model": "Profi SPG XL"
+    },
+    {
+      "number": "CS.089.04",
+      "manufacturer": "VROOM",
+      "model": "SPORT",
+      "homologationStart": "12.2003",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.090.04",
+      "manufacturer": "TOURING",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.091.04",
+      "manufacturer": "OMP",
+      "model": "HTS",
+      "homologationStart": "01.2004",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.092.04",
+      "manufacturer": "SABELT",
+      "model": "porsche PRo racer SPG VARIO",
+      "homologationStart": "01.2004",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.093.04",
+      "manufacturer": "TEE'S",
+      "model": "Lateral",
+      "homologationStart": "01.2004",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.094.04",
+      "manufacturer": "CORPORATION",
+      "model": "BRIDE F31A"
+    },
+    {
+      "number": "CS.095.04",
+      "manufacturer": "Lateral AND back",
+      "homologationStart": "01.2004",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.096.04",
+      "manufacturer": "TOORA",
+      "model": "RUNNER"
+    },
+    {
+      "number": "CS.097.04",
+      "manufacturer": "SPARCO",
+      "model": "S-LIGHT",
+      "homologationStart": "01.2004",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.098.04",
+      "manufacturer": "RACETECH",
+      "model": "9109HR"
+    },
+    {
+      "number": "CS.099.04",
+      "manufacturer": "RACETECH",
+      "model": "4009WHR",
+      "homologationStart": "01.2004",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.100.04",
+      "manufacturer": "RACETECH",
+      "model": "4000WX"
+    },
+    {
+      "number": "CS.101.04",
+      "manufacturer": "TOORA",
+      "model": "GARA",
+      "homologationStart": "02.2004",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.102.04",
+      "manufacturer": "SPARCO",
+      "model": "CIRCUIT S-LIGHT"
+    },
+    {
+      "number": "CS.103.04",
+      "manufacturer": "VELO RACING",
+      "model": "Lateral",
+      "homologationStart": "03.2004",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.104.04",
+      "manufacturer": "VELO RACING",
+      "model": "APEX"
+    },
+    {
+      "number": "CS.105.04",
+      "manufacturer": "VELO RACING",
+      "model": "GPT 2",
+      "homologationStart": "03.2004",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.106.04",
+      "manufacturer": "RE.002",
+      "model": "Lateral",
+      "homologationStart": "03.2004",
+      "homologationEnd": "03.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.107.04",
+      "manufacturer": "TEE'S",
+      "model": "Lateral",
+      "homologationStart": "03.2004",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.108.04",
+      "manufacturer": "CORPORATION",
+      "model": "BRIDE F77A",
+      "homologationStart": "03.2004",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.109.04",
+      "manufacturer": "VELO RACING",
+      "model": "VRP1 or PODIUM II"
+    },
+    {
+      "number": "CS.110.04",
+      "manufacturer": "SABELT",
+      "model": "TITAN"
+    },
+    {
+      "number": "CS.111.04",
+      "manufacturer": "Lateral",
+      "model": "X",
+      "homologationStart": "05.2004",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.112.04",
+      "manufacturer": "VELO RACING",
+      "model": "APEX Carbon/K"
+    },
+    {
+      "number": "CS.113.04",
+      "manufacturer": "VELO RACING",
+      "model": "APEX –XL Carbon/K",
+      "homologationStart": "06.2004",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.114.04",
+      "manufacturer": "VELO RACING",
+      "model": "VRP1 Carbon/K or Podium II K/C"
+    },
+    {
+      "number": "CS.115.04",
+      "manufacturer": "APEX XL",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.116.04",
+      "manufacturer": "CORPORATION",
+      "model": "BRIDE FZ380"
+    },
+    {
+      "number": "CS.117.04",
+      "manufacturer": "TEE'S",
+      "model": "BRIDE FZ310"
+    },
+    {
+      "number": "CS.118.04",
+      "manufacturer": "CORPORATION",
+      "model": "Lateral",
+      "homologationStart": "06.2004",
+      "homologationEnd": "06.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.119.04",
+      "manufacturer": "RONCO 2 / TURINI / T-CLUB",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.120.04",
+      "manufacturer": "OMP",
+      "model": "PROJECT 2",
+      "homologationStart": "07.2004",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.121.04",
+      "manufacturer": "TOORA",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.122.04",
+      "manufacturer": "MCC / PROTOTIPO",
+      "model": "Lateral",
+      "homologationStart": "07.2004",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.123.04",
+      "manufacturer": "OMP",
+      "model": "HTS Fiberglass"
+    },
+    {
+      "number": "CS.124.04",
+      "manufacturer": "OMP",
+      "model": "Lateral",
+      "homologationStart": "07.2004",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.125.04",
+      "manufacturer": "TOORA",
+      "model": "CONCEPT LIGHT",
+      "homologationStart": "07.2004",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.126.04",
+      "manufacturer": "RECARO",
+      "model": "POLE POSITION USA",
+      "homologationStart": "08.2004",
+      "homologationEnd": "08.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.127.04",
+      "manufacturer": "SPARCO",
+      "model": "Lateral",
+      "homologationStart": "08.2004",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.128.04",
+      "manufacturer": "CORBEAU",
+      "model": "PRO WRC",
+      "homologationStart": "09.2004",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.129.04",
+      "manufacturer": "CORBEAU",
+      "model": "Revolution 2K",
+      "homologationStart": "09.2004",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.130.04",
+      "manufacturer": "CORBEAU",
+      "model": "Lateral",
+      "homologationStart": "09.2004",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.131.04",
+      "manufacturer": "SPARCO",
+      "model": "Forza 2K",
+      "homologationStart": "10.2004",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.132.05",
+      "manufacturer": "MOMO",
+      "model": "Sprint 2K",
+      "homologationStart": "10.2004",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.133.05",
+      "manufacturer": "ROSSI SPORTS",
+      "model": "Professional II",
+      "homologationStart": "10.2004",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.134.05",
+      "manufacturer": "CORBEAU",
+      "model": "T-FRAME EVO",
+      "homologationStart": "12.2004",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.135.05",
+      "manufacturer": "GA RACING",
+      "model": "PRO RACER SPA HANS",
+      "homologationStart": "12.2004",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.136.05",
+      "manufacturer": "CORBEAU",
+      "model": "Pro Series 2K",
+      "homologationStart": "12.2004",
+      "homologationEnd": "12.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.137.05",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.138.05",
+      "manufacturer": "SPARCO",
+      "model": "CIRCUIT PRO",
+      "homologationStart": "06.2005",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.139.05",
+      "manufacturer": "CAVALLINO",
+      "model": "Lateral",
+      "homologationStart": "08.2005",
+      "homologationEnd": "08.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.140.05",
+      "manufacturer": "NICK",
+      "model": "INDY",
+      "homologationStart": "08.2005",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.141.05",
+      "manufacturer": "COMPETICION",
+      "model": "XRC WIDE",
+      "homologationStart": "08.2005",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.142.05",
+      "manufacturer": "ROSSI SPORTS",
+      "model": "Professional III",
+      "homologationStart": "08.2005",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.143.05",
+      "manufacturer": "GM RACING",
+      "model": "C6R only)"
+    },
+    {
+      "number": "CS.144.05",
+      "manufacturer": "Professional III",
+      "model": "Lower",
+      "homologationStart": "09.2005",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.145.05",
+      "manufacturer": "ROSSI SPORTS",
+      "model": "Lateral or Lower",
+      "homologationStart": "10.2005",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.146.05",
+      "manufacturer": "OMP",
+      "model": "Big Carbon",
+      "homologationStart": "10.2005",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.147.05",
+      "manufacturer": "STS",
+      "model": "RACE I",
+      "homologationStart": "10.2005",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.148.05",
+      "manufacturer": "Lateral",
+      "homologationStart": "11.2005",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.149.05",
+      "manufacturer": "SABELT",
+      "model": "RACER DUO",
+      "homologationStart": "11.2005",
+      "homologationEnd": "11.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.150.05",
+      "manufacturer": "OMP",
+      "model": "HTE CARBON",
+      "homologationStart": "11.2005",
+      "homologationEnd": "11.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.151.06",
+      "manufacturer": "Lateral",
+      "homologationStart": "12.2005",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.152.06",
+      "manufacturer": "SABELT",
+      "model": "CH-F",
+      "homologationStart": "12.2005",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.153.06",
+      "manufacturer": "SABELT",
+      "model": "TITAN CARBONIO",
+      "homologationStart": "01.2006",
+      "homologationEnd": "01.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.154.06",
+      "manufacturer": "SABELT",
+      "model": "TITAN CARBONIO XL",
+      "homologationStart": "01.2006",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.155.06",
+      "manufacturer": "SABELT",
+      "model": "Lateral",
+      "homologationStart": "01.2006",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.156.06",
+      "manufacturer": "RECARO",
+      "model": "TITAN XL",
+      "homologationStart": "01.2006",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.157.06",
+      "manufacturer": "RECARO",
+      "model": "TOURING SPORT - GFRP",
+      "homologationStart": "02.2006",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.158.06",
+      "manufacturer": "RECARO",
+      "model": "Lateral",
+      "homologationStart": "02.2006",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.159.06",
+      "manufacturer": "GP-RACE EUROPE S.L.",
+      "model": "TOP RALLY",
+      "homologationStart": "02.2006",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.160.06",
+      "manufacturer": "SABELT",
+      "model": "Rally sport – WET CARBON",
+      "homologationStart": "03.2006",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.161.06",
+      "manufacturer": "SPARCO",
+      "model": "TOURING SPORT- WET CARBON",
+      "homologationStart": "03.2006",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.162.06",
+      "manufacturer": "SABELT",
+      "model": "Lateral",
+      "homologationStart": "04.2006",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.163.06",
+      "manufacturer": "MOTORQUALITY",
+      "model": "TAURUS XL",
+      "homologationStart": "04.2006",
+      "homologationEnd": "04.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.164.06",
+      "manufacturer": "SABELT",
+      "model": "TAURUS CARBONIO"
+    },
+    {
+      "number": "CS.165.06",
+      "manufacturer": "TANIDA",
+      "model": "JURAN GTR500"
+    },
+    {
+      "number": "CS.166.06",
+      "manufacturer": "RACETECH",
+      "model": "1000",
+      "homologationStart": "04.2006",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.167.06",
+      "manufacturer": "RACETECH",
+      "model": "9119HR"
+    },
+    {
+      "number": "CS.168.06",
+      "manufacturer": "RACETECH",
+      "model": "9119WHR",
+      "homologationStart": "04.2006",
+      "homologationEnd": "04.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.169.06",
+      "manufacturer": "T-RS",
+      "model": "Lateral AND back"
+    },
+    {
+      "number": "CS.170.06",
+      "manufacturer": "OMP",
+      "model": "Lateral or Lower",
+      "homologationStart": "05.2006",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.171.06",
+      "manufacturer": "RECARO",
+      "model": "PRO RACER SPA XL HANS"
+    },
+    {
+      "number": "CS.172.06",
+      "manufacturer": "COBRA",
+      "model": "Sebring",
+      "homologationStart": "05.2006",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.173.06",
+      "manufacturer": "RECARO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.174.06",
+      "manufacturer": "TANIDA",
+      "model": "PRO RACER SPA HANS PLUS",
+      "homologationStart": "05.2006",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.175.06",
+      "manufacturer": "TANIDA",
+      "model": "JURAN GTX100"
+    },
+    {
+      "number": "CS.176.06",
+      "manufacturer": "TANIDA",
+      "model": "JURAN GTR500C",
+      "homologationStart": "06.2006",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.177.06",
+      "manufacturer": "TANIDA",
+      "model": "JURAN GTX600"
+    },
+    {
+      "number": "CS.178.06",
+      "manufacturer": "JURAN GTX600C",
+      "model": "Lateral",
+      "homologationStart": "07.2006",
+      "homologationEnd": "07.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.179.06",
+      "manufacturer": "OMP",
+      "model": "WRC CARBON"
+    },
+    {
+      "number": "CS.180.06",
+      "manufacturer": "OMP",
+      "model": "BIG CARBON 2",
+      "homologationStart": "07.2006",
+      "homologationEnd": "07.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.181.06",
+      "manufacturer": "OMP",
+      "model": "ARS CARBON"
+    },
+    {
+      "number": "CS.182.06",
+      "manufacturer": "SPARCO",
+      "model": "SPRINT V",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.183.06",
+      "manufacturer": "OMP",
+      "model": "HTE CARBON XL",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.184.06",
+      "manufacturer": "OMP",
+      "model": "WRC FIBERGLASS or WRE /",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.185.06",
+      "manufacturer": "FIRST-R"
+    },
+    {
+      "number": "CS.186.07",
+      "manufacturer": "OMP",
+      "model": "Lateral",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.187.07",
+      "manufacturer": "MOMO",
+      "model": "HTE FIBERGLASS"
+    },
+    {
+      "number": "CS.188.07",
+      "manufacturer": "SABELT",
+      "model": "T-CLUB",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.189.07",
+      "manufacturer": "SABELT",
+      "model": "GT3"
+    },
+    {
+      "number": "CS.190.07",
+      "manufacturer": "MOMO",
+      "model": "Lateral",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.191.07",
+      "manufacturer": "MOMO",
+      "model": "TAURUS L"
+    },
+    {
+      "number": "CS.192.07",
+      "manufacturer": "MOMO",
+      "model": "DAYTONA SAFARI",
+      "homologationStart": "10.2006",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.193.07",
+      "manufacturer": "SPARCO",
+      "model": "TECNO GT"
+    },
+    {
+      "number": "CS.194.07",
+      "manufacturer": "GA RACING",
+      "model": "EXPERT"
+    },
+    {
+      "number": "CS.195.07",
+      "manufacturer": "NICK COMPETICION",
+      "model": "EFE - UNO",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.196.07",
+      "manufacturer": "AIR",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.197.07",
+      "manufacturer": "SPARCO",
+      "model": "PRO ADV",
+      "homologationStart": "04.2007",
+      "homologationEnd": "04.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.198.07",
+      "manufacturer": "SPARCO",
+      "model": "TARMAC"
+    },
+    {
+      "number": "CS.199.07",
+      "manufacturer": "RACEPRO",
+      "model": "ARROW",
+      "homologationStart": "05.2007",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.200.07",
+      "manufacturer": "RACEPRO",
+      "model": "Lateral",
+      "homologationStart": "05.2007",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.201.07",
+      "manufacturer": "RACEPRO",
+      "model": "RP",
+      "homologationStart": "05.2007",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.202.07",
+      "manufacturer": "STATUS RACING",
+      "model": "LAGUNA",
+      "homologationStart": "05.2007",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.203.07",
+      "manufacturer": "TREBEN",
+      "model": "516 VTR",
+      "homologationStart": "05.2007",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.204.07",
+      "manufacturer": "VROOM",
+      "model": "Lateral",
+      "homologationStart": "05.2007",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.205.07",
+      "manufacturer": "MOMO",
+      "model": "ZERO",
+      "homologationStart": "06.2007",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.206.08",
+      "manufacturer": "MOMO",
+      "model": "SAFARI / DAYTONA XL",
+      "homologationStart": "09.2007",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.207.08",
+      "manufacturer": "GP-RACE EUROPE S.L.",
+      "model": "TOP CIRCUIT",
+      "homologationStart": "09.2007",
+      "homologationEnd": "09.2027",
+      "validUntil": "2032",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.208.08",
+      "manufacturer": "GP-RACE EUROPE S.L.",
+      "model": "TOP RALLY LIGHT",
+      "homologationStart": "09.2007",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.209.08",
+      "manufacturer": "GP-RACE",
+      "model": "CH-L",
+      "homologationStart": "03.2008",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.210.08",
+      "manufacturer": "COBRA",
+      "model": "Lateral",
+      "homologationStart": "03.2008",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.211.08",
+      "manufacturer": "COBRA",
+      "model": "TOP CIRCUIT",
+      "homologationStart": "03.2008",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.212.08",
+      "manufacturer": "D RACING",
+      "model": "TOP RALLY LIGHT",
+      "homologationStart": "04.2008",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.213.08",
+      "manufacturer": "BORDER MOTORSEATS INDUSTRIAL CO, LTD",
+      "model": "SP-4C",
+      "homologationStart": "05.2008",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "CS.214.08",
+      "manufacturer": "REITER",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.215.08",
+      "manufacturer": "SANDTLER",
+      "model": "GT",
+      "homologationStart": "05.2008",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.216.08",
+      "manufacturer": "SANDTLER",
+      "model": "FUTURA"
+    },
+    {
+      "number": "CS.217.08",
+      "manufacturer": "SANDTLER",
+      "model": "Lateral",
+      "homologationStart": "07.2008",
+      "homologationEnd": "07.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.218.08",
+      "manufacturer": "RACETECH",
+      "model": "SP-4C",
+      "homologationStart": "09.2008",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.219.08",
+      "manufacturer": "COBRA",
+      "model": "Lateral",
+      "homologationStart": "09.2008",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.220.08",
+      "manufacturer": "MOONCRAFT",
+      "model": "RE.003",
+      "homologationStart": "09.2008",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.221.08",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.222.08",
+      "manufacturer": "Lateral"
+    },
+    {
+      "number": "CS.223.08",
+      "manufacturer": "SPARCO",
+      "model": "SUPERCARBON",
+      "homologationStart": "10.2008",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.224.08",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.225.09",
+      "manufacturer": "ATECH",
+      "model": "ETS",
+      "homologationStart": "11.2008",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.226.09",
+      "manufacturer": "Lateral - Specific",
+      "model": "X"
+    },
+    {
+      "number": "CS.227.09",
+      "manufacturer": "ATECH",
+      "model": "PERFORMANCE",
+      "homologationStart": "11.2008",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.228.09",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.229.09",
+      "manufacturer": "SANDTLER",
+      "model": "Roadster",
+      "homologationStart": "11.2008",
+      "homologationEnd": "11.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.230.09",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.231.09",
+      "manufacturer": "LOTUS CARS",
+      "model": "LOTUS SPORT GT CARBON",
+      "homologationStart": "02.2009",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.232.09",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.233.10",
+      "manufacturer": "ATECH",
+      "model": "EXTREME S2",
+      "homologationStart": "05.2009",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.234.10",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.235.10",
+      "manufacturer": "STATUS RACING",
+      "model": "RING",
+      "homologationStart": "05.2009",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.236.10",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.237.10",
+      "manufacturer": "NISMO",
+      "model": "GT PRO II",
+      "homologationStart": "06.2009",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.238.10",
+      "manufacturer": "Lateral"
+    },
+    {
+      "number": "CS.239.10",
+      "manufacturer": "OMP",
+      "model": "RS – P.T.",
+      "homologationStart": "06.2009",
+      "homologationEnd": "06.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.240.10",
+      "manufacturer": "Lateral"
+    },
+    {
+      "number": "CS.241.10"
+    },
+    {
+      "number": "CS.242.10"
+    },
+    {
+      "number": "CS.243.10"
+    },
+    {
+      "number": "CS.244.10",
+      "manufacturer": "SPARCO",
+      "model": "PRO ADV CARBON",
+      "homologationStart": "01.2010",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.245.10",
+      "manufacturer": "Lateral"
+    },
+    {
+      "number": "CS.246.11"
+    },
+    {
+      "number": "CS.247.11"
+    },
+    {
+      "number": "CS.248.11",
+      "manufacturer": "Lateral",
+      "model": "HOMOL. HOMOL.⁽¹⁾"
+    },
+    {
+      "number": "CS.249.11",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.250.11",
+      "manufacturer": "TILLETT",
+      "model": "B6 F"
+    },
+    {
+      "number": "CS.251.11",
+      "manufacturer": "PRATT & MILLER",
+      "model": "PM-0221 (for ZR1 GT2,C6.R GT1,"
+    },
+    {
+      "number": "CS.252.11",
+      "manufacturer": "Camaro GT and CTS-V only)",
+      "model": "Lateral",
+      "homologationStart": "06.2011",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.253.11",
+      "manufacturer": "BRIDE",
+      "model": "FZ910",
+      "homologationStart": "06.2011",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.254.11",
+      "manufacturer": "SPARCO",
+      "model": "ERGO L VTR (homologated with"
+    },
+    {
+      "number": "CS.255.11",
+      "manufacturer": "SPARCO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.256.11",
+      "manufacturer": "ERGO M VTR (homologated with",
+      "model": "Lateral",
+      "homologationStart": "06.2011",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.257.11",
+      "manufacturer": "BRIDE",
+      "model": "and without head support)"
+    },
+    {
+      "number": "CS.258.11",
+      "manufacturer": "KONIG",
+      "model": "FZ420",
+      "homologationStart": "07.2011",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.259.11",
+      "manufacturer": "SPARCO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.260.11",
+      "manufacturer": "ERGO S VTR (homologated with",
+      "model": "Lateral",
+      "homologationStart": "10.2011",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.261.11",
+      "manufacturer": "BRIDE",
+      "model": "and without head support)"
+    },
+    {
+      "number": "CS.262.11",
+      "manufacturer": "BRIDE",
+      "model": "FZ410",
+      "homologationStart": "10.2011",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.263.12",
+      "manufacturer": "BIMARCO",
+      "model": "FZ770",
+      "homologationStart": "10.2011",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.264.12",
+      "manufacturer": "RACETECH",
+      "model": "GRIP",
+      "homologationStart": "12.2011",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.265.12",
+      "manufacturer": "OMP",
+      "model": "4119HRW",
+      "homologationStart": "12.2011",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.266.12",
+      "manufacturer": "SABELT",
+      "model": "HTE 400",
+      "homologationStart": "01.2012",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.267.12",
+      "manufacturer": "SABELT",
+      "model": "GT-200",
+      "homologationStart": "01.2012",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.268.12",
+      "manufacturer": "TILLETT",
+      "model": "B7-40",
+      "homologationStart": "02.2012",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.269.12",
+      "manufacturer": "CROSS",
+      "model": "Lateral AND back"
+    },
+    {
+      "number": "CS.270.12",
+      "manufacturer": "RACETECH",
+      "model": "NO LIMIT MX1",
+      "homologationStart": "03.2012",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.271.12",
+      "manufacturer": "RACETECH"
+    },
+    {
+      "number": "CS.272.12",
+      "manufacturer": "OMP",
+      "model": "4119thr",
+      "homologationStart": "03.2012",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.273.12",
+      "manufacturer": "PRAGA",
+      "model": "4119wthr",
+      "homologationStart": "03.2012",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.274.12",
+      "manufacturer": "MIRCO",
+      "model": "MIRCO GT"
+    },
+    {
+      "number": "CS.275.12",
+      "manufacturer": "SPARCO",
+      "model": "PRIMO TGS"
+    },
+    {
+      "number": "CS.276.12",
+      "manufacturer": "MIRCO",
+      "model": "MIRCO RS2",
+      "homologationStart": "07.2012",
+      "homologationEnd": "07.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.277.12",
+      "manufacturer": "MOMO",
+      "model": "LESMO ONE"
+    },
+    {
+      "number": "CS.278.12",
+      "manufacturer": "RACETECH",
+      "model": "X",
+      "homologationStart": "08.2012",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.279.12",
+      "manufacturer": "VROOM",
+      "model": "9119Wthr"
+    },
+    {
+      "number": "CS.280.12",
+      "manufacturer": "MOMO",
+      "model": "PROFESSIONAL",
+      "homologationStart": "08.2012",
+      "homologationEnd": "08.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.281.12",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "LESMO ONE XL"
+    },
+    {
+      "number": "CS.282.12",
+      "manufacturer": "SABELT",
+      "model": "Lateral",
+      "homologationStart": "09.2012",
+      "homologationEnd": "09.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.283.12",
+      "manufacturer": "SABELT",
+      "model": "RST-100"
+    },
+    {
+      "number": "CS.284.12",
+      "manufacturer": "GT-200 XXL",
+      "model": "Lateral",
+      "homologationStart": "10.2012",
+      "homologationEnd": "10.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.285.13",
+      "manufacturer": "HRX",
+      "model": "GT-300 XXL"
+    },
+    {
+      "number": "CS.286.13",
+      "manufacturer": "BPS RALLYE",
+      "model": "Lateral",
+      "homologationStart": "10.2012",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.287.13",
+      "manufacturer": "HR-V0",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.288.13",
+      "manufacturer": "TILLETT",
+      "model": "HIGH TECH 01",
+      "homologationStart": "10.2012",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.289.13",
+      "manufacturer": "OMP",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.290.13",
+      "manufacturer": "BRIDE",
+      "model": "B6 F XL",
+      "homologationStart": "11.2012",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.291.13",
+      "manufacturer": "Lateral",
+      "model": "X",
+      "homologationStart": "12.2012",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.292.13",
+      "manufacturer": "TOYOTA",
+      "model": "F39A",
+      "homologationStart": "12.2012",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.293.13",
+      "manufacturer": "BOSHOKU",
+      "model": "RING GT-X"
+    },
+    {
+      "number": "CS.294.13",
+      "manufacturer": "OMP",
+      "model": "Lateral or Lower",
+      "homologationStart": "12.2012",
+      "homologationEnd": "12.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.295.13",
+      "manufacturer": "OMP",
+      "model": "TB RACING MSH002"
+    },
+    {
+      "number": "CS.296.13",
+      "manufacturer": "MIRCO",
+      "model": "Lateral",
+      "homologationStart": "01.2013",
+      "homologationEnd": "01.2018",
+      "validUntil": "2023"
+    },
+    {
+      "number": "CS.297.13",
+      "manufacturer": "SPARCO",
+      "model": "TRS-XS"
+    },
+    {
+      "number": "CS.298.13",
+      "manufacturer": "OMP",
+      "model": "HRC or HRC-R Air",
+      "homologationStart": "02.2013",
+      "homologationEnd": "02.2018",
+      "validUntil": "2023"
+    },
+    {
+      "number": "CS.299.14",
+      "manufacturer": "MIRCO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.300.14",
+      "manufacturer": "SPARCO",
+      "model": "MIRCO RS1",
+      "homologationStart": "02.2013",
+      "homologationEnd": "02.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "CS.301.14",
+      "manufacturer": "GP-RACE",
+      "model": "NEO"
+    },
+    {
+      "number": "CS.302.14",
+      "manufacturer": "X"
+    },
+    {
+      "number": "CS.303.14",
+      "manufacturer": "FRANCE"
+    },
+    {
+      "number": "CS.304.14",
+      "manufacturer": "X"
+    },
+    {
+      "number": "CS.305.14",
+      "manufacturer": "SPARCO",
+      "model": "CIRCUIT II",
+      "homologationStart": "05.2014",
+      "homologationEnd": "05.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.306.14",
+      "manufacturer": "X",
+      "homologationStart": "06.2014",
+      "homologationEnd": "06.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.307.14",
+      "manufacturer": "SPARCO",
+      "model": "PRO2000 II",
+      "homologationStart": "07.2014",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.308.14",
+      "manufacturer": "X",
+      "homologationStart": "08.2014",
+      "homologationEnd": "08.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.309.14",
+      "manufacturer": "RECARO",
+      "model": "PRO RACER SPG",
+      "homologationStart": "08.2014",
+      "homologationEnd": "08.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "CS.310.14",
+      "manufacturer": "08.2014",
+      "homologationStart": "08.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.311.14",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RST-200",
+      "homologationStart": "09.2014",
+      "homologationEnd": "09.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.312.14",
+      "manufacturer": "X",
+      "homologationStart": "09.2014",
+      "homologationEnd": "09.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.313.14",
+      "manufacturer": "OMP",
+      "model": "HRC FIBERGLASS AIR",
+      "homologationStart": "10.2014",
+      "homologationEnd": "10.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "CS.314.14",
+      "manufacturer": "X",
+      "homologationStart": "11.2014",
+      "homologationEnd": "11.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.315.14",
+      "manufacturer": "SPARCO",
+      "model": "DRIFTING",
+      "homologationStart": "11.2014",
+      "homologationEnd": "11.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.316.14",
+      "manufacturer": "11.2014",
+      "homologationStart": "11.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.317.14",
+      "manufacturer": "STATUS RACING",
+      "model": "GT-X WIDE",
+      "homologationStart": "12.2014",
+      "homologationEnd": "12.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.318.14",
+      "manufacturer": "12.2014",
+      "homologationStart": "12.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.319.14",
+      "manufacturer": "12.2014",
+      "homologationStart": "12.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.320.15"
+    },
+    {
+      "number": "CS.321.15",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RST-300"
+    },
+    {
+      "number": "CS.322.15"
+    },
+    {
+      "number": "CS.323.15",
+      "manufacturer": "OMP",
+      "model": "HRC FIBERGLASS AIR XL"
+    },
+    {
+      "number": "CS.324.15",
+      "manufacturer": "SPARCO",
+      "model": "SPRINT L"
+    },
+    {
+      "number": "CS.325.15",
+      "manufacturer": "MOTORDRIVE",
+      "model": "ENDURANCE COMPOSITE"
+    },
+    {
+      "number": "CS.326.15",
+      "manufacturer": "MOTORDRIVE ENDURANCE HYBRID/CARBON",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.327.15",
+      "manufacturer": "MOTORDRIVE",
+      "model": "RACE COMPOSITE"
+    },
+    {
+      "number": "CS.328.15"
+    },
+    {
+      "number": "CS.329.15",
+      "manufacturer": "Lateral",
+      "model": "HOMOL. HOMOL.⁽¹⁾"
+    },
+    {
+      "number": "CS.330.15",
+      "manufacturer": "Lateral",
+      "model": "X"
+    },
+    {
+      "number": "CS.331.15",
+      "manufacturer": "ORECA",
+      "model": "START FG EDITION",
+      "homologationStart": "11.2015",
+      "homologationEnd": "01.2020",
+      "validUntil": "2025"
+    },
+    {
+      "number": "CS.332.15",
+      "manufacturer": "ORECA",
+      "model": "PRO HEAD RESTRAINT"
+    },
+    {
+      "number": "CS.333.15",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "Lateral or Lower",
+      "homologationStart": "11.2015",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "CS.334.16",
+      "manufacturer": "SPARCO",
+      "model": "RST-500"
+    },
+    {
+      "number": "CS.335.16",
+      "manufacturer": "BRIDE",
+      "model": "SPRINT",
+      "homologationStart": "11.2015",
+      "homologationEnd": "11.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.336.16",
+      "manufacturer": "ALFA RACING",
+      "model": "H 31 A"
+    },
+    {
+      "number": "CS.337.16",
+      "manufacturer": "CORBEAU",
+      "model": "ACI 01",
+      "homologationStart": "12.2015",
+      "homologationEnd": "12.2035",
+      "validUntil": "2040"
+    },
+    {
+      "number": "CS.338.16",
+      "manufacturer": "GP-RACE",
+      "model": "PREDATOR"
+    },
+    {
+      "number": "CS.339.16",
+      "manufacturer": "BRIDE",
+      "model": "Lateral",
+      "homologationStart": "12.2015",
+      "homologationEnd": "12.2020",
+      "validUntil": "2025"
+    },
+    {
+      "number": "CS.340.16",
+      "manufacturer": "XTA SOLUTIONS",
+      "model": "R7"
+    },
+    {
+      "number": "CS.341.16",
+      "manufacturer": "SPARCO",
+      "model": "HZ310",
+      "homologationStart": "02.2016",
+      "homologationEnd": "02.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.342.16",
+      "manufacturer": "SPARCO",
+      "model": "ONIT PRO COMPOSITE"
+    },
+    {
+      "number": "CS.343.16",
+      "manufacturer": "SPARCO",
+      "model": "REV II LF"
+    },
+    {
+      "number": "CS.344.16",
+      "manufacturer": "SPARCO",
+      "model": "EVO II LF"
+    },
+    {
+      "number": "CS.345.16",
+      "manufacturer": "SPARCO",
+      "model": "without head support)"
+    },
+    {
+      "number": "CS.346.16",
+      "manufacturer": "ERGO L LF (homologated with and",
+      "homologationStart": "07.2016",
+      "homologationEnd": "07.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "CS.347.16",
+      "manufacturer": "SPARCO",
+      "model": "without head support)"
+    },
+    {
+      "number": "CS.348.16",
+      "manufacturer": "SABELT",
+      "model": "CIRCUIT II AIR CARBON",
+      "homologationStart": "07.2016",
+      "homologationEnd": "07.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "CS.349.16",
+      "manufacturer": "SABELT",
+      "model": "TAURUS"
+    },
+    {
+      "number": "CS.350.16",
+      "manufacturer": "SABELT",
+      "model": "TAURUS MAX",
+      "homologationStart": "08.2016",
+      "homologationEnd": "08.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "CS.351.17",
+      "manufacturer": "SABELT",
+      "model": "AB 124"
+    },
+    {
+      "number": "CS.352.17",
+      "manufacturer": "SABELT",
+      "model": "TITAN",
+      "homologationStart": "09.2016",
+      "homologationEnd": "09.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "CS.353.17",
+      "manufacturer": "SPARCO",
+      "model": "TITAN MAX"
+    },
+    {
+      "number": "CS.354.17",
+      "manufacturer": "TILLETT",
+      "model": "PRO ADV CF",
+      "homologationStart": "10.2016",
+      "homologationEnd": "10.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "CS.355.17",
+      "manufacturer": "SPARCO",
+      "model": "B7-44-17"
+    },
+    {
+      "number": "CS.356.17",
+      "manufacturer": "CORBEAU",
+      "model": "PRO ADV LF",
+      "homologationStart": "11.2016",
+      "homologationEnd": "11.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "CS.357.17",
+      "manufacturer": "SPARCO",
+      "model": "ALPHA"
+    },
+    {
+      "number": "CS.358.17",
+      "manufacturer": "CORBEAU",
+      "model": "PRO SERIES X"
+    },
+    {
+      "number": "CS.359.17",
+      "manufacturer": "SUZUKA T GT",
+      "model": "Lateral",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.360.17",
+      "manufacturer": "COBRA",
+      "model": "SUZUKA T STD"
+    },
+    {
+      "number": "CS.361.17",
+      "manufacturer": "COBRA",
+      "model": "EVOLUTION T GT",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.362.17",
+      "manufacturer": "COBRA",
+      "model": "EVOLUTION T STD"
+    },
+    {
+      "number": "CS.363.17",
+      "manufacturer": "COBRA",
+      "model": "Lateral",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.364.17",
+      "manufacturer": "COBRA",
+      "model": "IMOLA T GT"
+    },
+    {
+      "number": "CS.365.17",
+      "manufacturer": "COBRA",
+      "model": "IMOLA T STD",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.366.17",
+      "manufacturer": "COBRA",
+      "model": "SEBRING T GT"
+    },
+    {
+      "number": "CS.367.17",
+      "manufacturer": "COBRA",
+      "model": "SEBRING T STD",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.368.17",
+      "manufacturer": "VROOM",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.369.17",
+      "manufacturer": "TAURUS TG M"
+    },
+    {
+      "number": "CS.370.17",
+      "manufacturer": "COMPETICION",
+      "model": "PRO-NK"
+    },
+    {
+      "number": "CS.371.17",
+      "manufacturer": "Lateral",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.372.17",
+      "manufacturer": "SABELT",
+      "model": "TITAN MAX CARBON"
+    },
+    {
+      "number": "CS.373.17",
+      "manufacturer": "BIMARCO",
+      "model": "FUTURA 2",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.374.17",
+      "manufacturer": "GORDON",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.375.17",
+      "manufacturer": "HRX",
+      "model": "EVO QRT",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.376.17",
+      "manufacturer": "SPARCO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.377.17",
+      "manufacturer": "TILLETT",
+      "model": "B6 XL SCREAMER",
+      "homologationStart": "05.2017",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.378.17",
+      "manufacturer": "TILLETT",
+      "model": "B6 XL 43 SCREAMER"
+    },
+    {
+      "number": "CS.379.17",
+      "manufacturer": "TILLETT",
+      "model": "Lateral",
+      "homologationStart": "06.2017",
+      "homologationEnd": "06.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.380.17",
+      "manufacturer": "TILLETT",
+      "model": "B6 SCREAMER"
+    },
+    {
+      "number": "CS.381.17",
+      "manufacturer": "SPARCO",
+      "model": "B6 40 SCREAMER",
+      "homologationStart": "06.2017",
+      "homologationEnd": "06.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.382.17",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.383.17",
+      "manufacturer": "KOBRA",
+      "model": "QRT-V",
+      "homologationStart": "06.2017",
+      "homologationEnd": "06.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.384.17",
+      "manufacturer": "MOMO",
+      "model": "RST-600",
+      "homologationStart": "07.2017",
+      "homologationEnd": "07.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.385.17",
+      "manufacturer": "MOMO",
+      "model": "GOLEM",
+      "homologationStart": "07.2017",
+      "homologationEnd": "07.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.386.17",
+      "manufacturer": "KOBRA",
+      "model": "ZORWAK"
+    },
+    {
+      "number": "CS.387.17",
+      "manufacturer": "SABELT",
+      "model": "RACER DUO"
+    },
+    {
+      "number": "CS.388.17",
+      "manufacturer": "BIMARCO",
+      "model": "Lateral or Lower",
+      "homologationStart": "11.2017",
+      "homologationEnd": "11.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.389.17",
+      "manufacturer": "BIMARCO",
+      "model": "DAKAR 2"
+    },
+    {
+      "number": "CS.390.18",
+      "manufacturer": "REVERIE",
+      "model": "GRIP 2",
+      "homologationStart": "11.2017",
+      "homologationEnd": "11.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.391.18",
+      "manufacturer": "SABELT",
+      "model": "9m RS"
+    },
+    {
+      "number": "CS.392.18",
+      "manufacturer": "RECARO",
+      "model": "GT-PAD",
+      "homologationStart": "12.2017",
+      "homologationEnd": "12.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.393.18",
+      "manufacturer": "RECARO",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.394.18",
+      "manufacturer": "RMS 2600A",
+      "model": "Lateral",
+      "homologationStart": "12.2017",
+      "homologationEnd": "12.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "CS.395.18",
+      "manufacturer": "HRX",
+      "model": "RMS 2700G"
+    },
+    {
+      "number": "CS.396.18",
+      "manufacturer": "TANIDA",
+      "model": "RACER XL",
+      "homologationStart": "01.2018",
+      "homologationEnd": "01.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "CS.397.18",
+      "manufacturer": "TANIDA",
+      "model": "JURAN GTX100"
+    },
+    {
+      "number": "CS.398.18",
+      "manufacturer": "SPARCO",
+      "model": "JURAN GTX600",
+      "homologationStart": "01.2018",
+      "homologationEnd": "01.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "CS.399.18",
+      "manufacturer": "TILLETT",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.400.18",
+      "manufacturer": "KOBRA",
+      "model": "QRT-R",
+      "homologationStart": "02.2018",
+      "homologationEnd": "02.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "CS.401.18",
+      "manufacturer": "SABELT",
+      "model": "B7 XL"
+    },
+    {
+      "number": "CS.402.18",
+      "manufacturer": "SABELT",
+      "model": "MT 003",
+      "homologationStart": "02.2018",
+      "homologationEnd": "02.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "CS.403.18",
+      "manufacturer": "RACETECH",
+      "model": "TAURUS M sl"
+    },
+    {
+      "number": "CS.404.18",
+      "manufacturer": "BRAUM",
+      "model": "TAURUS L sl",
+      "homologationStart": "03.2018",
+      "homologationEnd": "03.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "CS.405.18",
+      "manufacturer": "BRIDE",
+      "model": "RT4119WHR"
+    },
+    {
+      "number": "CS.406.18",
+      "manufacturer": "BRIDE",
+      "model": "FALCON X",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "CS.407.18",
+      "manufacturer": "MIRCO",
+      "model": "FZ670"
+    },
+    {
+      "number": "CS.408.18",
+      "manufacturer": "SPARCO",
+      "model": "FZ910",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "CS.409.18",
+      "manufacturer": "SPARCO",
+      "model": "RS7"
+    },
+    {
+      "number": "CS.410.18",
+      "manufacturer": "SPARCO",
+      "model": "GRID Q",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "CS.411.18",
+      "manufacturer": "Circuit ii qrt",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.412.19",
+      "manufacturer": "OMP",
+      "model": "CIRCUIT QRT",
+      "homologationStart": "05.2018",
+      "homologationEnd": "05.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "CS.413.19",
+      "manufacturer": "SPARCO",
+      "model": "TRS X"
+    },
+    {
+      "number": "CS.414.19",
+      "manufacturer": "EVO II QRT",
+      "model": "Lateral",
+      "homologationStart": "06.2018",
+      "homologationEnd": "06.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "CS.415.19",
+      "manufacturer": "BRIDE",
+      "model": "HZ020"
+    },
+    {
+      "number": "CS.416.19",
+      "manufacturer": "SPARCO",
+      "model": "QRT-C"
+    },
+    {
+      "number": "CS.417.19",
+      "manufacturer": "SABELT",
+      "model": "TAURUS XL sl",
+      "homologationStart": "01.2019",
+      "homologationEnd": "01.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.418.19",
+      "manufacturer": "SABELT",
+      "model": "X-PAD CARBON"
+    },
+    {
+      "number": "CS.419.19",
+      "manufacturer": "SABELT",
+      "model": "X-PAD",
+      "homologationStart": "01.2019",
+      "homologationEnd": "01.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "CS.420.19",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RST-700"
+    },
+    {
+      "number": "CS.421.19",
+      "manufacturer": "RACETECH",
+      "model": "RT4100HR",
+      "homologationStart": "02.2019",
+      "homologationEnd": "02.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "CS.422.19",
+      "manufacturer": "RACETECH",
+      "model": "RT4100WTHR"
+    },
+    {
+      "number": "CS.423.19",
+      "manufacturer": "SPARCO",
+      "model": "EVO S QRT or REV QRT",
+      "homologationStart": "02.2019",
+      "homologationEnd": "02.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.424.19",
+      "manufacturer": "SPARCO",
+      "model": "PRO 2000 QRT"
+    },
+    {
+      "number": "CS.425.19",
+      "manufacturer": "SPARCO",
+      "model": "PILOT QRT",
+      "homologationStart": "03.2019",
+      "homologationEnd": "03.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.426.19",
+      "manufacturer": "RACETECH",
+      "model": "RT4100"
+    },
+    {
+      "number": "CS.427.19",
+      "manufacturer": "HZ030",
+      "model": "Lateral",
+      "homologationStart": "04.2019",
+      "homologationEnd": "04.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.428.19",
+      "manufacturer": "BRIDE",
+      "model": "H03A"
+    },
+    {
+      "number": "CS.429.19",
+      "manufacturer": "BRIDE",
+      "model": "RST-800",
+      "homologationStart": "04.2019",
+      "homologationEnd": "04.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.430.19",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RST-900"
+    },
+    {
+      "number": "CS.431.19",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "CIRCUIT QRT 20",
+      "homologationStart": "04.2019",
+      "homologationEnd": "04.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.432.19",
+      "manufacturer": "SPARCO",
+      "model": "EVO L QRT"
+    },
+    {
+      "number": "CS.433.19",
+      "manufacturer": "SPARCO",
+      "model": "EVO XL QRT",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.434.19",
+      "manufacturer": "SPARCO",
+      "model": "PRO ADV QRT"
+    },
+    {
+      "number": "CS.435.19",
+      "manufacturer": "SPARCO",
+      "model": "RT9119HRW",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.436.19",
+      "manufacturer": "RACETECH",
+      "model": "RT4100WT"
+    },
+    {
+      "number": "CS.437.19",
+      "manufacturer": "RACETECH",
+      "model": "QRT C 20",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "CS.438.19",
+      "manufacturer": "SPARCO",
+      "model": "PRO ADV GT"
+    },
+    {
+      "number": "CS.439.19",
+      "manufacturer": "SPARCO",
+      "model": "Lateral",
+      "homologationStart": "07.2019",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.440.19",
+      "manufacturer": "GP-RACE",
+      "model": "R3"
+    },
+    {
+      "number": "CS.441.19",
+      "manufacturer": "OMP",
+      "model": "HTE EVO VTR",
+      "homologationStart": "07.2019",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.442.19",
+      "manufacturer": "COBRA",
+      "model": "SEBRING T LP STD"
+    },
+    {
+      "number": "CS.443.20",
+      "manufacturer": "COBRA",
+      "model": "SEBRING T LP GT",
+      "homologationStart": "07.2019",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "CS.444.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HB1A"
+    },
+    {
+      "number": "CS.445.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HCZ10"
+    },
+    {
+      "number": "CS.446.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HBZ20",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.447.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HB2A"
+    },
+    {
+      "number": "CS.448.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HC1A",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.449.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HA1A"
+    },
+    {
+      "number": "CS.450.20",
+      "manufacturer": "BRIDE",
+      "model": "BRIDE HAZ10",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.451.20",
+      "manufacturer": "ATECH",
+      "model": "TARGET XL"
+    },
+    {
+      "number": "CS.452.20",
+      "manufacturer": "GP-RACE",
+      "model": "Lateral",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.453.20",
+      "manufacturer": "GP-RACE",
+      "model": "S7"
+    },
+    {
+      "number": "CS.454.20",
+      "manufacturer": "VROOM",
+      "model": "S5",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.455.20",
+      "manufacturer": "OMP",
+      "model": "ANTISHOCK III"
+    },
+    {
+      "number": "CS.456.20",
+      "manufacturer": "RECARO",
+      "model": "HTE EVO carbon",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.457.20",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "PODIUM CF"
+    },
+    {
+      "number": "CS.458.20",
+      "manufacturer": "RECARO",
+      "model": "RST-1100",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.459.20",
+      "manufacturer": "SPARCO",
+      "model": "X2679X12001"
+    },
+    {
+      "number": "CS.460.20",
+      "manufacturer": "RECARO",
+      "model": "LEGEND",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.461.20",
+      "manufacturer": "RECARO",
+      "model": "PRO RACER SPA"
+    },
+    {
+      "number": "CS.462.20",
+      "manufacturer": "PRO RACER SPA XL",
+      "model": "Lateral",
+      "homologationStart": "02.2020",
+      "homologationEnd": "02.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.463.20",
+      "manufacturer": "FLB",
+      "model": "RACE-02M"
+    },
+    {
+      "number": "CS.464.20",
+      "manufacturer": "FLB",
+      "model": "PRO-02m",
+      "homologationStart": "02.2020",
+      "homologationEnd": "02.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.465.20",
+      "manufacturer": "FLB",
+      "model": "CLUB EVO"
+    },
+    {
+      "number": "CS.466.21",
+      "manufacturer": "SPARCO",
+      "model": "QRT K",
+      "homologationStart": "02.2020",
+      "homologationEnd": "02.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.467.21",
+      "manufacturer": "FLB",
+      "model": "RACE-02L"
+    },
+    {
+      "number": "CS.468.21",
+      "manufacturer": "SPARCO",
+      "model": "CIRCUIT QRT m12",
+      "homologationStart": "04.2020",
+      "homologationEnd": "04.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.469.21",
+      "manufacturer": "RECARO",
+      "model": "PRO RACER XL-ORV"
+    },
+    {
+      "number": "CS.470.21",
+      "manufacturer": "THRASH RACING",
+      "model": "race spec nu",
+      "homologationStart": "08.2020",
+      "homologationEnd": "08.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "CS.471.21",
+      "manufacturer": "INORIZA",
+      "model": "puma open"
+    },
+    {
+      "number": "CS.472.21",
+      "manufacturer": "INORIZA",
+      "model": "puma",
+      "homologationStart": "09.2020",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "CS.473.21",
+      "manufacturer": "BIMARCO",
+      "model": "HAMER PRO"
+    },
+    {
+      "number": "CS.474.21",
+      "manufacturer": "BIMARCO",
+      "model": "COBRA PRO"
+    },
+    {
+      "number": "CS.475.21",
+      "manufacturer": "TILLETT",
+      "model": "B6-SCREAMER-2021",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.476.21",
+      "manufacturer": "TILLETT",
+      "model": "B6-40-SCREAMER-2021"
+    },
+    {
+      "number": "CS.477.21",
+      "manufacturer": "TILLETT",
+      "model": "B6-XL-SCREAMER-2021",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.478.21",
+      "manufacturer": "TILLETT",
+      "model": "B6-XL-43-SCREAMER-2021"
+    },
+    {
+      "number": "CS.479.21",
+      "manufacturer": "TILLETT",
+      "model": "B7-40-2021",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.480.21",
+      "manufacturer": "TILLETT",
+      "model": "B7-44-2021"
+    },
+    {
+      "number": "CS.481.21",
+      "manufacturer": "TILLETT",
+      "model": "B7-XL-2021",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.482.22",
+      "manufacturer": "TARGET CARBON",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.483.22",
+      "manufacturer": "ATECH",
+      "model": "Lateral",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.484.22",
+      "manufacturer": "REITER",
+      "model": "RCS002"
+    },
+    {
+      "number": "CS.485.22",
+      "manufacturer": "REITER",
+      "model": "RCS003",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.486.22",
+      "manufacturer": "SPARCO",
+      "model": "EVO CARBON"
+    },
+    {
+      "number": "CS.487.22",
+      "manufacturer": "SPARCO",
+      "model": "EVO L CARBON",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.488.22",
+      "manufacturer": "SPARCO",
+      "model": "EVO XL CARBON"
+    },
+    {
+      "number": "CS.489.22",
+      "manufacturer": "MIRCO",
+      "model": "Lateral",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.490.22",
+      "manufacturer": "BIMARCO",
+      "model": "RTX-7"
+    },
+    {
+      "number": "CS.491.22",
+      "manufacturer": "TILLETT",
+      "model": "PHANToM",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "CS.492.22",
+      "manufacturer": "TILLETT",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.493.22",
+      "manufacturer": "TILLETT",
+      "model": "C1-41",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.494.22",
+      "manufacturer": "TILLETT",
+      "model": "C1-44"
+    },
+    {
+      "number": "CS.495.22",
+      "manufacturer": "SPARCO",
+      "model": "C1 XL-44",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.496.22",
+      "manufacturer": "SPARCO",
+      "model": "C1 XL-47"
+    },
+    {
+      "number": "CS.497.22",
+      "manufacturer": "MIRCO",
+      "model": "CIRCUIT I CARBON",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.498.22",
+      "manufacturer": "MIRCO",
+      "model": "CIRCUIT II CARBON"
+    },
+    {
+      "number": "CS.499.22",
+      "manufacturer": "RECARO",
+      "model": "RTS-2",
+      "homologationStart": "07.2022",
+      "homologationEnd": "07.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.500.22",
+      "manufacturer": "SPARCO",
+      "model": "CLASSIC"
+    },
+    {
+      "number": "CS.501.22",
+      "manufacturer": "SPARCO",
+      "model": "PODIUM GF",
+      "homologationStart": "07.2022",
+      "homologationEnd": "07.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.502.22",
+      "manufacturer": "SPEED",
+      "model": "LMT 10044"
+    },
+    {
+      "number": "CS.503.22",
+      "manufacturer": "RECARO",
+      "model": "POLE POSITION"
+    },
+    {
+      "number": "CS.504.22",
+      "manufacturer": "RECARO",
+      "model": "Lateral",
+      "homologationStart": "12.2022",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.505.22",
+      "manufacturer": "PROFI XL",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.506.22",
+      "manufacturer": "OMP",
+      "model": "CW0093",
+      "homologationStart": "12.2022",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "CS.507.22",
+      "manufacturer": "MOTORDRIVE",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.508.22",
+      "manufacturer": "PRO IV",
+      "model": "Lateral"
+    },
+    {
+      "number": "CS.509.22",
+      "manufacturer": "COMPETICION",
+      "model": "EVOLUZIONE"
+    }
+  ]
+}

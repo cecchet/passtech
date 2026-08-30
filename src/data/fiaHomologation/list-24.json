@@ -53,15 +53,15 @@
     },
     {
       "number": "B-123.T/98",
-      "manufacturer": "⁽³⁾",
-      "model": "LRS",
+      "manufacturer": "SABELT S.P.A.",
+      "model": "Top Formula",
       "revoked": true,
       "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
     },
     {
       "number": "B-128.T/98",
-      "manufacturer": "⁽³⁾",
-      "model": "SABELT",
+      "manufacturer": "STOCKBRIDGE RACING LTD",
+      "model": "club 4x3",
       "homologationStart": "02.1998",
       "homologationEnd": "02.2027",
       "validUntil": "2032",
