@@ -153,6 +153,9 @@ const hillclimbX: Ruleset = {
   disciplineGroup: "Hillclimb",
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "1.3 Rules for All Vehicles" }],
+  // A single 2-page PDF NEHA uses at the track: page 1 is the general/Non-X form, page 2
+  // (this ruleset) is the simplified "X Car" variant.
+  techSheet: { url: "/tech-sheets/neha-tech-inspection-form.pdf", format: "PDF" },
   categories: {
     helmet: {
       requirement: "required",
@@ -269,6 +272,9 @@ const hillclimbCompetitive: Ruleset = {
   disciplineGroup: "Hillclimb",
   lastReviewed: "2026-08-04",
   sourceDocuments: [{ ...sourceDoc, section: "1.4 Vehicles Running Faster than Breakout Time" }],
+  // Same 2-page PDF as the X-car ruleset above: page 1 (this ruleset) is the general/Non-X
+  // form, page 2 is the simplified "X Car" variant.
+  techSheet: { url: "/tech-sheets/neha-tech-inspection-form.pdf", format: "PDF" },
   categories: {
     helmet: {
       requirement: "required",
