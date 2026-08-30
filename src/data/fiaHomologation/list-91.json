@@ -14,22 +14,36 @@
       "number": "CS.001.21",
       "manufacturer": "Atech",
       "model": "AT-FH",
-      "homologationStart": "05.2026",
+      "homologationStart": "05.2021",
+      "homologationEnd": "05.2026",
       "validUntil": "2036",
       "approvedBrackets": [
-        "ATBRK21"
+        "ATBRK21",
+        "ATBRK21-L"
       ]
     },
     {
       "number": "CS.002.21",
+      "manufacturer": "Atech",
+      "model": "AT-FS",
+      "homologationStart": "06.2021",
+      "homologationEnd": "06.2026",
+      "validUntil": "2036",
       "approvedBrackets": [
+        "ATBRK21",
         "ATBRK21-L"
       ]
     },
     {
       "number": "CS.003.21",
+      "manufacturer": "Atech",
+      "model": "AT-FM",
+      "homologationStart": "06.2021",
+      "homologationEnd": "06.2026",
+      "validUntil": "2036",
       "approvedBrackets": [
-        "ATBRK21"
+        "ATBRK21",
+        "ATBRK21-L"
       ]
     },
     {
@@ -40,7 +54,10 @@
       "homologationEnd": "07.2026",
       "validUntil": "2036",
       "approvedBrackets": [
-        "004922V2"
+        "004919",
+        "004922V1",
+        "004922V2",
+        "004922V3"
       ]
     },
     {
@@ -51,18 +68,31 @@
       "homologationEnd": "07.2026",
       "validUntil": "2036",
       "approvedBrackets": [
+        "ATBRK21",
         "ATBRK21-L"
       ]
     },
     {
       "number": "CS.006.21",
+      "manufacturer": "Atech",
+      "model": "AT-CS",
+      "homologationStart": "09.2021",
+      "homologationEnd": "09.2026",
+      "validUntil": "2036",
       "approvedBrackets": [
-        "ATBRK21"
+        "ATBRK21",
+        "ATBRK21-L"
       ]
     },
     {
       "number": "CS.007.21",
+      "manufacturer": "Atech",
+      "model": "AT-CM",
+      "homologationStart": "09.2021",
+      "homologationEnd": "09.2026",
+      "validUntil": "2036",
       "approvedBrackets": [
+        "ATBRK21",
         "ATBRK21-L"
       ]
     },
@@ -72,12 +102,16 @@
       "model": "ADV XT",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "approvedBrackets": [
+        "004932H",
+        "004932L"
+      ]
     },
     {
       "number": "CS.009.21",
       "manufacturer": "OMP",
-      "model": "HTC EVO",
+      "model": "HTC EVO CARBON",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
       "validUntil": "2036",
@@ -91,7 +125,13 @@
       "model": "ECS4",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "approvedBrackets": [
+        "2167-A & 2168-A",
+        "2185-A & 2186-A",
+        "2206-A & 2207-A",
+        "2187-B-A & 2188-B-A"
+      ]
     },
     {
       "number": "CS.011.22",
@@ -101,13 +141,22 @@
       "homologationEnd": "05.2027",
       "validUntil": "2037",
       "approvedBrackets": [
+        "RFST0051",
+        "RFST0071",
+        "RFST0095",
         "RFST0108"
       ]
     },
     {
       "number": "CS.012.22",
+      "manufacturer": "Sabelt",
+      "model": "GT-AM",
+      "homologationStart": "05.2022",
+      "homologationEnd": "05.2027",
+      "validUntil": "2037",
       "approvedBrackets": [
-        "RFST0051"
+        "RFST0051",
+        "RFST0071"
       ]
     },
     {
@@ -123,28 +172,46 @@
     },
     {
       "number": "CS.014.23",
+      "manufacturer": "Sabelt",
+      "model": "SPINE M",
+      "homologationStart": "02.2023",
+      "homologationEnd": "02.2028",
+      "validUntil": "2038",
       "approvedBrackets": [
-        "RFST0071"
-      ]
-    },
-    {
-      "number": "CS.015.23",
-      "approvedBrackets": [
+        "RFST0051",
+        "RFST0071",
+        "RFST0095",
         "RFST0108"
       ]
     },
     {
+      "number": "CS.015.23",
+      "manufacturer": "OMP",
+      "model": "HTC EVO",
+      "homologationStart": "03.2023",
+      "homologationEnd": "03.2028",
+      "validUntil": "2038",
+      "approvedBrackets": [
+        "HC0-0951"
+      ]
+    },
+    {
       "number": "CS.016.23",
+      "manufacturer": "OMP",
+      "model": "HTE EVO 2 CARBON",
+      "homologationStart": "03.2023",
+      "homologationEnd": "03.2028",
+      "validUntil": "2038",
       "approvedBrackets": [
         "HC0-0951"
       ]
     },
     {
       "number": "CS.017.23",
-      "manufacturer": "Sabelt",
-      "model": "SPINE M",
-      "homologationStart": "02.2023",
-      "homologationEnd": "02.2028",
+      "manufacturer": "OMP",
+      "model": "HTE EVO",
+      "homologationStart": "03.2023",
+      "homologationEnd": "03.2028",
       "validUntil": "2038",
       "approvedBrackets": [
         "HC0-0951"
@@ -154,8 +221,197 @@
       "number": "CS.018.23",
       "manufacturer": "Sparco",
       "model": "MATRIX",
-      "homologationStart": "05.2028",
-      "validUntil": "2038"
+      "homologationStart": "05.2023",
+      "homologationEnd": "05.2028",
+      "validUntil": "2038",
+      "approvedBrackets": [
+        "004926",
+        "004926V01",
+        "004926V02"
+      ]
+    },
+    {
+      "number": "CS.019.24",
+      "manufacturer": "OMP",
+      "model": "HTE EVO 2 XL",
+      "homologationStart": "07.2024",
+      "homologationEnd": "07.2029",
+      "validUntil": "2039",
+      "approvedBrackets": [
+        "HC0-0951"
+      ]
+    },
+    {
+      "number": "CS.020.24",
+      "manufacturer": "Sabelt",
+      "model": "RALLY RAID",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029",
+      "validUntil": "2039",
+      "approvedBrackets": [
+        "41AR0-151",
+        "41AR0-152",
+        "41ARO-165"
+      ]
+    },
+    {
+      "number": "CS.021.24",
+      "manufacturer": "OMP",
+      "model": "HTE EVO2 S",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029",
+      "validUntil": "2039",
+      "approvedBrackets": [
+        "HC0-0951"
+      ]
+    },
+    {
+      "number": "CS.022.25",
+      "manufacturer": "HRX",
+      "model": "TORNADO",
+      "homologationStart": "04.2025",
+      "homologationEnd": "04.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "S000034_0005_BRK_SEAT_8855-2021"
+      ]
+    },
+    {
+      "number": "CS.023.25",
+      "manufacturer": "SABELT",
+      "model": "TAURUS EVO",
+      "homologationStart": "07.2025",
+      "homologationEnd": "07.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "RFST0071",
+        "RFST0107LH-RH",
+        "RFST0111LH-RH"
+      ]
+    },
+    {
+      "number": "CS.024.25",
+      "manufacturer": "SPARCO",
+      "model": "MASTER ADVANCE",
+      "homologationStart": "07.2025",
+      "homologationEnd": "07.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "004926"
+      ]
+    },
+    {
+      "number": "CS.025.25",
+      "manufacturer": "CORBEAU",
+      "model": "ECS4 ST",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037",
+      "approvedBrackets": [
+        "2167-A & 2168-A",
+        "2185-A & 2186-A",
+        "2206-A & 2207-A",
+        "2187-B-A & 2188-B-A"
+      ]
+    },
+    {
+      "number": "CS.026.25",
+      "manufacturer": "CORBEAU",
+      "model": "ECS4 SS",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037",
+      "approvedBrackets": [
+        "2167-A & 2168-A",
+        "2185-A & 2186-A",
+        "2206-A & 2207-A",
+        "2187-B-A & 2188-B-A"
+      ]
+    },
+    {
+      "number": "CS.027.25",
+      "manufacturer": "CORBEAU",
+      "model": "ECS4SW",
+      "homologationStart": "02.2022",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037",
+      "approvedBrackets": [
+        "2167-A & 2168-A",
+        "2185-A & 2186-A",
+        "2206-A & 2207-A",
+        "2187-B-A & 2188-B-A"
+      ]
+    },
+    {
+      "number": "CS.028.25",
+      "manufacturer": "OMP",
+      "model": "HGT EVO",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "HC0-0954",
+        "HC0-0955"
+      ]
+    },
+    {
+      "number": "CS.029.25",
+      "manufacturer": "RRS",
+      "model": "ERGO",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "RRS-04 SUPPORT"
+      ]
+    },
+    {
+      "number": "CS.030.25",
+      "manufacturer": "BRIDE",
+      "model": "H11A",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "H11S"
+      ]
+    },
+    {
+      "number": "CS.031.25",
+      "manufacturer": "SABELT",
+      "model": "TAURUS EVO M",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "RFST0071",
+        "RFST0107LH-RH",
+        "RFST0111LH-RH"
+      ]
+    },
+    {
+      "number": "CS.032.25",
+      "manufacturer": "SABELT",
+      "model": "TAURUS EVO L",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "approvedBrackets": [
+        "RFST0071",
+        "RFST0107LH-RH",
+        "RFST0111LH-RH"
+      ]
+    },
+    {
+      "number": "CS.033.26",
+      "manufacturer": "SPARCO",
+      "model": "ADV XT 2026",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2041",
+      "approvedBrackets": [
+        "004932H & BAA0245B0"
+      ]
     }
   ]
 }

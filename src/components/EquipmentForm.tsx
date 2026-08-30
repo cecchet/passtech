@@ -407,9 +407,8 @@ function HomologationCheck({
         ⚠ FIA 8855-2021 homologates this seat together with a specific mounting bracket — the bracket is not a free installer choice under this standard.{" "}
         {result.entry?.approvedBrackets?.length ? (
           <>
-            Only bracket(s) matching <b>{result.entry.approvedBrackets.join(", ")}</b> were found listed for this homologation in{" "}
-            <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} />. If the bracket fitted isn&rsquo;t one of these, verify against
-            the source list yourself — this app&rsquo;s extraction of bracket data may be incomplete.
+            <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} /> lists <b>{result.entry.approvedBrackets.join(", ")}</b> as the
+            bracket(s) homologated with this seat. A different bracket is not authorized for it, regardless of the bracket&rsquo;s own certification.
           </>
         ) : (
           <>

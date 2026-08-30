@@ -164,7 +164,9 @@
     {
       "number": "AS.022.12",
       "manufacturer": "SPARCO",
-      "homologationStart": "03.2014"
+      "homologationStart": "01.2020",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037"
     },
     {
       "number": "AS.023.12",
@@ -260,7 +262,8 @@
     {
       "number": "AS.037.14",
       "manufacturer": "SPARCO",
-      "homologationStart": "10.2029",
+      "homologationStart": "12.2025",
+      "homologationEnd": "10.2029",
       "validUntil": "2039"
     },
     {
@@ -377,7 +380,9 @@
     {
       "number": "AS.059.16",
       "manufacturer": "AUDI",
-      "homologationStart": "11.2016"
+      "homologationStart": "03.2019",
+      "homologationEnd": "11.2026",
+      "validUntil": "2036"
     },
     {
       "number": "AS.060.16",
@@ -535,7 +540,9 @@
     {
       "number": "AS.086.20",
       "manufacturer": "SABELT",
-      "homologationStart": "06.2021"
+      "homologationStart": "03.2020",
+      "homologationEnd": "03.2025",
+      "validUntil": "2035"
     },
     {
       "number": "AS.087.20",
@@ -603,7 +610,9 @@
     {
       "number": "AS.097.22",
       "manufacturer": "AUDI",
-      "homologationStart": "03.2022"
+      "homologationStart": "04.2022",
+      "homologationEnd": "03.2027",
+      "validUntil": "2037"
     },
     {
       "number": "AS.098.22",
@@ -651,7 +660,8 @@
     {
       "number": "AS.108.24",
       "manufacturer": "OMP",
-      "homologationStart": "02.2025",
+      "homologationStart": "07.2024",
+      "homologationEnd": "07.2029",
       "validUntil": "2039"
     },
     {

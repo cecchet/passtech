@@ -101,49 +101,58 @@ const LIST_CONFIG = {
     categories: ["seat"],
     sourceUrl: "https://www.fia.com/system/files/documents/l91_approved_competition_seats_-_8855-2021.pdf",
     numberPattern: /^(CS\.\d{3}\.\d{2})\b/,
-    // Unlike every other list, the dates here are followed by five more space-separated seat
-    // dimension numbers (columns A-E, e.g. "458 919 618 411 513") rather than sitting at the end
-    // of the line — so this pattern is NOT anchored with `$`; parseGenericRow just splits "rest"
-    // at wherever it matches, discarding the dimension numbers along with the matched dates.
-    dateTailPattern: /(?:\s+(\d{2}\.\d{4}))?(?:\s+(\d{2}\.\d{4}))?(?:\s+(\d{4}))\b/,
-    // Several homologation numbers here are grouped bracket-variants of a product already fully
-    // described on an earlier number's row (e.g. CS.002.21/CS.003.21 are ATBRK21 bracket variants
-    // of CS.001.21's Atech AT-FH) — their own line has no real brand at all, just a bracket part
-    // number and a dimension in the same visual columns brand/model would occupy. Real brand
-    // names are letters-only (Atech, Sparco, OMP, Corbeau, Sabelt, TRP); every bracket part
-    // number in this section has a digit or a slash — so only trust the model column when the
-    // brand column next to it validated first.
-    //
-    // FIA 8855-2021 is the first seat standard to homologate the seat together with specific
-    // mounting bracket(s) — a bracket is no longer a free installer choice like it was under
-    // 8855-1999 (List 12) or 8862-2009 (List 40). When a brand/model IS present, the very next
-    // column is the floor-bracket cell for that same row; when it's absent (a bracket-variant
-    // continuation number, or a bracket printed on its own line), the first column IS the
-    // bracket. Either way this is only ever the bracket(s) stated on the number's OWN line — a
-    // seat's full set of approved brackets often spans several physical lines (see e.g.
-    // CS.008.21/CS.010.22/CS.018.23 below, whose brackets sit on separate lines and are therefore
-    // NOT captured here), so `approvedBrackets` should be treated as a possibly-incomplete
-    // best-effort list, not the definitive set — see FiaHomologationEntry.approvedBrackets.
-    columnParser: (cols) => {
-      const isBracketLike = (s) => !!s && s !== "-" && s.toUpperCase() !== "N/A" && /[0-9/]/.test(s);
-      const brand = cols[0];
-      if (!brand || !/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand)) {
-        return isBracketLike(brand) ? { approvedBrackets: [brand] } : {};
-      }
-      const bracket = cols[2];
-      return { manufacturer: brand, model: cols[1], approvedBrackets: isBracketLike(bracket) ? [bracket] : undefined };
-    },
-    // From CS.019.24 onward the PDF's column spacing collapses (brand/model/bracket-part text
-    // runs together with single spaces instead of the double-space gaps this parser relies on to
-    // split columns), and several manufacturer/date rows appear with NO homologation number on
-    // their own line at all — a generic parser could silently attribute one product's dates to a
-    // different product there. Per user decision, only the reliably tabular first section
-    // (CS.001-CS.018) is parsed; the rest is left for a future manual pass — see
-    // fia-lists/README.md. Does not affect the WARNING section, which is parsed from the
-    // untruncated file (there happen to be none in this list as of this fetch).
-    truncateBeforeLine: /CS\.019\.24/,
+    // This list is hand-transcribed (see LIST_91_MANUAL_ENTRIES below), not run through the
+    // generic pdftotext-based row parser — see that constant's own comment for why.
+    manualEntries: () => LIST_91_MANUAL_ENTRIES,
   },
 };
+
+// List 91's table has multiple bracket sub-rows genuinely belonging to ONE homologation number
+// (e.g. CS.001.21 alone has two: ATBRK21 and ATBRK21-L), and `pdftotext -layout` does not
+// reliably keep a number in the same reading-order position as the product row it belongs to —
+// confirmed by cross-checking the parser's output against the actual rendered PDF pages
+// (fia-lists/list-91.pdf via `pdftoppm`): CS.002.21/CS.003.21 are NOT bracket variants of
+// CS.001.21 as the text ordering suggested — they're two entirely different seat models (Atech
+// AT-FS and AT-FM). The generic per-line, same-line-only parser used for every other list
+// silently produced wrong or incomplete manufacturer/model/bracket data throughout this list, not
+// just in the messier tail section — a heuristic fix could not be trusted here. This table was
+// instead transcribed by hand from the rendered pages, cell by cell, and is a complete, accurate
+// reproduction of every entry (no revocations exist — the list's own WARNING section says so).
+const LIST_91_MANUAL_ENTRIES = [
+  { number: "CS.001.21", manufacturer: "Atech", model: "AT-FH", homologationStart: "05.2021", homologationEnd: "05.2026", validUntil: "2036", approvedBrackets: ["ATBRK21", "ATBRK21-L"] },
+  { number: "CS.002.21", manufacturer: "Atech", model: "AT-FS", homologationStart: "06.2021", homologationEnd: "06.2026", validUntil: "2036", approvedBrackets: ["ATBRK21", "ATBRK21-L"] },
+  { number: "CS.003.21", manufacturer: "Atech", model: "AT-FM", homologationStart: "06.2021", homologationEnd: "06.2026", validUntil: "2036", approvedBrackets: ["ATBRK21", "ATBRK21-L"] },
+  { number: "CS.004.21", manufacturer: "Sparco", model: "MASTER", homologationStart: "07.2021", homologationEnd: "07.2026", validUntil: "2036", approvedBrackets: ["004919", "004922V1", "004922V2", "004922V3"] },
+  { number: "CS.005.21", manufacturer: "Atech", model: "AT-CH", homologationStart: "07.2021", homologationEnd: "07.2026", validUntil: "2036", approvedBrackets: ["ATBRK21", "ATBRK21-L"] },
+  { number: "CS.006.21", manufacturer: "Atech", model: "AT-CS", homologationStart: "09.2021", homologationEnd: "09.2026", validUntil: "2036", approvedBrackets: ["ATBRK21", "ATBRK21-L"] },
+  { number: "CS.007.21", manufacturer: "Atech", model: "AT-CM", homologationStart: "09.2021", homologationEnd: "09.2026", validUntil: "2036", approvedBrackets: ["ATBRK21", "ATBRK21-L"] },
+  { number: "CS.008.21", manufacturer: "Sparco", model: "ADV XT", homologationStart: "11.2021", homologationEnd: "11.2026", validUntil: "2036", approvedBrackets: ["004932H", "004932L"] },
+  { number: "CS.009.21", manufacturer: "OMP", model: "HTC EVO CARBON", homologationStart: "12.2021", homologationEnd: "12.2026", validUntil: "2036", approvedBrackets: ["HC/945"] },
+  { number: "CS.010.22", manufacturer: "Corbeau", model: "ECS4", homologationStart: "02.2022", homologationEnd: "02.2027", validUntil: "2037", approvedBrackets: ["2167-A & 2168-A", "2185-A & 2186-A", "2206-A & 2207-A", "2187-B-A & 2188-B-A"] },
+  { number: "CS.011.22", manufacturer: "Sabelt", model: "SPINE", homologationStart: "05.2022", homologationEnd: "05.2027", validUntil: "2037", approvedBrackets: ["RFST0051", "RFST0071", "RFST0095", "RFST0108"] },
+  { number: "CS.012.22", manufacturer: "Sabelt", model: "GT-AM", homologationStart: "05.2022", homologationEnd: "05.2027", validUntil: "2037", approvedBrackets: ["RFST0051", "RFST0071"] },
+  { number: "CS.013.23", manufacturer: "TRP", model: "RST-1200", homologationStart: "02.2023", homologationEnd: "02.2028", validUntil: "2038", approvedBrackets: ["SSM-04"] },
+  { number: "CS.014.23", manufacturer: "Sabelt", model: "SPINE M", homologationStart: "02.2023", homologationEnd: "02.2028", validUntil: "2038", approvedBrackets: ["RFST0051", "RFST0071", "RFST0095", "RFST0108"] },
+  { number: "CS.015.23", manufacturer: "OMP", model: "HTC EVO", homologationStart: "03.2023", homologationEnd: "03.2028", validUntil: "2038", approvedBrackets: ["HC0-0951"] },
+  { number: "CS.016.23", manufacturer: "OMP", model: "HTE EVO 2 CARBON", homologationStart: "03.2023", homologationEnd: "03.2028", validUntil: "2038", approvedBrackets: ["HC0-0951"] },
+  { number: "CS.017.23", manufacturer: "OMP", model: "HTE EVO", homologationStart: "03.2023", homologationEnd: "03.2028", validUntil: "2038", approvedBrackets: ["HC0-0951"] },
+  { number: "CS.018.23", manufacturer: "Sparco", model: "MATRIX", homologationStart: "05.2023", homologationEnd: "05.2028", validUntil: "2038", approvedBrackets: ["004926", "004926V01", "004926V02"] },
+  { number: "CS.019.24", manufacturer: "OMP", model: "HTE EVO 2 XL", homologationStart: "07.2024", homologationEnd: "07.2029", validUntil: "2039", approvedBrackets: ["HC0-0951"] },
+  { number: "CS.020.24", manufacturer: "Sabelt", model: "RALLY RAID", homologationStart: "12.2024", homologationEnd: "12.2029", validUntil: "2039", approvedBrackets: ["41AR0-151", "41AR0-152", "41ARO-165"] },
+  { number: "CS.021.24", manufacturer: "OMP", model: "HTE EVO2 S", homologationStart: "12.2024", homologationEnd: "12.2029", validUntil: "2039", approvedBrackets: ["HC0-0951"] },
+  { number: "CS.022.25", manufacturer: "HRX", model: "TORNADO", homologationStart: "04.2025", homologationEnd: "04.2030", validUntil: "2040", approvedBrackets: ["S000034_0005_BRK_SEAT_8855-2021"] },
+  { number: "CS.023.25", manufacturer: "SABELT", model: "TAURUS EVO", homologationStart: "07.2025", homologationEnd: "07.2030", validUntil: "2040", approvedBrackets: ["RFST0071", "RFST0107LH-RH", "RFST0111LH-RH"] },
+  { number: "CS.024.25", manufacturer: "SPARCO", model: "MASTER ADVANCE", homologationStart: "07.2025", homologationEnd: "07.2030", validUntil: "2040", approvedBrackets: ["004926"] },
+  { number: "CS.025.25", manufacturer: "CORBEAU", model: "ECS4 ST", homologationStart: "02.2022", homologationEnd: "02.2027", validUntil: "2037", approvedBrackets: ["2167-A & 2168-A", "2185-A & 2186-A", "2206-A & 2207-A", "2187-B-A & 2188-B-A"] },
+  { number: "CS.026.25", manufacturer: "CORBEAU", model: "ECS4 SS", homologationStart: "02.2022", homologationEnd: "02.2027", validUntil: "2037", approvedBrackets: ["2167-A & 2168-A", "2185-A & 2186-A", "2206-A & 2207-A", "2187-B-A & 2188-B-A"] },
+  { number: "CS.027.25", manufacturer: "CORBEAU", model: "ECS4SW", homologationStart: "02.2022", homologationEnd: "02.2027", validUntil: "2037", approvedBrackets: ["2167-A & 2168-A", "2185-A & 2186-A", "2206-A & 2207-A", "2187-B-A & 2188-B-A"] },
+  { number: "CS.028.25", manufacturer: "OMP", model: "HGT EVO", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2040", approvedBrackets: ["HC0-0954", "HC0-0955"] },
+  { number: "CS.029.25", manufacturer: "RRS", model: "ERGO", homologationStart: "11.2025", homologationEnd: "11.2030", validUntil: "2040", approvedBrackets: ["RRS-04 SUPPORT"] },
+  { number: "CS.030.25", manufacturer: "BRIDE", model: "H11A", homologationStart: "12.2025", homologationEnd: "12.2030", validUntil: "2040", approvedBrackets: ["H11S"] },
+  { number: "CS.031.25", manufacturer: "SABELT", model: "TAURUS EVO M", homologationStart: "12.2025", homologationEnd: "12.2030", validUntil: "2040", approvedBrackets: ["RFST0071", "RFST0107LH-RH", "RFST0111LH-RH"] },
+  { number: "CS.032.25", manufacturer: "SABELT", model: "TAURUS EVO L", homologationStart: "12.2025", homologationEnd: "12.2030", validUntil: "2040", approvedBrackets: ["RFST0071", "RFST0107LH-RH", "RFST0111LH-RH"] },
+  { number: "CS.033.26", manufacturer: "SPARCO", model: "ADV XT 2026", homologationStart: "04.2026", homologationEnd: "04.2031", validUntil: "2041", approvedBrackets: ["004932H & BAA0245B0"] },
+];
 
 // A trailing MM.YYYY MM.YYYY YYYY-ish tail — 0-3 of these tokens, in order (start-of-homol,
 // end-of-homol, valid-until). Some rows only have 1 or 2 filled in. Lists whose dates print in a
@@ -280,30 +289,35 @@ function main() {
   const lines = readFileSync(txtPath, "utf-8").split(/\r?\n/);
   const dateTailPattern = config.dateTailPattern ?? DATE_TAIL;
 
-  // Some lists have a reliably tabular section followed by a section whose column formatting
-  // breaks down (see e.g. list 91's config comment); truncateBeforeLine stops the main entries
-  // loop there while still handing parseWarningSection the full, untruncated file below.
-  let entryLines = lines;
-  if (config.truncateBeforeLine) {
-    const cutIdx = lines.findIndex((l) => config.truncateBeforeLine.test(l));
-    if (cutIdx !== -1) {
-      entryLines = lines.slice(0, cutIdx);
-      console.log(`  truncating at line ${cutIdx + 1} (matched ${config.truncateBeforeLine}) — ${lines.length - cutIdx - 1} line(s) after this are not parsed`);
-    }
-  }
+  // How many of a row's optional fields actually got populated — used below to pick the more
+  // useful of two rows sharing a number, since "first occurrence wins" isn't always right: a
+  // page-wrap can print a bare "continues on next page" marker for a number BEFORE its real,
+  // fully-populated row appears at the top of the next page (see e.g. list 40's AS.015.10).
+  const richness = (row) => ["manufacturer", "model", "homologationStart", "homologationEnd", "validUntil", "approvedBrackets"].filter((k) => row[k]).length;
 
-  const entries = [];
-  const seen = new Set();
-  for (const rawLine of entryLines) {
-    const line = rawLine.replace(/^\s+/, "");
-    const row = parseGenericRow(line, config.numberPattern, dateTailPattern, config.columnParser);
-    if (!row) continue;
-    if (seen.has(row.number)) {
-      console.warn(`  duplicate homologation number seen: ${row.number} — keeping first occurrence`);
-      continue;
+  let entries = [];
+  if (config.manualEntries) {
+    entries = config.manualEntries().map((e) => ({ ...e }));
+    console.log(`  using ${entries.length} hand-transcribed entries — skipping the generic row parser entirely`);
+  } else {
+    const byNumber = new Map();
+    for (const rawLine of lines) {
+      const line = rawLine.replace(/^\s+/, "");
+      const row = parseGenericRow(line, config.numberPattern, dateTailPattern, config.columnParser);
+      if (!row) continue;
+      const existing = byNumber.get(row.number);
+      if (existing) {
+        if (richness(row) > richness(existing)) {
+          console.warn(`  duplicate homologation number seen: ${row.number} — replacing with a more complete later occurrence`);
+          Object.assign(existing, row);
+        } else {
+          console.warn(`  duplicate homologation number seen: ${row.number} — keeping first (more complete) occurrence`);
+        }
+        continue;
+      }
+      byNumber.set(row.number, row);
+      entries.push(row);
     }
-    seen.add(row.number);
-    entries.push(row);
   }
 
   const revocations = parseWarningSection(lines, config.numberPattern);
