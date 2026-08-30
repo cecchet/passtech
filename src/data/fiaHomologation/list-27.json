@@ -693,8 +693,7 @@
     },
     {
       "number": "RS.111.06",
-      "manufacturer": "JURAN",
-      "model": "beginning"
+      "manufacturer": "JURAN"
     },
     {
       "number": "RS.112.06",
@@ -852,8 +851,7 @@
     },
     {
       "number": "RS.137.07",
-      "manufacturer": "SX 420",
-      "model": "beginning"
+      "manufacturer": "SX 420"
     },
     {
       "number": "RS.138.07"
@@ -1673,8 +1671,7 @@
     },
     {
       "number": "RS.268.15",
-      "manufacturer": "TI-090",
-      "model": "beginning"
+      "manufacturer": "TI-090"
     },
     {
       "number": "RS.269.15",
@@ -2015,8 +2012,7 @@
     },
     {
       "number": "RS.324.17",
-      "manufacturer": "STD E.S.21",
-      "model": "beginning"
+      "manufacturer": "STD E.S.21"
     },
     {
       "number": "RS.325.17",

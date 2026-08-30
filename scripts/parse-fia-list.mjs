@@ -67,6 +67,14 @@ const LIST_CONFIG = {
     // columns only (start/end), no separate "valid until" year.
     dateTailPattern: /(?:\s+(\d{2}\.\d{2}\.\d{2}))?(?:\s+(\d{2}\.\d{2}\.\d{2}))?\s*$/,
   },
+  29: {
+    title: "Technical List n°29, Part 1 — FHR Systems (FIA 8858-2010)",
+    standardIds: ["fia-8858-2010"],
+    categories: ["hnr"],
+    sourceUrl: "https://www.fia.com/system/files/documents/l29_approved_fhr_systems_1.pdf",
+    numberPattern: /^(FHR\.\d{3}\.\d{2}-[A-Z])\b/,
+    dateTailPattern: /(?:\s+(\d{2}\.\d{2}\.\d{2}))?(?:\s+(\d{2}\.\d{2}\.\d{2}))?\s*$/,
+  },
 };
 
 // A trailing MM.YYYY MM.YYYY YYYY-ish tail — 0-3 of these tokens, in order (start-of-homol,
@@ -86,11 +94,18 @@ const KNOWN_PRODUCT_TYPES = [
   "Cooling",
 ];
 
+// Repeated column-header words ("beginning" / "end" / "end(1)" / "Homologation") occasionally
+// bleed onto a data row when a page-break reprints the header a line too close to real data
+// (see e.g. list 29's FHR.004.10-A). Filtered out as a whole-token match only, so a real
+// manufacturer/model that merely contains one of these words as a substring is untouched.
+const HEADER_LEAK_WORDS = new Set(["beginning", "end", "end(1)", "homologation"]);
+
 function splitColumns(text) {
   return text
     .split(/\s{2,}/)
     .map((s) => s.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((s) => !HEADER_LEAK_WORDS.has(s.toLowerCase()));
 }
 
 function parseGenericRow(line, numberPattern, dateTailPattern) {
