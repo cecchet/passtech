@@ -340,6 +340,8 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     webTitle: "Kill Switch — Frog Racing",
     frogVideoUrl: "https://youtu.be/ByflZEtWLA0",
     frogVideoTitle: "Kill Switch Install: 4-Pole vs Cartek GT — Frog Racing",
+    productUrl: "https://rally.build/products/cartek-x-club-solid-state-battery-isolator-kit",
+    productTitle: "Shop Kill Switches — Rally Build",
   },
   tow_hook: {
     label: "Tow Hook",
