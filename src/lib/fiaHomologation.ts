@@ -15,12 +15,19 @@ export type HomologationLookupStatus =
   /** This standard has no FIA Technical List wired up yet (see fiaHomologation/index.ts). */
   | "no_list_for_standard";
 
+/** A technical list, reduced to just what the UI needs to link to it. */
+export interface FiaListRef {
+  listNumber: number;
+  sourceUrl: string;
+}
+
 export interface HomologationLookupResult {
   status: HomologationLookupStatus;
   entry?: FiaHomologationEntry;
   listNumber?: number;
+  sourceUrl?: string;
   /** Every list checked, e.g. when a standard's number could plausibly appear on more than one list. */
-  listsChecked: number[];
+  listsChecked: FiaListRef[];
 }
 
 function normalize(number: string): string {
@@ -43,7 +50,7 @@ function isPastValidUntil(entry: FiaHomologationEntry): boolean {
  */
 export function lookupHomologation(standardId: string, rawNumber: string): HomologationLookupResult {
   const lists = fiaListsForStandard(standardId);
-  const listsChecked = lists.map((l) => l.listNumber);
+  const listsChecked: FiaListRef[] = lists.map((l) => ({ listNumber: l.listNumber, sourceUrl: l.sourceUrl }));
   if (lists.length === 0) {
     return { status: "no_list_for_standard", listsChecked };
   }
@@ -57,16 +64,17 @@ export function lookupHomologation(standardId: string, rawNumber: string): Homol
     const entry = list.entries.find((e) => normalize(e.number) === target);
     if (!entry) continue;
 
+    const found = { listNumber: list.listNumber, sourceUrl: list.sourceUrl, entry, listsChecked };
     if (entry.revoked) {
-      return { status: "revoked", entry, listNumber: list.listNumber, listsChecked };
+      return { status: "revoked", ...found };
     }
     if (isPastValidUntil(entry)) {
-      return { status: "expired", entry, listNumber: list.listNumber, listsChecked };
+      return { status: "expired", ...found };
     }
     if (!entry.homologationStart && !entry.homologationEnd && !entry.validUntil) {
-      return { status: "found_unverified_dates", entry, listNumber: list.listNumber, listsChecked };
+      return { status: "found_unverified_dates", ...found };
     }
-    return { status: "valid", entry, listNumber: list.listNumber, listsChecked };
+    return { status: "valid", ...found };
   }
 
   return { status: "not_found", listsChecked };
