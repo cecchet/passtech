@@ -36,6 +36,9 @@ const LIST_CONFIG = {
     standardIds: ["fia-8853-98"],
     sourceUrl: "https://www.fia.com/sites/default/files/documents/tl24.pdf",
     numberPattern: /^\.?(B-\d{3}\.[A-Z]\/\d{2})\s*³?\b/,
+    // Hand-transcribed (see LIST_24_MANUAL_ENTRIES below), not run through the generic
+    // pdftotext-based row parser — see that constant's own comment for why.
+    manualEntries: () => LIST_24_MANUAL_ENTRIES,
   },
   16: {
     title: "Technical List n°16 — Plumbed-in Fire Extinguisher Systems",
@@ -99,6 +102,70 @@ const LIST_CONFIG = {
     manualEntries: () => LIST_91_MANUAL_ENTRIES,
   },
 };
+
+// List 24 has the same drift bug as List 12 (same era, same table style): the MODEL and DATE
+// columns fall out of sync with NUMBER/BRAND as pdftotext reads down the page. B-104.T/98 read
+// as manufacturer 'Magnum 4pts' (actually the model), model '4' (actually the number-of-straps
+// column), with dates borrowed from a different row entirely. All 55 entries are hand-
+// transcribed from the rendered pages. The 2 revocations (B-123.T/98, B-128.T/98) match the
+// original count exactly.
+const LIST_24_MANUAL_ENTRIES = [
+  { number: "B-101.T/98", manufacturer: "SECURON", model: "692", homologationStart: "12.1997", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-103.T/98", manufacturer: "SECURON", model: "693", homologationStart: "12.1997", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-104.T/98", manufacturer: "TRS", model: "Magnum 4pts", homologationStart: "01.1998", homologationEnd: "01.2027", validUntil: "2032" },
+  { number: "B-112.T/98", manufacturer: "WILLANS", model: "Club 4x4", homologationStart: "02.1998", homologationEnd: "02.2027", validUntil: "2032" },
+  { number: "B-114.T/98", manufacturer: "OMP", model: "DA434 (3 \")", homologationStart: "01.1998", homologationEnd: "01.2017", validUntil: "2022" },
+  { number: "B-116.T/98", manufacturer: "LRS", model: "2004", homologationStart: "03.1998", homologationEnd: "03.2027", validUntil: "2032" },
+  { number: "B-122.T/98", manufacturer: "SABELT", model: "Top Formula", homologationStart: "06.1998", homologationEnd: "06.2027", validUntil: "2032" },
+  { number: "B-123.T/98", manufacturer: "SABELT", model: "Top Formula", homologationStart: "06.1998", homologationEnd: "09.2007", validUntil: "2012" },
+  { number: "B-128.T/98", manufacturer: "WILLANS", model: "club 4x3", homologationStart: "10.1998", homologationEnd: "09.2007", validUntil: "2012" },
+  { number: "B-131.P/98", manufacturer: "SCHROTH", model: "profi III-FE asm", homologationStart: "04.1998", homologationEnd: "04.2027", validUntil: "2032" },
+  { number: "B-137.T/98", manufacturer: "SCHROTH", model: "profi II asm", homologationStart: "05.1998", homologationEnd: "05.2027", validUntil: "2032" },
+  { number: "B-146.T/98", manufacturer: "TAKATA", model: "TK-MPH-340", homologationStart: "04.1998", homologationEnd: "04.2017", validUntil: "2022" },
+  { number: "B-148.T/98", manufacturer: "SAFETEX", model: "75-1169", homologationStart: "05.1998", homologationEnd: "05.2017", validUntil: "2022" },
+  { number: "B-158.T/98", manufacturer: "GWR", model: "Arnes F1 4P 75mm", homologationStart: "08.1999", homologationEnd: "08.2017", validUntil: "2022" },
+  { number: "B-161.T/98", manufacturer: "SAFETEX", model: "72-1170", homologationStart: "12.2000", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-169.T/98", manufacturer: "MOMO", model: "Quattro punti Rossa", homologationStart: "07.2001", homologationEnd: "07.2017", validUntil: "2022" },
+  { number: "B-173.T/98", manufacturer: "LRF", model: "cintura 4 punti 3 \" rally sport", homologationStart: "11.2001", homologationEnd: "11.2017", validUntil: "2022" },
+  { number: "B-182.T/98", manufacturer: "OMP", model: "DA434 (3 \") N", homologationStart: "03.2002", homologationEnd: "03.2017", validUntil: "2022" },
+  { number: "B-183.T/98", manufacturer: "LUTTICKE", model: "Professional", homologationStart: "08.2002", homologationEnd: "08.2017", validUntil: "2022" },
+  { number: "B-184.T/98", manufacturer: "TOORA", model: "CINTURA SIC.3 \" 4 PUNTI", homologationStart: "01.2003", homologationEnd: "01.2017", validUntil: "2022" },
+  { number: "B-187.T/98", manufacturer: "MCF", model: "CINTURA SIC.3 \" 4 PUNTI", homologationStart: "01.2003", homologationEnd: "01.2017", validUntil: "2022" },
+  { number: "B-191.T/98", manufacturer: "LICO", model: "VICTORY 4", homologationStart: "03.2003", homologationEnd: "03.2017", validUntil: "2022" },
+  { number: "B-193.T/98", manufacturer: "SAFETEX", model: "76-1636-01", homologationStart: "08.2003", homologationEnd: "08.2017", validUntil: "2022" },
+  { number: "B-197.T/98", manufacturer: "OMP", model: "PROFESSIONAL 4", homologationStart: "12.2003", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-198.T/98", manufacturer: "OMP", model: "PROFESSIONAL 3", homologationStart: "12.2003", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-201.T/98", manufacturer: "TRP CO., LTD.", model: "3\"x3\" RACING HARNESS (4points)", homologationStart: "02.2004", homologationEnd: "02.2017", validUntil: "2022" },
+  { number: "B-208.T/98", manufacturer: "PRIMA", model: "TITON 4", homologationStart: "10.2005", homologationEnd: "10.2017", validUntil: "2022" },
+  { number: "B-214.T/98", manufacturer: "TAKATA", model: "TK-MPH-341", homologationStart: "03.2006", homologationEnd: "03.2017", validUntil: "2022" },
+  { number: "B-220.T/98", manufacturer: "TRP CO., LTD.", model: "RCU-400", homologationStart: "05.2006", homologationEnd: "05.2022", validUntil: "2027" },
+  { number: "B-225.T/98", manufacturer: "TRP CO., LTD.", model: "RCU-500", homologationStart: "11.2006", homologationEnd: "11.2017", validUntil: "2022" },
+  { number: "B-230.T/98", manufacturer: "TURINI", model: "DT306", homologationStart: "02.2007", homologationEnd: "02.2017", validUntil: "2022" },
+  { number: "B-239.T/98", manufacturer: "QSP", model: "QR234", homologationStart: "07.2007", homologationEnd: "07.2017", validUntil: "2022" },
+  { number: "B-241.T/98", manufacturer: "QSP", model: "QRB334", homologationStart: "07.2007", homologationEnd: "07.2017", validUntil: "2022" },
+  { number: "B-243.T/98", manufacturer: "QSP", model: "QRL334", homologationStart: "07.2007", homologationEnd: "07.2017", validUntil: "2022" },
+  { number: "B-247.T/98", manufacturer: "CORSA", model: "SGARBI RACE 4", homologationStart: "10.2007", homologationEnd: "10.2017", validUntil: "2022" },
+  { number: "B-250.P/98", manufacturer: "TRP CO., LTD.", model: "RCU-700", homologationStart: "05.2008", homologationEnd: "05.2017", validUntil: "2022" },
+  { number: "B-252.T/98", manufacturer: "OMP", model: "DA801", homologationStart: "10.2008", homologationEnd: "10.2027", validUntil: "2032" },
+  { number: "B-264.T/98", manufacturer: "RICCO RACING", model: "RZ-04", homologationStart: "12.2008", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-274.T/98", manufacturer: "SPARCO", model: "4805", homologationStart: "12.2010", homologationEnd: "12.2017", validUntil: "2022" },
+  { number: "B-277.T/98", manufacturer: "RAEMCO", model: "RAEMCO 4 Point Cam Lock Racing Harness", homologationStart: "05.2011", homologationEnd: "05.2017", validUntil: "2022" },
+  { number: "B-279.T/98", manufacturer: "SPARCO", model: "04805BM", homologationStart: "07.2011", homologationEnd: "07.2017", validUntil: "2022" },
+  { number: "B-284.T/98", manufacturer: "TAKATA", model: "RACE 4", homologationStart: "08.2012", homologationEnd: "08.2027", validUntil: "2032" },
+  { number: "B-298.T/98", manufacturer: "HPI CO., LTD.", model: "HPI-500", homologationStart: "07.2013", homologationEnd: "07.2017", validUntil: "2022" },
+  { number: "B-318.T/98", manufacturer: "TRP CO., LTD.", model: "RCU-900", homologationStart: "01.2015", homologationEnd: "01.2020", validUntil: "2025" },
+  { number: "B-323.T/98", manufacturer: "CUSCO", model: "00B-CRH-4", homologationStart: "01.2015", homologationEnd: "01.2017", validUntil: "2022" },
+  { number: "B-328.T/98", manufacturer: "RRS", model: "EVO4", homologationStart: "08.2015", homologationEnd: "08.2022", validUntil: "2027" },
+  { number: "B-343.T/98", manufacturer: "MCF", model: "4-Point RACE HARNESS", homologationStart: "02.2017", homologationEnd: "02.2022", validUntil: "2027" },
+  { number: "B-344.T/98", manufacturer: "QSP", model: "QRB334", homologationStart: "09.2017", homologationEnd: "09.2022", validUntil: "2027" },
+  { number: "B-345.T/98", manufacturer: "SPARCO", model: "04716M", homologationStart: "10.2017", homologationEnd: "10.2027", validUntil: "2032" },
+  { number: "B-346.T/98", manufacturer: "HPI CO., LTD.", model: "HPRH-4900", homologationStart: "04.2018", homologationEnd: "04.2023", validUntil: "2028" },
+  { number: "B-347.T/98", manufacturer: "TRP CO., LTD.", model: "RCU-1100A", homologationStart: "04.2021", homologationEnd: "04.2031", validUntil: "2036" },
+  { number: "B-348.T/98", manufacturer: "MCF", model: "40100270 HARNESS 4P", homologationStart: "01.2022", homologationEnd: "01.2027", validUntil: "2032" },
+  { number: "B-349.T/98", manufacturer: "RRS", model: "RRS EVO4 PLUS", homologationStart: "11.2022", homologationEnd: "11.2027", validUntil: "2032" },
+  { number: "B-350.T/98", manufacturer: "HPI CO., LTD.", model: "HPI-DRH23-AK100", homologationStart: "07.2023", homologationEnd: "07.2028", validUntil: "2033" },
+  { number: "B-351.T/98", manufacturer: "MOMO", model: "M040303", homologationStart: "02.2025", homologationEnd: "04.2026", validUntil: "2031" },
+];
 
 // List 16's table looked simple (no bracket sub-rows) but still lost most of the list: the old
 // per-line parser found only 14 of the real 74 entries, because many rows here have a

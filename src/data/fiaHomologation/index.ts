@@ -15,10 +15,10 @@ import list91 from "./list-91.json";
  * actually been verified against real entries are wired in here; see that script's
  * LIST_CONFIG for the ones still pending.
  *
- * List 24 in particular: its table has extra columns (strap/attachment counts and buckle type)
- * this app doesn't use, which the current parser doesn't cleanly separate from manufacturer/
- * model — so those two display fields are unreliable specifically for this list. The
- * safety-relevant fields (homologation number, dates, revoked) are unaffected.
+ * List 24 (FIA 8853/98 harnesses) is hand-transcribed — same drift bug and era as List 12 below
+ * (its table has the same style, just with extra strap/attachment/buckle columns this app
+ * doesn't use). B-104.T/98 read as manufacturer "Magnum 4pts" (actually the model) with dates
+ * borrowed from a different row. All 55 entries are hand-verified — see LIST_24_MANUAL_ENTRIES.
  *
  * List 12 (FIA 8855-1999 seats) is hand-transcribed, like List 91 below — its table drifts the
  * MODEL and DATE columns out of sync with the NUMBER/BRAND columns as pdftotext -layout reads
