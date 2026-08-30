@@ -450,8 +450,7 @@ export default function Home() {
             <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
             you enter against each sanctioning body&apos;s published rules as of the &quot;last reviewed&quot; date shown
             per result. A tech inspector/scrutineer still makes the final call at the event — always verify against the
-            current official rulebook before you rely on this. Entries are saved only in this browser (nothing is sent
-            anywhere).
+            current official rulebook before you rely on this.
           </p>
         </div>
       </header>
