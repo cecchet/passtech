@@ -1,0 +1,110 @@
+{
+  "listNumber": 16,
+  "title": "Technical List n°16 — Plumbed-in Fire Extinguisher Systems",
+  "standardIds": [
+    "fia-8865-2015"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/tl16_0.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "Ex.001.97",
+      "manufacturer": "⁽³⁾",
+      "model": "Fogmaker",
+      "homologationStart": "12.1997",
+      "homologationEnd": "07.2018",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "Ex.002.98",
+      "manufacturer": "LIFELINE",
+      "model": "AFFF",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017"
+    },
+    {
+      "number": "Ex.003.98",
+      "manufacturer": "SPA DESIGN",
+      "model": "Zero 2000",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2017"
+    },
+    {
+      "number": "Ex.004.99",
+      "manufacturer": "FEV",
+      "model": "Fire Sense Response",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2022"
+    },
+    {
+      "number": "Ex.005.99",
+      "manufacturer": "FEV",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2027"
+    },
+    {
+      "number": "Ex.006.99",
+      "manufacturer": "FEV",
+      "model": "FX G-TEC 3kg",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2027"
+    },
+    {
+      "number": "Ex.007.99",
+      "manufacturer": "FEV",
+      "model": "AFFF 4000R or",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2022"
+    },
+    {
+      "number": "Ex.008.00",
+      "manufacturer": "OMP",
+      "model": "FES400MK",
+      "homologationStart": "01.2000",
+      "homologationEnd": "01.2027"
+    },
+    {
+      "number": "Ex.009.00",
+      "manufacturer": "OMP",
+      "model": "Water + AFFF",
+      "homologationStart": "01.2000",
+      "homologationEnd": "01.2027"
+    },
+    {
+      "number": "Ex.010.00",
+      "manufacturer": "TOTAL WALTHER",
+      "model": "AFFF 3500R or",
+      "homologationStart": "06.2000",
+      "homologationEnd": "06.2017"
+    },
+    {
+      "number": "Ex.011.01",
+      "manufacturer": "SPARCO",
+      "model": "FES350EK",
+      "homologationStart": "10.2001",
+      "homologationEnd": "10.2017"
+    },
+    {
+      "number": "Ex.012.03",
+      "manufacturer": "TOORA",
+      "model": "FES350MK",
+      "homologationStart": "02.2003",
+      "homologationEnd": "02.2017"
+    },
+    {
+      "number": "Ex.013.03",
+      "manufacturer": "TOORA",
+      "model": "Ecolife (AFFF Family)",
+      "homologationStart": "02.2003",
+      "homologationEnd": "02.2017"
+    },
+    {
+      "number": "Ex.018.04",
+      "manufacturer": "LIFELINE",
+      "model": "Fire Warrior Gas",
+      "homologationStart": "05.2004",
+      "homologationEnd": "05.2017"
+    }
+  ]
+}

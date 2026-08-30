@@ -318,3 +318,39 @@ export interface StandardDef {
   family: "snell" | "sfi" | "fia" | "dot" | "ece" | "astm" | "bs" | "cik";
   categories: EquipmentCategory[];
 }
+
+/**
+ * One row from an official FIA Technical List (the homologation register for a given FIA
+ * standard) — one specific product a manufacturer has homologated. Parsed offline from the
+ * published PDF (see fia-lists/README.md) into static JSON, not fetched live.
+ */
+export interface FiaHomologationEntry {
+  /** The homologation number as printed on the product's own tag/label, e.g. "DC.001.18-O". This is what a user's tag or manual entry is matched against — comparisons should be case-insensitive and tolerant of surrounding whitespace. */
+  number: string;
+  manufacturer?: string;
+  model?: string;
+  /** Free text for whatever this list calls the product category column, e.g. "Overalls", "Gloves" — not this app's own EquipmentCategory. */
+  productType?: string;
+  /** Homologation start date as printed, usually "MM.YYYY". Free text since formats vary by list. */
+  homologationStart?: string;
+  /** Homologation end date as printed (when the list uses a start/end pair rather than a single validity year). */
+  homologationEnd?: string;
+  /** "Product valid until" year/date as printed, when the list states one. */
+  validUntil?: string;
+  /** True when this entry is listed in the list's own revocation/withdrawal table (not just past its validity date — an explicit revocation, e.g. for failing to meet the standard). */
+  revoked?: boolean;
+  /** Free-text reason/date for the revocation, when the list states one. */
+  revokedNote?: string;
+}
+
+/** One official FIA Technical List, e.g. "List 74" (FIA 8856-2018 driving suits/clothing). */
+export interface FiaTechnicalList {
+  listNumber: number;
+  title: string;
+  /** This app's standardId(s) this list is the homologation register for — see standards.ts. Usually one, but a list can back more than one standardId (e.g. a list covering multiple garment types under the same standard). */
+  standardIds: string[];
+  sourceUrl: string;
+  /** When this list was last downloaded and re-parsed. */
+  lastFetched: string;
+  entries: FiaHomologationEntry[];
+}

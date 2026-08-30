@@ -6,6 +6,8 @@ import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupan
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
+import { fiaListsForStandard } from "@/data/fiaHomologation";
+import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
@@ -303,6 +305,78 @@ function CertificationRow({
           )}
         </div>
       )}
+
+      {cert.standardId && !notListed && fiaListsForStandard(cert.standardId).length > 0 && (
+        <HomologationCheck standardId={cert.standardId} value={cert.homologationNumber} onChange={(v) => onChange({ homologationNumber: v })} />
+      )}
+    </div>
+  );
+}
+
+/** For standards backed by an FIA Technical List (see src/data/fiaHomologation): a free-text field for the number printed on the tag, checked live against the cached list. */
+function HomologationCheck({ standardId, value, onChange }: { standardId: string; value?: string; onChange: (value: string | undefined) => void }) {
+  const trimmed = (value ?? "").trim();
+  const result = trimmed ? lookupHomologation(standardId, trimmed) : undefined;
+
+  const banner = (() => {
+    if (!result) return null;
+    switch (result.status) {
+      case "revoked":
+        return (
+          <p className="rounded border border-red-700 bg-red-950 px-2 py-1 text-xs text-red-200">
+            ⚠ REVOKED — FIA List {result.listNumber} shows this homologation withdrawn
+            {result.entry?.manufacturer ? ` (${result.entry.manufacturer}${result.entry.model ? " " + result.entry.model : ""})` : ""}. Not authorized to
+            race regardless of the date on the tag.{result.entry?.revokedNote ? ` ${result.entry.revokedNote}` : ""}
+          </p>
+        );
+      case "expired":
+        return (
+          <p className="rounded border border-amber-700 bg-amber-950 px-2 py-1 text-xs text-amber-200">
+            ⚠ FIA List {result.listNumber} lists this product valid only until {result.entry?.validUntil} — past that, it&rsquo;s no longer authorized
+            regardless of physical condition.
+          </p>
+        );
+      case "found_unverified_dates":
+        return (
+          <p className="rounded border border-neutral-600 bg-neutral-800 px-2 py-1 text-xs text-neutral-300">
+            Found on FIA List {result.listNumber}
+            {result.entry?.manufacturer ? ` (${result.entry.manufacturer}${result.entry.model ? " " + result.entry.model : ""})` : ""}, but this app
+            couldn&rsquo;t extract a validity date for it from the list — check the date printed on the label itself.
+          </p>
+        );
+      case "valid":
+        return (
+          <p className="rounded border border-emerald-800 bg-emerald-950/40 px-2 py-1 text-xs text-emerald-300">
+            ✓ Found on FIA List {result.listNumber}
+            {result.entry?.manufacturer ? ` — ${result.entry.manufacturer}${result.entry.model ? " " + result.entry.model : ""}` : ""}
+            {result.entry?.validUntil ? `, valid until ${result.entry.validUntil}` : ""}.
+          </p>
+        );
+      case "not_found":
+        return (
+          <p className="rounded border border-amber-700 bg-amber-950 px-2 py-1 text-xs text-amber-200">
+            ⚠ Not found on FIA List {result.listsChecked.join("/")} — double-check the number for typos. If it&rsquo;s correct as entered, this product may
+            not be genuinely FIA-homologated.
+          </p>
+        );
+      case "no_list_for_standard":
+        return null;
+    }
+  })();
+
+  return (
+    <div className="mt-2 flex flex-col gap-1">
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        FIA homologation number on tag (optional — checked against FIA List {fiaListsForStandard(standardId).map((l) => l.listNumber).join("/")})
+        <input
+          type="text"
+          placeholder="e.g. DC.001.18-O"
+          className={`${dateClass} placeholder:text-neutral-500`}
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value || undefined)}
+        />
+      </label>
+      {banner}
     </div>
   );
 }

@@ -1,0 +1,356 @@
+{
+  "listNumber": 24,
+  "title": "Technical List n°24 — Harnesses (FIA 8853/98)",
+  "standardIds": [
+    "fia-8853-98"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/documents/tl24.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "B-101.T/98",
+      "manufacturer": "SECURON",
+      "model": "692"
+    },
+    {
+      "number": "B-103.T/98",
+      "manufacturer": "SECURON",
+      "model": "693"
+    },
+    {
+      "number": "B-104.T/98",
+      "manufacturer": "Magnum 4pts",
+      "model": "4",
+      "homologationStart": "12.1997",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-112.T/98",
+      "manufacturer": "TRS",
+      "model": "Club 4x4"
+    },
+    {
+      "number": "B-114.T/98",
+      "manufacturer": "WILLANS",
+      "model": "DA434 (3 »)",
+      "homologationStart": "12.1997",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-116.T/98",
+      "manufacturer": "2004",
+      "model": "4"
+    },
+    {
+      "number": "B-122.T/98",
+      "manufacturer": "OMP",
+      "model": "Top Formula",
+      "homologationStart": "01.1998",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "B-123.T/98",
+      "manufacturer": "⁽³⁾",
+      "model": "LRS",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "B-128.T/98",
+      "manufacturer": "⁽³⁾",
+      "model": "SABELT",
+      "homologationStart": "02.1998",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "B-131.P/98",
+      "manufacturer": "SABELT",
+      "model": "profi III-FE asm"
+    },
+    {
+      "number": "B-137.T/98",
+      "manufacturer": "WILLANS",
+      "model": "profi II asm",
+      "homologationStart": "01.1998",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-146.T/98",
+      "manufacturer": "SCHROTH",
+      "model": "TK-MPH-340"
+    },
+    {
+      "number": "B-148.T/98",
+      "manufacturer": "SCHROTH",
+      "model": "75-1169",
+      "homologationStart": "03.1998",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "B-158.T/98",
+      "manufacturer": "TAKATA",
+      "model": "Arnes F1 4P 75mm"
+    },
+    {
+      "number": "B-161.T/98",
+      "manufacturer": "SAFETEX",
+      "model": "72-1170",
+      "homologationStart": "06.1998",
+      "homologationEnd": "06.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "B-169.T/98",
+      "manufacturer": "GWR",
+      "model": "Quattro punti Rossa"
+    },
+    {
+      "number": "B-173.T/98",
+      "manufacturer": "SAFETEX",
+      "model": "cintura 4 punti 3 » rally sport",
+      "homologationStart": "06.1998",
+      "homologationEnd": "09.2007",
+      "validUntil": "2012"
+    },
+    {
+      "number": "B-182.T/98",
+      "manufacturer": "MOMO",
+      "model": "DA434 (3 ») N"
+    },
+    {
+      "number": "B-183.T/98",
+      "manufacturer": "LRF",
+      "model": "Professional",
+      "homologationStart": "10.1998",
+      "homologationEnd": "09.2007",
+      "validUntil": "2012"
+    },
+    {
+      "number": "B-184.T/98",
+      "manufacturer": "OMP",
+      "model": "CINTURA SIC.3 » 4 PUNTI"
+    },
+    {
+      "number": "B-187.T/98",
+      "manufacturer": "LUTTICKE",
+      "model": "CINTURA SIC.3 » 4 PUNTI",
+      "homologationStart": "04.1998",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "B-191.T/98",
+      "manufacturer": "TOORA",
+      "model": "VICTORY 4"
+    },
+    {
+      "number": "B-193.T/98",
+      "manufacturer": "MCF",
+      "model": "76-1636-01",
+      "homologationStart": "05.1998",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "B-197.T/98",
+      "manufacturer": "LICO",
+      "model": "PROFESSIONAL 4"
+    },
+    {
+      "number": "B-198.T/98",
+      "manufacturer": "OMP",
+      "model": "PROFESSIONAL 3"
+    },
+    {
+      "number": "B-201.T/98",
+      "manufacturer": "TRP CO.,",
+      "model": "3”x3” RACING HARNESS"
+    },
+    {
+      "number": "B-208.T/98",
+      "manufacturer": "T",
+      "homologationStart": "12.2003",
+      "homologationEnd": "12.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-214.T/98",
+      "manufacturer": "LTD.",
+      "model": "(4points)"
+    },
+    {
+      "number": "B-220.T/98",
+      "manufacturer": "PRIMA",
+      "model": "TITON 4",
+      "homologationStart": "02.2004",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-225.T/98",
+      "manufacturer": "TRP CO.,",
+      "model": "4",
+      "homologationStart": "10.2005",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-230.T/98",
+      "manufacturer": "RCU-400"
+    },
+    {
+      "number": "B-239.T/98",
+      "manufacturer": "LTD.",
+      "model": "4",
+      "homologationStart": "03.2006",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-241.T/98",
+      "manufacturer": "TRP CO.,",
+      "model": "RCU-500"
+    },
+    {
+      "number": "B-243.T/98",
+      "manufacturer": "4",
+      "model": "T",
+      "homologationStart": "05.2006",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "B-247.T/98",
+      "manufacturer": "LTD.",
+      "model": "DT306"
+    },
+    {
+      "number": "B-250.P/98",
+      "manufacturer": "TURINI",
+      "model": "QR234",
+      "homologationStart": "11.2006",
+      "homologationEnd": "11.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-252.T/98",
+      "manufacturer": "QRB334"
+    },
+    {
+      "number": "B-264.T/98",
+      "manufacturer": "QSP",
+      "model": "QRL334",
+      "homologationStart": "02.2007",
+      "homologationEnd": "02.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-274.T/98",
+      "manufacturer": "QSP",
+      "model": "SGARBI RACE 4"
+    },
+    {
+      "number": "B-277.T/98",
+      "manufacturer": "QSP",
+      "model": "4",
+      "homologationStart": "07.2007",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-279.T/98",
+      "manufacturer": "CORSA",
+      "model": "RCU-700"
+    },
+    {
+      "number": "B-284.T/98",
+      "manufacturer": "TRP CO.,",
+      "model": "4",
+      "homologationStart": "07.2007",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-298.T/98",
+      "manufacturer": "LTD.",
+      "model": "DA801"
+    },
+    {
+      "number": "B-318.T/98",
+      "manufacturer": "RICCO",
+      "model": "RZ-04"
+    },
+    {
+      "number": "B-323.T/98",
+      "manufacturer": "RACING",
+      "model": "4",
+      "homologationStart": "10.2007",
+      "homologationEnd": "10.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-328.T/98",
+      "manufacturer": "SPARCO",
+      "validUntil": "4805"
+    },
+    {
+      "number": "B-343.T/98",
+      "manufacturer": "RAEMCO 4 Point Cam Lock",
+      "model": "4",
+      "homologationStart": "05.2008",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "B-344.T/98",
+      "manufacturer": "RAEMCO"
+    },
+    {
+      "number": "B-345.T/98",
+      "manufacturer": "SPARCO",
+      "model": "HPRH-4900"
+    },
+    {
+      "number": "B-346.T/98",
+      "manufacturer": "HPI CO.,",
+      "model": "4"
+    },
+    {
+      "number": "B-347.T/98",
+      "manufacturer": "LTD.",
+      "model": "40100270 HARNESS 4P"
+    },
+    {
+      "number": "B-348.T/98",
+      "manufacturer": "TRP CO.,",
+      "model": "4",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "B-349.T/98",
+      "manufacturer": "RRS EVO4 PLUS"
+    },
+    {
+      "number": "B-350.T/98",
+      "manufacturer": "LTD.",
+      "model": "HPI-DRH23-AK100",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "B-351.T/98",
+      "manufacturer": "MCF"
+    }
+  ]
+}

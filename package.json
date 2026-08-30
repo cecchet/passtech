@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "parse-fia-list": "node scripts/parse-fia-list.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

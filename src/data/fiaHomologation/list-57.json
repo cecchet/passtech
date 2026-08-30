@@ -1,0 +1,951 @@
+{
+  "listNumber": 57,
+  "title": "Technical List n°57 — Harnesses (FIA 8853-2016)",
+  "standardIds": [
+    "fia-8853-2016"
+  ],
+  "sourceUrl": "https://www.fia.com/system/files/documents/1301f872-57cd-40e2-b43c-ae9bd84aecd1.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "SH.001.16-T-6",
+      "manufacturer": "SABELT",
+      "model": "NEW SPEC SALOON",
+      "homologationStart": "10.2016",
+      "homologationEnd": "10.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.002.16-T-6",
+      "manufacturer": "TBRACING",
+      "model": "SPORT",
+      "homologationStart": "11.2016",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.003.16-T-6",
+      "manufacturer": "6",
+      "model": "T",
+      "homologationStart": "11.2016",
+      "homologationEnd": "11.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.004.16-T-6",
+      "manufacturer": "SABELT",
+      "model": "F1 S 2016",
+      "homologationStart": "12.2016",
+      "homologationEnd": "11.2026",
+      "validUntil": "2026"
+    },
+    {
+      "number": "SH.005.16-T-6",
+      "manufacturer": "TWR",
+      "model": "SALOON 2016",
+      "homologationStart": "12.2016",
+      "homologationEnd": "12.2021",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.006.16-T-6",
+      "manufacturer": "6",
+      "model": "T",
+      "homologationStart": "12.2016",
+      "homologationEnd": "12.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.007.16-T-6",
+      "manufacturer": "SPARCO",
+      "model": "04818RH",
+      "homologationStart": "12.2016",
+      "homologationEnd": "12.2026",
+      "validUntil": "2026"
+    },
+    {
+      "number": "SH.008.17-T-8",
+      "manufacturer": "SABELT",
+      "model": "E1",
+      "homologationStart": "02.2017",
+      "homologationEnd": "12.2021",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.009.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "6",
+      "homologationStart": "03.2017",
+      "homologationEnd": "02.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.010.17-T-6",
+      "manufacturer": "SABELT",
+      "model": "PROFI 2x2",
+      "homologationStart": "04.2017",
+      "homologationEnd": "03.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.011.17-T-6",
+      "manufacturer": "F1 S8 2017",
+      "model": "6",
+      "homologationStart": "04.2017",
+      "homologationEnd": "04.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.012.17-T-6",
+      "manufacturer": "OMP",
+      "model": "6",
+      "homologationStart": "05.2017",
+      "homologationEnd": "04.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.013.17-T-6",
+      "manufacturer": "SABELT",
+      "model": "DA0101",
+      "homologationStart": "05.2017",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.014.17-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "E2P",
+      "homologationStart": "08.2017",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.015.17-T-6",
+      "manufacturer": "6",
+      "model": "T",
+      "homologationStart": "08.2017",
+      "homologationEnd": "08.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.016.17-T-6",
+      "manufacturer": "OMP",
+      "model": "RCU-1001H",
+      "homologationStart": "09.2017",
+      "homologationEnd": "08.2027",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.017.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "DA0202",
+      "homologationStart": "09.2017",
+      "homologationEnd": "09.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.018.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "6",
+      "homologationStart": "09.2017",
+      "homologationEnd": "09.2027",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.019.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "FORMULA 2x2",
+      "homologationStart": "09.2017",
+      "homologationEnd": "09.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.020.17-T-6",
+      "manufacturer": "T-BAR 2x2",
+      "model": "6",
+      "homologationStart": "10.2017",
+      "homologationEnd": "09.2027",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.021.17-T-6",
+      "manufacturer": "QSP",
+      "model": "6",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.022.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "ENDURO 3x2",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.023.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "PROFI 3x3",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.024.17-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RCU-1002H",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.025.17-T-6",
+      "manufacturer": "DA0102",
+      "model": "6",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.026.17-T-6",
+      "manufacturer": "OMP",
+      "model": "DA0203",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.027.17-T-6",
+      "manufacturer": "OMP",
+      "model": "RACE 2x2",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.028.17-T-6",
+      "manufacturer": "TAKATA",
+      "model": "40100514",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.029.17-T-6",
+      "manufacturer": "MCF",
+      "model": "40100494",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.030.17-T-6",
+      "manufacturer": "MCF",
+      "model": "T-bar 3x2",
+      "homologationStart": "11.2017",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.031.17-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "6",
+      "homologationStart": "11.2017",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.032.17-T-6",
+      "manufacturer": "SABELT",
+      "model": "New Spec S3",
+      "homologationStart": "11.2017",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.033.17-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RCU-1003",
+      "homologationStart": "11.2027",
+      "revoked": true,
+      "revokedNote": "Homologation withdrawn — see the list's own WARNING section for details."
+    },
+    {
+      "number": "SH.034.17-T-6",
+      "manufacturer": "6",
+      "model": "T",
+      "homologationStart": "12.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "SH.035.17-T-6",
+      "manufacturer": "TAKATA",
+      "model": "Race 3x2",
+      "homologationStart": "12.2017",
+      "homologationEnd": "12.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.036.17-T-6",
+      "manufacturer": "QSP",
+      "model": "QRH536",
+      "homologationStart": "12.2017",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.037.17-T-6",
+      "manufacturer": "OMP",
+      "model": "DA0204",
+      "homologationStart": "12.2017",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.038.18-T-6",
+      "manufacturer": "OMP",
+      "model": "DA0206",
+      "homologationStart": "02.2018",
+      "homologationEnd": "12.2027",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.039.18-T-6",
+      "manufacturer": "TRS",
+      "model": "Magnum Saloon Ultralite",
+      "homologationStart": "02.2018",
+      "homologationEnd": "02.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.040.18-T-6",
+      "manufacturer": "QSP",
+      "model": "QR336",
+      "homologationStart": "04.2018",
+      "homologationEnd": "02.2028",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.041.18-T-6",
+      "manufacturer": "HPRH-6102",
+      "model": "6",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.042.18-T-6",
+      "manufacturer": "HPI CO., LTD.",
+      "model": "HPRH-6103",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2023",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.043.18-T-6",
+      "manufacturer": "HPI CO., LTD.",
+      "model": "RCU-1004",
+      "homologationStart": "05.2018",
+      "homologationEnd": "04.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.044.18-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RCU-1005",
+      "homologationStart": "06.2018",
+      "homologationEnd": "05.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.045.18-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "S-3036-U",
+      "homologationStart": "06.2018",
+      "homologationEnd": "06.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.046.18-T-6",
+      "manufacturer": "F-2026-U",
+      "model": "6",
+      "homologationStart": "06.2018",
+      "homologationEnd": "06.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.047.18-T-6",
+      "manufacturer": "CORBEAU",
+      "model": "H-2026-U",
+      "homologationStart": "07.2018",
+      "homologationEnd": "06.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.048.18-T-6",
+      "manufacturer": "RRS",
+      "model": "R6",
+      "homologationStart": "09.2018",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.049.18-T-6",
+      "manufacturer": "MOMO",
+      "model": "SR6",
+      "homologationStart": "10.2018",
+      "homologationEnd": "11.2027",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.050.18-T-6",
+      "manufacturer": "6pt Pro Saloon",
+      "model": "6",
+      "homologationStart": "11.2018",
+      "homologationEnd": "10.2023",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.051.18-T-6",
+      "manufacturer": "TRS",
+      "model": "6pt Pro Single Seater",
+      "homologationStart": "11.2018",
+      "homologationEnd": "11.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.052.18-T-6",
+      "manufacturer": "TRS",
+      "model": "DA0205",
+      "homologationStart": "11.2018",
+      "homologationEnd": "11.2028",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.053.18-T-6",
+      "manufacturer": "OMP",
+      "model": "04820H",
+      "homologationStart": "11.2018",
+      "homologationEnd": "11.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.054.18-T-6",
+      "manufacturer": "SPARCO",
+      "model": "04823H",
+      "homologationStart": "11.2018",
+      "homologationEnd": "11.2023",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.055.18-T-6",
+      "manufacturer": "SPARCO",
+      "model": "Profi II-6H",
+      "homologationStart": "12.2018",
+      "homologationEnd": "11.2028",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.056.18-T-6",
+      "manufacturer": "SCHROTH",
+      "model": "40100546",
+      "homologationStart": "12.2018",
+      "homologationEnd": "12.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.057.18-T-6",
+      "manufacturer": "MCF",
+      "model": "40100542",
+      "homologationStart": "12.2018",
+      "homologationEnd": "12.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.058.18-T-6",
+      "manufacturer": "MCF",
+      "model": "RACER 6 P.FHRAS",
+      "homologationStart": "12.2018",
+      "homologationEnd": "12.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "SH.059.19-T-6",
+      "manufacturer": "HRX",
+      "model": "Sport Plus",
+      "homologationStart": "02.2019",
+      "homologationEnd": "12.2023",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.060.19-T-6",
+      "manufacturer": "TBRACING",
+      "model": "04822H",
+      "homologationStart": "03.2019",
+      "homologationEnd": "02.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.061.19-T-8",
+      "manufacturer": "SPARCO",
+      "model": "new spec f4",
+      "homologationStart": "03.2019",
+      "homologationEnd": "03.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.062.19-T-8",
+      "manufacturer": "SABELT",
+      "model": "04831H",
+      "homologationStart": "03.2019",
+      "homologationEnd": "03.2029",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.063.19-T-6",
+      "manufacturer": "SPARCO",
+      "model": "light evo",
+      "homologationStart": "05.2019",
+      "homologationEnd": "03.2024",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.064.19-T-6",
+      "manufacturer": "RRS",
+      "model": "endurance",
+      "homologationStart": "05.2019",
+      "homologationEnd": "05.2028",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.065.19-T-6",
+      "manufacturer": "SABELT",
+      "model": "ultralite",
+      "homologationStart": "06.2019",
+      "homologationEnd": "05.2029",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.066.19-T-6",
+      "manufacturer": "VROOM",
+      "model": "Club / Silverstone single seater",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.067.19-T-6",
+      "manufacturer": "WILLANS",
+      "model": "R6 ONE",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.068.19-T-6",
+      "manufacturer": "RRS",
+      "model": "DA0208",
+      "homologationStart": "08.2019",
+      "homologationEnd": "06.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.069.19-T-8",
+      "manufacturer": "OMP",
+      "model": "04832H",
+      "homologationStart": "08.2019",
+      "homologationEnd": "08.2029",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.070.19-T-6",
+      "manufacturer": "SPARCO",
+      "model": "Club / Silverstone 6pt saloon",
+      "homologationStart": "09.2019",
+      "homologationEnd": "08.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.071.19-T-6",
+      "manufacturer": "WILLANS",
+      "model": "04825H",
+      "homologationStart": "10.2019",
+      "homologationEnd": "09.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.072.19-T-6",
+      "manufacturer": "SPARCO",
+      "model": "F1 2020",
+      "homologationStart": "11.2019",
+      "homologationEnd": "10.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.073.19-T-6",
+      "manufacturer": "SABELT",
+      "model": "04833H",
+      "homologationStart": "11.2019",
+      "homologationEnd": "11.2029",
+      "validUntil": "2029"
+    },
+    {
+      "number": "SH.074.20-T-6",
+      "manufacturer": "INORIZA",
+      "model": "IR-H-01",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "SH.075.20-T-6",
+      "manufacturer": "OMP",
+      "model": "DA0201",
+      "homologationStart": "03.2020",
+      "homologationEnd": "03.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "SH.076.20-T-6",
+      "manufacturer": "04834H",
+      "model": "6",
+      "homologationStart": "03.2020",
+      "homologationEnd": "03.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "SH.077.20-T-6",
+      "manufacturer": "SPARCO",
+      "model": "becketts 3 inch",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "SH.078.20-T-6",
+      "manufacturer": "LIFELINE",
+      "model": "becketts 2 inch",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.079.20-T-6",
+      "manufacturer": "LIFELINE",
+      "model": "C-060-AL",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "SH.080.20-T-6",
+      "manufacturer": "RAEMCO",
+      "model": "6",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.081.20-T-6",
+      "manufacturer": "SAFECRAFT",
+      "model": "5015",
+      "homologationStart": "08.2020",
+      "homologationEnd": "08.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.082.20-T-6",
+      "manufacturer": "LIFELINE",
+      "model": "COPSE",
+      "homologationStart": "12.2020",
+      "homologationEnd": "12.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.083.21-T-8",
+      "manufacturer": "INTERNATIONAL",
+      "model": "8",
+      "homologationStart": "01.2021",
+      "validUntil": "2036"
+    },
+    {
+      "number": "SH.084.21-T-6",
+      "manufacturer": "TRS",
+      "model": "F1 8PT 2021",
+      "homologationStart": "05.2021",
+      "homologationEnd": "01.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "SH.085.21-T-6",
+      "manufacturer": "SABELT",
+      "model": "DA0210",
+      "homologationStart": "05.2021",
+      "homologationEnd": "05.2031",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.086.21-T-6",
+      "manufacturer": "04835H",
+      "model": "6",
+      "homologationStart": "12.2021",
+      "homologationEnd": "05.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "SH.087.22-T-6",
+      "manufacturer": "OMP",
+      "model": "SALOON 3’’ LPM",
+      "homologationStart": "01.2022",
+      "homologationEnd": "12.2026",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.088.22-T-6",
+      "manufacturer": "SPARCO",
+      "model": "endurance teralight",
+      "homologationStart": "02.2022",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.089.22-T-6",
+      "manufacturer": "SABELT",
+      "model": "6",
+      "homologationStart": "03.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.090.22-T-6",
+      "manufacturer": "6",
+      "model": "T",
+      "homologationStart": "03.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.091.22-T-6",
+      "manufacturer": "PERFORMANCE",
+      "model": "6",
+      "homologationStart": "05.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.092.22-T-6",
+      "manufacturer": "SIMPSON",
+      "model": "6",
+      "homologationStart": "11.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.093.22-T-6",
+      "manufacturer": "ZOO",
+      "model": "50100514",
+      "homologationStart": "11.2022",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.094.22-T-6",
+      "manufacturer": "50100542",
+      "model": "6",
+      "homologationStart": "12.2022",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.095.23-T-6",
+      "manufacturer": "PERFORMANCE",
+      "model": "6",
+      "homologationStart": "12.2022",
+      "homologationEnd": "12.2027",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.096.23-T-6",
+      "manufacturer": "MCF",
+      "model": "DA0211",
+      "homologationStart": "04.2023",
+      "homologationEnd": "01.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.097.23-T-6",
+      "manufacturer": "MCF",
+      "model": "FORMULA 2X2 F1",
+      "homologationStart": "04.2023",
+      "homologationEnd": "04.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.098.23-T-6",
+      "manufacturer": "OMP",
+      "model": "6",
+      "homologationStart": "07.2023",
+      "homologationEnd": "04.2028",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.099.23-T-6",
+      "manufacturer": "JEATU",
+      "model": "JT6301",
+      "homologationStart": "07.2023",
+      "homologationEnd": "07.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.100.23-T-6",
+      "manufacturer": "OMP",
+      "model": "DA0106",
+      "homologationStart": "09.2023",
+      "homologationEnd": "09.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.101.23-T-6",
+      "manufacturer": "OMP",
+      "model": "DA0102E",
+      "homologationStart": "09.2023",
+      "homologationEnd": "09.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "SH.102.24-T-6",
+      "manufacturer": "ATECH",
+      "model": "ATECH 2.2",
+      "homologationStart": "04.2024",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.103.24-T-6",
+      "manufacturer": "ATECH",
+      "model": "ATECH 3.2",
+      "homologationStart": "04.2024",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.104.24-T-6",
+      "manufacturer": "TBRACING",
+      "model": "ULTRA",
+      "homologationStart": "05.2024",
+      "homologationEnd": "11.2027",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.105.24-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "RCU-1006",
+      "homologationStart": "07.2024",
+      "homologationEnd": "05.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.106.24-T-6",
+      "manufacturer": "SPARCO",
+      "model": "04825H1",
+      "homologationStart": "07.2024",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.108.24-T-6",
+      "manufacturer": "SABELT",
+      "model": "CFCI46320001",
+      "homologationStart": "09.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.109.24-T-6",
+      "manufacturer": "G-FORCE",
+      "model": "PRO DRIVER 6-3\"",
+      "homologationStart": "11.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.110.24-T-6",
+      "manufacturer": "MOMO",
+      "model": "PRO H11",
+      "homologationStart": "11.2024",
+      "homologationEnd": "05.2029",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.111.24-T-6",
+      "manufacturer": "SPARCO",
+      "model": "M060303",
+      "homologationStart": "12.2024",
+      "homologationEnd": "11.2027",
+      "validUntil": "2034"
+    },
+    {
+      "number": "SH.112.25-T-6",
+      "manufacturer": "MOMO",
+      "model": "PRO H12",
+      "homologationStart": "02.2025",
+      "homologationEnd": "12.2029",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.113.25-T-6",
+      "manufacturer": "SPARCO",
+      "model": "COMPETITION H2",
+      "homologationStart": "02.2025",
+      "homologationEnd": "11.2027",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.114.25-T-6",
+      "manufacturer": "SPARCO",
+      "model": "GSB 430",
+      "homologationStart": "09.2025",
+      "homologationEnd": "02.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.115.25-T-6",
+      "manufacturer": "GSB",
+      "model": "RCU-1007",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.116.25-T-6",
+      "manufacturer": "PRO RACING 6P 2\"",
+      "model": "6",
+      "homologationStart": "11.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.117.25-T-6",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "6pt Singe Seater - F1",
+      "homologationStart": "10.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2032"
+    },
+    {
+      "number": "SH.118.25-T-6",
+      "manufacturer": "MOMO",
+      "model": "ULTRALITE 2.0",
+      "homologationStart": "12.2025",
+      "homologationEnd": "11.2027",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.119.26-T-6",
+      "manufacturer": "TRS",
+      "model": "HPRH-6107",
+      "homologationStart": "05.2026",
+      "homologationEnd": "12.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "SH.120.26-T-6",
+      "manufacturer": "VROOM",
+      "model": "6",
+      "homologationStart": "06.2026",
+      "homologationEnd": "12.2030",
+      "validUntil": "2035"
+    }
+  ]
+}
