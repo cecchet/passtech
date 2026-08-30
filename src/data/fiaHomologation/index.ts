@@ -15,11 +15,17 @@ import list91 from "./list-91.json";
  * actually been verified against real entries are wired in here; see that script's
  * LIST_CONFIG for the ones still pending.
  *
- * List 24 and List 12 in particular: their tables have extra columns (strap/attachment counts
- * and buckle type for 24; seat-support position and an "S2000" flag for 12) this app doesn't
- * use, which the current parser doesn't cleanly separate from manufacturer/model — so those two
- * display fields are unreliable for these two lists specifically. The safety-relevant fields
- * (homologation number, dates, revoked) are unaffected.
+ * List 24 in particular: its table has extra columns (strap/attachment counts and buckle type)
+ * this app doesn't use, which the current parser doesn't cleanly separate from manufacturer/
+ * model — so those two display fields are unreliable specifically for this list. The
+ * safety-relevant fields (homologation number, dates, revoked) are unaffected.
+ *
+ * List 12 (FIA 8855-1999 seats) is hand-transcribed, like List 91 below — its table drifts the
+ * MODEL and DATE columns out of sync with the NUMBER/BRAND columns as pdftotext -layout reads
+ * down each page (not a clean, reversible offset; it varies row to row and resets each page
+ * break), so the generic parser silently attributed one product's model/dates to a different,
+ * nearby number throughout the whole list, not just a messy section. All 599 entries are
+ * hand-verified against the rendered pages — see LIST_12_MANUAL_ENTRIES in the parser script.
  *
  * List 27 (FIA 8856-2000) is scoped to `categories: ["firesuit"]` — only its Part 1 (numbered
  * overalls/suits) is wired up. Its Part 2 (undergarment/balaclava/sock/shoe manufacturers) and
