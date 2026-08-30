@@ -81,19 +81,9 @@ const LIST_CONFIG = {
     categories: ["seat"],
     sourceUrl: "https://www.fia.com/sites/default/files/tl40_04.08.2026.pdf",
     numberPattern: /^(AS\.\d{3}\.\d{2})\b/,
-    // Model column is unrecoverable for this list: each row has three more columns after
-    // brand/model (circuit-seat-floor bracket, circuit-seat-back bracket, rally-seat bracket
-    // part numbers), and when brand/model are blank on a given physical line — extremely common,
-    // since one homologation's full bracket-compatibility list often spans 10+ wrapped lines —
-    // pdftotext -layout collapses a bracket part number (e.g. "RTB1006BW") into the same visual
-    // position a real model name would occupy, and the two are not distinguishable by pattern
-    // (compare bracket "RT4129WTHR"-style parts to real models like "RT4129WTHR" itself). Brand
-    // is recoverable because every bracket part number in this list contains a digit or a slash,
-    // while real brand names (RACETECH, OMP, SPARCO, CITROËN, ...) don't — see columnParser.
-    columnParser: (cols) => {
-      const brand = cols[0];
-      return brand && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand) ? { manufacturer: brand } : {};
-    },
+    // Hand-transcribed (see LIST_40_MANUAL_ENTRIES below), not run through the generic
+    // pdftotext-based row parser — see that constant's own comment for why.
+    manualEntries: () => LIST_40_MANUAL_ENTRIES,
   },
   91: {
     title: "Technical List n°91 — Competition Seats (FIA 8855-2021)",
@@ -717,6 +707,135 @@ const LIST_12_MANUAL_ENTRIES = [
   { number: "CS.507.22", manufacturer: "MOTORDRIVE", model: "PRO IV", homologationStart: "12.2022", homologationEnd: "12.2027", validUntil: "2032" },
   { number: "CS.508.22", manufacturer: "NICK COMPETICION", model: "EVOLUZIONE", homologationStart: "12.2022", homologationEnd: "12.2027", validUntil: "2032" },
   { number: "CS.509.22", manufacturer: "RECARO", model: "PRO RACER ORV ULTRA RCF INFUSION", homologationStart: "12.2022", homologationEnd: "12.2027", validUntil: "2032" },
+];
+
+// List 40's table has the same class of problem as List 91/12, in a third variant: a model
+// name (e.g. AS.002.10's RT4129WTHR) can land on a physical text line disconnected from its
+// own number and brand entirely (printed near the repeated column header instead), while OTHER
+// numbers on the same page keep model correctly on their own line (AS.003.10's RT9129WTHR does)
+// - confirmed by grepping the raw text for known model strings and finding them orphaned.
+// There is no reliable way to tell, line by line, which case a given number falls into, so a
+// generic column-based parser could not be trusted (an earlier version of this script never
+// populated model for this list at all, which was too conservative given many numbers DO have
+// it safely). All 113 entries are hand-transcribed from the rendered pages, cell by cell; for
+// each number's homologationStart, the EARLIEST of its (possibly several) stacked bracket-
+// specific start dates is used, since the seat itself is not re-homologated each time a new
+// bracket option is added later. Brackets were unregulated under 8862-2009 (unlike List 91's
+// 8855-2021), so this list carries no approvedBrackets data.
+const LIST_40_MANUAL_ENTRIES = [
+  { number: "AS.001.09", manufacturer: "OMP", model: "HTE-ONE", homologationStart: "12.2009", homologationEnd: "10.2010", validUntil: "2020" },
+  { number: "AS.002.10", manufacturer: "RACETECH", model: "RT4129WTHR", homologationStart: "01.2010", homologationEnd: "01.2027", validUntil: "2037" },
+  { number: "AS.003.10", manufacturer: "RACETECH", model: "RT9129WTHR", homologationStart: "01.2010", homologationEnd: "01.2027", validUntil: "2037" },
+  { number: "AS.004.10", manufacturer: "RACETECH", model: "RT4129HRW", homologationStart: "02.2010", homologationEnd: "02.2027", validUntil: "2037" },
+  { number: "AS.005.10", manufacturer: "RACETECH", model: "RT9129HRW", homologationStart: "02.2010", homologationEnd: "02.2027", validUntil: "2037" },
+  { number: "AS.006.10", manufacturer: "SPARCO", model: "PRO ADV SUPERCARBON & PRO ADV SUPERCARBON PLUS", homologationStart: "02.2010", homologationEnd: "10.2010", validUntil: "2020" },
+  { number: "AS.007.10", manufacturer: "OMP", model: "HTE-ONE E", homologationStart: "07.2010", homologationEnd: "07.2022", validUntil: "2032" },
+  { number: "AS.008.10", manufacturer: "OMP", model: "HTE-ONE R", homologationStart: "07.2010", homologationEnd: "07.2017", validUntil: "2027" },
+  { number: "AS.009.10", manufacturer: "CITROEN RACING", model: "M-01", homologationStart: "07.2010", homologationEnd: "07.2022", validUntil: "2032" },
+  { number: "AS.010.10", manufacturer: "SPARCO", model: "ADV-SC", homologationStart: "10.2010", homologationEnd: "10.2017", validUntil: "2027" },
+  { number: "AS.011.10", manufacturer: "SPARCO", model: "ADV-SC H", homologationStart: "10.2010", homologationEnd: "10.2017", validUntil: "2027" },
+  { number: "AS.012.10", manufacturer: "RACETECH", model: "RT9129THR", homologationStart: "10.2010", homologationEnd: "02.2027", validUntil: "2037" },
+  { number: "AS.013.10", manufacturer: "RACETECH", model: "RT9129HR", homologationStart: "10.2010", homologationEnd: "02.2017", validUntil: "2027" },
+  { number: "AS.014.10", manufacturer: "RECARO", model: "PRO RACER ULTIMA (071.49.000.00)", homologationStart: "12.2010", homologationEnd: "12.2017", validUntil: "2027" },
+  { number: "AS.015.10", manufacturer: "RECARO", model: "PRO RACER ULTIMA 1.0 (071.61.000.00)", homologationStart: "12.2010", homologationEnd: "12.2017", validUntil: "2027" },
+  { number: "AS.016.11", manufacturer: "SPARCO", model: "ADV-SCX H", homologationStart: "05.2011", homologationEnd: "05.2027", validUntil: "2037" },
+  { number: "AS.017.11", manufacturer: "FIBREWORKS GMBH", model: "AUDI PS 1 M", homologationStart: "05.2011", homologationEnd: "05.2017", validUntil: "2027" },
+  { number: "AS.018.11", manufacturer: "FIBREWORKS GMBH", model: "AUDI PS 1 L", homologationStart: "06.2011", homologationEnd: "06.2017", validUntil: "2027" },
+  { number: "AS.019.11", manufacturer: "DOME", model: "DH11", homologationStart: "09.2011", homologationEnd: "09.2017", validUntil: "2027" },
+  { number: "AS.020.11", manufacturer: "RECARO", model: "PRO RACER ULTIMA XL (071.62.000.00)", homologationStart: "11.2011", homologationEnd: "11.2017", validUntil: "2027" },
+  { number: "AS.021.12", manufacturer: "SABELT", model: "GT-620", homologationStart: "01.2012", homologationEnd: "01.2017", validUntil: "2027" },
+  { number: "AS.022.12", manufacturer: "SPARCO", model: "ADV-SCX", homologationStart: "02.2012", homologationEnd: "02.2027", validUntil: "2037" },
+  { number: "AS.023.12", manufacturer: "CITROEN RACING", model: "CITROEN RACING CR2", homologationStart: "03.2012", homologationEnd: "03.2022", validUntil: "2032" },
+  { number: "AS.024.12", manufacturer: "DOME", model: "DH11W", homologationStart: "04.2012", homologationEnd: "04.2017", validUntil: "2027" },
+  { number: "AS.025.12", manufacturer: "OMP", model: "HTE X ONE", homologationStart: "07.2012", homologationEnd: "07.2017", validUntil: "2027" },
+  { number: "AS.026.12", manufacturer: "FW TECHNOLOGY", model: "BRAZILIAN STOCK CAR SEAT (Ener-Core EC50 \"orange\" foam thickness from 20 to 100 mm)", homologationStart: "10.2012", homologationEnd: "10.2017", validUntil: "2027" },
+  { number: "AS.027.12", manufacturer: "RECARO", model: "P 1300 GT (for circuit events only)", homologationStart: "12.2012", homologationEnd: "12.2022", validUntil: "2032" },
+  { number: "AS.028.13", manufacturer: "HWA AG", model: "EREBUS MOTORSPORT - E CELL", homologationStart: "02.2013", homologationEnd: "02.2018", validUntil: "2028" },
+  { number: "AS.029.13", manufacturer: "SPARCO", model: "ADV-SV", homologationStart: "04.2013", homologationEnd: "04.2018", validUntil: "2028" },
+  { number: "AS.030.13", manufacturer: "SPARCO", model: "EVR-SV", homologationStart: "04.2013", homologationEnd: "04.2018", validUntil: "2028" },
+  { number: "AS.031.13", manufacturer: "RALF BRAND", model: "AUDI PS 1 M", homologationStart: "10.2013", homologationEnd: "10.2018", validUntil: "2028" },
+  { number: "AS.032.13", manufacturer: "RALF BRAND", model: "AUDI PS 1 L", homologationStart: "10.2013", homologationEnd: "10.2018", validUntil: "2028" },
+  { number: "AS.033.14", manufacturer: "OMP", model: "HRC ONE", homologationStart: "03.2014", homologationEnd: "03.2024", validUntil: "2034" },
+  { number: "AS.034.14", manufacturer: "ATECH", model: "CARBON RS", homologationStart: "04.2014", homologationEnd: "04.2019", validUntil: "2029" },
+  { number: "AS.035.14", manufacturer: "ATECH", model: "CARBON RS8", homologationStart: "04.2014", homologationEnd: "04.2019", validUntil: "2029" },
+  { number: "AS.036.14", manufacturer: "FW TECHNOLOGY", model: "FIBREWORKS RS-01", homologationStart: "04.2014", homologationEnd: "04.2019", validUntil: "2029" },
+  { number: "AS.037.14", manufacturer: "SPARCO", model: "ADV ELITE", homologationStart: "10.2014", homologationEnd: "10.2029", validUntil: "2039" },
+  { number: "AS.038.15", manufacturer: "VOLKSWAGEN", model: "VWMS RACING SEAT", homologationStart: "04.2015", homologationEnd: "04.2020", validUntil: "2030" },
+  { number: "AS.039.15", manufacturer: "SABELT", model: "GT-625L (for circuit events only)", homologationStart: "04.2015", homologationEnd: "04.2020", validUntil: "2030" },
+  { number: "AS.040.15", manufacturer: "ATECH", model: "SCG003c", homologationStart: "05.2015", homologationEnd: "05.2020", validUntil: "2030" },
+  { number: "AS.041.15", manufacturer: "RACETECH", model: "RT9129WHR", homologationStart: "07.2015", homologationEnd: "01.2027", validUntil: "2037" },
+  { number: "AS.042.15", manufacturer: "FIBREWORKS USA", model: "842029801A", homologationStart: "09.2015", homologationEnd: "09.2020", validUntil: "2030" },
+  { number: "AS.043.15", manufacturer: "FIBREWORKS USA", model: "842029701A", homologationStart: "09.2015", homologationEnd: "09.2020", validUntil: "2030" },
+  { number: "AS.044.15", manufacturer: "RACETECH", model: "RT4129WHR", homologationStart: "11.2015", homologationEnd: "01.2027", validUntil: "2037" },
+  { number: "AS.045.15", manufacturer: "HWA AG", model: "DSC15-GT3", homologationStart: "12.2015", homologationEnd: "12.2030", validUntil: "2040" },
+  { number: "AS.046.16", manufacturer: "SPARCO", model: "ADV GT (for circuit events only)", homologationStart: "01.2016", homologationEnd: "01.2021", validUntil: "2031" },
+  { number: "AS.047.16", manufacturer: "SABELT", model: "GT-630H", homologationStart: "01.2016", homologationEnd: "01.2021", validUntil: "2031" },
+  { number: "AS.048.16", manufacturer: "DOME", model: "DOME RS16 (for circuit events only)", homologationStart: "02.2016", homologationEnd: "02.2021", validUntil: "2031" },
+  { number: "AS.049.16", manufacturer: "SPARCO", model: "ADV NSX GT3 (for circuit events only)", homologationStart: "03.2016", homologationEnd: "03.2021", validUntil: "2031" },
+  { number: "AS.050.16", manufacturer: "CORBEAU", model: "PREDATOR (for circuit events only)", homologationStart: "03.2016", homologationEnd: "03.2021", validUntil: "2031" },
+  { number: "AS.051.16", manufacturer: "OMP", model: "HTE ONE J", homologationStart: "03.2016", homologationEnd: "03.2021", validUntil: "2031" },
+  { number: "AS.052.16", manufacturer: "PRATT & MILLER", model: "PM-0406", homologationStart: "04.2016", homologationEnd: "04.2021", validUntil: "2031" },
+  { number: "AS.053.16", manufacturer: "DOME", model: "DOME RS16R", homologationStart: "05.2016", homologationEnd: "05.2026", validUntil: "2036" },
+  { number: "AS.054.16", manufacturer: "RACETECH", model: "RT9129WTHRL", homologationStart: "09.2016", homologationEnd: "09.2026", validUntil: "2036" },
+  { number: "AS.055.16", manufacturer: "RACETECH", model: "RT9129HRWP", homologationStart: "09.2016", homologationEnd: "09.2021", validUntil: "2031" },
+  { number: "AS.056.16", manufacturer: "SABELT", model: "GT-621", homologationStart: "10.2016", homologationEnd: "10.2021", validUntil: "2031" },
+  { number: "AS.057.16", manufacturer: "SABELT", model: "GT-635 M (for circuit events only)", homologationStart: "10.2016", homologationEnd: "10.2026", validUntil: "2036" },
+  { number: "AS.058.16", manufacturer: "SABELT", model: "GT-635 XL (for circuit events only)", homologationStart: "10.2016", homologationEnd: "10.2026", validUntil: "2036" },
+  { number: "AS.059.16", manufacturer: "AUDI", model: "PS03 (This seat is authorized for 4-points and for 6-points installation)", homologationStart: "11.2016", homologationEnd: "11.2026", validUntil: "2036" },
+  { number: "AS.060.16", manufacturer: "SABELT", model: "GT-635-F M", homologationStart: "11.2016", homologationEnd: "11.2026", validUntil: "2036" },
+  { number: "AS.061.16", manufacturer: "SABELT", model: "GT-635-F XL", homologationStart: "11.2016", homologationEnd: "11.2026", validUntil: "2036" },
+  { number: "AS.062.16", manufacturer: "ATECH", model: "CARBON RS7", homologationStart: "11.2016", homologationEnd: "11.2021", validUntil: "2031" },
+  { number: "AS.063.17", manufacturer: "VOLKSWAGEN", model: "VWMS RACING SEAT V2", homologationStart: "03.2017", homologationEnd: "03.2022", validUntil: "2032" },
+  { number: "AS.064.17", manufacturer: "SPARCO", model: "ADV XT", homologationStart: "06.2017", homologationEnd: "06.2027", validUntil: "2037" },
+  { number: "AS.065.17", manufacturer: "CORBEAU", model: "PREDATOR SV (for circuit events only)", homologationStart: "07.2017", homologationEnd: "07.2027", validUntil: "2037" },
+  { number: "AS.066.17", manufacturer: "MOTORDRIVE", model: "MD10", homologationStart: "08.2017", homologationEnd: "08.2027", validUntil: "2037" },
+  { number: "AS.067.17", manufacturer: "OMP", model: "HTE ONE XL", homologationStart: "08.2017", homologationEnd: "08.2027", validUntil: "2037" },
+  { number: "AS.068.18", manufacturer: "OMP", model: "HTE ONE S", homologationStart: "02.2018", homologationEnd: "02.2023", validUntil: "2033" },
+  { number: "AS.069.18", manufacturer: "RECARO", model: "RACE 1400 R", homologationStart: "03.2018", homologationEnd: "03.2023", validUntil: "2033" },
+  { number: "AS.070.18", manufacturer: "SPARCO", model: "ADV-SC 19", homologationStart: "07.2018", homologationEnd: "07.2028", validUntil: "2038" },
+  { number: "AS.071.18", manufacturer: "SABELT", model: "GT-E (for circuit events only)", homologationStart: "07.2018", homologationEnd: "07.2023", validUntil: "2033" },
+  { number: "AS.072.18", manufacturer: "RACETECH", model: "RT-BABT62-A1 (for circuit events only)", homologationStart: "08.2018", homologationEnd: "08.2023", validUntil: "2033" },
+  { number: "AS.073.18", manufacturer: "CORBEAU", model: "PREDATOR GT (for circuit events only)", homologationStart: "11.2018", homologationEnd: "11.2023", validUntil: "2033" },
+  { number: "AS.074.18", manufacturer: "MOTORDRIVE", model: "MD20", homologationStart: "11.2018", homologationEnd: "11.2028", validUntil: "2038" },
+  { number: "AS.075.19", manufacturer: "OMP", model: "HRC ONE LITE", homologationStart: "01.2019", homologationEnd: "01.2029", validUntil: "2039" },
+  { number: "AS.076.19", manufacturer: "MOTORDRIVE", model: "MD20/15", homologationStart: "03.2019", homologationEnd: "11.2028", validUntil: "2038" },
+  { number: "AS.077.19", manufacturer: "MOTORDRIVE", model: "MD20/30", homologationStart: "03.2019", homologationEnd: "11.2028", validUntil: "2038" },
+  { number: "AS.078.19", manufacturer: "ATECH", model: "CARBON RS - LHT", homologationStart: "04.2019", homologationEnd: "04.2029", validUntil: "2039" },
+  { number: "AS.079.19", manufacturer: "ATECH", model: "CARBON RS8-LHT", homologationStart: "05.2019", homologationEnd: "04.2029", validUntil: "2039" },
+  { number: "AS.080.19", manufacturer: "SPARCO", model: "ADV XT GF", homologationStart: "06.2019", homologationEnd: "06.2024", validUntil: "2034" },
+  { number: "AS.081.19", manufacturer: "SABELT", model: "GT-PRO M", homologationStart: "07.2019", homologationEnd: "07.2029", validUntil: "2039" },
+  { number: "AS.082.19", manufacturer: "RECARO", model: "P1300 GT LW (for circuit events only)", homologationStart: "08.2019", homologationEnd: "08.2029", validUntil: "2039" },
+  { number: "AS.083.19", manufacturer: "OMP", model: "HRC ONE LITE RC", homologationStart: "08.2019", homologationEnd: "08.2024", validUntil: "2034" },
+  { number: "AS.084.19", manufacturer: "OMP", model: "HTE ONE LITE", homologationStart: "09.2019", homologationEnd: "09.2029", validUntil: "2039" },
+  { number: "AS.085.19", manufacturer: "OMP", model: "HTC ONE", homologationStart: "11.2019", homologationEnd: "11.2029", validUntil: "2039" },
+  { number: "AS.086.20", manufacturer: "SABELT", model: "GT-PRO XL", homologationStart: "03.2020", homologationEnd: "03.2030", validUntil: "2040" },
+  { number: "AS.087.20", manufacturer: "SABELT", model: "GT-PRO XL 6 POINT", homologationStart: "03.2020", homologationEnd: "03.2025", validUntil: "2035" },
+  { number: "AS.088.20", manufacturer: "SABELT", model: "GT-PRO CUP", homologationStart: "08.2020", homologationEnd: "09.2030", validUntil: "2040" },
+  { number: "AS.089.21", manufacturer: "RECARO", model: "x2879X12001 (for circuit events only)", homologationStart: "04.2021", homologationEnd: "04.2026", validUntil: "2036" },
+  { number: "AS.090.21", manufacturer: "CORBEAU", model: "CORBEAU ARS-6", homologationStart: "04.2021", homologationEnd: "04.2026", validUntil: "2036" },
+  { number: "AS.091.21", manufacturer: "FIBREWORKS USA", model: "8446039-1 (for circuit events only)", homologationStart: "06.2021", homologationEnd: "06.2026", validUntil: "2036" },
+  { number: "AS.092.21", manufacturer: "RACETECH", model: "RT8129HRP", homologationStart: "06.2021", homologationEnd: "06.2031", validUntil: "2041" },
+  { number: "AS.093.21", manufacturer: "OMP", model: "HTE ONE E2", homologationStart: "06.2021", homologationEnd: "06.2031", validUntil: "2041" },
+  { number: "AS.094.21", manufacturer: "FIBREWORKS USA", model: "8431266", homologationStart: "06.2021", homologationEnd: "06.2026", validUntil: "2036" },
+  { number: "AS.095.21", manufacturer: "SPARCO", model: "ADV PRIME", homologationStart: "08.2021", homologationEnd: "08.2031", validUntil: "2041" },
+  { number: "AS.096.21", manufacturer: "OMP", model: "HTE ONE LITE W", homologationStart: "11.2021", homologationEnd: "11.2031", validUntil: "2041" },
+  { number: "AS.097.22", manufacturer: "AUDI", model: "PS04 (for circuit events only)", homologationStart: "03.2022", homologationEnd: "03.2027", validUntil: "2037" },
+  { number: "AS.098.22", manufacturer: "RACETECH", model: "RT4129THR", homologationStart: "06.2022", homologationEnd: "02.2027", validUntil: "2037" },
+  { number: "AS.099.22", manufacturer: "SPARCO", model: "ADV COMPETITION", homologationStart: "06.2022", homologationEnd: "06.2027", validUntil: "2037" },
+  { number: "AS.100.22", manufacturer: "RECARO", model: "PRO SUPREME GT CR (for circuit events only)", homologationStart: "06.2022", homologationEnd: "06.2027", validUntil: "2037" },
+  { number: "AS.101.22", manufacturer: "SABELT", model: "GT-X XL (for circuit events only)", homologationStart: "10.2022", homologationEnd: "10.2027", validUntil: "2037" },
+  { number: "AS.102.22", manufacturer: "SABELT", model: "GT-X M (for circuit events only)", homologationStart: "10.2022", homologationEnd: "10.2027", validUntil: "2037" },
+  { number: "AS.103.23", manufacturer: "SABELT", model: "GT- MCL", homologationStart: "01.2023", homologationEnd: "01.2028", validUntil: "2038" },
+  { number: "AS.104.23", manufacturer: "ATECH", model: "CARBON RS7-LHT", homologationStart: "02.2023", homologationEnd: "02.2028", validUntil: "2038" },
+  { number: "AS.105.23", manufacturer: "SABELT", model: "GT-X CHP XL (for circuit events only)", homologationStart: "07.2023", homologationEnd: "07.2028", validUntil: "2038" },
+  { number: "AS.106.23", manufacturer: "SABELT", model: "GT-X CHP M (for circuit events only)", homologationStart: "07.2023", homologationEnd: "07.2028", validUntil: "2038" },
+  { number: "AS.107.23", manufacturer: "RECARO", model: "RECARO PRO SUPREME GT FPR (for circuit events only)", homologationStart: "08.2023", homologationEnd: "08.2028", validUntil: "2038" },
+  { number: "AS.108.24", manufacturer: "OMP", model: "HTE ONE ULTRA LITE 7", homologationStart: "07.2024", homologationEnd: "07.2029", validUntil: "2039" },
+  { number: "AS.109.24", manufacturer: "OMP", model: "HTE ONE ULTRA LITE", homologationStart: "07.2024", homologationEnd: "07.2029", validUntil: "2039" },
+  { number: "AS.110.24", manufacturer: "RACETECH", model: "RT8139WHR", homologationStart: "12.2024", homologationEnd: "12.2029", validUntil: "2039" },
+  { number: "AS.111.26", manufacturer: "SPARCO", model: "4LM881027", homologationStart: "02.2026", homologationEnd: "02.2031", validUntil: "2041" },
+  { number: "AS.112.26", manufacturer: "OMP", model: "HTE ONE ULTRA LITE H", homologationStart: "03.2026", homologationEnd: "03.2031", validUntil: "2041" },
+  { number: "AS.113.26", manufacturer: "HRX", model: "FIGHTER", homologationStart: "05.2026", homologationEnd: "05.2031", validUntil: "2041" },
 ];
 
 // List 91's table has multiple bracket sub-rows genuinely belonging to ONE homologation number
