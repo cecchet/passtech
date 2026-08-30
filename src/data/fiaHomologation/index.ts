@@ -20,6 +20,11 @@ import list91 from "./list-91.json";
  * doesn't use). B-104.T/98 read as manufacturer "Magnum 4pts" (actually the model) with dates
  * borrowed from a different row. All 55 entries are hand-verified — see LIST_24_MANUAL_ENTRIES.
  *
+ * List 57 (FIA 8853-2016 harnesses, the newer harness standard) has the same drift bug too —
+ * SH.020.17-T-6 read as manufacturer "T-BAR 2x2" (actually SH.014's model) with model "6"
+ * (actually the attachments-count column). All 119 entries are hand-verified — see
+ * LIST_57_MANUAL_ENTRIES.
+ *
  * List 12 (FIA 8855-1999 seats) is hand-transcribed, like List 91 below — its table drifts the
  * MODEL and DATE columns out of sync with the NUMBER/BRAND columns as pdftotext -layout reads
  * down each page (not a clean, reversible offset; it varies row to row and resets each page
