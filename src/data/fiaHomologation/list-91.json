@@ -15,13 +15,22 @@
       "manufacturer": "Atech",
       "model": "AT-FH",
       "homologationStart": "05.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "approvedBrackets": [
+        "ATBRK21"
+      ]
     },
     {
-      "number": "CS.002.21"
+      "number": "CS.002.21",
+      "approvedBrackets": [
+        "ATBRK21-L"
+      ]
     },
     {
-      "number": "CS.003.21"
+      "number": "CS.003.21",
+      "approvedBrackets": [
+        "ATBRK21"
+      ]
     },
     {
       "number": "CS.004.21",
@@ -29,7 +38,10 @@
       "model": "MASTER",
       "homologationStart": "07.2021",
       "homologationEnd": "07.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "approvedBrackets": [
+        "004922V2"
+      ]
     },
     {
       "number": "CS.005.21",
@@ -37,13 +49,22 @@
       "model": "AT-CH",
       "homologationStart": "07.2021",
       "homologationEnd": "07.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "approvedBrackets": [
+        "ATBRK21-L"
+      ]
     },
     {
-      "number": "CS.006.21"
+      "number": "CS.006.21",
+      "approvedBrackets": [
+        "ATBRK21"
+      ]
     },
     {
-      "number": "CS.007.21"
+      "number": "CS.007.21",
+      "approvedBrackets": [
+        "ATBRK21-L"
+      ]
     },
     {
       "number": "CS.008.21",
@@ -59,7 +80,10 @@
       "model": "HTC EVO",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "approvedBrackets": [
+        "HC/945"
+      ]
     },
     {
       "number": "CS.010.22",
@@ -75,10 +99,16 @@
       "model": "SPINE",
       "homologationStart": "05.2022",
       "homologationEnd": "05.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "approvedBrackets": [
+        "RFST0108"
+      ]
     },
     {
-      "number": "CS.012.22"
+      "number": "CS.012.22",
+      "approvedBrackets": [
+        "RFST0051"
+      ]
     },
     {
       "number": "CS.013.23",
@@ -86,16 +116,28 @@
       "model": "RST-1200",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "approvedBrackets": [
+        "SSM-04"
+      ]
     },
     {
-      "number": "CS.014.23"
+      "number": "CS.014.23",
+      "approvedBrackets": [
+        "RFST0071"
+      ]
     },
     {
-      "number": "CS.015.23"
+      "number": "CS.015.23",
+      "approvedBrackets": [
+        "RFST0108"
+      ]
     },
     {
-      "number": "CS.016.23"
+      "number": "CS.016.23",
+      "approvedBrackets": [
+        "HC0-0951"
+      ]
     },
     {
       "number": "CS.017.23",
@@ -103,7 +145,10 @@
       "model": "SPINE M",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "approvedBrackets": [
+        "HC0-0951"
+      ]
     },
     {
       "number": "CS.018.23",

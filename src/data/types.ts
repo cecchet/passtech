@@ -341,6 +341,18 @@ export interface FiaHomologationEntry {
   revoked?: boolean;
   /** Free-text reason/date for the revocation, when the list states one. */
   revokedNote?: string;
+  /**
+   * Seat-mounting bracket part number(s) homologated together WITH this specific seat — as
+   * opposed to a bracket being freely chosen by the installer. Only FIA 8855-2021 (List 91)
+   * introduced this pairing requirement; brackets were unregulated under the older 8855-1999
+   * (List 12) and 8862-2009 (List 40) standards, so this field is only ever populated for List 91
+   * entries. Best-effort and very likely INCOMPLETE: a seat's full set of approved brackets often
+   * spans several physical lines in the source PDF (different brackets approved at different
+   * times), and this app's parser only captures whatever bracket text sits on the same line as
+   * the homologation number itself — see scripts/parse-fia-list.mjs's LIST_CONFIG[91]. Absence of
+   * a bracket here does NOT mean no bracket requirement exists; always cross-check the source list.
+   */
+  approvedBrackets?: string[];
 }
 
 /** One official FIA Technical List, e.g. "List 74" (FIA 8856-2018 driving suits/clothing). */

@@ -395,6 +395,31 @@ function HomologationCheck({
     }
   })();
 
+  // FIA 8855-2021 is the first seat standard to homologate the seat together with a specific
+  // mounting bracket — a bracket is no longer a free installer choice like it was for older seat
+  // standards. Surfaced separately from `banner` above since it's a different kind of warning
+  // (a pairing requirement, not the seat's own validity) that still matters even when the seat
+  // itself checks out fine; skipped once the seat is already known non-compliant (revoked) or
+  // isn't found at all, where it would just be noise.
+  const bracketNote =
+    standardId === "fia-8855-2021" && result && result.status !== "revoked" && result.status !== "not_found" && result.status !== "no_list_for_standard" ? (
+      <p className="rounded border border-amber-800 bg-amber-950/40 px-2 py-1 text-xs text-amber-300">
+        ⚠ FIA 8855-2021 homologates this seat together with a specific mounting bracket — the bracket is not a free installer choice under this standard.{" "}
+        {result.entry?.approvedBrackets?.length ? (
+          <>
+            Only bracket(s) matching <b>{result.entry.approvedBrackets.join(", ")}</b> were found listed for this homologation in{" "}
+            <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} />. If the bracket fitted isn&rsquo;t one of these, verify against
+            the source list yourself — this app&rsquo;s extraction of bracket data may be incomplete.
+          </>
+        ) : (
+          <>
+            This app couldn&rsquo;t extract a specific approved bracket for this homologation — verify the bracket fitted against{" "}
+            <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} /> yourself.
+          </>
+        )}
+      </p>
+    ) : null;
+
   return (
     <div className="mt-2 flex flex-col gap-1">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
@@ -417,6 +442,7 @@ function HomologationCheck({
         />
       </label>
       {banner}
+      {bracketNote}
     </div>
   );
 }

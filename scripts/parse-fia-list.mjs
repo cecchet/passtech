@@ -113,10 +113,25 @@ const LIST_CONFIG = {
     // names are letters-only (Atech, Sparco, OMP, Corbeau, Sabelt, TRP); every bracket part
     // number in this section has a digit or a slash — so only trust the model column when the
     // brand column next to it validated first.
+    //
+    // FIA 8855-2021 is the first seat standard to homologate the seat together with specific
+    // mounting bracket(s) — a bracket is no longer a free installer choice like it was under
+    // 8855-1999 (List 12) or 8862-2009 (List 40). When a brand/model IS present, the very next
+    // column is the floor-bracket cell for that same row; when it's absent (a bracket-variant
+    // continuation number, or a bracket printed on its own line), the first column IS the
+    // bracket. Either way this is only ever the bracket(s) stated on the number's OWN line — a
+    // seat's full set of approved brackets often spans several physical lines (see e.g.
+    // CS.008.21/CS.010.22/CS.018.23 below, whose brackets sit on separate lines and are therefore
+    // NOT captured here), so `approvedBrackets` should be treated as a possibly-incomplete
+    // best-effort list, not the definitive set — see FiaHomologationEntry.approvedBrackets.
     columnParser: (cols) => {
+      const isBracketLike = (s) => !!s && s !== "-" && s.toUpperCase() !== "N/A" && /[0-9/]/.test(s);
       const brand = cols[0];
-      if (!brand || !/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand)) return {};
-      return { manufacturer: brand, model: cols[1] };
+      if (!brand || !/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand)) {
+        return isBracketLike(brand) ? { approvedBrackets: [brand] } : {};
+      }
+      const bracket = cols[2];
+      return { manufacturer: brand, model: cols[1], approvedBrackets: isBracketLike(bracket) ? [bracket] : undefined };
     },
     // From CS.019.24 onward the PDF's column spacing collapses (brand/model/bracket-part text
     // runs together with single spaces instead of the double-space gaps this parser relies on to
@@ -182,7 +197,7 @@ function parseGenericRow(line, numberPattern, dateTailPattern, columnParser = de
   if (dateMatch) rest = rest.slice(0, dateMatch.index);
 
   const cols = splitColumns(rest);
-  const { manufacturer, model, productType } = columnParser(cols);
+  const { manufacturer, model, productType, approvedBrackets } = columnParser(cols);
 
   return {
     number,
@@ -192,6 +207,7 @@ function parseGenericRow(line, numberPattern, dateTailPattern, columnParser = de
     homologationStart: start || undefined,
     homologationEnd: end || undefined,
     validUntil: validUntil || undefined,
+    approvedBrackets: approvedBrackets || undefined,
   };
 }
 
