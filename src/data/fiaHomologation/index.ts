@@ -27,6 +27,13 @@ import list91 from "./list-91.json";
  * nearby number throughout the whole list, not just a messy section. All 599 entries are
  * hand-verified against the rendered pages — see LIST_12_MANUAL_ENTRIES in the parser script.
  *
+ * List 16 (FIA 8865-2015 fire extinguisher systems) is hand-transcribed too, for a different
+ * reason: many rows have a multi-line MODEL cell (several alternate part numbers stacked
+ * together, e.g. one homologation covering six FX G-TEC variants), and the generic parser
+ * dropped most of these rows outright rather than misattributing them — it found only 14 of the
+ * real 74 entries. All 74 are hand-verified — see LIST_16_MANUAL_ENTRIES. This list has no
+ * separate "valid until" column, so `validUntil` is never set for it.
+ *
  * List 27 (FIA 8856-2000) is scoped to `categories: ["firesuit"]` — only its Part 1 (numbered
  * overalls/suits) is wired up. Its Part 2 (undergarment/balaclava/sock/shoe manufacturers) and
  * Part 3 (gloves) are "approved manufacturer/model" lists with no homologation number at all,
