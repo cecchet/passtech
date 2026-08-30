@@ -1,0 +1,687 @@
+{
+  "listNumber": 40,
+  "title": "Technical List n°40 — Advanced Racing Seats (FIA 8862-2009)",
+  "standardIds": [
+    "fia-8862-2009"
+  ],
+  "categories": [
+    "seat"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/tl40_04.08.2026.pdf",
+  "lastFetched": "2026-08-30",
+  "entries": [
+    {
+      "number": "AS.001.09",
+      "manufacturer": "Racing Force S.p.A (OMP)",
+      "model": "HTE-ONE",
+      "homologationStart": "12.2009",
+      "homologationEnd": "10.2010",
+      "validUntil": "2020",
+      "revoked": true,
+      "revokedNote": "As this seat can no longer be considered as complying with the standard FIA 8862-2009 Advanced Racing Seats, its use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    },
+    {
+      "number": "AS.002.10",
+      "manufacturer": "RACETECH",
+      "homologationStart": "01.2010",
+      "homologationEnd": "01.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.003.10",
+      "manufacturer": "RACETECH",
+      "homologationStart": "01.2010",
+      "homologationEnd": "01.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.004.10",
+      "manufacturer": "RACETECH",
+      "homologationStart": "02.2010",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.005.10",
+      "manufacturer": "RACETECH",
+      "homologationStart": "02.2027"
+    },
+    {
+      "number": "AS.006.10",
+      "manufacturer": "SPARCO S.P.A.",
+      "model": "PRO ADV SUPERCARBON & PRO ADV SUPERCARBON PLUS",
+      "homologationStart": "02.2010",
+      "homologationEnd": "10.2010",
+      "validUntil": "2020",
+      "revoked": true,
+      "revokedNote": "As this seat can no longer be considered as complying with the standard FIA 8862-2009 Advanced Racing Seats, its use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    },
+    {
+      "number": "AS.007.10",
+      "manufacturer": "OMP",
+      "homologationStart": "04.2020",
+      "homologationEnd": "07.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "AS.008.10",
+      "manufacturer": "OMP",
+      "homologationStart": "07.2010",
+      "homologationEnd": "07.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.009.10",
+      "manufacturer": "CITROËN",
+      "homologationStart": "04.2014",
+      "homologationEnd": "07.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "AS.010.10",
+      "manufacturer": "SPARCO",
+      "homologationStart": "10.2010",
+      "homologationEnd": "10.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.011.10",
+      "manufacturer": "SPARCO",
+      "homologationStart": "10.2010",
+      "homologationEnd": "10.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.012.10",
+      "manufacturer": "RACETECH",
+      "homologationStart": "03.2018",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.013.10",
+      "manufacturer": "RECARO",
+      "homologationStart": "12.2010",
+      "homologationEnd": "12.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.014.10",
+      "manufacturer": "RECARO",
+      "homologationStart": "12.2010",
+      "homologationEnd": "12.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.015.10",
+      "manufacturer": "RECARO AUTOMOTIVE GMBH & CO. KG",
+      "model": "PRO RACER ULTIMA 1.0 (071.61.000.00)",
+      "homologationStart": "03.2017",
+      "homologationEnd": "12.2017",
+      "validUntil": "2027",
+      "revoked": true,
+      "revokedNote": "As this seat can no longer be considered as complying with the standard FIA 8862-2009 Advanced Racing Seats, its use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    },
+    {
+      "number": "AS.016.11",
+      "manufacturer": "SPARCO",
+      "homologationStart": "05.2011",
+      "homologationEnd": "05.2027"
+    },
+    {
+      "number": "AS.017.11",
+      "manufacturer": "FIBREWORKS GMBH",
+      "homologationStart": "05.2011",
+      "homologationEnd": "05.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.018.11",
+      "manufacturer": "FIBREWORKS GMBH",
+      "homologationStart": "06.2011",
+      "homologationEnd": "06.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.019.11",
+      "manufacturer": "DOME",
+      "homologationStart": "09.2011",
+      "homologationEnd": "09.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.020.11",
+      "manufacturer": "RECARO",
+      "homologationStart": "11.2011",
+      "homologationEnd": "11.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.021.12",
+      "manufacturer": "SABELT",
+      "homologationStart": "01.2012",
+      "homologationEnd": "01.2017"
+    },
+    {
+      "number": "AS.022.12",
+      "manufacturer": "SPARCO",
+      "homologationStart": "03.2014"
+    },
+    {
+      "number": "AS.023.12",
+      "manufacturer": "CITROËN",
+      "homologationStart": "06.2014",
+      "homologationEnd": "03.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "AS.024.12",
+      "manufacturer": "DOME",
+      "homologationStart": "04.2012",
+      "homologationEnd": "04.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.025.12",
+      "manufacturer": "OMP",
+      "homologationStart": "07.2012",
+      "homologationEnd": "07.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.026.12",
+      "manufacturer": "FW TECHNOLOGY",
+      "homologationStart": "10.2012",
+      "homologationEnd": "10.2017",
+      "validUntil": "2027"
+    },
+    {
+      "number": "AS.027.12",
+      "manufacturer": "RECARO",
+      "homologationStart": "12.2012",
+      "homologationEnd": "12.2022",
+      "validUntil": "2032"
+    },
+    {
+      "number": "AS.028.13",
+      "manufacturer": "HWA AG",
+      "homologationStart": "02.2013",
+      "homologationEnd": "02.2018",
+      "validUntil": "2028"
+    },
+    {
+      "number": "AS.029.13",
+      "manufacturer": "SPARCO",
+      "homologationStart": "04.2013",
+      "homologationEnd": "04.2018",
+      "validUntil": "2028"
+    },
+    {
+      "number": "AS.030.13"
+    },
+    {
+      "number": "AS.031.13",
+      "manufacturer": "RALF BRAND"
+    },
+    {
+      "number": "AS.032.13",
+      "manufacturer": "RALF BRAND",
+      "homologationStart": "10.2013",
+      "homologationEnd": "10.2018",
+      "validUntil": "2028"
+    },
+    {
+      "number": "AS.033.14",
+      "manufacturer": "OMP",
+      "homologationStart": "03.2014",
+      "homologationEnd": "03.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "AS.034.14",
+      "manufacturer": "ATECH",
+      "homologationStart": "01.2016",
+      "homologationEnd": "04.2019",
+      "validUntil": "2029"
+    },
+    {
+      "number": "AS.035.14",
+      "manufacturer": "ATECH",
+      "homologationStart": "04.2014",
+      "homologationEnd": "04.2019",
+      "validUntil": "2029"
+    },
+    {
+      "number": "AS.036.14",
+      "manufacturer": "FW TECHNOLOGY",
+      "homologationStart": "04.2014",
+      "homologationEnd": "04.2019",
+      "validUntil": "2029"
+    },
+    {
+      "number": "AS.037.14",
+      "manufacturer": "SPARCO",
+      "homologationStart": "10.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.038.15",
+      "manufacturer": "VOLKSWAGEN",
+      "homologationStart": "04.2015",
+      "homologationEnd": "04.2020",
+      "validUntil": "2030"
+    },
+    {
+      "number": "AS.039.15",
+      "manufacturer": "SABELT",
+      "homologationStart": "04.2015",
+      "homologationEnd": "04.2020",
+      "validUntil": "2030"
+    },
+    {
+      "number": "AS.040.15",
+      "manufacturer": "ATECH",
+      "homologationStart": "05.2015",
+      "homologationEnd": "05.2020",
+      "validUntil": "2030"
+    },
+    {
+      "number": "AS.041.15",
+      "manufacturer": "RACETECH",
+      "homologationStart": "07.2019",
+      "homologationEnd": "01.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.042.15",
+      "manufacturer": "FIBREWORKS USA",
+      "homologationStart": "09.2015",
+      "homologationEnd": "09.2020",
+      "validUntil": "2030"
+    },
+    {
+      "number": "AS.043.15",
+      "manufacturer": "FIBREWORKS USA"
+    },
+    {
+      "number": "AS.044.15",
+      "manufacturer": "RACETECH",
+      "homologationStart": "01.2027"
+    },
+    {
+      "number": "AS.045.15",
+      "manufacturer": "HWA AG",
+      "homologationStart": "12.2015",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040"
+    },
+    {
+      "number": "AS.046.16",
+      "manufacturer": "SPARCO"
+    },
+    {
+      "number": "AS.047.16",
+      "manufacturer": "SABELT",
+      "homologationStart": "01.2016",
+      "homologationEnd": "01.2021",
+      "validUntil": "2031"
+    },
+    {
+      "number": "AS.048.16",
+      "manufacturer": "DOME",
+      "homologationStart": "02.2016",
+      "homologationEnd": "02.2021",
+      "validUntil": "2031"
+    },
+    {
+      "number": "AS.049.16",
+      "manufacturer": "SPARCO",
+      "homologationStart": "03.2016",
+      "validUntil": "2031"
+    },
+    {
+      "number": "AS.050.16",
+      "manufacturer": "CORBEAU"
+    },
+    {
+      "number": "AS.051.16",
+      "manufacturer": "OMP",
+      "homologationStart": "02.2020"
+    },
+    {
+      "number": "AS.052.16"
+    },
+    {
+      "number": "AS.053.16",
+      "manufacturer": "MILLER"
+    },
+    {
+      "number": "AS.054.16"
+    },
+    {
+      "number": "AS.055.16",
+      "homologationStart": "10.2016"
+    },
+    {
+      "number": "AS.056.16",
+      "manufacturer": "SABELT",
+      "homologationStart": "10.2021",
+      "validUntil": "2031"
+    },
+    {
+      "number": "AS.057.16",
+      "homologationStart": "02.2017"
+    },
+    {
+      "number": "AS.058.16"
+    },
+    {
+      "number": "AS.059.16",
+      "manufacturer": "AUDI",
+      "homologationStart": "11.2016"
+    },
+    {
+      "number": "AS.060.16",
+      "manufacturer": "SABELT",
+      "homologationStart": "07.2021"
+    },
+    {
+      "number": "AS.061.16",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.062.16",
+      "manufacturer": "ATECH",
+      "homologationStart": "11.2016",
+      "homologationEnd": "11.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "AS.063.17",
+      "manufacturer": "VOLKSWAGEN",
+      "homologationStart": "11.2016",
+      "homologationEnd": "11.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "AS.064.17",
+      "manufacturer": "SPARCO"
+    },
+    {
+      "number": "AS.065.17",
+      "manufacturer": "CORBEAU",
+      "homologationStart": "07.2017",
+      "homologationEnd": "07.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.066.17",
+      "manufacturer": "MOTORDRIVE"
+    },
+    {
+      "number": "AS.067.17",
+      "manufacturer": "OMP",
+      "homologationStart": "01.2020",
+      "homologationEnd": "08.2027",
+      "validUntil": "2037"
+    },
+    {
+      "number": "AS.068.18",
+      "manufacturer": "OMP",
+      "homologationStart": "02.2023",
+      "validUntil": "2033"
+    },
+    {
+      "number": "AS.069.18",
+      "manufacturer": "RECARO",
+      "homologationStart": "03.2018",
+      "homologationEnd": "03.2023"
+    },
+    {
+      "number": "AS.070.18",
+      "manufacturer": "SPARCO",
+      "homologationStart": "04.2018"
+    },
+    {
+      "number": "AS.071.18",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.072.18",
+      "manufacturer": "RACETECH",
+      "homologationStart": "07.2018",
+      "homologationEnd": "07.2023",
+      "validUntil": "2033"
+    },
+    {
+      "number": "AS.073.18",
+      "manufacturer": "CORBEAU",
+      "homologationStart": "08.2018",
+      "homologationEnd": "08.2023",
+      "validUntil": "2033"
+    },
+    {
+      "number": "AS.074.18",
+      "manufacturer": "MOTORDRIVE"
+    },
+    {
+      "number": "AS.075.19",
+      "manufacturer": "OMP",
+      "homologationStart": "04.2021",
+      "homologationEnd": "01.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.076.19",
+      "manufacturer": "MOTORDRIVE",
+      "homologationStart": "03.2019",
+      "homologationEnd": "11.2028",
+      "validUntil": "2038"
+    },
+    {
+      "number": "AS.077.19",
+      "manufacturer": "MOTORDRIVE",
+      "homologationStart": "03.2019",
+      "homologationEnd": "11.2028",
+      "validUntil": "2038"
+    },
+    {
+      "number": "AS.078.19",
+      "manufacturer": "ATECH",
+      "homologationStart": "09.2022",
+      "homologationEnd": "04.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.079.19",
+      "manufacturer": "ATECH",
+      "homologationStart": "05.2019",
+      "homologationEnd": "04.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.080.19",
+      "manufacturer": "SPARCO",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024",
+      "validUntil": "2034"
+    },
+    {
+      "number": "AS.081.19",
+      "manufacturer": "SABELT",
+      "homologationStart": "12.2019",
+      "homologationEnd": "07.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.082.19",
+      "manufacturer": "RECARO"
+    },
+    {
+      "number": "AS.083.19",
+      "manufacturer": "OMP",
+      "homologationStart": "08.2019",
+      "homologationEnd": "08.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.084.19",
+      "manufacturer": "OMP",
+      "homologationStart": "09.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.085.19"
+    },
+    {
+      "number": "AS.086.20",
+      "manufacturer": "SABELT",
+      "homologationStart": "06.2021"
+    },
+    {
+      "number": "AS.087.20",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.088.20",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.089.21",
+      "manufacturer": "RECARO",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "AS.090.21",
+      "manufacturer": "CORBEAU",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "AS.091.21",
+      "homologationStart": "06.2021",
+      "homologationEnd": "06.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "AS.092.21",
+      "manufacturer": "RACETECH",
+      "homologationStart": "06.2021",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041"
+    },
+    {
+      "number": "AS.093.21",
+      "manufacturer": "OMP",
+      "homologationStart": "08.2021",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041"
+    },
+    {
+      "number": "AS.094.21",
+      "manufacturer": "FIBREWORKS USA",
+      "homologationStart": "06.2021",
+      "homologationEnd": "06.2026",
+      "validUntil": "2036"
+    },
+    {
+      "number": "AS.095.21",
+      "manufacturer": "SPARCO",
+      "homologationStart": "01.2022",
+      "homologationEnd": "08.2031",
+      "validUntil": "2041"
+    },
+    {
+      "number": "AS.096.21",
+      "manufacturer": "OMP",
+      "homologationStart": "02.2023",
+      "homologationEnd": "11.2031",
+      "validUntil": "2041"
+    },
+    {
+      "number": "AS.097.22",
+      "manufacturer": "AUDI",
+      "homologationStart": "03.2022"
+    },
+    {
+      "number": "AS.098.22",
+      "manufacturer": "RACETECH"
+    },
+    {
+      "number": "AS.099.22",
+      "manufacturer": "SPARCO"
+    },
+    {
+      "number": "AS.100.22",
+      "manufacturer": "RECARO"
+    },
+    {
+      "number": "AS.101.22",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.102.22",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.103.23",
+      "manufacturer": "ATECH"
+    },
+    {
+      "number": "AS.104.23",
+      "manufacturer": "SABELT",
+      "homologationStart": "02.2023"
+    },
+    {
+      "number": "AS.105.23",
+      "manufacturer": "SABELT"
+    },
+    {
+      "number": "AS.106.23"
+    },
+    {
+      "number": "AS.107.23",
+      "manufacturer": "GT- MCL",
+      "homologationStart": "01.2023",
+      "homologationEnd": "01.2028",
+      "validUntil": "2038"
+    },
+    {
+      "number": "AS.108.24",
+      "manufacturer": "OMP",
+      "homologationStart": "02.2025",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.109.24",
+      "manufacturer": "OMP",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029",
+      "validUntil": "2039"
+    },
+    {
+      "number": "AS.110.24",
+      "manufacturer": "RACETECH"
+    },
+    {
+      "number": "AS.111.26",
+      "manufacturer": "SPARCO",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041"
+    },
+    {
+      "number": "AS.112.26",
+      "manufacturer": "OMP"
+    },
+    {
+      "number": "AS.113.26",
+      "manufacturer": "HRX",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041"
+    }
+  ]
+}

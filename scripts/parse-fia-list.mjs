@@ -75,6 +75,26 @@ const LIST_CONFIG = {
     numberPattern: /^(FHR\.\d{3}\.\d{2}-[A-Z])\b/,
     dateTailPattern: /(?:\s+(\d{2}\.\d{2}\.\d{2}))?(?:\s+(\d{2}\.\d{2}\.\d{2}))?\s*$/,
   },
+  40: {
+    title: "Technical List n°40 — Advanced Racing Seats (FIA 8862-2009)",
+    standardIds: ["fia-8862-2009"],
+    categories: ["seat"],
+    sourceUrl: "https://www.fia.com/sites/default/files/tl40_04.08.2026.pdf",
+    numberPattern: /^(AS\.\d{3}\.\d{2})\b/,
+    // Model column is unrecoverable for this list: each row has three more columns after
+    // brand/model (circuit-seat-floor bracket, circuit-seat-back bracket, rally-seat bracket
+    // part numbers), and when brand/model are blank on a given physical line — extremely common,
+    // since one homologation's full bracket-compatibility list often spans 10+ wrapped lines —
+    // pdftotext -layout collapses a bracket part number (e.g. "RTB1006BW") into the same visual
+    // position a real model name would occupy, and the two are not distinguishable by pattern
+    // (compare bracket "RT4129WTHR"-style parts to real models like "RT4129WTHR" itself). Brand
+    // is recoverable because every bracket part number in this list contains a digit or a slash,
+    // while real brand names (RACETECH, OMP, SPARCO, CITROËN, ...) don't — see columnParser.
+    columnParser: (cols) => {
+      const brand = cols[0];
+      return brand && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s&.,'-]*$/.test(brand) ? { manufacturer: brand } : {};
+    },
+  },
 };
 
 // A trailing MM.YYYY MM.YYYY YYYY-ish tail — 0-3 of these tokens, in order (start-of-homol,
@@ -108,7 +128,17 @@ function splitColumns(text) {
     .filter((s) => !HEADER_LEAK_WORDS.has(s.toLowerCase()));
 }
 
-function parseGenericRow(line, numberPattern, dateTailPattern) {
+function defaultColumnParser(cols) {
+  let productType;
+  const lastColIdx = cols.length - 1;
+  if (lastColIdx >= 0 && KNOWN_PRODUCT_TYPES.some((p) => cols[lastColIdx].toLowerCase() === p.toLowerCase())) {
+    productType = cols.pop();
+  }
+  const [manufacturer, model] = cols;
+  return { manufacturer, model, productType };
+}
+
+function parseGenericRow(line, numberPattern, dateTailPattern, columnParser = defaultColumnParser) {
   const m = numberPattern.exec(line);
   if (!m) return null;
   const number = m[1];
@@ -119,12 +149,7 @@ function parseGenericRow(line, numberPattern, dateTailPattern) {
   if (dateMatch) rest = rest.slice(0, dateMatch.index);
 
   const cols = splitColumns(rest);
-  let productType;
-  const lastColIdx = cols.length - 1;
-  if (lastColIdx >= 0 && KNOWN_PRODUCT_TYPES.some((p) => cols[lastColIdx].toLowerCase() === p.toLowerCase())) {
-    productType = cols.pop();
-  }
-  const [manufacturer, model] = cols;
+  const { manufacturer, model, productType } = columnParser(cols);
 
   return {
     number,
@@ -210,7 +235,7 @@ function main() {
   const seen = new Set();
   for (const rawLine of lines) {
     const line = rawLine.replace(/^\s+/, "");
-    const row = parseGenericRow(line, config.numberPattern, dateTailPattern);
+    const row = parseGenericRow(line, config.numberPattern, dateTailPattern, config.columnParser);
     if (!row) continue;
     if (seen.has(row.number)) {
       console.warn(`  duplicate homologation number seen: ${row.number} — keeping first occurrence`);
