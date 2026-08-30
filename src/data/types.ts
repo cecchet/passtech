@@ -305,9 +305,9 @@ export interface Ruleset {
    * specific fields on it (car number, date, etc.) won't match the user's own event.
    */
   techSheet?: {
-    /** Path under /public, e.g. "/tech-sheets/ara-tech-form.jpg". */
+    /** Either a path under /public (e.g. "/tech-sheets/ara-tech-form.jpg", for a sheet this app hosts a copy of) or a direct external URL (for a body that publishes its own tech sheet PDF). */
     url: string;
-    /** File format shown to the user, e.g. "JPEG" or "PNG". */
+    /** File format shown to the user, e.g. "JPEG" or "PDF". */
     format: string;
   };
 }

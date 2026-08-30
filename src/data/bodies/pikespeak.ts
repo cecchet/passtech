@@ -16,6 +16,10 @@ const hillClimb: Ruleset = {
   disciplineGroup: "Hillclimb",
   lastReviewed: "2026-08-15",
   sourceDocuments: [{ ...sourceDoc, section: "114 Required Safety Equipment" }],
+  // A single combined PDF covering the technical inspection form for each division separately
+  // (Pikes Peak Open, Unlimited, GT4, etc. each get their own page/section within it), published
+  // directly by PPIHC rather than something this app hosts a copy of.
+  techSheet: { url: "https://ppihc.org/wp-content/uploads/2026-PPIHC-Tech-Sheets.pdf.pdf", format: "PDF" },
   // Of PPIHC's seven divisions (§7.6.1: Unlimited, Time Attack 1, Pikes Peak GT4, Open Wheel,
   // Pikes Peak Open, Exhibition, plus Unlimited's Super Unlimited class), only Pikes Peak GT4
   // (§400) runs on a genuinely separate rulebook: an SRO/FIA GT4 homologation-based technical
