@@ -194,10 +194,11 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
     condition:
       "May be satisfied by a handheld fire extinguisher/fire bottle instead — see the fire_extinguisher category. This single rule ('a device such as a fire bottle/fire extinguisher/fire suppression system') covers both; only one is needed.",
     satisfiedByAlternative: "fire_extinguisher",
+    acceptedStandards: [{ standardId: "sfi-17.1" }, { standardId: "sfi-17.2" }, { standardId: "fia-technical-list-16" }],
     citation: { ...SCCA_TT_LEVEL2_SOURCE, section: "IV.2 Safety Level 2 — 2. Vehicle Equipment — 4. Fire Suppression" },
     confidence: "medium",
     notes:
-      "Rule text (§2.4): the device 'should meet at least one of the following minimum requirements: 1. On-board fire systems per SCCA Road Racing General Competition Rules (GCR). 2. Halon 1301 or 1211, 2 pound minimum capacity by weight. 3. Dry chemical, 2 pound minimum with a positive indicator showing charge...' No SFI 17.1 / FIA 8865 (or FIA Technical List) certification standard is cited for an on-board system — it instead defers to the separate SCCA Road Racing GCR document (not fetched/reviewed here) or the same Halon/dry-chemical minimums as the handheld option, so no acceptedStandards are populated.",
+      "Rule text (§2.4): the device 'should meet at least one of the following minimum requirements: 1. On-board fire systems per SCCA Road Racing General Competition Rules (GCR). 2. Halon 1301 or 1211, 2 pound minimum capacity by weight. 3. Dry chemical, 2 pound minimum with a positive indicator showing charge...' Option 1 defers to the separate SCCA Road Racing GCR's own on-board fire system rule (GCR §9.3.22.A: SFI 17.1, SFI 17.2, or FIA Technical List n°16) rather than naming a standard directly — acceptedStandards here mirrors that GCR rule (see scca.ts's fire_suppression category) since this document doesn't restate it. Options 2/3 (Halon/dry chemical minimums) match the handheld fire_extinguisher category's fireExtinguisherOptions, not modeled twice.",
   },
   kill_switch: {
     requirement: "not_addressed",

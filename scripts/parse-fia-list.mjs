@@ -78,7 +78,11 @@ const LIST_CONFIG = {
   },
   16: {
     title: "Technical List n°16 — Plumbed-in Fire Extinguisher Systems",
-    standardIds: ["fia-8865-2015"],
+    // Also backs "fia-technical-list-16" -- several bodies' rulebooks cite this registry by list
+    // number rather than by the FIA 8865-2015 standard number it's published under (e.g. NASA,
+    // Pikes Peak, SCCA, BMW CCA), and standards.ts had that as its own standardId with no backing
+    // list at all until now (same registry, just named differently -- not a distinct standard).
+    standardIds: ["fia-8865-2015", "fia-technical-list-16"],
     sourceUrl: "https://www.fia.com/sites/default/files/tl16_0.pdf",
     numberPattern: /^(Ex\.\d{3}\.\d{2})\s*³?\b/,
     // Hand-transcribed (see LIST_16_MANUAL_ENTRIES below), not run through the generic

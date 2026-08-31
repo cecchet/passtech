@@ -253,7 +253,11 @@ const endurance: Ruleset = {
         { standardId: "sfi-17.1" },
         {
           standardId: "fia-8865-2015",
-          note: "WRL's rule text literally cites 'FIA technical list # 16 or 52' rather than 'FIA 8865-2015' by standard number. FIA technical list 52 covers fire-extinguishing systems homologated to FIA 8865-2015, the only FIA fire-suppression standard in this app's registry, so it's listed here as the closest match. 'FIA technical list # 16' appears to reference a separate/older FIA list with no corresponding entry in this app's registry — flagged for a maintainer to verify rather than guessed at.",
+          note: "WRL's rule text literally cites 'FIA technical list # 16 or 52' rather than 'FIA 8865-2015' by standard number. Technical List 16 is the FIA's own homologation register for equipment meeting the FIA 8865-2015 standard (same registry, just named by list number rather than standard number), so this entry covers List 16 fully, including number verification against the real registry.",
+        },
+        {
+          standardId: "fia-technical-list-52",
+          note: "Technical List 52 is a separate FIA registry from List 16 (see the fia-8865-2015 entry above) with no parsed homologation data in this app yet, so a number entered here can't be verified against it — selecting it is presence-only.",
         },
       ],
       citation: { ...sourceDoc, section: "Appendix A, Section A.3.b" },

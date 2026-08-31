@@ -1104,7 +1104,8 @@ const roadRacing: Ruleset = {
       fire_suppression: {
         requirement: "required",
         acceptedStandards: [
-          { standardId: "sfi-17.1", note: "GCR also accepts SFI 17.2, which this app's standards registry doesn't separately list — SFI 17.1 is offered here as the closest registered match." },
+          { standardId: "sfi-17.1" },
+          { standardId: "sfi-17.2" },
           { standardId: "fia-technical-list-16" },
         ],
         materialNote:
@@ -1163,7 +1164,8 @@ const roadRacing: Ruleset = {
       fire_suppression: {
         requirement: "required",
         acceptedStandards: [
-          { standardId: "sfi-17.1", note: "GCR also accepts SFI 17.2, which this app's standards registry doesn't separately list — SFI 17.1 is offered here as the closest registered match." },
+          { standardId: "sfi-17.1" },
+          { standardId: "sfi-17.2" },
           { standardId: "fia-technical-list-16" },
         ],
         materialNote:

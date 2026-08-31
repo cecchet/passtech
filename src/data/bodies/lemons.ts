@@ -185,7 +185,11 @@ const endurance: Ruleset = {
         { standardId: "sfi-17.1" },
         {
           standardId: "fia-8865-2015",
-          note: "Rule cites 'FIA 8865 Technical List 16- or Technical List 52-certified' — these are approved-product technical lists under the FIA 8865-2015 standard generation, not separate standard versions; both map to this single registry ID.",
+          note: "Rule cites 'FIA 8865 Technical List 16- or Technical List 52-certified.' Technical List 16 is the FIA's own homologation register for FIA 8865-2015 (same registry, cited by list number here rather than standard number) — this app has List 16's real homologation numbers parsed, so a number entered here is checked against it.",
+        },
+        {
+          standardId: "fia-technical-list-52",
+          note: "Technical List 52 is a separate FIA registry from List 16 (see the fia-8865-2015 entry above) with no parsed homologation data in this app yet, so a number entered here can't be verified against it — selecting it is presence-only.",
         },
       ],
       citation: { ...sourceDoc, section: "3.6.3" },
