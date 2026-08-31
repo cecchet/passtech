@@ -11,7 +11,7 @@ import { EquipmentCategory } from "@/data/types";
 // One standard icon size everywhere this renders — Option 1, and both the collapsed-summary and
 // resolved-bottom placements in Options 2/3 — so the same logo never appears a different size
 // depending on where it happens to be shown.
-const ICON_SIZE = "h-6 w-6";
+const ICON_SIZE = "h-[30px] w-[30px]";
 const ICON_CLASS = `block ${ICON_SIZE} shrink-0 overflow-hidden rounded-md border border-neutral-600 bg-white shadow`;
 
 export function CategoryMediaLinks({
