@@ -1306,25 +1306,20 @@ function RulesetPicker({ value, onChange }: { value: string; onChange: (id: stri
 
   return (
     <div id="tutorial-ruleset-picker" className="mb-4">
-      <span className="mb-1 block text-sm font-medium">1. Pick a discipline</span>
-      <div className="mb-3 flex flex-wrap gap-2">
-        {DISCIPLINE_GROUPS.map(({ group }) => {
-          const isActive = group === discipline;
-          return (
-            <button
-              key={group}
-              type="button"
-              onClick={() => handleDisciplineChange(group)}
-              className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                isActive ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400 hover:border-neutral-500"
-              }`}
-            >
-              <DisciplineIcon group={group} className="h-6 w-6" />
+      <label className="mb-3 block">
+        <span className="mb-1 block text-sm font-medium">1. Pick a discipline</span>
+        <select
+          className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
+          value={discipline}
+          onChange={(e) => handleDisciplineChange(e.target.value as DisciplineGroup)}
+        >
+          {DISCIPLINE_GROUPS.map(({ group }) => (
+            <option key={group} value={group} className="bg-neutral-900 text-neutral-100">
               {group}
-            </button>
-          );
-        })}
-      </div>
+            </option>
+          ))}
+        </select>
+      </label>
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium">2. Pick a sanctioning body</span>
