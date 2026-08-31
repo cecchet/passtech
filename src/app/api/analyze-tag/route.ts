@@ -31,6 +31,7 @@ function isRateLimited(ip: string): boolean {
 interface AnalyzeCandidate {
   standardId: string;
   rawText: string;
+  homologationNumber: string;
   labelDate: string;
   tagExpirationDate: string;
   confidence: "high" | "medium" | "low";
@@ -55,6 +56,11 @@ function buildSchema(allowedIds: string[]) {
               type: "string" as const,
               description: "The exact text you can read on the tag for this certification (brand, spec number, wording as printed).",
             },
+            homologationNumber: {
+              type: "string" as const,
+              description:
+                "The specific homologation/approval number printed on the tag for THIS product, if any -- e.g. \"DC.001.18-O\", \"RS.001.01\", \"AH.012.19-C-ABP\", \"CS.001.21\", \"FT3-4\". This is a per-product registration number (usually 2 letters, a 3-digit number, a 2-digit year, and sometimes a letter suffix), distinct from the certification standard number itself (e.g. \"FIA 8856-2018\") -- most tags with an FIA standard printed on them also carry one of these nearby. Empty string if no such number is visible or the tag only shows the standard/spec number with no separate per-product registration code.",
+            },
             labelDate: {
               type: "string" as const,
               description: "Date printed on the tag (manufacture date, conformance date, homologation date) in YYYY-MM-DD format. Empty string if none visible or you can't determine it precisely.",
@@ -73,7 +79,7 @@ function buildSchema(allowedIds: string[]) {
               description: "Only meaningful when categoryMismatch is true: which kind of equipment this tag actually looks like it's for (e.g. 'gloves', 'shoes', 'helmet'). Empty string otherwise.",
             },
           },
-          required: ["standardId", "rawText", "labelDate", "tagExpirationDate", "confidence", "categoryMismatch", "detectedCategory"],
+          required: ["standardId", "rawText", "homologationNumber", "labelDate", "tagExpirationDate", "confidence", "categoryMismatch", "detectedCategory"],
         },
       },
       notes: {
@@ -141,7 +147,7 @@ ${standardList}
 
 IMPORTANT — check the equipment category first: look at the tag's shape, wording, and any pictograms to judge whether it's actually a "${categoryLabel}" tag at all, as opposed to a tag for a different item (e.g. a shoe or glove tag scanned while checking a firesuit, or vice versa). If it clearly looks like the wrong kind of tag, set "categoryMismatch": true and "detectedCategory" to what it actually looks like — do this even if the text also happens to resemble one of the standard IDs above, since standard families (like SFI 3.3) can appear on multiple different products. If it's plausibly the right category (even if you can't pin down the exact standard), set "categoryMismatch": false.
 
-For each certification visible on the tag, match it to one of the IDs above if it clearly corresponds, or use "${NOT_LISTED}" if it doesn't match any of them (still fill in rawText with what you actually see). Extract any date(s) printed on the tag. Be conservative — if you can't read something clearly, say so in "notes" and use "low" confidence rather than guessing.`;
+For each certification visible on the tag, match it to one of the IDs above if it clearly corresponds, or use "${NOT_LISTED}" if it doesn't match any of them (still fill in rawText with what you actually see). Extract any date(s) printed on the tag. Also look for a separate per-product homologation/approval number distinct from the standard number itself — see the "homologationNumber" field description for examples of the format. Be conservative — if you can't read something clearly, say so in "notes" and use "low" confidence rather than guessing.`;
 
   try {
     const interaction = await ai.interactions.create({

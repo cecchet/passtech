@@ -1,16 +1,22 @@
+import { EquipmentCategory } from "@/data/types";
 import { NOT_LISTED, standardLabel } from "@/data/standards";
 import { TagCandidate } from "@/lib/useTagScanner";
+import { lookupHomologation } from "@/lib/fiaHomologation";
+import { HomologationResultBanner } from "@/components/HomologationResultBanner";
 
 export function TagCandidateList({
   candidates,
   notes,
   added,
   onAdd,
+  category,
 }: {
   candidates: TagCandidate[];
   notes: string | null;
   added: Set<number>;
   onAdd: (c: TagCandidate, i: number) => void;
+  /** Used to check any extracted homologationNumber against the right FIA Technical List before the user confirms adding it. */
+  category: EquipmentCategory;
 }) {
   return (
     <div className="mt-2 flex flex-col gap-2">
@@ -33,6 +39,12 @@ export function TagCandidateList({
               {c.labelDate && `Label date: ${c.labelDate} `}
               {c.tagExpirationDate && `Expires: ${c.tagExpirationDate}`}
             </p>
+          )}
+          {c.homologationNumber && (
+            <div className="mt-1 flex flex-col gap-1">
+              <p className="text-neutral-500">Homologation number read: {c.homologationNumber}</p>
+              <HomologationResultBanner standardId={c.standardId} result={lookupHomologation(c.standardId, c.homologationNumber, category)} />
+            </div>
           )}
           <button
             type="button"

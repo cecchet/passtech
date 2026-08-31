@@ -69,7 +69,7 @@ export function PhotoScan({ category, onAdd }: Props) {
       {scanner.error && <p className="mt-2 text-red-400">{scanner.error}</p>}
 
       {scanner.candidates && (
-        <TagCandidateList candidates={scanner.candidates} notes={scanner.notes} added={scanner.added} onAdd={scanner.addCandidate} />
+        <TagCandidateList candidates={scanner.candidates} notes={scanner.notes} added={scanner.added} onAdd={scanner.addCandidate} category={category} />
       )}
     </div>
   );

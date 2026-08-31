@@ -8,6 +8,7 @@ import { CertificationEntry, newCertification } from "@/lib/matcher";
 export interface TagCandidate {
   standardId: string;
   rawText: string;
+  homologationNumber: string;
   labelDate: string;
   tagExpirationDate: string;
   confidence: "high" | "medium" | "low";
@@ -54,6 +55,7 @@ export function useTagScanner(category: EquipmentCategory, onAdd: (cert: Certifi
       ...newCertification(),
       standardId: c.standardId,
       customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
+      homologationNumber: c.homologationNumber || undefined,
       labelDate: c.labelDate || undefined,
       tagExpirationDate: c.tagExpirationDate || undefined,
     });
