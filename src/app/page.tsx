@@ -1293,25 +1293,54 @@ function SourceLine({ ruleset, showTechSheet = false }: { ruleset: Ruleset; show
 }
 
 function RulesetPicker({ value, onChange }: { value: string; onChange: (id: string) => void }) {
+  // Derived straight from `value` (no local state needed) — step 1 always reflects whichever
+  // ruleset is actually selected, whether that came from step 2's own select, the tutorial
+  // walkthrough, or loading a saved gear set.
+  const discipline = getRuleset(value)?.disciplineGroup ?? DISCIPLINE_GROUPS[0]?.group;
+  const rulesetsInDiscipline = DISCIPLINE_GROUPS.find((g) => g.group === discipline)?.rulesets ?? [];
+
+  const handleDisciplineChange = (group: DisciplineGroup) => {
+    const firstInGroup = DISCIPLINE_GROUPS.find((g) => g.group === group)?.rulesets[0];
+    if (firstInGroup) onChange(firstInGroup.id);
+  };
+
   return (
-    <label id="tutorial-ruleset-picker" className="mb-4 block">
-      <span className="mb-1 block text-sm font-medium">Select a sanctioning body / discipline</span>
-      <select
-        className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {DISCIPLINE_GROUPS.map(({ group, rulesets }) => (
-          <optgroup key={group} label={group} className="bg-neutral-900 text-neutral-100">
-            {rulesets.map((d) => (
-              <option key={d.id} value={d.id} className="bg-neutral-900 text-neutral-100">
-                {d.bodyName} — {d.disciplineName}
-              </option>
-            ))}
-          </optgroup>
-        ))}
-      </select>
-    </label>
+    <div id="tutorial-ruleset-picker" className="mb-4">
+      <span className="mb-1 block text-sm font-medium">1. Pick a discipline</span>
+      <div className="mb-3 flex flex-wrap gap-2">
+        {DISCIPLINE_GROUPS.map(({ group }) => {
+          const isActive = group === discipline;
+          return (
+            <button
+              key={group}
+              type="button"
+              onClick={() => handleDisciplineChange(group)}
+              className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium ${
+                isActive ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400 hover:border-neutral-500"
+              }`}
+            >
+              <DisciplineIcon group={group} className="h-6 w-6" />
+              {group}
+            </button>
+          );
+        })}
+      </div>
+
+      <label className="block">
+        <span className="mb-1 block text-sm font-medium">2. Pick a sanctioning body</span>
+        <select
+          className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          {rulesetsInDiscipline.map((d) => (
+            <option key={d.id} value={d.id} className="bg-neutral-900 text-neutral-100">
+              {d.bodyName} — {d.disciplineName}
+            </option>
+          ))}
+        </select>
+      </label>
+    </div>
   );
 }
 
