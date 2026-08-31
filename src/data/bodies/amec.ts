@@ -513,6 +513,9 @@ const iceRacing: Ruleset = {
     },
     ...smcClassOverrides("awd"),
   },
+  knownGaps: [
+    "Most classes require specific car-mounted lights this app doesn't track at all: a yellow fog light (55w quartz halogen or 1000-1500 lumen equivalent LED) is required on every class except Street Legal (SL/SLS/SL4/SLS4); a red LED brake/stoplight is additionally required on Stock Sportsman, Modified, Super Modified Closed, and Super Modified Open; Super Modified Open also needs a forward-facing clear light at roll-bar/wing height; and Street Legal Modified (SLM/SLM4) — plus any other 'no-contact' class sharing a heat with contact-permitted cars — must run a blue LED visible from all sides to mark itself as no-contact. Verify the specific combination for your class directly against the rulebook (§2.4.11, 3.2.2.1-2, 3.3.3.1-2, 3.4.2.1-2, 3.5.2.1-2, 3.7.2.1-3).",
+  ],
 };
 
 /**

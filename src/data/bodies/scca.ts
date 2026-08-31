@@ -1238,6 +1238,23 @@ const roadRacing: Ruleset = {
         notes:
           "GCR §9.3.50: 'All cars with the exception of Formula and Sports Racing Category classes must have a towing eye or strap, front and rear...' Formula/Sports Racing cars are the one group GCR exempts from the fixed towing-eye mandate — they may instead use their exposed roll bar for towing, or (uniquely among all classes) carry a removable towing eye inside the car.",
       },
+      rollover_protection: {
+        requirement: "required",
+        rolloverProtectionRequiresFullCage: true,
+        rolloverProtectionRequiresPadding: true,
+        rolloverProtectionByBodyStyle: {
+          closed_roof: "required",
+          convertible: "required",
+          open_no_windshield: "required",
+          open_wheel: "required",
+        },
+        condition:
+          "Formula/Sports Racing cars follow a separate GCR §9.4.5 spec from other classes (low or high front hoop, no diagonal brace requirement) — see the base rollover_protection rule's own condition for the general geometry split by body style, which still applies to whichever hoop configuration this class uses.",
+        citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.4.5" },
+        confidence: "high",
+        notes:
+          "GCR §9.4.5.H (Cockpit Safety Barriers): a car in this class MAY be fitted with a Cockpit Safety Barrier (CSB) — a cage or wishbone-shaped device affixed to the Main Hoop and a low Front Hoop, conceptually similar to F1's halo device. This app doesn't track CSB compliance: if one is fitted, GCR requires it to comply with FIA Standard 8869-2018 (FIA Technical List n°62) and be affixed only to a chassis/tub the FIA has certified for such a device — self-certify this separately against the source rulebook. Not universally mandatory (some Radical Motorsport and FRush Auto Works chassis have their own accepted structures/homologation path per §9.4.5.H.1-2), so not modeled as its own requirement — this note exists purely because the app can't verify it and the consequence of getting it wrong (a non-compliant CSB) is a real safety/tech-inspection issue.",
+      },
     },
     legends: {
       window_net: {
@@ -1249,6 +1266,9 @@ const roadRacing: Ruleset = {
       },
     },
   },
+  knownGaps: [
+    "Formula (open wheel) and Sports Racing classes: a red rain light meeting FIA Standard 8874-2019 (FIA Technical List n°76) is mandatory, mounted on the car's centerline (GCR §9.3.33.B.2). Other classes must run either the OEM taillight or that same FIA rain light. This app doesn't track lighting equipment at all, so it isn't checked here — verify separately.",
+  ],
 };
 
 export const sccaRulesets: Ruleset[] = [solo, rallycross, roadRacing];
