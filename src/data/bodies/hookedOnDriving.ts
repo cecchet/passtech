@@ -34,11 +34,15 @@ const hpde: Ruleset = {
     helmet: {
       requirement: "required",
       acceptedStandards: [
-        { standardId: "snell-sa2025", validityYearsFromLabel: 10 },
-        { standardId: "snell-sa2020", validityYearsFromLabel: 10 },
-        { standardId: "snell-sa2015", validityYearsFromLabel: 10 },
-        { standardId: "snell-sa2010", validityYearsFromLabel: 10 },
-        { standardId: "snell-sah2010", validityYearsFromLabel: 10 },
+        {
+          standardId: "snell-sa2025",
+          expiresOn: "2035-12-31",
+          note: "HOD's FAQ says 'within 10 years of the event date,' but Snell certification tags don't print a date (unlike SFI/FIA), so this is computed as 10 years from the SA2025 standard's own release year rather than a per-item label date.",
+        },
+        { standardId: "snell-sa2020", expiresOn: "2030-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
+        { standardId: "snell-sa2015", expiresOn: "2025-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
+        { standardId: "snell-sa2010", expiresOn: "2020-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above — already outside its 10-year window by today's date." },
+        { standardId: "snell-sah2010", expiresOn: "2020-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above — already outside its 10-year window by today's date." },
       ],
       citation: { ...faq, section: "FAQ: 'Can I wear my motorcycle helmet?'" },
       confidence: "high",

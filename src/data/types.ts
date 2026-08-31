@@ -69,7 +69,14 @@ export interface StandardAcceptance {
   standardId: string;
   /** Absolute date (ISO) after which the sanctioning body stops accepting this standard generation. */
   expiresOn?: string;
-  /** Relative validity window in years, measured from the date printed on the tag/label. */
+  /**
+   * Relative validity window in years, measured from the date printed on the tag/label. Only valid
+   * for standards whose certification tag actually prints a manufacture/conformance date (SFI, FIA,
+   * most BS labels do). Snell tags print none — for a body that expires Snell helmets N years after
+   * manufacture, compute expiresOn instead as N years from the standard's own release year (e.g.
+   * snell-sa2015 + 10 years -> expiresOn: "2025-12-31"), since there's no per-item date for a driver
+   * to read off the tag and enter.
+   */
   validityYearsFromLabel?: number;
   /** Explicitly stated to not expire, provided the item is undamaged/well maintained. */
   noExpiration?: boolean;

@@ -24,8 +24,12 @@ const HELMET_STANDARDS = [
   { standardId: "snell-k2020", expiresOn: "2030-12-31" },
   { standardId: "snell-sa2015", expiresOn: "2026-12-31" },
   { standardId: "snell-m2015", expiresOn: "2026-12-31" },
-  { standardId: "snell-cmr2016", validityYearsFromLabel: 10, note: "Youth kart-specific rating." },
-  { standardId: "snell-cms2016", validityYearsFromLabel: 10, note: "Youth kart-specific rating." },
+  {
+    standardId: "snell-cmr2016",
+    expiresOn: "2026-12-31",
+    note: "Youth kart-specific rating. Snell certification tags don't print a manufacture or expiration date (unlike SFI/FIA), so this is computed as 10 years from the CMR2016 standard's own release year — the same convention already used for the other Snell generations above (e.g. SA2015 → 2026-12-31, SA2020 → 2030-12-31).",
+  },
+  { standardId: "snell-cms2016", expiresOn: "2026-12-31", note: "Youth kart-specific rating — see CMR2016 note." },
   // SFI — 24.1 is the youth-specific tier; 31.1 (SA-equivalent) and 41.1 (M-equivalent) are the adult tiers.
   { standardId: "sfi-24.1-2021", expiresOn: "2031-12-31" },
   { standardId: "sfi-24.1-2020", expiresOn: "2030-12-31" },

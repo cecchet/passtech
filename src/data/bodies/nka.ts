@@ -38,8 +38,12 @@ const HELMET_STANDARDS = [
   // Snell
   { standardId: "snell-sa2015", expiresOn: "2025-12-31" },
   { standardId: "snell-m2015", expiresOn: "2025-12-31" },
-  { standardId: "snell-cmr2016", validityYearsFromLabel: 10, note: "Youth kart-specific rating." },
-  { standardId: "snell-cms2016", validityYearsFromLabel: 10, note: "Youth kart-specific rating." },
+  {
+    standardId: "snell-cmr2016",
+    expiresOn: "2026-12-31",
+    note: "Youth kart-specific rating. Snell certification tags don't print a manufacture or expiration date (unlike SFI/FIA), so this is computed as 10 years from the CMR2016 standard's own release year — the same convention already used for the other Snell generations above (e.g. SA2015 → 2025-12-31, SA2020 → 2030-12-31).",
+  },
+  { standardId: "snell-cms2016", expiresOn: "2026-12-31", note: "Youth kart-specific rating — see CMR2016 note." },
   { standardId: "snell-k2020", expiresOn: "2030-12-31" },
   { standardId: "snell-m2020d", expiresOn: "2030-12-31" },
   { standardId: "snell-m2020r", expiresOn: "2030-12-31" },

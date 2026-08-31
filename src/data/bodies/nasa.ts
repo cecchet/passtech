@@ -363,9 +363,13 @@ const rallySport: Ruleset = {
     helmet: {
       requirement: "required",
       acceptedStandards: [
-        { standardId: "snell-sa2015", validityYearsFromLabel: 10, note: "GRR: 'Helmets over 10 years old are not permitted' — applies to all accepted standards, measured from date on the helmet." },
-        { standardId: "snell-sa2020", validityYearsFromLabel: 10 },
-        { standardId: "snell-sa2025", validityYearsFromLabel: 10 },
+        {
+          standardId: "snell-sa2015",
+          expiresOn: "2025-12-31",
+          note: "GRR: 'Helmets over 10 years old are not permitted' — applies to all accepted standards, measured from date on the helmet. Snell certification tags don't print a date the way SFI/FIA labels do, so for Snell this is computed as 10 years from the SA2015 standard's own release year rather than a per-item label date.",
+        },
+        { standardId: "snell-sa2020", expiresOn: "2030-12-31", note: "Same 10-years-from-generation-year computation as SA2015 above." },
+        { standardId: "snell-sa2025", expiresOn: "2035-12-31", note: "Same 10-years-from-generation-year computation as SA2015 above." },
         { standardId: "fia-8860-2010", validityYearsFromLabel: 10 },
         { standardId: "fia-8860-2018", validityYearsFromLabel: 10 },
         { standardId: "fia-8860-2024", validityYearsFromLabel: 10 },

@@ -17,21 +17,23 @@ const s102 = { ...sourceDoc, section: "102 Safety" };
 
 const HELMET_STANDARDS = [
   // Rule text: "The helmet will expire at the end of the year 10 years after the manufacture's
-  // date or specification sticker" — a uniform 10-year-from-label rule across every listed spec,
-  // unlike NKA/SKUSA's per-generation fixed calendar dates.
+  // date or specification sticker" — a uniform 10-year-from-label rule across every listed spec.
+  // Snell certification tags don't print a manufacture/expiration date the way SFI/FIA labels do,
+  // so the Snell entries below are computed as 10 years from each standard's own release year
+  // instead, matching the fixed-calendar-date convention other karting bodies in this app use.
   { standardId: "fia-8859-2015", validityYearsFromLabel: 10 },
   { standardId: "fia-8860-2018", validityYearsFromLabel: 10 },
   { standardId: "fia-8860-2018-abp", validityYearsFromLabel: 10 },
-  { standardId: "snell-cmr2016", validityYearsFromLabel: 10, note: "Youth kart-specific rating." },
-  { standardId: "snell-cms2016", validityYearsFromLabel: 10, note: "Youth kart-specific rating." },
-  { standardId: "snell-k2020", validityYearsFromLabel: 10 },
-  { standardId: "snell-m2020d", validityYearsFromLabel: 10 },
-  { standardId: "snell-m2020r", validityYearsFromLabel: 10 },
-  { standardId: "snell-sa2020", validityYearsFromLabel: 10 },
-  { standardId: "snell-k2025", validityYearsFromLabel: 10 },
-  { standardId: "snell-m2025d", validityYearsFromLabel: 10 },
-  { standardId: "snell-m2025r", validityYearsFromLabel: 10 },
-  { standardId: "snell-sa2025", validityYearsFromLabel: 10 },
+  { standardId: "snell-cmr2016", expiresOn: "2026-12-31", note: "Youth kart-specific rating." },
+  { standardId: "snell-cms2016", expiresOn: "2026-12-31", note: "Youth kart-specific rating." },
+  { standardId: "snell-k2020", expiresOn: "2030-12-31" },
+  { standardId: "snell-m2020d", expiresOn: "2030-12-31" },
+  { standardId: "snell-m2020r", expiresOn: "2030-12-31" },
+  { standardId: "snell-sa2020", expiresOn: "2030-12-31" },
+  { standardId: "snell-k2025", expiresOn: "2035-12-31" },
+  { standardId: "snell-m2025d", expiresOn: "2035-12-31" },
+  { standardId: "snell-m2025r", expiresOn: "2035-12-31" },
+  { standardId: "snell-sa2025", expiresOn: "2035-12-31" },
   { standardId: "sfi-24.1-2020", validityYearsFromLabel: 10 },
   { standardId: "sfi-24.1-2021", validityYearsFromLabel: 10 },
   { standardId: "sfi-31.1-2020", validityYearsFromLabel: 10 },

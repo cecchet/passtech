@@ -26,12 +26,24 @@ const de: Ruleset = {
     helmet: {
       requirement: "required",
       acceptedStandards: [
-        { standardId: "snell-sa2025", validityYearsFromLabel: 10, note: "Current Snell SA generation." },
-        { standardId: "snell-sa2020", validityYearsFromLabel: 10, note: "Immediately-preceding Snell SA generation. This entry will need to roll forward once a newer SA generation supersedes SA2025 as 'current'." },
-        { standardId: "snell-m2025d", validityYearsFromLabel: 10, note: "M-rated Snell helmets are explicitly 'permitted for HPDE Events novice run groups'; the document doesn't name a specific M-generation, so current-era M ratings are listed here as a reasonable default." },
-        { standardId: "snell-m2025r", validityYearsFromLabel: 10 },
-        { standardId: "snell-m2020d", validityYearsFromLabel: 10 },
-        { standardId: "snell-m2020r", validityYearsFromLabel: 10 },
+        {
+          standardId: "snell-sa2025",
+          expiresOn: "2035-12-31",
+          note: "Current Snell SA generation. Document says helmets 'with a printed manufacture date' expire 10 years after manufacture — but Snell certification tags don't print a date the way SFI/FIA labels do, so this is computed as 10 years from the SA2025 standard's own release year instead.",
+        },
+        {
+          standardId: "snell-sa2020",
+          expiresOn: "2030-12-31",
+          note: "Immediately-preceding Snell SA generation. Same 10-years-from-generation-year computation as SA2025 above. This entry will need to roll forward once a newer SA generation supersedes SA2025 as 'current'.",
+        },
+        {
+          standardId: "snell-m2025d",
+          expiresOn: "2035-12-31",
+          note: "M-rated Snell helmets are explicitly 'permitted for HPDE Events novice run groups'; the document doesn't name a specific M-generation, so current-era M ratings are listed here as a reasonable default. Same 10-years-from-generation-year computation as SA2025 above.",
+        },
+        { standardId: "snell-m2025r", expiresOn: "2035-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
+        { standardId: "snell-m2020d", expiresOn: "2030-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
+        { standardId: "snell-m2020r", expiresOn: "2030-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
         { standardId: "sfi-31.1-2020", validityYearsFromLabel: 10, note: "Document cites 'SFI 31.1' generically without a year/slash-level." },
         { standardId: "sfi-31.1-2015", validityYearsFromLabel: 10 },
         { standardId: "bs-6658-1985", validityYearsFromLabel: 10 },
@@ -41,7 +53,7 @@ const de: Ruleset = {
       citation: { ...sourceDoc, section: "11(b) Helmet" },
       confidence: "medium",
       notes:
-        "'Helmets with a printed manufacture date expire at the end of the 10th year following the year of manufacture' — applied uniformly above as a 10-year validity window from the label date. Snell M-rated helmets are explicitly permitted only for novice run groups per this document ('Snell M-rated helmets are permitted for HPDE Events novice run groups, however, participants are encouraged to upgrade to a Snell SA helmet when moving into higher run groups') — that's a soft encouragement rather than a hard rule for higher groups, so it isn't modeled as a separate ruleset; some regional programs may enforce SA-only for higher groups more strictly. The SFI/FIA/BS entries above are reasonable representative generations for those generically-named specs, not verified name-for-name against the document. 'Other helmets may also be acceptable if they are approved for PCA Club Racing (SFI, FIA)' per the Club Racing rulebook — not modeled here as Club Racing is a separate wheel-to-wheel program out of scope for this app.",
+        "'Helmets with a printed manufacture date expire at the end of the 10th year following the year of manufacture' — applied above as a 10-year validity window from the label date for SFI/FIA/BS (which do print a manufacture date), and as a 10-year window from the standard's own release year for Snell (whose certification tags print no date at all). Snell M-rated helmets are explicitly permitted only for novice run groups per this document ('Snell M-rated helmets are permitted for HPDE Events novice run groups, however, participants are encouraged to upgrade to a Snell SA helmet when moving into higher run groups') — that's a soft encouragement rather than a hard rule for higher groups, so it isn't modeled as a separate ruleset; some regional programs may enforce SA-only for higher groups more strictly. The SFI/FIA/BS entries above are reasonable representative generations for those generically-named specs, not verified name-for-name against the document. 'Other helmets may also be acceptable if they are approved for PCA Club Racing (SFI, FIA)' per the Club Racing rulebook — not modeled here as Club Racing is a separate wheel-to-wheel program out of scope for this app.",
     },
     balaclava: {
       requirement: "not_addressed",
@@ -269,10 +281,14 @@ const clubRacing: Ruleset = {
     helmet: {
       requirement: "required",
       acceptedStandards: [
-        { standardId: "snell-sa2025", validityYearsFromLabel: 10 },
-        { standardId: "snell-sa2020", validityYearsFromLabel: 10 },
-        { standardId: "snell-sa2015", validityYearsFromLabel: 10 },
-        { standardId: "snell-sah2010", validityYearsFromLabel: 10 },
+        {
+          standardId: "snell-sa2025",
+          expiresOn: "2035-12-31",
+          note: "Rulebook: 'Helmets expire at the end of the 10th year after the year of manufacture' — but Snell certification tags don't print a date the way SFI/FIA labels do, so this is computed as 10 years from the SA2025 standard's own release year instead.",
+        },
+        { standardId: "snell-sa2020", expiresOn: "2030-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
+        { standardId: "snell-sa2015", expiresOn: "2025-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above." },
+        { standardId: "snell-sah2010", expiresOn: "2020-12-31", note: "Same 10-years-from-generation-year computation as SA2025 above — already outside its 10-year window by today's date." },
         { standardId: "sfi-31.1-2020", validityYearsFromLabel: 10, note: "Rulebook cites bare 'SFI 31.1' without a slash-level or generation year — mapped to the two most recent registered SFI 31.1 generations as a reasonable representative match, not verified name-for-name." },
         { standardId: "sfi-31.1-2015", validityYearsFromLabel: 10 },
         { standardId: "bs-6658-1985", validityYearsFromLabel: 10, note: "Rulebook: 'BS6658-85 type A/FR.'" },
@@ -286,7 +302,7 @@ const clubRacing: Ruleset = {
       citation: { ...clubRacingSourceDoc, section: "Driver Requirements 1-3" },
       confidence: "high",
       notes:
-        "'Helmets expire at the end of the 10th year after the year of manufacture' — applied uniformly above as a 10-year validity window from the label date, regardless of which listed standard the helmet meets. Helmet must have the driver's name on the rear and the approved PCA Club Racing Inspection sticker on the left side; replacement/relining after 5 years of actual use is recommended but not mandatory.",
+        "'Helmets expire at the end of the 10th year after the year of manufacture' — applied above as a 10-year validity window from the label date for SFI/FIA/BS (which do print a manufacture date), and as a 10-year window from the standard's own release year for Snell (whose certification tags print no date at all). Helmet must have the driver's name on the rear and the approved PCA Club Racing Inspection sticker on the left side; replacement/relining after 5 years of actual use is recommended but not mandatory.",
     },
     balaclava: {
       requirement: "conditional",

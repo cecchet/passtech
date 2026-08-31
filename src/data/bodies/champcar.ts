@@ -19,9 +19,13 @@ const endurance: Ruleset = {
     helmet: {
       requirement: "required",
       acceptedStandards: [
-        { standardId: "snell-sa2015", validityYearsFromLabel: 11 },
-        { standardId: "snell-sa2020", validityYearsFromLabel: 11 },
-        { standardId: "snell-sa2025", validityYearsFromLabel: 11 },
+        {
+          standardId: "snell-sa2015",
+          expiresOn: "2026-12-31",
+          note: "Rulebook: 'All helmets expire 11 years after the date of certification' — but Snell certification tags don't print a date (unlike SFI/FIA), so this is computed as 11 years from the SA2015 standard's own release year rather than a per-item label date.",
+        },
+        { standardId: "snell-sa2020", expiresOn: "2031-12-31", note: "Same 11-years-from-generation-year computation as SA2015 above." },
+        { standardId: "snell-sa2025", expiresOn: "2036-12-31", note: "Same 11-years-from-generation-year computation as SA2015 above." },
         {
           standardId: "fia-8859-2015",
           validityYearsFromLabel: 11,
