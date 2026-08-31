@@ -10,6 +10,7 @@ import { fiaListsForStandard } from "@/data/fiaHomologation";
 import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
+import { HelmetPhotoScan } from "@/components/HelmetPhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { HomologationResultBanner, FiaListLink } from "@/components/HomologationResultBanner";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
@@ -1096,6 +1097,21 @@ export function EquipmentForm({
                       Open face (no chin bar)
                     </option>
                   </select>
+                )}
+
+                {category === "helmet" && (
+                  <>
+                    <label className="flex cursor-pointer items-center gap-2 text-xs text-neutral-300">
+                      <input
+                        type="checkbox"
+                        checked={entry.hasVisor ?? false}
+                        onChange={(e) => update({ hasVisor: e.target.checked, ...(e.target.checked ? {} : { visorNote: undefined }) })}
+                      />
+                      Has a visor/face shield
+                    </label>
+                    {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
+                    <HelmetPhotoScan onApply={(patch) => update(patch)} />
+                  </>
                 )}
 
                 {category === "fire_extinguisher" && (

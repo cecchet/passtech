@@ -73,6 +73,16 @@ export interface EquipmentEntry {
   pantsCertifications?: CertificationEntry[];
   /** Helmet only: whether it has an integrated chin bar (full-face) or not (open-face). */
   helmetType?: "open_face" | "full_face";
+  /**
+   * Helmet only: whether a visor/face shield is attached, either entered manually or detected
+   * from a full helmet photo scan (see HelmetPhotoScan). Informational only — not used in the
+   * pass/fail eligibility check, since visor requirements vary by body (some require one, e.g.
+   * Lemons/AKRA; some only recommend one, e.g. BMW CCA) and aren't modeled as a structured rule
+   * yet — see each body's own free-text notes on the helmet category for its actual requirement.
+   */
+  hasVisor?: boolean;
+  /** Helmet only: free-text detail about the visor (position, condition) from a photo scan. */
+  visorNote?: string;
   /** Fire extinguisher only: one entry per physical unit carried in the car. */
   extinguisherUnits?: ExtinguisherUnit[];
   /** Rollover protection only: the car's body style. */
