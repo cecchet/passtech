@@ -21,6 +21,7 @@ const de: Ruleset = {
   disciplineGroup: "HPDE / Track Day",
   lastReviewed: "2026-08-15",
   sourceDocuments: [sourceDoc],
+  techSheet: { url: "https://web.pca.org/includes/formsAndDocs/94/TECH%20FORM%20PCA%2012-20-18.pdf", format: "PDF" },
   categories: {
     helmet: {
       requirement: "required",

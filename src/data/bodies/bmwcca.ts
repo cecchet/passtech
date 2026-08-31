@@ -19,6 +19,7 @@ const clubRacing: Ruleset = {
   disciplineGroup: "Road Racing",
   lastReviewed: "2026-08-16",
   sourceDocuments: [{ ...sourceDoc, section: "III. Safety, B. Equipment" }],
+  techSheet: { url: "https://bmwccaclubracing.com/wp-content/uploads/2026/01/Tech_EventTech_Jan2026_Fillable.pdf", format: "PDF" },
   categories: {
     helmet: {
       requirement: "required",

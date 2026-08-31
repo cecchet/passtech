@@ -765,6 +765,7 @@ const roadRacing: Ruleset = {
       section: "9.3.18-9.3.19 Driver's Restraint System / Driver's Safety Equipment",
     },
   ],
+  techSheet: { url: "https://www.scca.com/downloads/51508-2020-tech-safety-annual-inspection-h-8-11-2020/download", format: "PDF" },
   // The base categories below already cite the GCR's own class-based exemption lists in prose
   // (fuel_cell §9.3.26, fire system §9.3.22, kill_switch §9.3.35, tow_hook §9.3.50, window_net
   // §9.3.56). Those four lists don't line up with each other class-for-class, so classes here are
