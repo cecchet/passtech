@@ -34,12 +34,7 @@ const TOURS: Record<TourId, Tour> = {
       { targetId: "tutorial-option-1", text: "Click Option 1 if you want to check the rules of a sanctioning body." },
       {
         targetId: "tutorial-option-2",
-        text: "Click Option 2 if you want to check whether your safety gear will pass tech with a specific sanctioning body.",
-      },
-      { targetId: "tutorial-option-3", text: "Click Option 3 if you want to see where you can race with your safety gear!" },
-      {
-        targetId: "tutorial-mygear",
-        text: "My Gear is your personal space to save named gear sets, so you don't have to re-enter everything each time — check any saved set against a sanctioning body, or against all of them at once.",
+        text: "Click Option 2 to save your safety gear in My Gear — from there you can check any saved gear set against a specific sanctioning body, or see everywhere it's eligible to race, without re-entering everything each time.",
       },
     ],
   },

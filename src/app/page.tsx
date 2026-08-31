@@ -459,8 +459,8 @@ export default function Home() {
 
       {mode === "landing" && (
         <>
-          <p className="mb-3 text-sm font-semibold text-neutral-200">Click on one of the 3 following options:</p>
-          <section className="grid gap-4 sm:grid-cols-3">
+          <p className="mb-3 text-sm font-semibold text-neutral-200">Click on one of the following options:</p>
+          <section className="grid gap-4 sm:grid-cols-2">
             <LandingCard
               number={1}
               title="Check the rules"
@@ -470,35 +470,12 @@ export default function Home() {
             />
             <LandingCard
               number={2}
-              title="Will my equipment pass tech?"
-              description="Enter your current safety gear and check it against the current rules of a sanctioning body."
-              icon="/frog-option2.jpg"
-              onClick={() => setMode("body-first")}
-            />
-            <LandingCard
-              number={3}
-              title="Where can my equipment race?"
-              description="Enter your current safety gear once and see which sanctioning bodies it's eligible, incomplete, or rejected for."
-              icon="/frog-option3.jpg"
-              onClick={() => setMode("equipment-first")}
+              title="Check my gear"
+              description="Save your safety gear once in My Gear, then check it against a specific sanctioning body's rules or see everywhere it's eligible to race."
+              icon="/frog-mygear.jpg"
+              onClick={() => setMode("garage")}
             />
           </section>
-          <button
-            type="button"
-            id="tutorial-mygear"
-            onClick={() => setMode("garage")}
-            className="mt-4 flex w-full items-center gap-4 rounded-lg border border-neutral-700 p-5 text-left hover:border-neutral-400 hover:bg-neutral-900"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, optimizer unreliable on these (see CategoryIcons.tsx) */}
-            <img src="/frog-mygear.jpg" alt="" className="h-16 w-16 shrink-0 rounded-lg bg-neutral-800 object-cover" />
-            <span className="flex flex-col gap-1">
-              <span className="text-sm font-semibold">My Gear</span>
-              <span className="text-xs text-neutral-400">
-                My gear is your personal space where you can store your different gear sets. Import/export gear sets and check them against
-                rulesets.
-              </span>
-            </span>
-          </button>
         </>
       )}
 
