@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CategoryGroup } from "@/data/types";
 import { EquipmentForm } from "@/components/EquipmentForm";
+import { AutomaticGearImport } from "@/components/AutomaticGearImport";
 import { isEntryEmpty } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import {
@@ -61,6 +62,8 @@ export function GarageManager({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  /** Which profile currently has the "upload photos" (Automatic mode) panel open, if any. */
+  const [autoImportOpenId, setAutoImportOpenId] = useState<string | null>(null);
 
   /* eslint-disable react-hooks/set-state-in-effect -- one-time client-side hydration from localStorage */
   useEffect(() => {
@@ -85,6 +88,13 @@ export function GarageManager({
     const profile = newGarageProfile("Untitled gear set");
     setProfiles((prev) => [...prev, profile]);
     setSelectedId(profile.id);
+  };
+
+  const createProfileFromPhotos = () => {
+    const profile = newGarageProfile("New gear set (from photos)");
+    setProfiles((prev) => [...prev, profile]);
+    setSelectedId(profile.id);
+    setAutoImportOpenId(profile.id);
   };
 
   // Two-step delete (click once to arm, again to confirm) instead of window.confirm — browser
@@ -164,6 +174,14 @@ export function GarageManager({
           <div className="mb-4 flex flex-wrap gap-2">
             <button type="button" onClick={createProfile} className="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
               + New gear set
+            </button>
+            <button
+              type="button"
+              onClick={createProfileFromPhotos}
+              className="rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
+              title="Upload photos of your gear and we'll figure out what's what — you confirm each item before it's added."
+            >
+              📷 Automatic mode
             </button>
             <label className="cursor-pointer rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
               Import
@@ -258,7 +276,18 @@ export function GarageManager({
             <button type="button" onClick={() => setSelectedId(null)} className="text-sm font-semibold text-amber-400 hover:text-amber-300">
               ← Back to My Gear
             </button>
-            <ExportButton label="Export this gear set" onExport={() => handleExportProfile(selected)} />
+            <div className="flex gap-2">
+              {autoImportOpenId !== selected.id && (
+                <button
+                  type="button"
+                  onClick={() => setAutoImportOpenId(selected.id)}
+                  className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
+                >
+                  📷 Add gear from photos
+                </button>
+              )}
+              <ExportButton label="Export this gear set" onExport={() => handleExportProfile(selected)} />
+            </div>
           </div>
 
           <label className="mb-3 block">
@@ -325,6 +354,21 @@ export function GarageManager({
               />
             </label>
           </div>
+
+          {autoImportOpenId === selected.id && (
+            <div className="mb-4">
+              <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-emerald-400">Automatic mode</h3>
+              <AutomaticGearImport
+                entries={selected.entries}
+                onChangeEntry={(category, entry) => updateSelected({ entries: { ...selected.entries, [category]: entry } })}
+                codriverEntries={selected.codriverEntries ?? {}}
+                onChangeCodriverEntry={(category, entry) => updateSelected({ codriverEntries: { ...(selected.codriverEntries ?? {}), [category]: entry } })}
+                hasCodriver={!!selected.hasCodriver}
+                onSetHasCodriver={(v) => updateSelected({ hasCodriver: v })}
+                onDone={() => setAutoImportOpenId(null)}
+              />
+            </div>
+          )}
 
           <EquipmentForm
             entries={selected.entries}
