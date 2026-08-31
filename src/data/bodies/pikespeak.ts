@@ -92,16 +92,20 @@ const hillClimb: Ruleset = {
       acceptedStandards: [
         {
           standardId: "sfi-3.2a-1",
-          validityYearsFromLabel: 10,
-          note: "Acceptable only when paired with Nomex (or equivalent) long-sleeve fire-retardant underwear, unless the suit has 3+ layers.",
+          noExpiration: true,
+          note: "Acceptable only when paired with Nomex (or equivalent) long-sleeve fire-retardant underwear, unless the suit has 3+ layers. Rule Book's 10-year age cap (see notes) can't be checked against this tag — SFI 3.2A patches don't print a manufacture/certification date the way HANS/belts/fire-suppression tags do, and the spec number itself (3.2A/1) carries no generation year to compute a fixed cutoff from either.",
         },
-        { standardId: "sfi-3.2a-5", validityYearsFromLabel: 10, note: "Recommended tier over 3.2A/1." },
+        {
+          standardId: "sfi-3.2a-5",
+          noExpiration: true,
+          note: "Recommended tier over 3.2A/1. Same date-check gap as sfi-3.2a-1 above — no manufacture date is printed on this tag, and no generation year is encoded in the spec number.",
+        },
         { standardId: "fia-8856-2000", validityYearsFromLabel: 10 },
         { standardId: "fia-8856-2018", validityYearsFromLabel: 10 },
       ],
       citation: { ...sourceDoc, section: "114.2.3" },
       confidence: "medium",
-      notes: "Rule Book: 'as of 2025, all fire suits are not to exceed 10 years of age' — applied here as a 10-year cap measured from the date printed on the suit's label, across all accepted standards. The rule book text only names FIA 8856-2000, but FIA 8856-2018 (which superseded it) is also accepted in practice — confirmed by a Pikes Peak competitor; the rule book's own text is incomplete here.",
+      notes: "Rule Book: 'as of 2025, all fire suits are not to exceed 10 years of age' — applied as a 10-year cap measured from the label date for FIA 8856 (which prints one). SFI 3.2A patches carry no date at all, so that same cap can't be verified for the SFI path here — see the acceptedStandards notes above. The rule book text only names FIA 8856-2000, but FIA 8856-2018 (which superseded it) is also accepted in practice — confirmed by a Pikes Peak competitor; the rule book's own text is incomplete here.",
     },
     gloves: {
       requirement: "required",

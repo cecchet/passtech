@@ -18,9 +18,10 @@ const s102 = { ...sourceDoc, section: "102 Safety" };
 const HELMET_STANDARDS = [
   // Rule text: "The helmet will expire at the end of the year 10 years after the manufacture's
   // date or specification sticker" — a uniform 10-year-from-label rule across every listed spec.
-  // Snell certification tags don't print a manufacture/expiration date the way SFI/FIA labels do,
-  // so the Snell entries below are computed as 10 years from each standard's own release year
-  // instead, matching the fixed-calendar-date convention other karting bodies in this app use.
+  // Snell and SFI 31.1/41.1 certification tags don't print a manufacture/expiration date the way
+  // FIA labels do, so those entries below are computed as 10 years from each standard's own
+  // release year instead, matching the fixed-calendar-date convention other karting bodies in
+  // this app use.
   { standardId: "fia-8859-2015", validityYearsFromLabel: 10 },
   { standardId: "fia-8860-2018", validityYearsFromLabel: 10 },
   { standardId: "fia-8860-2018-abp", validityYearsFromLabel: 10 },
@@ -36,8 +37,8 @@ const HELMET_STANDARDS = [
   { standardId: "snell-sa2025", expiresOn: "2035-12-31" },
   { standardId: "sfi-24.1-2020", validityYearsFromLabel: 10 },
   { standardId: "sfi-24.1-2021", validityYearsFromLabel: 10 },
-  { standardId: "sfi-31.1-2020", validityYearsFromLabel: 10 },
-  { standardId: "sfi-41.1-2020", validityYearsFromLabel: 10 },
+  { standardId: "sfi-31.1-2020", expiresOn: "2030-12-31" },
+  { standardId: "sfi-41.1-2020", expiresOn: "2030-12-31" },
 ];
 
 const uspksKarting: Ruleset = {
