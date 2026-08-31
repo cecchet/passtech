@@ -1,0 +1,302 @@
+{
+  "listNumber": 69,
+  "title": "Technical List n°69 — Helmets (FIA 8860-2018)",
+  "standardIds": [
+    "fia-8860-2018",
+    "fia-8860-2018-abp"
+  ],
+  "categories": [
+    "helmet"
+  ],
+  "sourceUrl": "https://www.fia.com/system/files/documents/l69_advanced_helmets_8860-2018.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "AH.001.18-C-ABP",
+      "manufacturer": "STILO",
+      "model": "ST5-VB 8860 ZERO ABP (F, GT, NG, NGT)",
+      "homologationStart": "07.2018",
+      "homologationEnd": "07.2028"
+    },
+    {
+      "number": "AH.002.18-C",
+      "manufacturer": "STILO",
+      "model": "ST5-VB 8860 ZERO (F, GT, NG, NGT)",
+      "homologationStart": "07.2018",
+      "homologationEnd": "07.2028"
+    },
+    {
+      "number": "AH.003.18-O",
+      "manufacturer": "STILO",
+      "model": "8860 ZERO (TROPHY, WRC)",
+      "homologationStart": "12.2018",
+      "homologationEnd": "12.2023"
+    },
+    {
+      "number": "AH.004.18-C-ABP",
+      "manufacturer": "STILO",
+      "model": "ST5 8860 ZERO ABP (F, GT, NG, NGT, R, NR)",
+      "homologationStart": "12.2018",
+      "homologationEnd": "12.2028"
+    },
+    {
+      "number": "AH.005.18-C",
+      "manufacturer": "STILO",
+      "model": "ST5 8860 ZERO (F, GT, NG, NGT, R, NR)",
+      "homologationStart": "12.2018",
+      "homologationEnd": "12.2028"
+    },
+    {
+      "number": "AH.006.19-C-ABP",
+      "manufacturer": "SCHUBERTH",
+      "model": "SF3 (ABP)",
+      "homologationStart": "02.2019",
+      "homologationEnd": "02.2029"
+    },
+    {
+      "number": "AH.007.19-C",
+      "manufacturer": "BELL RACING",
+      "model": "HP7 EVO III",
+      "homologationStart": "02.2019",
+      "homologationEnd": "02.2026"
+    },
+    {
+      "number": "AH.008.19-C-ABP",
+      "manufacturer": "BELL RACING",
+      "model": "HP77 (ABP)",
+      "homologationStart": "02.2019",
+      "homologationEnd": "12.2024"
+    },
+    {
+      "number": "AH.009.19-C-ABP",
+      "manufacturer": "ARAI",
+      "model": "GP-7RCT ABP",
+      "homologationStart": "03.2019",
+      "homologationEnd": "03.2024"
+    },
+    {
+      "number": "AH.010.19-C-ABP",
+      "manufacturer": "STILO",
+      "model": "ST5 8860 ABP (F, GT, NG, NGT, R, NR)",
+      "homologationStart": "06.2019",
+      "homologationEnd": "07.2029"
+    },
+    {
+      "number": "AH.011.19-C",
+      "manufacturer": "STILO",
+      "model": "ST5 8860 (F, GT, NG, NGT, R, NR)",
+      "homologationStart": "06.2019",
+      "homologationEnd": "07.2029"
+    },
+    {
+      "number": "AH.012.19-C-ABP",
+      "manufacturer": "ARAI",
+      "model": "GP-7SRC ABP",
+      "homologationStart": "10.2019",
+      "homologationEnd": "05.2030"
+    },
+    {
+      "number": "AH.013.19-C",
+      "manufacturer": "ARAI",
+      "model": "GP-7SRC",
+      "homologationStart": "10.2019",
+      "homologationEnd": "11.2029"
+    },
+    {
+      "number": "AH.014.19-O",
+      "manufacturer": "STILO",
+      "model": "8860 DES (TROPHY, WRC)",
+      "homologationStart": "10.2019",
+      "homologationEnd": "12.2024"
+    },
+    {
+      "number": "AH.015.20-O",
+      "manufacturer": "BELL RACING",
+      "model": "HP10 (Rally)",
+      "homologationStart": "11.2020",
+      "homologationEnd": "04.2026"
+    },
+    {
+      "number": "AH.016.21-O",
+      "manufacturer": "STILO",
+      "model": "VENTI ZERO (TROPHY, WRC)",
+      "homologationStart": "01.2021",
+      "homologationEnd": "01.2031"
+    },
+    {
+      "number": "AH.017.21-O",
+      "manufacturer": "STILO",
+      "model": "VENTI 8860 (TROPHY, WRC)",
+      "homologationStart": "02.2021",
+      "homologationEnd": "02.2031"
+    },
+    {
+      "number": "AH.018.21-C",
+      "manufacturer": "BELL RACING",
+      "model": "HP6 (Rally)",
+      "homologationStart": "08.2021",
+      "homologationEnd": "01.2027"
+    },
+    {
+      "number": "AH.019.21-O",
+      "manufacturer": "STILO",
+      "model": "VENTI ZERO M (TROPHY, WRC)",
+      "homologationStart": "10.2021",
+      "homologationEnd": "10.2026"
+    },
+    {
+      "number": "AH.020.21-C",
+      "manufacturer": "SCHUBERTH",
+      "model": "SF4 (C, O)",
+      "homologationStart": "11.2021",
+      "homologationEnd": "09.2029"
+    },
+    {
+      "number": "AH.021.22-C",
+      "manufacturer": "ZAMP",
+      "model": "RZ-88 (RJ, RJ-I)",
+      "homologationStart": "06.2022",
+      "homologationEnd": "06.2027"
+    },
+    {
+      "number": "AH.022.22-O",
+      "manufacturer": "SPARCO",
+      "model": "PRIME RJ SUPERCARBON",
+      "homologationStart": "10.2022",
+      "homologationEnd": "06.2028"
+    },
+    {
+      "number": "AH.023.23-O",
+      "manufacturer": "STILO",
+      "model": "VENTI 8860 M (TROPHY, WRC)",
+      "homologationStart": "03.2023",
+      "homologationEnd": "03.2028"
+    },
+    {
+      "number": "AH.024.23-C",
+      "manufacturer": "SPARCO",
+      "model": "PRIME RF-10W SUPERCARBON",
+      "homologationStart": "03.2023",
+      "homologationEnd": "04.2029"
+    },
+    {
+      "number": "AH.025.23-O",
+      "manufacturer": "STAND 21",
+      "model": "IVOS HT OPEN",
+      "homologationStart": "05.2023",
+      "homologationEnd": "05.2028"
+    },
+    {
+      "number": "AH.026.23-C",
+      "manufacturer": "STILO",
+      "model": "8860 ZERO M (F, GT, NF, NGT)",
+      "homologationStart": "12.2023",
+      "homologationEnd": "12.2028"
+    },
+    {
+      "number": "AH.027.23-C",
+      "manufacturer": "STILO",
+      "model": "8860 ZERO M ABP (F, GT, NF, NGT)",
+      "homologationStart": "12.2023",
+      "homologationEnd": "12.2028"
+    },
+    {
+      "number": "AH.028.23-C",
+      "manufacturer": "STILO",
+      "model": "WRX VENTI ZERO",
+      "homologationStart": "12.2023",
+      "homologationEnd": "03.2029"
+    },
+    {
+      "number": "AH.029.24-C",
+      "manufacturer": "ZAMP",
+      "model": "ZR-90",
+      "homologationStart": "01.2024",
+      "homologationEnd": "01.2029"
+    },
+    {
+      "number": "AH.030.24-C",
+      "manufacturer": "STILO",
+      "model": "ST6 ZERO",
+      "homologationStart": "02.2024",
+      "homologationEnd": "10.2029"
+    },
+    {
+      "number": "AH.031.24-C-ABP",
+      "manufacturer": "STILO",
+      "model": "ST6 ZERO ABP",
+      "homologationStart": "02.2024",
+      "homologationEnd": "10.2029"
+    },
+    {
+      "number": "AH.032.24-C-ABP",
+      "manufacturer": "BELL RACING",
+      "model": "HP77 EVO-IV (ABP)",
+      "homologationStart": "07.2024",
+      "homologationEnd": "01.2030"
+    },
+    {
+      "number": "AH.033.24-C",
+      "manufacturer": "BELL RACING",
+      "model": "HP7 EVO-IV",
+      "homologationStart": "11.2024",
+      "homologationEnd": "08.2030"
+    },
+    {
+      "number": "AH.034.24-C-ABP",
+      "manufacturer": "SCHUBERTH",
+      "model": "SF4 ABP",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029"
+    },
+    {
+      "number": "AH.035.25-C",
+      "manufacturer": "STILO",
+      "model": "ST6 8860",
+      "homologationStart": "01.2025",
+      "homologationEnd": "01.2030"
+    },
+    {
+      "number": "AH.036.25-C-ABP",
+      "manufacturer": "STILO",
+      "model": "ST6 8860 ABP",
+      "homologationStart": "01.2025",
+      "homologationEnd": "04.2030"
+    },
+    {
+      "number": "AH.037.25-C-ABP",
+      "manufacturer": "BELL RACING",
+      "model": "HP77 EVO-IV.A (ABP)",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030"
+    },
+    {
+      "number": "AH.038.25-C",
+      "manufacturer": "STAND 21",
+      "model": "VISION LITE",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030"
+    },
+    {
+      "number": "AH.039.26-O",
+      "manufacturer": "BELL RACING",
+      "model": "HP10 EVO-II (RALLY)",
+      "homologationStart": "03.2026",
+      "homologationEnd": "05.2031"
+    },
+    {
+      "number": "AH.040.26-C",
+      "manufacturer": "HRX",
+      "model": "DIAMANTE ADVANCED SUPERLIGHT",
+      "homologationStart": "03.2026",
+      "homologationEnd": "04.2031"
+    },
+    {
+      "number": "AH.041.26-C-ABP",
+      "manufacturer": "BELL RACING",
+      "model": "HP77 EVO-V (ABP)",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031"
+    }
+  ]
+}

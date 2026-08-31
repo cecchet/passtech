@@ -8,6 +8,8 @@ import list27 from "./list-27.json";
 import list29 from "./list-29.json";
 import list40 from "./list-40.json";
 import list91 from "./list-91.json";
+import list1 from "./list-1.json";
+import list69 from "./list-69.json";
 
 /**
  * Parsed FIA Technical Lists — see fia-lists/README.md for how these are generated
@@ -43,7 +45,10 @@ import list91 from "./list-91.json";
  * overalls/suits) is wired up. Its Part 2 (undergarment/balaclava/sock/shoe manufacturers) and
  * Part 3 (gloves) are "approved manufacturer/model" lists with no homologation number at all,
  * so there's nothing for this app's number-lookup UI to check for those categories under this
- * older standard — see FiaTechnicalList.categories' doc comment.
+ * older standard — see FiaTechnicalList.categories' doc comment. It's also hand-transcribed, like
+ * the other older-era lists — the same drift bug, on a list whose columns print as
+ * NUMBER/MODEL/MANUFACTURER (the reverse order of every other list here). All 347 entries are
+ * hand-verified — see LIST_27_MANUAL_ENTRIES in the parser script.
  *
  * List 29 (FIA 8858-2010) is scoped to `categories: ["hnr"]` — only its Part 1 (numbered FHR
  * devices) is wired up. Its Part 2 (tether systems) and the appended older FIA 8858-2002 section
@@ -73,6 +78,15 @@ import list91 from "./list-91.json";
  * LIST_91_MANUAL_ENTRIES in the parser script. Each entry's `approvedBrackets` lists every
  * bracket FIA homologated together with that specific seat — this is the first seat standard to
  * require that pairing (brackets were unregulated under 8855-1999/List 12 and 8862-2009/List 40).
+ *
+ * List 1 (fuel cells, FT3-1999/FT3.5-1999/FT5-1999) and List 69 (helmets, FIA 8860-2018) were
+ * built from spreadsheet conversions the user made of the source PDFs, not by rendering/reading
+ * pages — a cell-by-cell spreadsheet read sidesteps pdftotext's row-drift bug entirely, since
+ * there's no line-by-line text reflow to go wrong. See each list's own comment in
+ * scripts/parse-fia-list.mjs (LIST_CONFIG[1] / LIST_CONFIG[69]) for format-specific notes: List 1
+ * has one revoked entry (FT3-4) whose WARNING notice doesn't state a homologation number, so it's
+ * marked revoked by hand; List 69's "-ABP" numbers are scoped to both fia-8860-2018 and
+ * fia-8860-2018-abp since this list has no per-entry standard field to distinguish them.
  */
 export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list74,
@@ -84,6 +98,8 @@ export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list29,
   list40,
   list91,
+  list1,
+  list69,
 ] as FiaTechnicalList[];
 
 /**

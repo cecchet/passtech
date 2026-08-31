@@ -1,0 +1,610 @@
+{
+  "listNumber": 1,
+  "title": "Technical List n°1 — Fuel Cells (FIA FT3-1999 / FT3.5-1999 / FT5-1999)",
+  "standardIds": [
+    "fia-ft3-1999",
+    "fia-ft3.5-1999",
+    "fia-ft5-1999"
+  ],
+  "categories": [
+    "fuel_cell"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/ft3.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "FT3-1",
+      "manufacturer": "AFS",
+      "model": "AFS 151 or AFS0151",
+      "homologationStart": "02.1999",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-2",
+      "manufacturer": "AERO SEKUR",
+      "model": "FT3",
+      "homologationStart": "08.1999",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-3",
+      "manufacturer": "AERO SEKUR",
+      "model": "FT3-2018",
+      "homologationStart": "05.2018",
+      "homologationEnd": "05.2018",
+      "validUntil": "2023"
+    },
+    {
+      "number": "FT3-4",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-565",
+      "homologationStart": "03.1998",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032",
+      "revoked": true,
+      "revokedNote": "As these fuel bladders can no longer be considered as complying with the standard FIA FT3-1999, their use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    },
+    {
+      "number": "FT3-5",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-810-C",
+      "homologationStart": "03.1998",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-6",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-826-A",
+      "homologationStart": "05.2000",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-7",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-851-C",
+      "homologationStart": "04.2003",
+      "homologationEnd": "04.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT3-8",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-891-B Only S/N below: ATL UK: 839470 - 839571, ATL USA: 29559213 -29563411",
+      "homologationStart": "05.2009",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-9",
+      "manufacturer": "AUSTRALIAN FUEL CELLS",
+      "model": "AFC/M/001",
+      "homologationStart": "05.2002",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-10",
+      "manufacturer": "CARL",
+      "model": "CWT 001",
+      "homologationStart": "02.2008",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-11",
+      "manufacturer": "CARL",
+      "model": "CWT 002",
+      "homologationStart": "03.2015",
+      "homologationEnd": "03.2020",
+      "validUntil": "2025"
+    },
+    {
+      "number": "FT3-12",
+      "manufacturer": "CONTINENTAL",
+      "model": "UNA 2047",
+      "homologationStart": "03.1999",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-13",
+      "manufacturer": "CONTINENTAL",
+      "model": "UNA 2048",
+      "homologationStart": "01.2006",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-14",
+      "manufacturer": "FUEL SAFE SYSTEMS",
+      "model": "Cross linked polyethylene CL100 (CONST 871)",
+      "homologationStart": "12.1998",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-15",
+      "manufacturer": "FUEL SAFE SYSTEMS",
+      "model": "CO 1298",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-16",
+      "manufacturer": "FUEL SAFE SYSTEMS",
+      "model": "N 1298",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-17",
+      "manufacturer": "FUEL SAFE SYSTEMS",
+      "model": "FAB 200",
+      "homologationStart": "08.2011",
+      "homologationEnd": "08.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-18",
+      "manufacturer": "GIPI CARS",
+      "model": "GPRNN009",
+      "homologationStart": "05.1998",
+      "homologationEnd": "05.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-19",
+      "manufacturer": "HARMON RACING",
+      "model": "HRC-6007",
+      "homologationStart": "03.2011",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-20",
+      "manufacturer": "MERIN",
+      "model": "SFT/41076",
+      "homologationStart": "02.1999",
+      "homologationEnd": "02.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT3-21",
+      "manufacturer": "MERIN",
+      "model": "SFT-23209",
+      "homologationStart": "02.2013",
+      "homologationEnd": "02.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "FT3-22",
+      "manufacturer": "SIMTECH",
+      "model": "MM003933",
+      "homologationStart": "07.2004",
+      "homologationEnd": "07.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-23",
+      "manufacturer": "SIMTECH",
+      "model": "MM004723",
+      "homologationStart": "02.2007",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-24",
+      "manufacturer": "SIMTECH",
+      "model": "MM005133",
+      "homologationStart": "06.2008",
+      "homologationEnd": "06.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-25",
+      "manufacturer": "SIMTECH",
+      "model": "MO34570",
+      "homologationStart": "12.2015",
+      "homologationEnd": "12.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "FT3-26",
+      "manufacturer": "PREMIER FUEL SYSTEMS",
+      "model": "Kevlar-F209",
+      "homologationStart": "02.1999",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-27",
+      "manufacturer": "PREMIER FUEL SYSTEMS",
+      "model": "Nylon-F221",
+      "homologationStart": "02.1999",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-28",
+      "manufacturer": "PROFLEX",
+      "model": "PRO-ADV-001",
+      "homologationStart": "09.2018",
+      "homologationEnd": "09.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "FT3-29",
+      "manufacturer": "PRONAL",
+      "model": "24353/00001",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-30",
+      "manufacturer": "PRONAL",
+      "model": "29912/00002",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-31",
+      "manufacturer": "PRONAL",
+      "model": "32672/01324",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-32",
+      "manufacturer": "PRONAL",
+      "model": "41060/02733",
+      "homologationStart": "09.2001",
+      "homologationEnd": "09.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-33",
+      "manufacturer": "PRONAL",
+      "model": "44638",
+      "homologationStart": "06.2003",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-34",
+      "manufacturer": "PRONAL",
+      "model": "41647",
+      "homologationStart": "05.2010",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-35",
+      "manufacturer": "PRONAL",
+      "model": "105755",
+      "homologationStart": "03.2012",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-36",
+      "manufacturer": "RADIUM ENGINEERING",
+      "model": "XLPE",
+      "homologationStart": "01.2020",
+      "homologationEnd": "01.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "FT3-37",
+      "manufacturer": "ETS J. RICHE",
+      "model": "RAN807 (black colour)",
+      "homologationStart": "05.2000",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-38",
+      "manufacturer": "SBI",
+      "model": "1190-66 Urethane coated nylon",
+      "homologationStart": "01.2010",
+      "homologationEnd": "01.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT3-39",
+      "manufacturer": "SBI",
+      "model": "SBI 1002",
+      "homologationStart": "06.2012",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-40",
+      "manufacturer": "SAT",
+      "model": "SAT5824",
+      "homologationStart": "11.2011",
+      "homologationEnd": "11.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-41",
+      "manufacturer": "STAC",
+      "model": "DP20",
+      "homologationStart": "05.1999",
+      "homologationEnd": "05.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3-42",
+      "manufacturer": "STAC",
+      "model": "DPP2200",
+      "homologationStart": "12.2015",
+      "homologationEnd": "10.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "FT3-43",
+      "manufacturer": "SOLER",
+      "model": "JSR 001",
+      "homologationStart": "02.2019",
+      "homologationEnd": "02.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "FT3-44",
+      "manufacturer": "VAISON SPORT",
+      "model": "VS1801",
+      "homologationStart": "03.2018",
+      "homologationEnd": "03.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "FT3-45",
+      "manufacturer": "WILLANS",
+      "model": "W301",
+      "homologationStart": "04.2015",
+      "homologationEnd": "04.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "FT3-46",
+      "manufacturer": "WITA TEAM",
+      "model": "WT/3",
+      "homologationStart": "05.2017",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT3-47",
+      "manufacturer": "WITA TEAM",
+      "model": "WT/31",
+      "homologationStart": "12.2017",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-48",
+      "manufacturer": "BELASOLUTION",
+      "model": "MP2120001",
+      "homologationStart": "10.2021",
+      "homologationEnd": "10.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "FT3-49",
+      "manufacturer": "BELASOLUTION",
+      "model": "MP2120006",
+      "homologationStart": "10.2021",
+      "homologationEnd": "10.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "FT3-50",
+      "manufacturer": "MERIN",
+      "model": "SFT41083",
+      "homologationStart": "04.2022",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3-51",
+      "manufacturer": "WITA TEAM",
+      "model": "WT/40",
+      "homologationStart": "06.2023",
+      "homologationEnd": "06.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "FT3-52",
+      "manufacturer": "AERO SEKUR",
+      "model": "FT3-2023",
+      "homologationStart": "01.2024",
+      "homologationEnd": "01.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "FT3-53",
+      "manufacturer": "Bailey Tanks",
+      "model": "EREZ TPU 2105",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "FT3.5-1",
+      "manufacturer": "AERO SEKUR",
+      "model": "SP31A",
+      "homologationStart": "08.1999",
+      "homologationEnd": "08.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3.5-2",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-514-D",
+      "homologationStart": "03.1998",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3.5-3",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-797-B",
+      "homologationStart": "03.1998",
+      "homologationEnd": "03.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3.5-4",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-891-B From S/N below: ATL UK: 839572, ATL USA: 29563412",
+      "homologationStart": "02.2010",
+      "homologationEnd": "02.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3.5-5",
+      "manufacturer": "CONTINENTAL",
+      "model": "UNA 2049",
+      "homologationStart": "01.2006",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3.5-6",
+      "manufacturer": "FUEL SAFE SYSTEMS",
+      "model": "Di 1198",
+      "homologationStart": "04.1999",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT3.5-7",
+      "manufacturer": "MERIN",
+      "model": "SFT-41082",
+      "homologationStart": "02.2013",
+      "homologationEnd": "02.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "FT3.5-8",
+      "manufacturer": "PRONAL",
+      "model": "27355/01326",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3.5-9",
+      "manufacturer": "PRONAL",
+      "model": "33228/01325",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3.5-10",
+      "manufacturer": "PRONAL",
+      "model": "33229/00561",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT3.5-11",
+      "manufacturer": "SBI",
+      "model": "2090-66",
+      "homologationStart": "05.2017",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT3.5-12",
+      "manufacturer": "WITA TEAM",
+      "model": "WT/3.5",
+      "homologationStart": "05.2017",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT5-1",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-818-D",
+      "homologationStart": "01.1999",
+      "homologationEnd": "01.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT5-2",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-818-D (issue 2003)",
+      "homologationStart": "05.2003",
+      "homologationEnd": "05.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "FT5-3",
+      "manufacturer": "AERO TEC LABS",
+      "model": "ATL-900-C",
+      "homologationStart": "06.2014",
+      "homologationEnd": "06.2019",
+      "validUntil": "2024"
+    },
+    {
+      "number": "FT5-4",
+      "manufacturer": "CORTEX",
+      "model": "PBO-Fluorelastomer Blend",
+      "homologationStart": "02.2013",
+      "homologationEnd": "02.2018",
+      "validUntil": "2023"
+    },
+    {
+      "number": "FT5-5",
+      "manufacturer": "MERIN",
+      "model": "SFT/41078",
+      "homologationStart": "03.2011",
+      "homologationEnd": "03.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT5-6",
+      "manufacturer": "MERIN",
+      "model": "SFT/41079",
+      "homologationStart": "07.2019",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "FT5-7",
+      "manufacturer": "PREMIER FUEL SYSTEMS",
+      "model": "Kevlar-F228",
+      "homologationStart": "12.2001",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "FT5-8",
+      "manufacturer": "PRONAL",
+      "model": "39387/02396",
+      "homologationStart": "06.2000",
+      "homologationEnd": "06.2017",
+      "validUntil": "2022"
+    },
+    {
+      "number": "FT5-9",
+      "manufacturer": "ATL",
+      "model": "ATL-922-C",
+      "homologationStart": "06.2024",
+      "homologationEnd": "06.2029",
+      "validUntil": "2034"
+    }
+  ]
+}
