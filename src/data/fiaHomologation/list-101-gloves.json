@@ -1,0 +1,134 @@
+{
+  "listNumber": 101,
+  "title": "Technical List n°101 — Karting Protective Clothing, Gloves (FIA 8877-2022)",
+  "standardIds": [
+    "fia-8877-2022"
+  ],
+  "categories": [
+    "gloves"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/8877.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "KC.003.23-G",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-1K V3",
+      "homologationStart": "08.2023",
+      "homologationEnd": "08.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "KC.004.23-G",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-1 KX V4",
+      "homologationStart": "08.2023",
+      "homologationEnd": "08.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "KC.019.24-G",
+      "manufacturer": "OMP",
+      "model": "CW0138",
+      "homologationStart": "09.2024",
+      "homologationEnd": "09.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.020.24-G",
+      "manufacturer": "SPARCO",
+      "model": "K-TIDE+",
+      "homologationStart": "09.2024",
+      "homologationEnd": "09.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.021.24-G",
+      "manufacturer": "SPARCO",
+      "model": "K-ARROW+",
+      "homologationStart": "09.2024",
+      "homologationEnd": "09.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.024.24-G",
+      "manufacturer": "OMP",
+      "model": "CW0152",
+      "homologationStart": "10.2024",
+      "homologationEnd": "10.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.025.24-G",
+      "manufacturer": "FREE MINDS",
+      "model": "KSLIGHT-24",
+      "homologationStart": "10.2024",
+      "homologationEnd": "10.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.030.25-G",
+      "manufacturer": "MARINA",
+      "model": "Unik Glove",
+      "homologationStart": "03.2025",
+      "homologationEnd": "03.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.035.25-G",
+      "manufacturer": "ALPINESTARS",
+      "model": "TEMPEST v3 WATERPROOF",
+      "homologationStart": "07.2025",
+      "homologationEnd": "07.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.040.25-G",
+      "manufacturer": "32Five",
+      "model": "PLUS F",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.041.25-G",
+      "manufacturer": "SPARCO",
+      "model": "K-ARROW+WP",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.043.26-G",
+      "manufacturer": "OFFSET",
+      "model": "CONCEPT",
+      "homologationStart": "12.2025",
+      "homologationEnd": "01.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "KC.045.26-G",
+      "manufacturer": "SIMPSON",
+      "model": "Air Raid",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "KC.047.26-G",
+      "manufacturer": "-273",
+      "model": "MSN-1",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "KC.048.26-G",
+      "manufacturer": "-273",
+      "model": "MNS-2",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2036"
+    }
+  ]
+}

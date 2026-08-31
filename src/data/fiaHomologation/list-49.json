@@ -1,0 +1,916 @@
+{
+  "listNumber": 49,
+  "title": "Technical List n°49 — Premium Helmets (FIA 8859-2015)",
+  "standardIds": [
+    "fia-8859-2015"
+  ],
+  "categories": [
+    "helmet"
+  ],
+  "sourceUrl": "https://www.fia.com/system/files/documents/technical_list_49_-_update_after_october_wmsc_-_fiasdh-25-009.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "PH.001.15-C",
+      "manufacturer": "STILO",
+      "model": "ST5 Carbon",
+      "homologationStart": "02.2015",
+      "homologationEnd": "07.2025"
+    },
+    {
+      "number": "PH.002.15-O",
+      "manufacturer": "STILO",
+      "model": "DES",
+      "homologationStart": "09.2015",
+      "homologationEnd": "11.2025"
+    },
+    {
+      "number": "PH.003.15-O",
+      "manufacturer": "STILO",
+      "model": "Carbon DES",
+      "homologationStart": "07.2015",
+      "homologationEnd": "09.2025"
+    },
+    {
+      "number": "PH.004.15-C",
+      "manufacturer": "ARAI",
+      "model": "GP-6",
+      "homologationStart": "07.2015",
+      "homologationEnd": "02.2026"
+    },
+    {
+      "number": "PH.005.15-O",
+      "manufacturer": "ARAI",
+      "model": "GP-J3",
+      "homologationStart": "06.2015",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.006.15-C",
+      "manufacturer": "ARAI",
+      "model": "GP-5W",
+      "homologationStart": "06.2015",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.007.15-C",
+      "manufacturer": "ARAI",
+      "model": "GP-6S",
+      "homologationStart": "07.2015",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.008.15-C",
+      "manufacturer": "BELL RACING",
+      "model": "RS7 carbon",
+      "homologationStart": "08.2015",
+      "homologationEnd": "08.2020"
+    },
+    {
+      "number": "PH.009.15-C",
+      "manufacturer": "BELL RACING",
+      "model": "RS7",
+      "homologationStart": "08.2015",
+      "homologationEnd": "09.2020"
+    },
+    {
+      "number": "PH.010.15-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-1",
+      "homologationStart": "09.2015",
+      "homologationEnd": "09.2020"
+    },
+    {
+      "number": "PH.011.15-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT5",
+      "homologationStart": "09.2015",
+      "homologationEnd": "09.2020"
+    },
+    {
+      "number": "PH.012.15-C",
+      "manufacturer": "STILO",
+      "model": "ST5 COMPOSITE",
+      "homologationStart": "09.2015",
+      "homologationEnd": "11.2020"
+    },
+    {
+      "number": "PH.013.15-C",
+      "manufacturer": "BELL RACING",
+      "model": "RS7 carbon*",
+      "homologationStart": "10.2015",
+      "homologationEnd": "10.2025"
+    },
+    {
+      "number": "PH.014.15-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-1*",
+      "homologationStart": "01.2016",
+      "homologationEnd": "10.2025"
+    },
+    {
+      "number": "PH.015.15-O",
+      "manufacturer": "ORECA",
+      "model": "Jet-RS",
+      "homologationStart": "12.2015",
+      "homologationEnd": "12.2025"
+    },
+    {
+      "number": "PH.016.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "RS7",
+      "homologationStart": "01.2016",
+      "homologationEnd": "01.2021"
+    },
+    {
+      "number": "PH.017.16-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SIMPSON VENATOR COMPOSITE",
+      "homologationStart": "01.2016",
+      "homologationEnd": "05.2022"
+    },
+    {
+      "number": "PH.018.16-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SIMPSON VENATOR CARBON",
+      "homologationStart": "01.2016",
+      "homologationEnd": "01.2021"
+    },
+    {
+      "number": "PH.019.16-C",
+      "manufacturer": "STAND 21",
+      "model": "IVOS",
+      "homologationStart": "02.2016",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.020.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT5",
+      "homologationStart": "02.2016",
+      "homologationEnd": "02.2021"
+    },
+    {
+      "number": "PH.021.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "R1",
+      "homologationStart": "03.2016",
+      "homologationEnd": "03.2021"
+    },
+    {
+      "number": "PH.022.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "GP.3 CARBON",
+      "homologationStart": "04.2016",
+      "homologationEnd": "04.2021"
+    },
+    {
+      "number": "PH.023.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "GTX.3 CARBON",
+      "homologationStart": "05.2016",
+      "homologationEnd": "05.2021"
+    },
+    {
+      "number": "PH.024.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "M.8 CARBON",
+      "homologationStart": "05.2016",
+      "homologationEnd": "05.2021"
+    },
+    {
+      "number": "PH.025.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "SPORT-5",
+      "homologationStart": "05.2016",
+      "homologationEnd": "05.2021"
+    },
+    {
+      "number": "PH.026.16-C",
+      "manufacturer": "SIMPSON",
+      "model": "CARBON BANDIT",
+      "homologationStart": "05.2016",
+      "homologationEnd": "05.2021"
+    },
+    {
+      "number": "PH.027.16-C",
+      "manufacturer": "SIMPSON",
+      "model": "DEVIL RAY",
+      "homologationStart": "05.2016",
+      "homologationEnd": "05.2021"
+    },
+    {
+      "number": "PH.028.16-C",
+      "manufacturer": "SIMPSON",
+      "model": "BANDIT",
+      "homologationStart": "05.2016",
+      "homologationEnd": "05.2021"
+    },
+    {
+      "number": "PH.029.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "GP.3",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.030.16-O",
+      "manufacturer": "ARAI",
+      "model": "GP-J3F",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.031.16-C",
+      "manufacturer": "STILO",
+      "model": "SFF4 COMPOSITE",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.032.16-C",
+      "manufacturer": "ROUX",
+      "model": "R-1CF",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.033.16-C",
+      "manufacturer": "ROUX",
+      "model": "R-1C",
+      "homologationStart": "06.2016",
+      "homologationEnd": "09.2021"
+    },
+    {
+      "number": "PH.034.16-O",
+      "manufacturer": "STAND 21",
+      "model": "IVOS OPEN",
+      "homologationStart": "06.2016",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.035.16-C",
+      "manufacturer": "ORECA",
+      "model": "Full-RS",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.036.16-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO SKY RF-7W",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.037.16-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO AIR RF-5W",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.038.16-C",
+      "manufacturer": "BRSM",
+      "model": "FC-F1",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.039.16-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S23",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.040.16-O",
+      "manufacturer": "BRSM",
+      "model": "OF-S1",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.041.16-O",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO SKY RJ-7",
+      "homologationStart": "08.2016",
+      "homologationEnd": "08.2026"
+    },
+    {
+      "number": "PH.042.16-O",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO SKY RJ-3",
+      "homologationStart": "08.2016",
+      "homologationEnd": "09.2026"
+    },
+    {
+      "number": "PH.043.16-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S4",
+      "homologationStart": "08.2016",
+      "homologationEnd": "09.2021"
+    },
+    {
+      "number": "PH.044.16-O",
+      "manufacturer": "SIMPSON",
+      "model": "SIMPSON RALLY",
+      "homologationStart": "10.2016",
+      "homologationEnd": "11.2021"
+    },
+    {
+      "number": "PH.045.16-C",
+      "manufacturer": "BSR",
+      "model": "BF1-750",
+      "homologationStart": "09.2016",
+      "homologationEnd": "09.2021"
+    },
+    {
+      "number": "PH.046.16-C",
+      "manufacturer": "BELL RACING",
+      "model": "GTX.3",
+      "homologationStart": "09.2016",
+      "homologationEnd": "09.2021"
+    },
+    {
+      "number": "PH.047.16-C",
+      "manufacturer": "BRSM",
+      "model": "FF-C9",
+      "homologationStart": "09.2016",
+      "homologationEnd": "09.2021"
+    },
+    {
+      "number": "PH.048.16-C",
+      "manufacturer": "BRSM",
+      "model": "FF-C7",
+      "homologationStart": "10.2016",
+      "homologationEnd": "10.2021"
+    },
+    {
+      "number": "PH.049.16-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S8A",
+      "homologationStart": "11.2016",
+      "homologationEnd": "11.2021"
+    },
+    {
+      "number": "PH.050.16-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-9 CARBON",
+      "homologationStart": "10.2016",
+      "homologationEnd": "11.2023"
+    },
+    {
+      "number": "PH.051.16-C",
+      "manufacturer": "STILO",
+      "model": "ST5 COMPOSITE MSF",
+      "homologationStart": "11.2016",
+      "homologationEnd": "11.2021"
+    },
+    {
+      "number": "PH.052.16-C",
+      "manufacturer": "ZAMP",
+      "model": "RZ-44C",
+      "homologationStart": "11.2016",
+      "homologationEnd": "10.2021"
+    },
+    {
+      "number": "PH.053.16-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-9",
+      "homologationStart": "12.2016",
+      "homologationEnd": "12.2021"
+    },
+    {
+      "number": "PH.054.17-O",
+      "manufacturer": "BSR",
+      "model": "BF1-R7",
+      "homologationStart": "01.2017",
+      "homologationEnd": "01.2022"
+    },
+    {
+      "number": "PH.055.17-C",
+      "manufacturer": "BRSM",
+      "model": "GEM",
+      "homologationStart": "01.2017",
+      "homologationEnd": "01.2022"
+    },
+    {
+      "number": "PH.056.17-C",
+      "manufacturer": "ZAMP",
+      "model": "RZ-35E",
+      "homologationStart": "01.2017",
+      "homologationEnd": "01.2022"
+    },
+    {
+      "number": "PH.057.17-O",
+      "manufacturer": "STILO",
+      "model": "SOF4 COMPOSITE",
+      "homologationStart": "02.2017",
+      "homologationEnd": "02.2022"
+    },
+    {
+      "number": "PH.058.17-O",
+      "manufacturer": "STILO",
+      "model": "DES MSF (N)",
+      "homologationStart": "01.2017",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.059.17-O",
+      "manufacturer": "FLB",
+      "model": "GT2I PRO",
+      "homologationStart": "03.2017",
+      "homologationEnd": "03.2022"
+    },
+    {
+      "number": "PH.061.17-O",
+      "manufacturer": "RRS",
+      "model": "PROTECT JET",
+      "homologationStart": "04.2017",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.062.17-C",
+      "manufacturer": "RRS",
+      "model": "PROTECT INTEGRAL",
+      "homologationStart": "04.2017",
+      "homologationEnd": "08.2021"
+    },
+    {
+      "number": "PH.063.17-C",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "AHT-100",
+      "homologationStart": "05.2017",
+      "homologationEnd": "03.2024"
+    },
+    {
+      "number": "PH.066.18-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT5 CARBON",
+      "homologationStart": "06.2018",
+      "homologationEnd": "06.2023"
+    },
+    {
+      "number": "PH.067.18-C",
+      "manufacturer": "OMP",
+      "model": "GP8 EVO",
+      "homologationStart": "06.2018",
+      "homologationEnd": "06.2023"
+    },
+    {
+      "number": "PH.068.18-C",
+      "manufacturer": "IMPACT RACING",
+      "model": "PHENOM",
+      "homologationStart": "12.2018",
+      "homologationEnd": "06.2021"
+    },
+    {
+      "number": "PH.069.19-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S40",
+      "homologationStart": "01.2019",
+      "homologationEnd": "01.2024"
+    },
+    {
+      "number": "PH.070.19-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S44",
+      "homologationStart": "01.2019",
+      "homologationEnd": "01.2024"
+    },
+    {
+      "number": "PH.071.19-O",
+      "manufacturer": "B2 HELMETS",
+      "model": "OMP J-R",
+      "homologationStart": "03.2019",
+      "homologationEnd": "03.2024"
+    },
+    {
+      "number": "PH.072.19-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S45",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024"
+    },
+    {
+      "number": "PH.073.19-C",
+      "manufacturer": "BRSM",
+      "model": "FF-C16",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024"
+    },
+    {
+      "number": "PH.074.19-O",
+      "manufacturer": "BRSM",
+      "model": "OF-S16",
+      "homologationStart": "06.2019",
+      "homologationEnd": "06.2024"
+    },
+    {
+      "number": "PH.075.19-O",
+      "manufacturer": "BRSM",
+      "model": "OF-S16C",
+      "homologationStart": "07.2019",
+      "homologationEnd": "07.2024"
+    },
+    {
+      "number": "PH.076.19-C",
+      "manufacturer": "ZAMP",
+      "model": "RL-70E",
+      "homologationStart": "08.2019",
+      "homologationEnd": "08.2024"
+    },
+    {
+      "number": "PH.077.19-C",
+      "manufacturer": "STILO",
+      "model": "ST5.1 Carbon",
+      "homologationStart": "10.2019",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.078.19-C",
+      "manufacturer": "STILO",
+      "model": "ST5.1 Composite",
+      "homologationStart": "10.2019",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.079.20-C",
+      "manufacturer": "ARAI",
+      "model": "GP-7",
+      "homologationStart": "12.2019",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.080.20-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG",
+      "homologationStart": "06.2020",
+      "homologationEnd": "06.2025"
+    },
+    {
+      "number": "PH.081.20-C",
+      "manufacturer": "HJC",
+      "model": "H70",
+      "homologationStart": "05.2020",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.082.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "RS7-20",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2025"
+    },
+    {
+      "number": "PH.083.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "RS7 CARBON-20",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2025"
+    },
+    {
+      "number": "PH.084.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "GP3 CARBON-20",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2025"
+    },
+    {
+      "number": "PH.085.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "GTX3 CARBON-20",
+      "homologationStart": "07.2020",
+      "homologationEnd": "07.2025"
+    },
+    {
+      "number": "PH.086.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "GTX3-20",
+      "homologationStart": "08.2020",
+      "homologationEnd": "08.2025"
+    },
+    {
+      "number": "PH.087.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "GP3 SPORT",
+      "homologationStart": "09.2020",
+      "homologationEnd": "09.2025"
+    },
+    {
+      "number": "PH.088.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "M8 CARBON-20",
+      "homologationStart": "09.2020",
+      "homologationEnd": "09.2025"
+    },
+    {
+      "number": "PH.089.20-O",
+      "manufacturer": "BRSM",
+      "model": "R-OF-S1",
+      "homologationStart": "09.2020",
+      "homologationEnd": "09.2025"
+    },
+    {
+      "number": "PH.090.20-C",
+      "manufacturer": "G-FORCE",
+      "model": "NOVA",
+      "homologationStart": "11.2020",
+      "homologationEnd": "11.2025"
+    },
+    {
+      "number": "PH.091.20-C",
+      "manufacturer": "G-FORCE",
+      "model": "SUPERNOVA",
+      "homologationStart": "11.2020",
+      "homologationEnd": "11.2025"
+    },
+    {
+      "number": "PH.092.20-C",
+      "manufacturer": "SCHUBERTH",
+      "model": "SP1 CARBON",
+      "homologationStart": "11.2020",
+      "homologationEnd": "11.2025"
+    },
+    {
+      "number": "PH.093.20-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-10 CARBON",
+      "homologationStart": "12.2020",
+      "homologationEnd": "04.2026"
+    },
+    {
+      "number": "PH.094.20-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-9 CARBON*",
+      "homologationStart": "12.2020",
+      "homologationEnd": "12.2025"
+    },
+    {
+      "number": "PH.095.20-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT5 SPORT",
+      "homologationStart": "12.2020",
+      "homologationEnd": "12.2025"
+    },
+    {
+      "number": "PH.096.20-C",
+      "manufacturer": "ROUX",
+      "model": "A1-F",
+      "homologationStart": "12.2020",
+      "homologationEnd": "12.2025"
+    },
+    {
+      "number": "PH.097.21-C",
+      "manufacturer": "BRSM",
+      "model": "FF-S18",
+      "homologationStart": "01.2021",
+      "homologationEnd": "01.2026"
+    },
+    {
+      "number": "PH.098.21-O",
+      "manufacturer": "BRSM",
+      "model": "OF-F1",
+      "homologationStart": "01.2021",
+      "homologationEnd": "01.2026"
+    },
+    {
+      "number": "PH.099.21-O",
+      "manufacturer": "BELL RACING",
+      "model": "MAG-10",
+      "homologationStart": "02.2021",
+      "homologationEnd": "04.2026"
+    },
+    {
+      "number": "PH.100.21-C",
+      "manufacturer": "B2 HELMETS",
+      "model": "OMP GP-R",
+      "homologationStart": "02.2021",
+      "homologationEnd": "02.2026"
+    },
+    {
+      "number": "PH.101.21-C",
+      "manufacturer": "V2 SPORT",
+      "model": "V2 Super-Vent",
+      "homologationStart": "03.2021",
+      "homologationEnd": "01.2026"
+    },
+    {
+      "number": "PH.102.21-C",
+      "manufacturer": "BELL RACING",
+      "model": "BR8 CARBON",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2026"
+    },
+    {
+      "number": "PH.103.21-O",
+      "manufacturer": "BELL RACING",
+      "model": "500-TX",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2026"
+    },
+    {
+      "number": "PH.104.21-O",
+      "manufacturer": "STILO",
+      "model": "VENTI CARBON (N)",
+      "homologationStart": "05.2021",
+      "homologationEnd": "05.2026"
+    },
+    {
+      "number": "PH.105.21-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT6",
+      "homologationStart": "05.2021",
+      "homologationEnd": "11.2026"
+    },
+    {
+      "number": "PH.106.21-C",
+      "manufacturer": "BELL RACING",
+      "model": "STAR CLASSIC",
+      "homologationStart": "06.2021",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.107.21-O",
+      "manufacturer": "RRS",
+      "model": "PROTECT JET2",
+      "homologationStart": "07.2021",
+      "homologationEnd": "09.2025"
+    },
+    {
+      "number": "PH.108.21-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT6 CARBON",
+      "homologationStart": "07.2021",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.109.21-O",
+      "manufacturer": "STILO",
+      "model": "VENTI COMPOSITE (N)",
+      "homologationStart": "08.2021",
+      "homologationEnd": "08.2026"
+    },
+    {
+      "number": "PH.110.21-C",
+      "manufacturer": "BELL RACING",
+      "model": "GT5 SPORT-20",
+      "homologationStart": "09.2021",
+      "homologationEnd": "09.2026"
+    },
+    {
+      "number": "PH.111.21-C",
+      "manufacturer": "BRSM",
+      "model": "R-FF-S4S",
+      "homologationStart": "09.2021",
+      "homologationEnd": "09.2026"
+    },
+    {
+      "number": "PH.112.21-O",
+      "manufacturer": "RRS",
+      "model": "PROTECT WRC",
+      "homologationStart": "10.2021",
+      "homologationEnd": "10.2026"
+    },
+    {
+      "number": "PH.113.21-C",
+      "manufacturer": "STRATEGIC SPORTS LTD",
+      "model": "ST-1178",
+      "homologationStart": "11.2021",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.114.21-O",
+      "manufacturer": "BSA",
+      "model": "BF1-R81",
+      "homologationStart": "11.2021",
+      "homologationEnd": "11.2026"
+    },
+    {
+      "number": "PH.115.21-O",
+      "manufacturer": "BSR",
+      "model": "BF1-R81 CARBON",
+      "homologationStart": "11.2021",
+      "homologationEnd": "11.2026"
+    },
+    {
+      "number": "PH.116.21-C",
+      "manufacturer": "RRS",
+      "model": "PROTECT 2",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.117.21-C",
+      "manufacturer": "BSR",
+      "model": "BF1-860",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.118.21-C",
+      "manufacturer": "BSR",
+      "model": "BF1-860 CARBON",
+      "homologationStart": "12.2021",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.119.22-C",
+      "manufacturer": "BRSM",
+      "model": "FF-C9A",
+      "homologationStart": "01.2022",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.120.22-C",
+      "manufacturer": "BRSM",
+      "model": "GEMM",
+      "homologationStart": "01.2022",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.121.22-O",
+      "manufacturer": "SIMPSON",
+      "model": "SIMPSON 2",
+      "homologationStart": "09.2022",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.122.22-C",
+      "manufacturer": "ROUX",
+      "model": "RP-1F-C59",
+      "homologationStart": "09.2022",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.123.22-C",
+      "manufacturer": "ROUX",
+      "model": "RP-1 GT-C59",
+      "homologationStart": "11.2022",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.124.23-O",
+      "manufacturer": "STILO",
+      "model": "STILO",
+      "homologationStart": "08.2023",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.125.23-C",
+      "manufacturer": "BELL RACING",
+      "model": "X-1",
+      "homologationStart": "09.2023",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.126.23-C",
+      "manufacturer": "ZAMP",
+      "model": "ZR-72",
+      "homologationStart": "10.2023",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.127.24-C",
+      "manufacturer": "STILO",
+      "model": "WRX VENTI CARBON",
+      "homologationStart": "12.2023",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.128.25-C",
+      "manufacturer": "RACEMAX",
+      "model": "GR3",
+      "homologationStart": "07.2025",
+      "homologationEnd": "12.2026"
+    },
+    {
+      "number": "PH.060.17-C",
+      "manufacturer": "NINGBO HD POWERSPORTS SAFETY PRODUCTS CO., LTD.",
+      "model": "HD128.F",
+      "homologationStart": "06.2017",
+      "homologationEnd": "06.2022",
+      "revoked": true,
+      "revokedNote": "As this seat can no longer be considered as complying with the standard FIA 8859-2015 Premium Helmets, its use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    },
+    {
+      "number": "PH.064.17-O",
+      "manufacturer": "NINGBO HD POWERSPORTS SAFETY PRODUCTS CO., LTD.",
+      "model": "HD315.F",
+      "homologationStart": "06.2017",
+      "homologationEnd": "06.2022",
+      "revoked": true,
+      "revokedNote": "As this seat can no longer be considered as complying with the standard FIA 8859-2015 Premium Helmets, its use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    },
+    {
+      "number": "PH.065.17-C",
+      "manufacturer": "Racing Force S.p.A (OMP)",
+      "model": "GP8",
+      "homologationStart": "06.2017",
+      "homologationEnd": "03.2022",
+      "revoked": true,
+      "revokedNote": "As this seat can no longer be considered as complying with the standard FIA 8859-2015 Premium Helmets, its use is prohibited in all cases in which compliance with the above-mentioned standards is mandatory."
+    }
+  ]
+}

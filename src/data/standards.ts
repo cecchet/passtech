@@ -129,6 +129,7 @@ export const STANDARDS: StandardDef[] = [
     family: "fia",
     categories: ["helmet"],
   },
+  { id: "fia-8878-2024", label: "FIA 8878-2024 (karting helmets)", family: "fia", categories: ["helmet"] },
 
   // Helmet - other (CARS RallyCross / UTV allowances)
   { id: "dot-2010plus", label: "DOT (dated 2010 or newer)", family: "dot", categories: ["helmet"] },
@@ -153,6 +154,10 @@ export const STANDARDS: StandardDef[] = [
   // car-racing body in this app's registry, so a kart racer's CIK Level 2 suit correctly reads as
   // "not accepted" when checked against a car-racing ruleset, and vice versa.
   { id: "cik-level-2", label: "CIK-FIA Level 2 (karting suit)", family: "cik", categories: ["firesuit"] },
+  // FIA 8877-2022 is the newer, FIA-numbered karting protective-clothing standard (suits, gloves,
+  // AND shoes under one spec, one homologation register -- see Technical List 101 in
+  // src/data/fiaHomologation), distinct from the CIK-FIA Level 2 rating above.
+  { id: "fia-8877-2022", label: "FIA 8877-2022 (karting protective clothing)", family: "fia", categories: ["firesuit", "gloves", "shoes"] },
   { id: "sfi-3.2a-1", label: "SFI 3.2A/1 (single layer)", family: "sfi", categories: ["firesuit"] },
   { id: "sfi-3.2a-3", label: "SFI 3.2A/3", family: "sfi", categories: ["firesuit"] },
   { id: "sfi-3.2a-5", label: "SFI 3.2A/5", family: "sfi", categories: ["firesuit"] },
@@ -175,6 +180,7 @@ export const STANDARDS: StandardDef[] = [
   { id: "fia-8855-2010", label: "FIA 8855-2010", family: "fia", categories: ["seat"] },
   { id: "fia-8855-2021", label: "FIA 8855-2021", family: "fia", categories: ["seat"] },
   { id: "fia-8862-2009", label: "FIA 8862-2009", family: "fia", categories: ["seat"] },
+  { id: "fia-8873-2018", label: "FIA 8873-2018 (karting high seats)", family: "fia", categories: ["seat"] },
 
   // Belts / harnesses
   { id: "sfi-16.1", label: "SFI 16.1", family: "sfi", categories: ["belts_harness"] },

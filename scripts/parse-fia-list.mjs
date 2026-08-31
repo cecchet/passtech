@@ -133,7 +133,457 @@ const LIST_CONFIG = {
     // See LIST_69_MANUAL_ENTRIES below.
     manualEntries: () => LIST_69_MANUAL_ENTRIES,
   },
+  33: {
+    title: "Technical List n°33 — Advanced Helmets (FIA 8860-2010)",
+    standardIds: ["fia-8860-2010"],
+    categories: ["helmet"],
+    sourceUrl: "https://www.fia.com/sites/default/files/l33_advanced_helmets_25.pdf",
+    numberPattern: /^(AH\.\d{3}\.\d{2}-C)\b/,
+    // Built from a user-provided spreadsheet conversion (fia-xls/list 33.xlsx), same reasoning as
+    // List 1/69 above — this older-generation list's PDF has the same pdftotext row-drift bug as
+    // every other pre-2020s list here. Dates print as DD.MM.YY in the source (not MM.YYYY like
+    // every other list), kept as printed since the field is free text. Every entry's homologation
+    // end date is already in the past (2017-2019) and the source PDF has no WARNING section at
+    // all (unlike every newer list), so no entries are marked revoked.
+    manualEntries: () => LIST_33_MANUAL_ENTRIES,
+  },
+  48: {
+    title: "Technical List n°48 — Racing Nets (FIA 8863-2013)",
+    standardIds: ["fia-8863-2013"],
+    categories: ["window_net"],
+    sourceUrl: "https://www.fia.com/sites/default/files/l48_racing_nets_33.pdf",
+    numberPattern: /^(RN\.\d{3}\.\d{2})\b/,
+    // Built from a user-provided spreadsheet conversion (fia-xls/FIA_Technical_List_48_Racing_Nets.xlsx).
+    manualEntries: () => LIST_48_MANUAL_ENTRIES,
+  },
+  49: {
+    title: "Technical List n°49 — Premium Helmets (FIA 8859-2015)",
+    standardIds: ["fia-8859-2015"],
+    categories: ["helmet"],
+    sourceUrl: "https://www.fia.com/system/files/documents/technical_list_49_-_update_after_october_wmsc_-_fiasdh-25-009.pdf",
+    numberPattern: /^(PH\.\d{3}\.\d{2}-[A-Za-z])\b/,
+    // Built from a user-provided spreadsheet conversion (fia-xls/g-list-49.xlsx) — the messiest of
+    // the spreadsheet-sourced lists: many rows list several size-group sub-rows for one
+    // homologation number with distinct start/end dates each (this app has no per-size validity
+    // field, so each number's homologationStart/End is the envelope of its earliest start and
+    // latest end, same convention as List 40's stacked bracket dates), some date cells were stored
+    // as raw floats that dropped a trailing zero (e.g. "6.202" meaning "06.2020" — same fix as
+    // List 1/69's lossy-float dates), and some cells had two dates pasted with the line break lost
+    // (e.g. "07.201509.2015", split on the fact that a zero-padded MM.YYYY token is always exactly
+    // 7 characters). The "-C"/"-0" suffix in the main table is FIA's C=closed/O=open-face
+    // convention, not a digit zero — confirmed against the source PDF's own WARNING section, which
+    // spells it "PH.064.17-O" (letter O). 3 entries are revoked, both cross-checked against a
+    // dedicated WITHDRAWN mini-table at the end of the spreadsheet and the source PDF's own WARNING
+    // section (the mini-table's cleaner data was used where the two disagreed on exact dates).
+    manualEntries: () => LIST_49_MANUAL_ENTRIES,
+  },
+  79: {
+    title: "Technical List n°79 — Karting High Seats (FIA 8873-2018)",
+    standardIds: ["fia-8873-2018"],
+    categories: ["seat"],
+    sourceUrl: "https://www.fia.com/sites/default/files/l79_approved_karting_high_seats_0.pdf",
+    numberPattern: /^(KHS\.\d{3}\.\d{2})\b/,
+    // Built from a user-provided spreadsheet conversion (fia-xls/list-79.xlsx). No revocations —
+    // the list's own WARNING section states "There are no warnings for this product".
+    manualEntries: () => LIST_79_MANUAL_ENTRIES,
+  },
+  "101-firesuit": {
+    listNumber: 101,
+    outFile: "list-101-firesuit.json",
+    title: "Technical List n°101 — Karting Protective Clothing, Suits (FIA 8877-2022)",
+    standardIds: ["fia-8877-2022"],
+    categories: ["firesuit"],
+    sourceUrl: "https://www.fia.com/sites/default/files/8877.pdf",
+    numberPattern: /^(KC\.\d{3}\.\d{2}-[A-Z0])\b/,
+    manualEntries: () => LIST_101_FIRESUIT_MANUAL_ENTRIES,
+  },
+  "101-gloves": {
+    listNumber: 101,
+    outFile: "list-101-gloves.json",
+    title: "Technical List n°101 — Karting Protective Clothing, Gloves (FIA 8877-2022)",
+    standardIds: ["fia-8877-2022"],
+    categories: ["gloves"],
+    sourceUrl: "https://www.fia.com/sites/default/files/8877.pdf",
+    numberPattern: /^(KC\.\d{3}\.\d{2}-[A-Z0])\b/,
+    manualEntries: () => LIST_101_GLOVES_MANUAL_ENTRIES,
+  },
+  "101-shoes": {
+    listNumber: 101,
+    outFile: "list-101-shoes.json",
+    title: "Technical List n°101 — Karting Protective Clothing, Shoes (FIA 8877-2022)",
+    standardIds: ["fia-8877-2022"],
+    categories: ["shoes"],
+    sourceUrl: "https://www.fia.com/sites/default/files/8877.pdf",
+    numberPattern: /^(KC\.\d{3}\.\d{2}-[A-Z0])\b/,
+    manualEntries: () => LIST_101_SHOES_MANUAL_ENTRIES,
+  },
+  107: {
+    title: "Technical List n°107 — Premium Helmets (FIA 8859-2024)",
+    standardIds: ["fia-8859-2024", "fia-8859-2024-abp"],
+    categories: ["helmet"],
+    sourceUrl: "https://www.fia.com/sites/default/files/technical_list_107_55613.pdf",
+    numberPattern: /^(PH\.\d{3}\.\d{2}-[A-Z](-ABP)?)\b/,
+    // Built from a user-provided spreadsheet conversion (fia-xls/FIA_Helmets_Technical_List_107.xlsx).
+    // Several numbers repeat across multiple rows for distinct size-group sub-ranges with their own
+    // start/end dates — collapsed to one entry per number using the earliest start / latest end,
+    // same convention as List 49 above. No revocations — the source PDF's own WARNING section
+    // states "There are no warnings for this product".
+    manualEntries: () => LIST_107_MANUAL_ENTRIES,
+  },
+  108: {
+    title: "Technical List n°108 — Karting Helmets (FIA 8878-2024)",
+    standardIds: ["fia-8878-2024"],
+    categories: ["helmet"],
+    sourceUrl: "https://www.fia.com/sites/default/files/l108_karting_helmets_8878-2024_2.pdf",
+    numberPattern: /^(KH\.\d{3}\.\d{2})\b/,
+    // Built from a user-provided spreadsheet conversion (fia-xls/FIA_Technical_List_108_Helmets.xlsx).
+    // No revocations — the list's own WARNING section states "There are no warnings for this product".
+    manualEntries: () => LIST_108_MANUAL_ENTRIES,
+  },
 };
+
+// List 33 was hand-provided as a spreadsheet conversion by the user (see LIST_CONFIG[33]'s
+// comment for details).
+const LIST_33_MANUAL_ENTRIES = [
+  { number: "AH.001.10-C", manufacturer: "STAND 21", model: "Ivos HT", homologationStart: "15.12.10", homologationEnd: "31.12.19" },
+  { number: "AH.002.11-C", manufacturer: "STILO", model: "ST4-8860 (F, NF) / ST4-8860 (R, NR) / ST4-8860 (W, NW) / WRC 8860 DES", homologationStart: "29.03.11", homologationEnd: "31.03.17" },
+  { number: "AH.003.11-C", manufacturer: "STILO", model: "TROPHY 8860 DES", homologationStart: "29.03.11", homologationEnd: "31.12.19" },
+  { number: "AH.004.11-C", manufacturer: "STILO", model: "WRC 8860 DES / TROPHY 8860 DES", homologationStart: "29.03.11", homologationEnd: "31.12.19" },
+  { number: "AH.005.11-C", manufacturer: "STILO", model: "ST4 8860 ZERO (F, NF) / ST4 8860 ZERO (R, NR) / ST4 8860 ZERO (W, NW)", homologationStart: "18.10.11", homologationEnd: "30.10.17" },
+  { number: "AH.006.11-C", manufacturer: "ARAI", model: "GP-6 RC", homologationStart: "24.05.11", homologationEnd: "31.05.17" },
+  { number: "AH.007.11-C", manufacturer: "SCHUBERTH GmbH", model: "SF1 LW / SF1 LW MS", homologationStart: "01.03.12", homologationEnd: "31.03.17" },
+  { number: "AH.008.11-C", manufacturer: "SIMPSON", model: "X-BANDIT PRO", homologationStart: "14.12.11", homologationEnd: "31.12.17" },
+  { number: "AH.009.12-C", manufacturer: "OMP", model: "JET CARBON 8860", homologationStart: "10.01.12", homologationEnd: "31.01.17" },
+  { number: "AH.010.12-C", manufacturer: "OMP", model: "GP CARBON 8860 / SPEED CARBON 8860", homologationStart: "07.02.12", homologationEnd: "28.02.17" },
+  { number: "AH.011.12-C", manufacturer: "VEMAR", model: "SPARCO WTXJ9 / SPARCO WTXJ9-1", homologationStart: "08.02.12", homologationEnd: "28.02.17" },
+  { number: "AH.012.12-C", manufacturer: "STILO", model: "WRC 8860 ZERO / TROPHY 8860 ZERO", homologationStart: "10.02.12", homologationEnd: "31.12.19" },
+  { number: "AH.013.12-C", manufacturer: "BELL RACING EUROPE", model: "HP STAR INFUSION", homologationStart: "28.02.12", homologationEnd: "28.02.17" },
+  { number: "AH.014.12-C", manufacturer: "BELL RACING EUROPE OR BELL RACING HELMETS", model: "HP3 (V2012) / HP5 (V2012)", homologationStart: "28.02.12", homologationEnd: "28.02.17" },
+  { number: "AH.015.12-C", manufacturer: "MAVET", model: "3M PELTOR G89 / 3M PELTOR G89 Intercom", homologationStart: "15.06.12", homologationEnd: "30.06.17" },
+  { number: "AH.016.12-C", manufacturer: "VEMAR", model: "SPARCO WTX9 / SPARCO WTX9-AIR / SPARCO WTX9-W", homologationStart: "18.07.12", homologationEnd: "31.07.17" },
+  { number: "AH.017.13-C", manufacturer: "BELL RACING EUROPE OR BELL RACING HELMETS", model: "HP7", homologationStart: "04.02.13", homologationEnd: "28.02.18" },
+  { number: "AH.018.13-C", manufacturer: "SIMPSON", model: "VUDO PRO", homologationStart: "15.02.13", homologationEnd: "28.02.18" },
+  { number: "AH.019.13-C", manufacturer: "BELL RACING EUROPE OR BELL RACING HELMETS", model: "HP7 EVO", homologationStart: "01.11.13", homologationEnd: "30.11.18" },
+  { number: "AH.020.14-C", manufacturer: "BELL RACING EUROPE OR BELL RACING HELMETS", model: "HP5 TOURING", homologationStart: "01.11.13", homologationEnd: "30.11.18" },
+  { number: "AH.021.14-C", manufacturer: "STILO", model: "ST5 8860 ZERO (F, NF) / ST5 8860 ZERO (R, NR) / ST5 8860 ZERO (W, NW)", homologationStart: "19.08.14", homologationEnd: "31.08.19" },
+  { number: "AH.022.14-C", manufacturer: "BELL RACING EUROPE OR BELL RACING HELMETS", model: "HP RALLY / HP9 / HP9 RALLY", homologationStart: "17.12.14", homologationEnd: "31.12.19" },
+  { number: "AH.023.15-C", manufacturer: "VEMAR HELMETS", model: "SIMPSON VENATOR PRO", homologationStart: "09.03.15", homologationEnd: "31.12.19" },
+  { number: "AH.024.16-C", manufacturer: "SIMPSON", model: "SIMPSON RALLY PRO", homologationStart: "17.11.16", homologationEnd: "31.12.19" },
+  { number: "AH.025.17-C", manufacturer: "SCHUBERTH GmbH", model: "SF1 PRO", homologationStart: "09.02.17", homologationEnd: "31.12.19" },
+  { number: "AH.026.17-C", manufacturer: "STILO", model: "ST5 8860 (F, NF) / ST5 8860 GT(, GTN) / ST5 8860 (W, NW, R, RN)", homologationStart: "28.03.17", homologationEnd: "31.12.19" },
+  { number: "AH.027.17-C", manufacturer: "BELL RACING HELMETS", model: "HP7 EVO II", homologationStart: "13.04.17", homologationEnd: "31.12.19" },
+  { number: "AH.028.17-C", manufacturer: "BELL RACING HELMETS", model: "HP7 EVO II-D", homologationStart: "13.04.17", homologationEnd: "31.12.19" },
+  { number: "AH.029.17-C", manufacturer: "VM SAFETY", model: "SPARCO PRIME RF-9W", homologationStart: "19.06.17", homologationEnd: "31.12.19" },
+  { number: "AH.030.17-C", manufacturer: "VM SAFETY", model: "SPARCO PRIME RJ-9i", homologationStart: "06.11.17", homologationEnd: "31.12.19" },
+  { number: "AH.031.17-C", manufacturer: "STILO", model: "ST5-VB 8860 ZERO (NF, NGT) / ST5-VB 8860 ZERO (F, GT)", homologationStart: "20.11.17", homologationEnd: "31.12.19" },
+  { number: "AH.032.18-C", manufacturer: "SCHUBERTH GmbH", model: "SF2 PRO", homologationStart: "12.02.18", homologationEnd: "31.12.19" },
+  { number: "AH.033.18-C", manufacturer: "ARAI", model: "GP-6 RCT", homologationStart: "29.01.18", homologationEnd: "31.12.19" },
+  { number: "AH.034.18-C", manufacturer: "BELL RACING HELMETS", model: "HP9 EVO II / HP9 EVO II RALLY", homologationStart: "06.04.18", homologationEnd: "31.12.19" },
+  { number: "AH.035.18-C", manufacturer: "VM SAFETY", model: "SPARCO PRIME RF-9W", homologationStart: "18.05.18", homologationEnd: "31.12.19" },
+  { number: "AH.036.18-C", manufacturer: "BELL RACING HELMETS", model: "HP5 EVO II / HP5 EVO II RALLY", homologationStart: "23.10.18", homologationEnd: "31.12.19" },
+];
+
+// List 48 was hand-provided as a spreadsheet conversion by the user.
+const LIST_48_MANUAL_ENTRIES = [
+  { number: "RN.001.15", manufacturer: "SCHROTH", model: "SA Interior Net I", productType: "Single", homologationStart: "02.2015", homologationEnd: "03.2030", validUntil: "2035" },
+  { number: "RN.002.15", manufacturer: "CITROEN RACING", model: "Racing Net CR15", productType: "Single", homologationStart: "10.2015", homologationEnd: "10.2020", validUntil: "2025" },
+  { number: "RN.003.15", manufacturer: "SAFECRAFT", model: "8111-K", productType: "Single", homologationStart: "12.2015", homologationEnd: "12.2030", validUntil: "2035" },
+  { number: "RN.004.16", manufacturer: "SCHROTH", model: "SR Interior Net I-LA", productType: "Dual", homologationStart: "02.2016", homologationEnd: "02.2021", validUntil: "2026" },
+  { number: "RN.005.16", manufacturer: "SAFECRAFT", model: "8011-K", productType: "Single", homologationStart: "03.2016", homologationEnd: "03.2031", validUntil: "2036" },
+  { number: "RN.006.16", manufacturer: "OMP", model: "NA/1875", productType: "Single", homologationStart: "02.2016", homologationEnd: "03.2031", validUntil: "2036" },
+  { number: "RN.007.16", manufacturer: "SAFECRAFT", model: "8211-K", productType: "Single", homologationStart: "06.2016", homologationEnd: "06.2021", validUntil: "2026" },
+  { number: "RN.008.16", manufacturer: "SPARCO", model: "002193NR", productType: "Single", homologationStart: "07.2016", homologationEnd: "07.2026", validUntil: "2031" },
+  { number: "RN.009.16", manufacturer: "OMP", model: "NA/1877", productType: "Single", homologationStart: "12.2016", homologationEnd: "12.2021", validUntil: "2026" },
+  { number: "RN.010.17", manufacturer: "OMP", model: "NA/1876", productType: "Single", homologationStart: "01.2017", homologationEnd: "01.2022", validUntil: "2027" },
+  { number: "RN.011.17", manufacturer: "SPARCO", model: "002194NR", productType: "Single", homologationStart: "04.2017", homologationEnd: "04.2027", validUntil: "2032" },
+  { number: "RN.012.17", manufacturer: "OMP", model: "NA/1879", productType: "Single", homologationStart: "10.2017", homologationEnd: "10.2022", validUntil: "2027" },
+  { number: "RN.013.18", manufacturer: "SAFECRAFT", model: "8311-K", productType: "Single", homologationStart: "04.2018", homologationEnd: "04.2023", validUntil: "2028" },
+  { number: "RN.014.18", manufacturer: "SIMPSON", model: "Driver Net-Sedan-Poly RT / Driver Net-Sedan-Poly LT", productType: "Single", homologationStart: "04.2018", homologationEnd: "04.2023", validUntil: "2028" },
+  { number: "RN.015.18", manufacturer: "SABELT", model: "FCRN2000", productType: "Single", homologationStart: "10.2018", homologationEnd: "10.2028", validUntil: "2033" },
+  { number: "RN.016.19", manufacturer: "SCHROTH", model: "SR Interior Net DT I", productType: "Single", homologationStart: "11.2019", homologationEnd: "11.2024", validUntil: "2029" },
+  { number: "RN.017.20", manufacturer: "SAFECRAFT", model: "8411-K", productType: "Single", homologationStart: "03.2020", homologationEnd: "03.2030", validUntil: "2035" },
+  { number: "RN.018.20", manufacturer: "SAFECRAFT", model: "8511-K", productType: "Single", homologationStart: "03.2020", homologationEnd: "03.2030", validUntil: "2035" },
+  { number: "RN.019.20", manufacturer: "SCHROTH", model: "SR Interior Net 5P I", productType: "Dual", homologationStart: "06.2020", homologationEnd: "06.2025", validUntil: "2030" },
+  { number: "RN.020.20", manufacturer: "SABELT", model: "CFRN2002", productType: "Single", homologationStart: "11.2020", homologationEnd: "11.2030", validUntil: "2035" },
+  { number: "RN.021.21", manufacturer: "OMP", model: "NA/1880", productType: "Single", homologationStart: "03.2021", homologationEnd: "03.2031", validUntil: "2036" },
+  { number: "RN.022.21", manufacturer: "OMP", model: "NA/1881", productType: "Dual", homologationStart: "03.2021", homologationEnd: "03.2031", validUntil: "2036" },
+  { number: "RN.023.21", manufacturer: "SCHROTH", model: "SR Interior Net KTM and X-Bow LH", productType: "Dual", homologationStart: "04.2021", homologationEnd: "04.2026", validUntil: "2031" },
+  { number: "RN.024.21", manufacturer: "SCHROTH", model: "SR Interior Net KTM X-Bow RH", productType: "Dual", homologationStart: "04.2021", homologationEnd: "04.2026", validUntil: "2031" },
+  { number: "RN.025.21", manufacturer: "SABELT", model: "CFAN2008", productType: "Single", homologationStart: "06.2021", homologationEnd: "06.2031", validUntil: "2036" },
+  { number: "RN.026.22", manufacturer: "OMP", model: "NA/1882", productType: "Single", homologationStart: "09.2022", homologationEnd: "09.2027", validUntil: "2032" },
+  { number: "RN.027.22", manufacturer: "OMP", model: "NA/1883", productType: "Dual", homologationStart: "09.2022", homologationEnd: "09.2027", validUntil: "2032" },
+  { number: "RN.028.22", manufacturer: "SABELT", model: "CFRN2010", productType: "Single", homologationStart: "09.2022", homologationEnd: "09.2027", validUntil: "2032" },
+  { number: "RN.029.22", manufacturer: "SABELT", model: "CFRN2012", productType: "Single", homologationStart: "10.2022", homologationEnd: "10.2027", validUntil: "2032" },
+  { number: "RN.030.22", manufacturer: "OMP", model: "NAO-1876", productType: "Single", homologationStart: "12.2022", homologationEnd: "12.2027", validUntil: "2032" },
+  { number: "RN.031.23", manufacturer: "OMP", model: "NAO-1877", productType: "Single", homologationStart: "07.2023", homologationEnd: "07.2028", validUntil: "2033" },
+  { number: "RN.032.25", manufacturer: "TRP CO., LTD.", model: "WN-40", productType: "Single", homologationStart: "01.2025", homologationEnd: "01.2030", validUntil: "2035" },
+  { number: "RN.033.25", manufacturer: "SPARCO", model: "BRA0001BO", productType: "Single", homologationStart: "02.2025", homologationEnd: "02.2030", validUntil: "2035" },
+];
+
+// List 79 was hand-provided as a spreadsheet conversion by the user.
+const LIST_79_MANUAL_ENTRIES = [
+  { number: "KHS.001.19", manufacturer: "TAD BAVARIA", model: "SECURUS MINI", homologationStart: "08.2019", homologationEnd: "08.2024", validUntil: "2029" },
+  { number: "KHS.002.19", manufacturer: "TAD BAVARIA", model: "TAD PRIMUS GC", homologationStart: "08.2019", homologationEnd: "08.2024", validUntil: "2029" },
+];
+
+// List 101 (karting protective clothing, FIA 8877-2022) mixes firesuits, gloves, and shoes
+// in one FIA list with no distinguishing column between them. The homologation number's own
+// suffix letter reliably classifies each entry though, confirmed by several self-describing
+// product names in each group: "-0" (suit) includes MARINA's "Unik Suit" and DANROW's
+// "AEROSUIT V1"; "-G" (gloves) includes MARINA's "Unik Glove"; "-Z" (shoes) includes HRX's
+// "K-ICON SHOES". Split into 3 separate entry sets, one per LIST_CONFIG["101-firesuit" /
+// "101-gloves" / "101-shoes"], since this app has no per-entry category field.
+const LIST_101_FIRESUIT_MANUAL_ENTRIES = [
+  { number: "KC.001.23-0", manufacturer: "ALPINESTARS", model: "KMX-9 V3", productType: "Grade 1", homologationStart: "06.2023", homologationEnd: "06.2028", validUntil: "2033" },
+  { number: "KC.002.23-0", manufacturer: "ALPINESTARS", model: "KMX-5 V3", productType: "Grade 1", homologationStart: "07.2023", homologationEnd: "07.2028", validUntil: "2033" },
+  { number: "KC.005.23-0", manufacturer: "SPARCO", model: "K46", productType: "Grade 1", homologationStart: "09.2023", homologationEnd: "09.2028", validUntil: "2033" },
+  { number: "KC.008.24-0", manufacturer: "OMP", model: "KS-2X", productType: "Grade 1", homologationStart: "01.2024", homologationEnd: "01.2029", validUntil: "2034" },
+  { number: "KC.009.24-0", manufacturer: "HRX", model: "FUJI MATT", productType: "Grade 1", homologationStart: "02.2024", homologationEnd: "02.2029", validUntil: "2034" },
+  { number: "KC.010.24-0", manufacturer: "OMP", model: "KS-X", productType: "Grade 1", homologationStart: "02.2024", homologationEnd: "02.2029", validUntil: "2034" },
+  { number: "KC.013.24-0", manufacturer: "FREE MINDS", model: "KP24", productType: "Grade 1", homologationStart: "03.2024", homologationEnd: "03.2029", validUntil: "2034" },
+  { number: "KC.014.24-0", manufacturer: "HRX", model: "FUJI GOLD", productType: "Grade 1", homologationStart: "04.2024", homologationEnd: "04.2029", validUntil: "2034" },
+  { number: "KC.015.24-0", manufacturer: "HRX", model: "FUJI SHINE", productType: "Grade 1", homologationStart: "04.2024", homologationEnd: "04.2029", validUntil: "2034" },
+  { number: "KC.016.24-0", manufacturer: "ZULO", model: "DZKS-01", productType: "Grade 1", homologationStart: "06.2024", homologationEnd: "06.2029", validUntil: "2034" },
+  { number: "KC.017.24-0", manufacturer: "SPARCO", model: "K48", productType: "Grade 1", homologationStart: "06.2024", homologationEnd: "06.2029", validUntil: "2034" },
+  { number: "KC.018.24-0", manufacturer: "SPARCO", model: "K50", productType: "Grade 1", homologationStart: "07.2024", homologationEnd: "07.2029", validUntil: "2034" },
+  { number: "KC.023.24-0", manufacturer: "FREE MINDS", model: "K24", productType: "Grade 1", homologationStart: "10.2024", homologationEnd: "10.2029", validUntil: "2034" },
+  { number: "KC.027.24-0", manufacturer: "OMP", model: "CW0131", productType: "Grade 1", homologationStart: "12.2024", homologationEnd: "12.2029", validUntil: "2034" },
+  { number: "KC.028.25-0", manufacturer: "AL KHAIR INTERNATIONAL", model: "PRIMATE", productType: "Grade 1", homologationStart: "01.2025", homologationEnd: "02.2030", validUntil: "2035" },
+  { number: "KC.029.25-0", manufacturer: "MARINA", model: "Unik Suit", productType: "Grade 1", homologationStart: "02.2025", homologationEnd: "02.2030", validUntil: "2035" },
+  { number: "KC.031.25-0", manufacturer: "OFFSET", model: "RS-KV", productType: "Grade 1", homologationStart: "03.2025", homologationEnd: "04.2029", validUntil: "2034" },
+  { number: "KC.032.25-0", manufacturer: "X'ZUIT", model: "IKON 4", productType: "Grade 1", homologationStart: "04.2025", homologationEnd: "04.2030", validUntil: "2035" },
+  { number: "KC.033.25-0", manufacturer: "CORSA", model: "CKS0124", productType: "Grade 1", homologationStart: "05.2025", homologationEnd: "05.2030", validUntil: "2035" },
+  { number: "KC.034.25-0", manufacturer: "GALUPPO", model: "ASTRA", productType: "Grade 1", homologationStart: "05.2025", homologationEnd: "05.2030", validUntil: "2035" },
+  { number: "KC.037.25-0", manufacturer: "KOBRA", model: "WINNER EVO", productType: "Grade 1", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2035" },
+  { number: "KC.044.26-0", manufacturer: "MANORACING", model: "MK-Elastic", productType: "Grade 1", homologationStart: "02.2026", homologationEnd: "02.2031", validUntil: "2036" },
+  { number: "KC.046.26-0", manufacturer: "DANROW", model: "AEROSUIT V1", productType: "Grade 1", homologationStart: "04.2026", homologationEnd: "04.2031", validUntil: "2036" },
+];
+
+const LIST_101_GLOVES_MANUAL_ENTRIES = [
+  { number: "KC.003.23-G", manufacturer: "ALPINESTARS", model: "TECH-1K V3", homologationStart: "08.2023", homologationEnd: "08.2028", validUntil: "2033" },
+  { number: "KC.004.23-G", manufacturer: "ALPINESTARS", model: "TECH-1 KX V4", homologationStart: "08.2023", homologationEnd: "08.2028", validUntil: "2033" },
+  { number: "KC.019.24-G", manufacturer: "OMP", model: "CW0138", homologationStart: "09.2024", homologationEnd: "09.2029", validUntil: "2034" },
+  { number: "KC.020.24-G", manufacturer: "SPARCO", model: "K-TIDE+", homologationStart: "09.2024", homologationEnd: "09.2029", validUntil: "2034" },
+  { number: "KC.021.24-G", manufacturer: "SPARCO", model: "K-ARROW+", homologationStart: "09.2024", homologationEnd: "09.2029", validUntil: "2034" },
+  { number: "KC.024.24-G", manufacturer: "OMP", model: "CW0152", homologationStart: "10.2024", homologationEnd: "10.2029", validUntil: "2034" },
+  { number: "KC.025.24-G", manufacturer: "FREE MINDS", model: "KSLIGHT-24", homologationStart: "10.2024", homologationEnd: "10.2029", validUntil: "2034" },
+  { number: "KC.030.25-G", manufacturer: "MARINA", model: "Unik Glove", homologationStart: "03.2025", homologationEnd: "03.2030", validUntil: "2035" },
+  { number: "KC.035.25-G", manufacturer: "ALPINESTARS", model: "TEMPEST v3 WATERPROOF", homologationStart: "07.2025", homologationEnd: "07.2030", validUntil: "2035" },
+  { number: "KC.040.25-G", manufacturer: "32Five", model: "PLUS F", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2035" },
+  { number: "KC.041.25-G", manufacturer: "SPARCO", model: "K-ARROW+WP", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2035" },
+  { number: "KC.043.26-G", manufacturer: "OFFSET", model: "CONCEPT", homologationStart: "12.2025", homologationEnd: "01.2031", validUntil: "2036" },
+  { number: "KC.045.26-G", manufacturer: "SIMPSON", model: "Air Raid", homologationStart: "03.2026", homologationEnd: "03.2031", validUntil: "2036" },
+  { number: "KC.047.26-G", manufacturer: "-273", model: "MSN-1", homologationStart: "06.2026", homologationEnd: "06.2031", validUntil: "2036" },
+  { number: "KC.048.26-G", manufacturer: "-273", model: "MNS-2", homologationStart: "06.2026", homologationEnd: "06.2031", validUntil: "2036" },
+];
+
+const LIST_101_SHOES_MANUAL_ENTRIES = [
+  { number: "KC.006.23-Z", manufacturer: "ALPINESTARS", model: "TECH-1 KX V3", homologationStart: "10.2023", homologationEnd: "10.2028", validUntil: "2033" },
+  { number: "KC.007.24-Z", manufacturer: "SPARCO", model: "K-PRIME", homologationStart: "01.2024", homologationEnd: "01.2029", validUntil: "2034" },
+  { number: "KC.011.24-Z", manufacturer: "OMP", model: "KS-XR", homologationStart: "02.2024", homologationEnd: "02.2029", validUntil: "2034" },
+  { number: "KC.012.24-Z", manufacturer: "OMP", model: "ARP", homologationStart: "02.2024", homologationEnd: "02.2029", validUntil: "2034" },
+  { number: "KC.022.24-Z", manufacturer: "FREE MINDS", model: "SK24", homologationStart: "10.2024", homologationEnd: "10.2029", validUntil: "2034" },
+  { number: "KC.026.24-Z", manufacturer: "SPARCO", model: "K-RAPID", homologationStart: "11.2024", homologationEnd: "11.2029", validUntil: "2034" },
+  { number: "KC.036.25-Z", manufacturer: "OMP", model: "CW0160", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2035" },
+  { number: "KC.038.25-Z", manufacturer: "SPARCO", model: "K-RAPID WP", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2035" },
+  { number: "KC.039.25-Z", manufacturer: "ALPINESTARS", model: "SUPERTECH K", homologationStart: "09.2025", homologationEnd: "09.2030", validUntil: "2035" },
+  { number: "KC.042.26-Z", manufacturer: "HRX", model: "K-ICON SHOES", productType: "Grade 1", homologationStart: "01.2026", homologationEnd: "01.2031", validUntil: "2036" },
+];
+
+// List 107 was hand-provided as a spreadsheet conversion by the user.
+const LIST_107_MANUAL_ENTRIES = [
+  { number: "PH.001.24-O", manufacturer: "BELL RACING", model: "MAG", homologationStart: "07.2024", homologationEnd: "04.2030" },
+  { number: "PH.002.24-C", manufacturer: "SPARCO", model: "STEALTH RF", homologationStart: "07.2024", homologationEnd: "07.2029" },
+  { number: "PH.003.24-O", manufacturer: "SPARCO", model: "FLUX RJ", homologationStart: "07.2024", homologationEnd: "07.2029" },
+  { number: "PH.004.24-O", manufacturer: "STILO", model: "WRC VENTI4 CARBON", homologationStart: "09.2024", homologationEnd: "09.2029" },
+  { number: "PH.005.24-O", manufacturer: "STILO", model: "WRC VENTI4 COMPOSITE", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "PH.006.24-C", manufacturer: "STILO", model: "ST6 CARBON", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "PH.007.24-C-ABP", manufacturer: "STILO", model: "ST6 CARBON ABP", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "PH.008.24-C", manufacturer: "STILO", model: "ST6 COMPOSITE", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "PH.009.24-C-ABP", manufacturer: "STILO", model: "ST6 COMPOSITE ABP", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "PH.010.24-O", manufacturer: "BELL RACING", model: "MAG-10 CARBON / MAG-10 RALLY CARBON", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "PH.011.24-O", manufacturer: "BELL RACING", model: "MAG-10 / MAG-10 Rally Sport / MAG-10 Rally Pro", homologationStart: "10.2024", homologationEnd: "11.2029" },
+  { number: "PH.012.24-C", manufacturer: "SPARCO", model: "STEALTH RF CARBON", homologationStart: "11.2024", homologationEnd: "11.2029" },
+  { number: "PH.013.24-O", manufacturer: "SPARCO", model: "FLUX RJ CARBON", homologationStart: "11.2024", homologationEnd: "11.2029" },
+  { number: "PH.014.24-O", manufacturer: "STAND 21", model: "IVOS OPEN", homologationStart: "11.2024", homologationEnd: "11.2029" },
+  { number: "PH.015.24-O", manufacturer: "OMP", model: "J-R", homologationStart: "11.2024", homologationEnd: "11.2029" },
+  { number: "PH.016.24-O", manufacturer: "BELL RACING", model: "MAG-1", homologationStart: "11.2024", homologationEnd: "11.2029" },
+  { number: "PH.017.24-C", manufacturer: "BELL RACING", model: "X-1", homologationStart: "12.2024", homologationEnd: "12.2029" },
+  { number: "PH.018.24-O", manufacturer: "AIROH", model: "ARJ", homologationStart: "12.2024", homologationEnd: "12.2029" },
+  { number: "PH.019.25-C", manufacturer: "BELL RACING", model: "RS7", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "PH.020.25-C", manufacturer: "BELL RACING", model: "RS7 Carbon", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "PH.021.25-C", manufacturer: "BELL RACING", model: "RS7 CARBON LITE / RS7 Carbon X-Lite", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "PH.022.25-C", manufacturer: "SPARCO", model: "CF DRAFT25", homologationStart: "05.2025", homologationEnd: "11.2030" },
+  { number: "PH.023.25-C", manufacturer: "BELL RACING", model: "GT6 Sport", homologationStart: "05.2025", homologationEnd: "08.2030" },
+  { number: "PH.024.25-C", manufacturer: "BELL RACING", model: "GT6 Carbon", homologationStart: "05.2025", homologationEnd: "05.2030" },
+  { number: "PH.025.25-C", manufacturer: "STILO", model: "WRX VENTI4 CARBON", homologationStart: "05.2025", homologationEnd: "06.2030" },
+  { number: "PH.026.25-C", manufacturer: "BELL RACING", model: "GT6", homologationStart: "07.2025", homologationEnd: "07.2030" },
+  { number: "PH.027.25-C", manufacturer: "BRSM", model: "FF-S40 2024", homologationStart: "08.2025", homologationEnd: "08.2030" },
+  { number: "PH.028.25-C", manufacturer: "BELL RACING", model: "XD7 CARBON", homologationStart: "10.2025", homologationEnd: "02.2031" },
+  { number: "PH.029.25-C", manufacturer: "SCHUBERTH", model: "SP1 Carbon Evo", homologationStart: "10.2025", homologationEnd: "10.2030" },
+  { number: "PH.030.25-O", manufacturer: "BRSM", model: "OF-S12024", homologationStart: "11.2025", homologationEnd: "11.2030" },
+  { number: "PH.031.25-C", manufacturer: "BELL RACING", model: "XR7 CARBON", homologationStart: "11.2025", homologationEnd: "02.2031" },
+  { number: "PH.032.25-O", manufacturer: "BRSM", model: "OF-F12024", homologationStart: "12.2025", homologationEnd: "12.2030" },
+  { number: "PH.033.25-C", manufacturer: "BELL RACING", model: "R7 SPORT", homologationStart: "03.2026", homologationEnd: "03.2031" },
+  { number: "PH.034.25-C", manufacturer: "BELL RACING", model: "X-1*", homologationStart: "12.2025", homologationEnd: "12.2030" },
+  { number: "PH.035.25-C", manufacturer: "SCHUBERTH", model: "SP1 Hybrid", homologationStart: "12.2025", homologationEnd: "12.2030" },
+  { number: "PH.036.26-O", manufacturer: "ZAMP", model: "RZ-19F", homologationStart: "01.2026", homologationEnd: "01.2031" },
+  { number: "PH.037.26-O", manufacturer: "RRS", model: "PROTECT JET 3", homologationStart: "01.2026", homologationEnd: "11.2030" },
+  { number: "PH.038.26-O", manufacturer: "RRS", model: "PROTECT WRC 2", homologationStart: "01.2026", homologationEnd: "12.2030" },
+  { number: "PH.039.26-C", manufacturer: "ZAMP", model: "RZ-70F", homologationStart: "02.2026", homologationEnd: "02.2031" },
+  { number: "PH.040.26-C", manufacturer: "ARAI", model: "GPV-R", homologationStart: "03.2026", homologationEnd: "03.2031" },
+  { number: "PH.041.26-C", manufacturer: "ARAI", model: "GPV-R RO", homologationStart: "04.2026", homologationEnd: "04.2031" },
+  { number: "PH.042.26-C", manufacturer: "ZAMP", model: "RZ-63F / RZ-61F", homologationStart: "04.2026", homologationEnd: "04.2031" },
+  { number: "PH.043.26-C", manufacturer: "HRX", model: "DIAMANTE PREMIUM CARBON", homologationStart: "05.2026", homologationEnd: "05.2031" },
+  { number: "PH.044.26-C", manufacturer: "HRX", model: "DIAMANTE PREMIUM COMPOSITE", homologationStart: "05.2026", homologationEnd: "05.2031" },
+];
+
+// List 108 was hand-provided as a spreadsheet conversion by the user.
+const LIST_108_MANUAL_ENTRIES = [
+  { number: "KH.001.24", manufacturer: "SPARCO", model: "STEALTH KF", homologationStart: "12.2024", homologationEnd: "12.2029" },
+  { number: "KH.002.24", manufacturer: "SPARCO", model: "STEALTH KF CARBON", homologationStart: "12.2024", homologationEnd: "12.2029" },
+  { number: "KH.003.25", manufacturer: "BELL RACING", model: "RS7-K", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "KH.004.25", manufacturer: "STILO", model: "ST6 COMPOSITE", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "KH.005.25", manufacturer: "STILO", model: "ST6 CARBON", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "KH.006.25", manufacturer: "BELL RACING", model: "RS7-K CARBON", homologationStart: "02.2025", homologationEnd: "02.2030" },
+  { number: "KH.007.25", manufacturer: "SCHUBERTH", model: "SP1 Carbon Evo", homologationStart: "10.2025", homologationEnd: "10.2030" },
+  { number: "KH.008.25", manufacturer: "SCHUBERTH", model: "SP1 Hybrid", homologationStart: "12.2025", homologationEnd: "12.2030" },
+  { number: "KH.009.26", manufacturer: "ARAI", model: "SKV-R", homologationStart: "03.2026", homologationEnd: "03.2031" },
+  { number: "KH.010.26", manufacturer: "ARAI", model: "SKV-R RO", homologationStart: "04.2026", homologationEnd: "04.2031" },
+];
+
+// List 49 was hand-provided as a spreadsheet conversion by the user (see LIST_CONFIG[49]'s
+// comment for the date-parsing quirks this list's source spreadsheet needed).
+const LIST_49_MANUAL_ENTRIES = [
+  { number: "PH.001.15-C", manufacturer: "STILO", model: "ST5 Carbon", homologationStart: "02.2015", homologationEnd: "07.2025" },
+  { number: "PH.002.15-O", manufacturer: "STILO", model: "DES", homologationStart: "09.2015", homologationEnd: "11.2025" },
+  { number: "PH.003.15-O", manufacturer: "STILO", model: "Carbon DES", homologationStart: "07.2015", homologationEnd: "09.2025" },
+  { number: "PH.004.15-C", manufacturer: "ARAI", model: "GP-6", homologationStart: "07.2015", homologationEnd: "02.2026" },
+  { number: "PH.005.15-O", manufacturer: "ARAI", model: "GP-J3", homologationStart: "06.2015", homologationEnd: "12.2026" },
+  { number: "PH.006.15-C", manufacturer: "ARAI", model: "GP-5W", homologationStart: "06.2015", homologationEnd: "12.2026" },
+  { number: "PH.007.15-C", manufacturer: "ARAI", model: "GP-6S", homologationStart: "07.2015", homologationEnd: "12.2026" },
+  { number: "PH.008.15-C", manufacturer: "BELL RACING", model: "RS7 carbon", homologationStart: "08.2015", homologationEnd: "08.2020" },
+  { number: "PH.009.15-C", manufacturer: "BELL RACING", model: "RS7", homologationStart: "08.2015", homologationEnd: "09.2020" },
+  { number: "PH.010.15-O", manufacturer: "BELL RACING", model: "MAG-1", homologationStart: "09.2015", homologationEnd: "09.2020" },
+  { number: "PH.011.15-C", manufacturer: "BELL RACING", model: "GT5", homologationStart: "09.2015", homologationEnd: "09.2020" },
+  { number: "PH.012.15-C", manufacturer: "STILO", model: "ST5 COMPOSITE", homologationStart: "09.2015", homologationEnd: "11.2020" },
+  { number: "PH.013.15-C", manufacturer: "BELL RACING", model: "RS7 carbon*", homologationStart: "10.2015", homologationEnd: "10.2025" },
+  { number: "PH.014.15-O", manufacturer: "BELL RACING", model: "MAG-1*", homologationStart: "01.2016", homologationEnd: "10.2025" },
+  { number: "PH.015.15-O", manufacturer: "ORECA", model: "Jet-RS", homologationStart: "12.2015", homologationEnd: "12.2025" },
+  { number: "PH.016.16-C", manufacturer: "BELL RACING", model: "RS7", homologationStart: "01.2016", homologationEnd: "01.2021" },
+  { number: "PH.017.16-C", manufacturer: "VM SAFETY", model: "SIMPSON VENATOR COMPOSITE", homologationStart: "01.2016", homologationEnd: "05.2022" },
+  { number: "PH.018.16-C", manufacturer: "VM SAFETY", model: "SIMPSON VENATOR CARBON", homologationStart: "01.2016", homologationEnd: "01.2021" },
+  { number: "PH.019.16-C", manufacturer: "STAND 21", model: "IVOS", homologationStart: "02.2016", homologationEnd: "12.2026" },
+  { number: "PH.020.16-C", manufacturer: "BELL RACING", model: "GT5", homologationStart: "02.2016", homologationEnd: "02.2021" },
+  { number: "PH.021.16-C", manufacturer: "BELL RACING", model: "R1", homologationStart: "03.2016", homologationEnd: "03.2021" },
+  { number: "PH.022.16-C", manufacturer: "BELL RACING", model: "GP.3 CARBON", homologationStart: "04.2016", homologationEnd: "04.2021" },
+  { number: "PH.023.16-C", manufacturer: "BELL RACING", model: "GTX.3 CARBON", homologationStart: "05.2016", homologationEnd: "05.2021" },
+  { number: "PH.024.16-C", manufacturer: "BELL RACING", model: "M.8 CARBON", homologationStart: "05.2016", homologationEnd: "05.2021" },
+  { number: "PH.025.16-C", manufacturer: "BELL RACING", model: "SPORT-5", homologationStart: "05.2016", homologationEnd: "05.2021" },
+  { number: "PH.026.16-C", manufacturer: "SIMPSON", model: "CARBON BANDIT", homologationStart: "05.2016", homologationEnd: "05.2021" },
+  { number: "PH.027.16-C", manufacturer: "SIMPSON", model: "DEVIL RAY", homologationStart: "05.2016", homologationEnd: "05.2021" },
+  { number: "PH.028.16-C", manufacturer: "SIMPSON", model: "BANDIT", homologationStart: "05.2016", homologationEnd: "05.2021" },
+  { number: "PH.029.16-C", manufacturer: "BELL RACING", model: "GP.3", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.030.16-O", manufacturer: "ARAI", model: "GP-J3F", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.031.16-C", manufacturer: "STILO", model: "SFF4 COMPOSITE", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.032.16-C", manufacturer: "ROUX", model: "R-1CF", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.033.16-C", manufacturer: "ROUX", model: "R-1C", homologationStart: "06.2016", homologationEnd: "09.2021" },
+  { number: "PH.034.16-O", manufacturer: "STAND 21", model: "IVOS OPEN", homologationStart: "06.2016", homologationEnd: "12.2026" },
+  { number: "PH.035.16-C", manufacturer: "ORECA", model: "Full-RS", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.036.16-C", manufacturer: "VM SAFETY", model: "SPARCO SKY RF-7W", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.037.16-C", manufacturer: "VM SAFETY", model: "SPARCO AIR RF-5W", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.038.16-C", manufacturer: "BRSM", model: "FC-F1", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.039.16-C", manufacturer: "BRSM", model: "FF-S23", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.040.16-O", manufacturer: "BRSM", model: "OF-S1", homologationStart: "06.2016", homologationEnd: "06.2021" },
+  { number: "PH.041.16-O", manufacturer: "VM SAFETY", model: "SPARCO SKY RJ-7", homologationStart: "08.2016", homologationEnd: "08.2026" },
+  { number: "PH.042.16-O", manufacturer: "VM SAFETY", model: "SPARCO SKY RJ-3", homologationStart: "08.2016", homologationEnd: "09.2026" },
+  { number: "PH.043.16-C", manufacturer: "BRSM", model: "FF-S4", homologationStart: "08.2016", homologationEnd: "09.2021" },
+  { number: "PH.044.16-O", manufacturer: "SIMPSON", model: "SIMPSON RALLY", homologationStart: "10.2016", homologationEnd: "11.2021" },
+  { number: "PH.045.16-C", manufacturer: "BSR", model: "BF1-750", homologationStart: "09.2016", homologationEnd: "09.2021" },
+  { number: "PH.046.16-C", manufacturer: "BELL RACING", model: "GTX.3", homologationStart: "09.2016", homologationEnd: "09.2021" },
+  { number: "PH.047.16-C", manufacturer: "BRSM", model: "FF-C9", homologationStart: "09.2016", homologationEnd: "09.2021" },
+  { number: "PH.048.16-C", manufacturer: "BRSM", model: "FF-C7", homologationStart: "10.2016", homologationEnd: "10.2021" },
+  { number: "PH.049.16-C", manufacturer: "BRSM", model: "FF-S8A", homologationStart: "11.2016", homologationEnd: "11.2021" },
+  { number: "PH.050.16-O", manufacturer: "BELL RACING", model: "MAG-9 CARBON", homologationStart: "10.2016", homologationEnd: "11.2023" },
+  { number: "PH.051.16-C", manufacturer: "STILO", model: "ST5 COMPOSITE MSF", homologationStart: "11.2016", homologationEnd: "11.2021" },
+  { number: "PH.052.16-C", manufacturer: "ZAMP", model: "RZ-44C", homologationStart: "11.2016", homologationEnd: "10.2021" },
+  { number: "PH.053.16-O", manufacturer: "BELL RACING", model: "MAG-9", homologationStart: "12.2016", homologationEnd: "12.2021" },
+  { number: "PH.054.17-O", manufacturer: "BSR", model: "BF1-R7", homologationStart: "01.2017", homologationEnd: "01.2022" },
+  { number: "PH.055.17-C", manufacturer: "BRSM", model: "GEM", homologationStart: "01.2017", homologationEnd: "01.2022" },
+  { number: "PH.056.17-C", manufacturer: "ZAMP", model: "RZ-35E", homologationStart: "01.2017", homologationEnd: "01.2022" },
+  { number: "PH.057.17-O", manufacturer: "STILO", model: "SOF4 COMPOSITE", homologationStart: "02.2017", homologationEnd: "02.2022" },
+  { number: "PH.058.17-O", manufacturer: "STILO", model: "DES MSF (N)", homologationStart: "01.2017", homologationEnd: "12.2026" },
+  { number: "PH.059.17-O", manufacturer: "FLB", model: "GT2I PRO", homologationStart: "03.2017", homologationEnd: "03.2022" },
+  { number: "PH.061.17-O", manufacturer: "RRS", model: "PROTECT JET", homologationStart: "04.2017", homologationEnd: "06.2021" },
+  { number: "PH.062.17-C", manufacturer: "RRS", model: "PROTECT INTEGRAL", homologationStart: "04.2017", homologationEnd: "08.2021" },
+  { number: "PH.063.17-C", manufacturer: "TRP CO., LTD.", model: "AHT-100", homologationStart: "05.2017", homologationEnd: "03.2024" },
+  { number: "PH.066.18-C", manufacturer: "BELL RACING", model: "GT5 CARBON", homologationStart: "06.2018", homologationEnd: "06.2023" },
+  { number: "PH.067.18-C", manufacturer: "OMP", model: "GP8 EVO", homologationStart: "06.2018", homologationEnd: "06.2023" },
+  { number: "PH.068.18-C", manufacturer: "IMPACT RACING", model: "PHENOM", homologationStart: "12.2018", homologationEnd: "06.2021" },
+  { number: "PH.069.19-C", manufacturer: "BRSM", model: "FF-S40", homologationStart: "01.2019", homologationEnd: "01.2024" },
+  { number: "PH.070.19-C", manufacturer: "BRSM", model: "FF-S44", homologationStart: "01.2019", homologationEnd: "01.2024" },
+  { number: "PH.071.19-O", manufacturer: "B2 HELMETS", model: "OMP J-R", homologationStart: "03.2019", homologationEnd: "03.2024" },
+  { number: "PH.072.19-C", manufacturer: "BRSM", model: "FF-S45", homologationStart: "06.2019", homologationEnd: "06.2024" },
+  { number: "PH.073.19-C", manufacturer: "BRSM", model: "FF-C16", homologationStart: "06.2019", homologationEnd: "06.2024" },
+  { number: "PH.074.19-O", manufacturer: "BRSM", model: "OF-S16", homologationStart: "06.2019", homologationEnd: "06.2024" },
+  { number: "PH.075.19-O", manufacturer: "BRSM", model: "OF-S16C", homologationStart: "07.2019", homologationEnd: "07.2024" },
+  { number: "PH.076.19-C", manufacturer: "ZAMP", model: "RL-70E", homologationStart: "08.2019", homologationEnd: "08.2024" },
+  { number: "PH.077.19-C", manufacturer: "STILO", model: "ST5.1 Carbon", homologationStart: "10.2019", homologationEnd: "12.2026" },
+  { number: "PH.078.19-C", manufacturer: "STILO", model: "ST5.1 Composite", homologationStart: "10.2019", homologationEnd: "12.2026" },
+  { number: "PH.079.20-C", manufacturer: "ARAI", model: "GP-7", homologationStart: "12.2019", homologationEnd: "12.2026" },
+  { number: "PH.080.20-O", manufacturer: "BELL RACING", model: "MAG", homologationStart: "06.2020", homologationEnd: "06.2025" },
+  { number: "PH.081.20-C", manufacturer: "HJC", model: "H70", homologationStart: "05.2020", homologationEnd: "12.2026" },
+  { number: "PH.082.20-C", manufacturer: "BELL RACING", model: "RS7-20", homologationStart: "07.2020", homologationEnd: "07.2025" },
+  { number: "PH.083.20-C", manufacturer: "BELL RACING", model: "RS7 CARBON-20", homologationStart: "07.2020", homologationEnd: "07.2025" },
+  { number: "PH.084.20-C", manufacturer: "BELL RACING", model: "GP3 CARBON-20", homologationStart: "07.2020", homologationEnd: "07.2025" },
+  { number: "PH.085.20-C", manufacturer: "BELL RACING", model: "GTX3 CARBON-20", homologationStart: "07.2020", homologationEnd: "07.2025" },
+  { number: "PH.086.20-C", manufacturer: "BELL RACING", model: "GTX3-20", homologationStart: "08.2020", homologationEnd: "08.2025" },
+  { number: "PH.087.20-C", manufacturer: "BELL RACING", model: "GP3 SPORT", homologationStart: "09.2020", homologationEnd: "09.2025" },
+  { number: "PH.088.20-C", manufacturer: "BELL RACING", model: "M8 CARBON-20", homologationStart: "09.2020", homologationEnd: "09.2025" },
+  { number: "PH.089.20-O", manufacturer: "BRSM", model: "R-OF-S1", homologationStart: "09.2020", homologationEnd: "09.2025" },
+  { number: "PH.090.20-C", manufacturer: "G-FORCE", model: "NOVA", homologationStart: "11.2020", homologationEnd: "11.2025" },
+  { number: "PH.091.20-C", manufacturer: "G-FORCE", model: "SUPERNOVA", homologationStart: "11.2020", homologationEnd: "11.2025" },
+  { number: "PH.092.20-C", manufacturer: "SCHUBERTH", model: "SP1 CARBON", homologationStart: "11.2020", homologationEnd: "11.2025" },
+  { number: "PH.093.20-O", manufacturer: "BELL RACING", model: "MAG-10 CARBON", homologationStart: "12.2020", homologationEnd: "04.2026" },
+  { number: "PH.094.20-O", manufacturer: "BELL RACING", model: "MAG-9 CARBON*", homologationStart: "12.2020", homologationEnd: "12.2025" },
+  { number: "PH.095.20-C", manufacturer: "BELL RACING", model: "GT5 SPORT", homologationStart: "12.2020", homologationEnd: "12.2025" },
+  { number: "PH.096.20-C", manufacturer: "ROUX", model: "A1-F", homologationStart: "12.2020", homologationEnd: "12.2025" },
+  { number: "PH.097.21-C", manufacturer: "BRSM", model: "FF-S18", homologationStart: "01.2021", homologationEnd: "01.2026" },
+  { number: "PH.098.21-O", manufacturer: "BRSM", model: "OF-F1", homologationStart: "01.2021", homologationEnd: "01.2026" },
+  { number: "PH.099.21-O", manufacturer: "BELL RACING", model: "MAG-10", homologationStart: "02.2021", homologationEnd: "04.2026" },
+  { number: "PH.100.21-C", manufacturer: "B2 HELMETS", model: "OMP GP-R", homologationStart: "02.2021", homologationEnd: "02.2026" },
+  { number: "PH.101.21-C", manufacturer: "V2 SPORT", model: "V2 Super-Vent", homologationStart: "03.2021", homologationEnd: "01.2026" },
+  { number: "PH.102.21-C", manufacturer: "BELL RACING", model: "BR8 CARBON", homologationStart: "04.2021", homologationEnd: "04.2026" },
+  { number: "PH.103.21-O", manufacturer: "BELL RACING", model: "500-TX", homologationStart: "04.2021", homologationEnd: "04.2026" },
+  { number: "PH.104.21-O", manufacturer: "STILO", model: "VENTI CARBON (N)", homologationStart: "05.2021", homologationEnd: "05.2026" },
+  { number: "PH.105.21-C", manufacturer: "BELL RACING", model: "GT6", homologationStart: "05.2021", homologationEnd: "11.2026" },
+  { number: "PH.106.21-C", manufacturer: "BELL RACING", model: "STAR CLASSIC", homologationStart: "06.2021", homologationEnd: "12.2026" },
+  { number: "PH.107.21-O", manufacturer: "RRS", model: "PROTECT JET2", homologationStart: "07.2021", homologationEnd: "09.2025" },
+  { number: "PH.108.21-C", manufacturer: "BELL RACING", model: "GT6 CARBON", homologationStart: "07.2021", homologationEnd: "12.2026" },
+  { number: "PH.109.21-O", manufacturer: "STILO", model: "VENTI COMPOSITE (N)", homologationStart: "08.2021", homologationEnd: "08.2026" },
+  { number: "PH.110.21-C", manufacturer: "BELL RACING", model: "GT5 SPORT-20", homologationStart: "09.2021", homologationEnd: "09.2026" },
+  { number: "PH.111.21-C", manufacturer: "BRSM", model: "R-FF-S4S", homologationStart: "09.2021", homologationEnd: "09.2026" },
+  { number: "PH.112.21-O", manufacturer: "RRS", model: "PROTECT WRC", homologationStart: "10.2021", homologationEnd: "10.2026" },
+  { number: "PH.113.21-C", manufacturer: "STRATEGIC SPORTS LTD", model: "ST-1178", homologationStart: "11.2021", homologationEnd: "12.2026" },
+  { number: "PH.114.21-O", manufacturer: "BSA", model: "BF1-R81", homologationStart: "11.2021", homologationEnd: "11.2026" },
+  { number: "PH.115.21-O", manufacturer: "BSR", model: "BF1-R81 CARBON", homologationStart: "11.2021", homologationEnd: "11.2026" },
+  { number: "PH.116.21-C", manufacturer: "RRS", model: "PROTECT 2", homologationStart: "12.2021", homologationEnd: "12.2026" },
+  { number: "PH.117.21-C", manufacturer: "BSR", model: "BF1-860", homologationStart: "12.2021", homologationEnd: "12.2026" },
+  { number: "PH.118.21-C", manufacturer: "BSR", model: "BF1-860 CARBON", homologationStart: "12.2021", homologationEnd: "12.2026" },
+  { number: "PH.119.22-C", manufacturer: "BRSM", model: "FF-C9A", homologationStart: "01.2022", homologationEnd: "12.2026" },
+  { number: "PH.120.22-C", manufacturer: "BRSM", model: "GEMM", homologationStart: "01.2022", homologationEnd: "12.2026" },
+  { number: "PH.121.22-O", manufacturer: "SIMPSON", model: "SIMPSON 2", homologationStart: "09.2022", homologationEnd: "12.2026" },
+  { number: "PH.122.22-C", manufacturer: "ROUX", model: "RP-1F-C59", homologationStart: "09.2022", homologationEnd: "12.2026" },
+  { number: "PH.123.22-C", manufacturer: "ROUX", model: "RP-1 GT-C59", homologationStart: "11.2022", homologationEnd: "12.2026" },
+  { number: "PH.124.23-O", manufacturer: "STILO", model: "STILO", homologationStart: "08.2023", homologationEnd: "12.2026" },
+  { number: "PH.125.23-C", manufacturer: "BELL RACING", model: "X-1", homologationStart: "09.2023", homologationEnd: "12.2026" },
+  { number: "PH.126.23-C", manufacturer: "ZAMP", model: "ZR-72", homologationStart: "10.2023", homologationEnd: "12.2026" },
+  { number: "PH.127.24-C", manufacturer: "STILO", model: "WRX VENTI CARBON", homologationStart: "12.2023", homologationEnd: "12.2026" },
+  { number: "PH.128.25-C", manufacturer: "RACEMAX", model: "GR3", homologationStart: "07.2025", homologationEnd: "12.2026" },
+  { number: "PH.060.17-C", manufacturer: "Ningbo HD Powersports Safety Products Co., Ltd.", model: "HD128.F", homologationStart: "06.2017", homologationEnd: "06.2022", revoked: true, revokedNote: "Withdrawn with immediate effect" },
+  { number: "PH.064.17-O", manufacturer: "Ningbo HD Powersports Safety Products Co., Ltd.", model: "HD315.F", homologationStart: "06.2017", homologationEnd: "06.2022", revoked: true, revokedNote: "Withdrawn with immediate effect" },
+  { number: "PH.065.17-C", manufacturer: "OMP (Racing Force S.p.A.)", model: "GP8", homologationStart: "06.2017", homologationEnd: "03.2022", revoked: true, revokedNote: "Withdrawn with immediate effect" },
+];
 
 // List 27 has the same drift bug as Lists 12/24/57/29 (older firesuit standard, same table
 // style): the MODEL and DATE columns fall out of sync with NUMBER/BRAND as pdftotext reads
@@ -1905,12 +2355,17 @@ function parseWarningSection(lines, numberPattern) {
 }
 
 function main() {
-  const listNumber = Number(process.argv[2]);
-  const config = LIST_CONFIG[listNumber];
+  // Usually a plain list number, but a list that mixes categories this app has no per-entry
+  // field to distinguish (see LIST_CONFIG["101-firesuit"/"101-gloves"/"101-shoes"]) is split into
+  // several string-keyed configs sharing one real FIA listNumber and cached .txt, each writing
+  // its own outFile.
+  const key = process.argv[2];
+  const config = LIST_CONFIG[key];
   if (!config) {
-    console.error(`No LIST_CONFIG for list ${listNumber}. Known: ${Object.keys(LIST_CONFIG).join(", ")}`);
+    console.error(`No LIST_CONFIG for list ${key}. Known: ${Object.keys(LIST_CONFIG).join(", ")}`);
     process.exit(1);
   }
+  const listNumber = config.listNumber ?? Number(key);
 
   const txtPath = path.join(ROOT, "fia-lists", `list-${listNumber}.txt`);
   if (!existsSync(txtPath)) {
@@ -1982,9 +2437,9 @@ function main() {
     entries,
   };
 
-  const outPath = path.join(ROOT, "src", "data", "fiaHomologation", `list-${listNumber}.json`);
+  const outPath = path.join(ROOT, "src", "data", "fiaHomologation", config.outFile ?? `list-${listNumber}.json`);
   writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n", "utf-8");
-  console.log(`List ${listNumber}: parsed ${entries.length} entries -> ${path.relative(ROOT, outPath)}`);
+  console.log(`List ${key}: parsed ${entries.length} entries -> ${path.relative(ROOT, outPath)}`);
 }
 
 main();

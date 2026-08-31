@@ -10,6 +10,15 @@ import list40 from "./list-40.json";
 import list91 from "./list-91.json";
 import list1 from "./list-1.json";
 import list69 from "./list-69.json";
+import list33 from "./list-33.json";
+import list48 from "./list-48.json";
+import list49 from "./list-49.json";
+import list79 from "./list-79.json";
+import list101Firesuit from "./list-101-firesuit.json";
+import list101Gloves from "./list-101-gloves.json";
+import list101Shoes from "./list-101-shoes.json";
+import list107 from "./list-107.json";
+import list108 from "./list-108.json";
 
 /**
  * Parsed FIA Technical Lists — see fia-lists/README.md for how these are generated
@@ -87,6 +96,19 @@ import list69 from "./list-69.json";
  * has one revoked entry (FT3-4) whose WARNING notice doesn't state a homologation number, so it's
  * marked revoked by hand; List 69's "-ABP" numbers are scoped to both fia-8860-2018 and
  * fia-8860-2018-abp since this list has no per-entry standard field to distinguish them.
+ *
+ * Lists 33 (helmets, FIA 8860-2010), 48 (racing nets, FIA 8863-2013), 49 (premium helmets, FIA
+ * 8859-2015), 79 (karting high seats, FIA 8873-2018), 101 (karting protective clothing, FIA
+ * 8877-2022), 107 (premium helmets, FIA 8859-2024), and 108 (karting helmets, FIA 8878-2024) are
+ * all also spreadsheet-built, same reasoning as List 1/69 — see each one's own comment in
+ * scripts/parse-fia-list.mjs's LIST_CONFIG for format-specific notes. List 101 is the one
+ * structurally novel case: it mixes firesuits, gloves, AND shoes in one FIA list with no
+ * distinguishing column between them, so it's split into three separate FiaTechnicalList objects
+ * here (list101Firesuit/Gloves/Shoes, all listNumber 101, all standardId fia-8877-2022) rather
+ * than one — the homologation number's own suffix letter (`-0`/`-G`/`-Z`) reliably classifies
+ * each entry, so no schema change was needed, but this app's category-scoped-list model can't
+ * express "one list, three disjoint categories" as a single object the way every other list here
+ * is one file. See LIST_CONFIG["101-firesuit"/"101-gloves"/"101-shoes"] for how each is generated.
  */
 export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list74,
@@ -100,6 +122,15 @@ export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list91,
   list1,
   list69,
+  list33,
+  list48,
+  list49,
+  list79,
+  list101Firesuit,
+  list101Gloves,
+  list101Shoes,
+  list107,
+  list108,
 ] as FiaTechnicalList[];
 
 /**

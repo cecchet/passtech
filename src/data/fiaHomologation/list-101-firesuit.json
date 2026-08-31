@@ -1,0 +1,221 @@
+{
+  "listNumber": 101,
+  "title": "Technical List n°101 — Karting Protective Clothing, Suits (FIA 8877-2022)",
+  "standardIds": [
+    "fia-8877-2022"
+  ],
+  "categories": [
+    "firesuit"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/8877.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "KC.001.23-0",
+      "manufacturer": "ALPINESTARS",
+      "model": "KMX-9 V3",
+      "productType": "Grade 1",
+      "homologationStart": "06.2023",
+      "homologationEnd": "06.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "KC.002.23-0",
+      "manufacturer": "ALPINESTARS",
+      "model": "KMX-5 V3",
+      "productType": "Grade 1",
+      "homologationStart": "07.2023",
+      "homologationEnd": "07.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "KC.005.23-0",
+      "manufacturer": "SPARCO",
+      "model": "K46",
+      "productType": "Grade 1",
+      "homologationStart": "09.2023",
+      "homologationEnd": "09.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "KC.008.24-0",
+      "manufacturer": "OMP",
+      "model": "KS-2X",
+      "productType": "Grade 1",
+      "homologationStart": "01.2024",
+      "homologationEnd": "01.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.009.24-0",
+      "manufacturer": "HRX",
+      "model": "FUJI MATT",
+      "productType": "Grade 1",
+      "homologationStart": "02.2024",
+      "homologationEnd": "02.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.010.24-0",
+      "manufacturer": "OMP",
+      "model": "KS-X",
+      "productType": "Grade 1",
+      "homologationStart": "02.2024",
+      "homologationEnd": "02.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.013.24-0",
+      "manufacturer": "FREE MINDS",
+      "model": "KP24",
+      "productType": "Grade 1",
+      "homologationStart": "03.2024",
+      "homologationEnd": "03.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.014.24-0",
+      "manufacturer": "HRX",
+      "model": "FUJI GOLD",
+      "productType": "Grade 1",
+      "homologationStart": "04.2024",
+      "homologationEnd": "04.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.015.24-0",
+      "manufacturer": "HRX",
+      "model": "FUJI SHINE",
+      "productType": "Grade 1",
+      "homologationStart": "04.2024",
+      "homologationEnd": "04.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.016.24-0",
+      "manufacturer": "ZULO",
+      "model": "DZKS-01",
+      "productType": "Grade 1",
+      "homologationStart": "06.2024",
+      "homologationEnd": "06.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.017.24-0",
+      "manufacturer": "SPARCO",
+      "model": "K48",
+      "productType": "Grade 1",
+      "homologationStart": "06.2024",
+      "homologationEnd": "06.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.018.24-0",
+      "manufacturer": "SPARCO",
+      "model": "K50",
+      "productType": "Grade 1",
+      "homologationStart": "07.2024",
+      "homologationEnd": "07.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.023.24-0",
+      "manufacturer": "FREE MINDS",
+      "model": "K24",
+      "productType": "Grade 1",
+      "homologationStart": "10.2024",
+      "homologationEnd": "10.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.027.24-0",
+      "manufacturer": "OMP",
+      "model": "CW0131",
+      "productType": "Grade 1",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.028.25-0",
+      "manufacturer": "AL KHAIR INTERNATIONAL",
+      "model": "PRIMATE",
+      "productType": "Grade 1",
+      "homologationStart": "01.2025",
+      "homologationEnd": "02.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.029.25-0",
+      "manufacturer": "MARINA",
+      "model": "Unik Suit",
+      "productType": "Grade 1",
+      "homologationStart": "02.2025",
+      "homologationEnd": "02.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.031.25-0",
+      "manufacturer": "OFFSET",
+      "model": "RS-KV",
+      "productType": "Grade 1",
+      "homologationStart": "03.2025",
+      "homologationEnd": "04.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.032.25-0",
+      "manufacturer": "X'ZUIT",
+      "model": "IKON 4",
+      "productType": "Grade 1",
+      "homologationStart": "04.2025",
+      "homologationEnd": "04.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.033.25-0",
+      "manufacturer": "CORSA",
+      "model": "CKS0124",
+      "productType": "Grade 1",
+      "homologationStart": "05.2025",
+      "homologationEnd": "05.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.034.25-0",
+      "manufacturer": "GALUPPO",
+      "model": "ASTRA",
+      "productType": "Grade 1",
+      "homologationStart": "05.2025",
+      "homologationEnd": "05.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.037.25-0",
+      "manufacturer": "KOBRA",
+      "model": "WINNER EVO",
+      "productType": "Grade 1",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.044.26-0",
+      "manufacturer": "MANORACING",
+      "model": "MK-Elastic",
+      "productType": "Grade 1",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "KC.046.26-0",
+      "manufacturer": "DANROW",
+      "model": "AEROSUIT V1",
+      "productType": "Grade 1",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2036"
+    }
+  ]
+}

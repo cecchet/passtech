@@ -1,0 +1,311 @@
+{
+  "listNumber": 48,
+  "title": "Technical List n°48 — Racing Nets (FIA 8863-2013)",
+  "standardIds": [
+    "fia-8863-2013"
+  ],
+  "categories": [
+    "window_net"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/l48_racing_nets_33.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "RN.001.15",
+      "manufacturer": "SCHROTH",
+      "model": "SA Interior Net I",
+      "productType": "Single",
+      "homologationStart": "02.2015",
+      "homologationEnd": "03.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "RN.002.15",
+      "manufacturer": "CITROEN RACING",
+      "model": "Racing Net CR15",
+      "productType": "Single",
+      "homologationStart": "10.2015",
+      "homologationEnd": "10.2020",
+      "validUntil": "2025"
+    },
+    {
+      "number": "RN.003.15",
+      "manufacturer": "SAFECRAFT",
+      "model": "8111-K",
+      "productType": "Single",
+      "homologationStart": "12.2015",
+      "homologationEnd": "12.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "RN.004.16",
+      "manufacturer": "SCHROTH",
+      "model": "SR Interior Net I-LA",
+      "productType": "Dual",
+      "homologationStart": "02.2016",
+      "homologationEnd": "02.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "RN.005.16",
+      "manufacturer": "SAFECRAFT",
+      "model": "8011-K",
+      "productType": "Single",
+      "homologationStart": "03.2016",
+      "homologationEnd": "03.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "RN.006.16",
+      "manufacturer": "OMP",
+      "model": "NA/1875",
+      "productType": "Single",
+      "homologationStart": "02.2016",
+      "homologationEnd": "03.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "RN.007.16",
+      "manufacturer": "SAFECRAFT",
+      "model": "8211-K",
+      "productType": "Single",
+      "homologationStart": "06.2016",
+      "homologationEnd": "06.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "RN.008.16",
+      "manufacturer": "SPARCO",
+      "model": "002193NR",
+      "productType": "Single",
+      "homologationStart": "07.2016",
+      "homologationEnd": "07.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "RN.009.16",
+      "manufacturer": "OMP",
+      "model": "NA/1877",
+      "productType": "Single",
+      "homologationStart": "12.2016",
+      "homologationEnd": "12.2021",
+      "validUntil": "2026"
+    },
+    {
+      "number": "RN.010.17",
+      "manufacturer": "OMP",
+      "model": "NA/1876",
+      "productType": "Single",
+      "homologationStart": "01.2017",
+      "homologationEnd": "01.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "RN.011.17",
+      "manufacturer": "SPARCO",
+      "model": "002194NR",
+      "productType": "Single",
+      "homologationStart": "04.2017",
+      "homologationEnd": "04.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "RN.012.17",
+      "manufacturer": "OMP",
+      "model": "NA/1879",
+      "productType": "Single",
+      "homologationStart": "10.2017",
+      "homologationEnd": "10.2022",
+      "validUntil": "2027"
+    },
+    {
+      "number": "RN.013.18",
+      "manufacturer": "SAFECRAFT",
+      "model": "8311-K",
+      "productType": "Single",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "RN.014.18",
+      "manufacturer": "SIMPSON",
+      "model": "Driver Net-Sedan-Poly RT / Driver Net-Sedan-Poly LT",
+      "productType": "Single",
+      "homologationStart": "04.2018",
+      "homologationEnd": "04.2023",
+      "validUntil": "2028"
+    },
+    {
+      "number": "RN.015.18",
+      "manufacturer": "SABELT",
+      "model": "FCRN2000",
+      "productType": "Single",
+      "homologationStart": "10.2018",
+      "homologationEnd": "10.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "RN.016.19",
+      "manufacturer": "SCHROTH",
+      "model": "SR Interior Net DT I",
+      "productType": "Single",
+      "homologationStart": "11.2019",
+      "homologationEnd": "11.2024",
+      "validUntil": "2029"
+    },
+    {
+      "number": "RN.017.20",
+      "manufacturer": "SAFECRAFT",
+      "model": "8411-K",
+      "productType": "Single",
+      "homologationStart": "03.2020",
+      "homologationEnd": "03.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "RN.018.20",
+      "manufacturer": "SAFECRAFT",
+      "model": "8511-K",
+      "productType": "Single",
+      "homologationStart": "03.2020",
+      "homologationEnd": "03.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "RN.019.20",
+      "manufacturer": "SCHROTH",
+      "model": "SR Interior Net 5P I",
+      "productType": "Dual",
+      "homologationStart": "06.2020",
+      "homologationEnd": "06.2025",
+      "validUntil": "2030"
+    },
+    {
+      "number": "RN.020.20",
+      "manufacturer": "SABELT",
+      "model": "CFRN2002",
+      "productType": "Single",
+      "homologationStart": "11.2020",
+      "homologationEnd": "11.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "RN.021.21",
+      "manufacturer": "OMP",
+      "model": "NA/1880",
+      "productType": "Single",
+      "homologationStart": "03.2021",
+      "homologationEnd": "03.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "RN.022.21",
+      "manufacturer": "OMP",
+      "model": "NA/1881",
+      "productType": "Dual",
+      "homologationStart": "03.2021",
+      "homologationEnd": "03.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "RN.023.21",
+      "manufacturer": "SCHROTH",
+      "model": "SR Interior Net KTM and X-Bow LH",
+      "productType": "Dual",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "RN.024.21",
+      "manufacturer": "SCHROTH",
+      "model": "SR Interior Net KTM X-Bow RH",
+      "productType": "Dual",
+      "homologationStart": "04.2021",
+      "homologationEnd": "04.2026",
+      "validUntil": "2031"
+    },
+    {
+      "number": "RN.025.21",
+      "manufacturer": "SABELT",
+      "model": "CFAN2008",
+      "productType": "Single",
+      "homologationStart": "06.2021",
+      "homologationEnd": "06.2031",
+      "validUntil": "2036"
+    },
+    {
+      "number": "RN.026.22",
+      "manufacturer": "OMP",
+      "model": "NA/1882",
+      "productType": "Single",
+      "homologationStart": "09.2022",
+      "homologationEnd": "09.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "RN.027.22",
+      "manufacturer": "OMP",
+      "model": "NA/1883",
+      "productType": "Dual",
+      "homologationStart": "09.2022",
+      "homologationEnd": "09.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "RN.028.22",
+      "manufacturer": "SABELT",
+      "model": "CFRN2010",
+      "productType": "Single",
+      "homologationStart": "09.2022",
+      "homologationEnd": "09.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "RN.029.22",
+      "manufacturer": "SABELT",
+      "model": "CFRN2012",
+      "productType": "Single",
+      "homologationStart": "10.2022",
+      "homologationEnd": "10.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "RN.030.22",
+      "manufacturer": "OMP",
+      "model": "NAO-1876",
+      "productType": "Single",
+      "homologationStart": "12.2022",
+      "homologationEnd": "12.2027",
+      "validUntil": "2032"
+    },
+    {
+      "number": "RN.031.23",
+      "manufacturer": "OMP",
+      "model": "NAO-1877",
+      "productType": "Single",
+      "homologationStart": "07.2023",
+      "homologationEnd": "07.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "RN.032.25",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "WN-40",
+      "productType": "Single",
+      "homologationStart": "01.2025",
+      "homologationEnd": "01.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "RN.033.25",
+      "manufacturer": "SPARCO",
+      "model": "BRA0001BO",
+      "productType": "Single",
+      "homologationStart": "02.2025",
+      "homologationEnd": "02.2030",
+      "validUntil": "2035"
+    }
+  ]
+}

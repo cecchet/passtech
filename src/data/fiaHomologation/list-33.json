@@ -1,0 +1,266 @@
+{
+  "listNumber": 33,
+  "title": "Technical List n°33 — Advanced Helmets (FIA 8860-2010)",
+  "standardIds": [
+    "fia-8860-2010"
+  ],
+  "categories": [
+    "helmet"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/l33_advanced_helmets_25.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "AH.001.10-C",
+      "manufacturer": "STAND 21",
+      "model": "Ivos HT",
+      "homologationStart": "15.12.10",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.002.11-C",
+      "manufacturer": "STILO",
+      "model": "ST4-8860 (F, NF) / ST4-8860 (R, NR) / ST4-8860 (W, NW) / WRC 8860 DES",
+      "homologationStart": "29.03.11",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "AH.003.11-C",
+      "manufacturer": "STILO",
+      "model": "TROPHY 8860 DES",
+      "homologationStart": "29.03.11",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.004.11-C",
+      "manufacturer": "STILO",
+      "model": "WRC 8860 DES / TROPHY 8860 DES",
+      "homologationStart": "29.03.11",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.005.11-C",
+      "manufacturer": "STILO",
+      "model": "ST4 8860 ZERO (F, NF) / ST4 8860 ZERO (R, NR) / ST4 8860 ZERO (W, NW)",
+      "homologationStart": "18.10.11",
+      "homologationEnd": "30.10.17"
+    },
+    {
+      "number": "AH.006.11-C",
+      "manufacturer": "ARAI",
+      "model": "GP-6 RC",
+      "homologationStart": "24.05.11",
+      "homologationEnd": "31.05.17"
+    },
+    {
+      "number": "AH.007.11-C",
+      "manufacturer": "SCHUBERTH GmbH",
+      "model": "SF1 LW / SF1 LW MS",
+      "homologationStart": "01.03.12",
+      "homologationEnd": "31.03.17"
+    },
+    {
+      "number": "AH.008.11-C",
+      "manufacturer": "SIMPSON",
+      "model": "X-BANDIT PRO",
+      "homologationStart": "14.12.11",
+      "homologationEnd": "31.12.17"
+    },
+    {
+      "number": "AH.009.12-C",
+      "manufacturer": "OMP",
+      "model": "JET CARBON 8860",
+      "homologationStart": "10.01.12",
+      "homologationEnd": "31.01.17"
+    },
+    {
+      "number": "AH.010.12-C",
+      "manufacturer": "OMP",
+      "model": "GP CARBON 8860 / SPEED CARBON 8860",
+      "homologationStart": "07.02.12",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "AH.011.12-C",
+      "manufacturer": "VEMAR",
+      "model": "SPARCO WTXJ9 / SPARCO WTXJ9-1",
+      "homologationStart": "08.02.12",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "AH.012.12-C",
+      "manufacturer": "STILO",
+      "model": "WRC 8860 ZERO / TROPHY 8860 ZERO",
+      "homologationStart": "10.02.12",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.013.12-C",
+      "manufacturer": "BELL RACING EUROPE",
+      "model": "HP STAR INFUSION",
+      "homologationStart": "28.02.12",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "AH.014.12-C",
+      "manufacturer": "BELL RACING EUROPE OR BELL RACING HELMETS",
+      "model": "HP3 (V2012) / HP5 (V2012)",
+      "homologationStart": "28.02.12",
+      "homologationEnd": "28.02.17"
+    },
+    {
+      "number": "AH.015.12-C",
+      "manufacturer": "MAVET",
+      "model": "3M PELTOR G89 / 3M PELTOR G89 Intercom",
+      "homologationStart": "15.06.12",
+      "homologationEnd": "30.06.17"
+    },
+    {
+      "number": "AH.016.12-C",
+      "manufacturer": "VEMAR",
+      "model": "SPARCO WTX9 / SPARCO WTX9-AIR / SPARCO WTX9-W",
+      "homologationStart": "18.07.12",
+      "homologationEnd": "31.07.17"
+    },
+    {
+      "number": "AH.017.13-C",
+      "manufacturer": "BELL RACING EUROPE OR BELL RACING HELMETS",
+      "model": "HP7",
+      "homologationStart": "04.02.13",
+      "homologationEnd": "28.02.18"
+    },
+    {
+      "number": "AH.018.13-C",
+      "manufacturer": "SIMPSON",
+      "model": "VUDO PRO",
+      "homologationStart": "15.02.13",
+      "homologationEnd": "28.02.18"
+    },
+    {
+      "number": "AH.019.13-C",
+      "manufacturer": "BELL RACING EUROPE OR BELL RACING HELMETS",
+      "model": "HP7 EVO",
+      "homologationStart": "01.11.13",
+      "homologationEnd": "30.11.18"
+    },
+    {
+      "number": "AH.020.14-C",
+      "manufacturer": "BELL RACING EUROPE OR BELL RACING HELMETS",
+      "model": "HP5 TOURING",
+      "homologationStart": "01.11.13",
+      "homologationEnd": "30.11.18"
+    },
+    {
+      "number": "AH.021.14-C",
+      "manufacturer": "STILO",
+      "model": "ST5 8860 ZERO (F, NF) / ST5 8860 ZERO (R, NR) / ST5 8860 ZERO (W, NW)",
+      "homologationStart": "19.08.14",
+      "homologationEnd": "31.08.19"
+    },
+    {
+      "number": "AH.022.14-C",
+      "manufacturer": "BELL RACING EUROPE OR BELL RACING HELMETS",
+      "model": "HP RALLY / HP9 / HP9 RALLY",
+      "homologationStart": "17.12.14",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.023.15-C",
+      "manufacturer": "VEMAR HELMETS",
+      "model": "SIMPSON VENATOR PRO",
+      "homologationStart": "09.03.15",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.024.16-C",
+      "manufacturer": "SIMPSON",
+      "model": "SIMPSON RALLY PRO",
+      "homologationStart": "17.11.16",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.025.17-C",
+      "manufacturer": "SCHUBERTH GmbH",
+      "model": "SF1 PRO",
+      "homologationStart": "09.02.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.026.17-C",
+      "manufacturer": "STILO",
+      "model": "ST5 8860 (F, NF) / ST5 8860 GT(, GTN) / ST5 8860 (W, NW, R, RN)",
+      "homologationStart": "28.03.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.027.17-C",
+      "manufacturer": "BELL RACING HELMETS",
+      "model": "HP7 EVO II",
+      "homologationStart": "13.04.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.028.17-C",
+      "manufacturer": "BELL RACING HELMETS",
+      "model": "HP7 EVO II-D",
+      "homologationStart": "13.04.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.029.17-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO PRIME RF-9W",
+      "homologationStart": "19.06.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.030.17-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO PRIME RJ-9i",
+      "homologationStart": "06.11.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.031.17-C",
+      "manufacturer": "STILO",
+      "model": "ST5-VB 8860 ZERO (NF, NGT) / ST5-VB 8860 ZERO (F, GT)",
+      "homologationStart": "20.11.17",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.032.18-C",
+      "manufacturer": "SCHUBERTH GmbH",
+      "model": "SF2 PRO",
+      "homologationStart": "12.02.18",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.033.18-C",
+      "manufacturer": "ARAI",
+      "model": "GP-6 RCT",
+      "homologationStart": "29.01.18",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.034.18-C",
+      "manufacturer": "BELL RACING HELMETS",
+      "model": "HP9 EVO II / HP9 EVO II RALLY",
+      "homologationStart": "06.04.18",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.035.18-C",
+      "manufacturer": "VM SAFETY",
+      "model": "SPARCO PRIME RF-9W",
+      "homologationStart": "18.05.18",
+      "homologationEnd": "31.12.19"
+    },
+    {
+      "number": "AH.036.18-C",
+      "manufacturer": "BELL RACING HELMETS",
+      "model": "HP5 EVO II / HP5 EVO II RALLY",
+      "homologationStart": "23.10.18",
+      "homologationEnd": "31.12.19"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "listNumber": 108,
+  "title": "Technical List n°108 — Karting Helmets (FIA 8878-2024)",
+  "standardIds": [
+    "fia-8878-2024"
+  ],
+  "categories": [
+    "helmet"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/l108_karting_helmets_8878-2024_2.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "KH.001.24",
+      "manufacturer": "SPARCO",
+      "model": "STEALTH KF",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029"
+    },
+    {
+      "number": "KH.002.24",
+      "manufacturer": "SPARCO",
+      "model": "STEALTH KF CARBON",
+      "homologationStart": "12.2024",
+      "homologationEnd": "12.2029"
+    },
+    {
+      "number": "KH.003.25",
+      "manufacturer": "BELL RACING",
+      "model": "RS7-K",
+      "homologationStart": "02.2025",
+      "homologationEnd": "02.2030"
+    },
+    {
+      "number": "KH.004.25",
+      "manufacturer": "STILO",
+      "model": "ST6 COMPOSITE",
+      "homologationStart": "02.2025",
+      "homologationEnd": "02.2030"
+    },
+    {
+      "number": "KH.005.25",
+      "manufacturer": "STILO",
+      "model": "ST6 CARBON",
+      "homologationStart": "02.2025",
+      "homologationEnd": "02.2030"
+    },
+    {
+      "number": "KH.006.25",
+      "manufacturer": "BELL RACING",
+      "model": "RS7-K CARBON",
+      "homologationStart": "02.2025",
+      "homologationEnd": "02.2030"
+    },
+    {
+      "number": "KH.007.25",
+      "manufacturer": "SCHUBERTH",
+      "model": "SP1 Carbon Evo",
+      "homologationStart": "10.2025",
+      "homologationEnd": "10.2030"
+    },
+    {
+      "number": "KH.008.25",
+      "manufacturer": "SCHUBERTH",
+      "model": "SP1 Hybrid",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030"
+    },
+    {
+      "number": "KH.009.26",
+      "manufacturer": "ARAI",
+      "model": "SKV-R",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031"
+    },
+    {
+      "number": "KH.010.26",
+      "manufacturer": "ARAI",
+      "model": "SKV-R RO",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031"
+    }
+  ]
+}

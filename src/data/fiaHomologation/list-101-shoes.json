@@ -1,0 +1,95 @@
+{
+  "listNumber": 101,
+  "title": "Technical List n°101 — Karting Protective Clothing, Shoes (FIA 8877-2022)",
+  "standardIds": [
+    "fia-8877-2022"
+  ],
+  "categories": [
+    "shoes"
+  ],
+  "sourceUrl": "https://www.fia.com/sites/default/files/8877.pdf",
+  "lastFetched": "2026-08-31",
+  "entries": [
+    {
+      "number": "KC.006.23-Z",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-1 KX V3",
+      "homologationStart": "10.2023",
+      "homologationEnd": "10.2028",
+      "validUntil": "2033"
+    },
+    {
+      "number": "KC.007.24-Z",
+      "manufacturer": "SPARCO",
+      "model": "K-PRIME",
+      "homologationStart": "01.2024",
+      "homologationEnd": "01.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.011.24-Z",
+      "manufacturer": "OMP",
+      "model": "KS-XR",
+      "homologationStart": "02.2024",
+      "homologationEnd": "02.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.012.24-Z",
+      "manufacturer": "OMP",
+      "model": "ARP",
+      "homologationStart": "02.2024",
+      "homologationEnd": "02.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.022.24-Z",
+      "manufacturer": "FREE MINDS",
+      "model": "SK24",
+      "homologationStart": "10.2024",
+      "homologationEnd": "10.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.026.24-Z",
+      "manufacturer": "SPARCO",
+      "model": "K-RAPID",
+      "homologationStart": "11.2024",
+      "homologationEnd": "11.2029",
+      "validUntil": "2034"
+    },
+    {
+      "number": "KC.036.25-Z",
+      "manufacturer": "OMP",
+      "model": "CW0160",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.038.25-Z",
+      "manufacturer": "SPARCO",
+      "model": "K-RAPID WP",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.039.25-Z",
+      "manufacturer": "ALPINESTARS",
+      "model": "SUPERTECH K",
+      "homologationStart": "09.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2035"
+    },
+    {
+      "number": "KC.042.26-Z",
+      "manufacturer": "HRX",
+      "model": "K-ICON SHOES",
+      "productType": "Grade 1",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2036"
+    }
+  ]
+}
