@@ -471,7 +471,7 @@ export default function Home() {
             <LandingCard
               number={2}
               title="Check my gear"
-              description="Save your safety gear once in My Gear, then check it against a specific sanctioning body's rules or see everywhere it's eligible to race."
+              description="Enter your safety gear, then check it against a specific sanctioning body's rules or see everywhere it's eligible to race."
               icon="/frog-mygear.jpg"
               onClick={() => setMode("garage")}
             />
