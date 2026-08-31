@@ -14,7 +14,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2018",
       "homologationEnd": "12.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.002.19-O",
@@ -23,7 +24,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2019",
       "homologationEnd": "02.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.003.19-Z",
@@ -32,7 +34,8 @@
       "productType": "Shoes",
       "homologationStart": "03.2019",
       "homologationEnd": "03.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.004.19-O",
@@ -41,7 +44,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2019",
       "homologationEnd": "04.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.005.19-S",
@@ -50,7 +54,8 @@
       "productType": "Socks",
       "homologationStart": "05.2019",
       "homologationEnd": "05.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "socks"
     },
     {
       "number": "DC.006.19-Z",
@@ -59,7 +64,8 @@
       "productType": "Shoes",
       "homologationStart": "05.2019",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.007.19-B",
@@ -68,7 +74,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2019",
       "homologationEnd": "06.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "balaclava"
     },
     {
       "number": "DC.008.19-G",
@@ -77,7 +84,8 @@
       "productType": "Gloves",
       "homologationStart": "06.2019",
       "homologationEnd": "06.2022",
-      "validUntil": "2032"
+      "validUntil": "2032",
+      "category": "gloves"
     },
     {
       "number": "DC.009.19-T",
@@ -86,7 +94,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2019",
       "homologationEnd": "06.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.010.19-L",
@@ -95,7 +104,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2019",
       "homologationEnd": "06.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.011.19-Z",
@@ -104,7 +114,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.012.19-G",
@@ -113,7 +124,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.013.19-O",
@@ -122,7 +134,8 @@
       "productType": "Overalls",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.014.19-G",
@@ -131,7 +144,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.015.19-G",
@@ -140,7 +154,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.016.19-G",
@@ -149,7 +164,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.017.19-Z",
@@ -158,7 +174,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2019",
       "homologationEnd": "07.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.018.19-G",
@@ -167,7 +184,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2019",
       "homologationEnd": "08.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.019.19-G",
@@ -176,7 +194,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2019",
       "homologationEnd": "08.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.020.19-G",
@@ -185,7 +204,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2019",
       "homologationEnd": "08.2022",
-      "validUntil": "2032"
+      "validUntil": "2032",
+      "category": "gloves"
     },
     {
       "number": "DC.021.19-Z",
@@ -194,7 +214,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2019",
       "homologationEnd": "08.2022",
-      "validUntil": "2032"
+      "validUntil": "2032",
+      "category": "shoes"
     },
     {
       "number": "DC.022.19-Z",
@@ -203,7 +224,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2019",
       "homologationEnd": "08.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.023.19-O",
@@ -212,7 +234,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.024.19-S",
@@ -221,7 +244,8 @@
       "productType": "Socks",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "socks"
     },
     {
       "number": "DC.025.19-G",
@@ -230,7 +254,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.026.19-G",
@@ -239,7 +264,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.027.19-O",
@@ -248,7 +274,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.028.19-O",
@@ -257,7 +284,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.029.19-O",
@@ -266,7 +294,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.030.19-O",
@@ -275,7 +304,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.031.19-O",
@@ -284,7 +314,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2022",
-      "validUntil": "2032"
+      "validUntil": "2032",
+      "category": "firesuit"
     },
     {
       "number": "DC.032.19-G",
@@ -293,7 +324,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2019",
       "homologationEnd": "09.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.033.19-G",
@@ -302,7 +334,8 @@
       "productType": "Gloves",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.034.19-T",
@@ -311,7 +344,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.035.19-L",
@@ -320,7 +354,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.036.19-B",
@@ -329,7 +364,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "balaclava"
     },
     {
       "number": "DC.037.19-Z",
@@ -338,7 +374,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.038.19-B",
@@ -347,7 +384,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "balaclava"
     },
     {
       "number": "DC.039.19-S",
@@ -356,7 +394,8 @@
       "productType": "Socks",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "socks"
     },
     {
       "number": "DC.040.19-T",
@@ -365,7 +404,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.041.19-L",
@@ -374,7 +414,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.042.19-Z",
@@ -383,7 +424,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.043.19-Z",
@@ -392,7 +434,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.044.19-Z",
@@ -401,7 +444,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.045.19-O",
@@ -410,7 +454,8 @@
       "productType": "Overalls",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.046.19-Z",
@@ -419,7 +464,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.047.19-Z",
@@ -428,7 +474,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.048.19-B",
@@ -437,7 +484,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "balaclava"
     },
     {
       "number": "DC.049.19-T",
@@ -446,7 +494,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.050.19-L",
@@ -455,7 +504,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.051.19-B",
@@ -464,7 +514,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "balaclava"
     },
     {
       "number": "DC.052.19-T",
@@ -473,7 +524,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.053.19-L",
@@ -482,7 +534,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2019",
       "homologationEnd": "10.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.054.19-G",
@@ -491,7 +544,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.055.19-B",
@@ -500,7 +554,8 @@
       "productType": "Balaclava",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "balaclava"
     },
     {
       "number": "DC.056.19-T",
@@ -509,7 +564,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.057.19-L",
@@ -518,7 +574,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "undergarment"
     },
     {
       "number": "DC.058.19-Z",
@@ -527,7 +584,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.059.19-Z",
@@ -536,7 +594,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.060.19-Z",
@@ -545,7 +604,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.061.19-S",
@@ -554,7 +614,8 @@
       "productType": "Socks",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "socks"
     },
     {
       "number": "DC.062.19-T",
@@ -563,7 +624,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.063.19-L",
@@ -572,7 +634,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.064.19-B",
@@ -581,7 +644,8 @@
       "productType": "Balaclava",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.065.19-S",
@@ -590,7 +654,8 @@
       "productType": "Socks",
       "homologationStart": "11.2019",
       "homologationEnd": "11.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "socks"
     },
     {
       "number": "DC.066.19-O",
@@ -599,7 +664,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2019",
       "homologationEnd": "12.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.067.19-Z",
@@ -608,7 +674,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2019",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.068.19-Z",
@@ -617,7 +684,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2019",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.069.19-Z",
@@ -626,7 +694,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2019",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.070.19-Z",
@@ -635,7 +704,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2019",
       "homologationEnd": "12.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "shoes"
     },
     {
       "number": "DC.071.19-O",
@@ -644,7 +714,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2019",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.072.20-Z",
@@ -653,7 +724,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2020",
       "homologationEnd": "01.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.073.20-G",
@@ -662,7 +734,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2020",
       "homologationEnd": "06.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "gloves"
     },
     {
       "number": "DC.074.20-O",
@@ -671,7 +744,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2020",
       "homologationEnd": "01.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.075.20-Z",
@@ -680,7 +754,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2020",
       "homologationEnd": "02.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.076.20-Z",
@@ -689,7 +764,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2020",
       "homologationEnd": "02.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.077.20-G",
@@ -698,7 +774,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2020",
       "homologationEnd": "02.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.078.20-Z",
@@ -707,7 +784,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2020",
       "homologationEnd": "02.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.079.20-Z",
@@ -716,7 +794,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2020",
       "homologationEnd": "02.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.080.20-O",
@@ -725,7 +804,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2020",
       "homologationEnd": "04.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.081.20-G",
@@ -734,7 +814,8 @@
       "productType": "Gloves",
       "homologationStart": "05.2020",
       "homologationEnd": "05.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "gloves"
     },
     {
       "number": "DC.082.20-O",
@@ -743,7 +824,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2020",
       "homologationEnd": "05.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.083.20-S",
@@ -752,7 +834,8 @@
       "productType": "Socks",
       "homologationStart": "07.2020",
       "homologationEnd": "07.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "socks"
     },
     {
       "number": "DC.084.20-O",
@@ -761,7 +844,8 @@
       "productType": "Overalls",
       "homologationStart": "07.2020",
       "homologationEnd": "07.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.085.20-S",
@@ -770,7 +854,8 @@
       "productType": "Socks",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "socks"
     },
     {
       "number": "DC.086.20-Z",
@@ -779,7 +864,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.087.20-G",
@@ -788,7 +874,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.088.20-S",
@@ -797,7 +884,8 @@
       "productType": "Socks",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "socks"
     },
     {
       "number": "DC.089.20-B",
@@ -806,7 +894,8 @@
       "productType": "Balaclava",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "balaclava"
     },
     {
       "number": "DC.090.20-T",
@@ -815,7 +904,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "undergarment"
     },
     {
       "number": "DC.091.20-L",
@@ -824,7 +914,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "08.2020",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "undergarment"
     },
     {
       "number": "DC.092.20-O",
@@ -833,7 +924,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.093.20-O",
@@ -842,7 +934,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.094.20-O",
@@ -851,7 +944,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.095.20-O",
@@ -860,7 +954,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.096.20-O",
@@ -869,7 +964,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.097.20-Z",
@@ -878,7 +974,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.098.20-Z",
@@ -887,7 +984,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.099.20-B",
@@ -896,7 +994,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "balaclava"
     },
     {
       "number": "DC.100.20-T",
@@ -905,7 +1004,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "undergarment"
     },
     {
       "number": "DC.101.20-L",
@@ -914,7 +1014,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "undergarment"
     },
     {
       "number": "DC.102.20-Z",
@@ -923,7 +1024,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.103.20-Z",
@@ -932,7 +1034,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "shoes"
     },
     {
       "number": "DC.104.20-G",
@@ -941,7 +1044,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2020",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "gloves"
     },
     {
       "number": "DC.105.20-O",
@@ -950,7 +1054,8 @@
       "productType": "Overalls",
       "homologationStart": "10.2020",
       "homologationEnd": "10.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.106.20-S",
@@ -959,7 +1064,8 @@
       "productType": "Socks",
       "homologationStart": "10.2020",
       "homologationEnd": "10.2023",
-      "validUntil": "2033"
+      "validUntil": "2033",
+      "category": "socks"
     },
     {
       "number": "DC.107.20-Z",
@@ -968,7 +1074,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2020",
       "homologationEnd": "10.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.108.20-O",
@@ -977,7 +1084,8 @@
       "productType": "Overalls",
       "homologationStart": "11.2020",
       "homologationEnd": "11.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.109.20-S",
@@ -986,7 +1094,8 @@
       "productType": "Socks",
       "homologationStart": "11.2020",
       "homologationEnd": "11.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "socks"
     },
     {
       "number": "DC.110.20-O",
@@ -995,7 +1104,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2020",
       "homologationEnd": "12.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.111.20-O",
@@ -1004,7 +1114,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2020",
       "homologationEnd": "12.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.112.20-Z",
@@ -1013,7 +1124,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2020",
       "homologationEnd": "12.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.113.20-G",
@@ -1022,7 +1134,8 @@
       "productType": "Gloves",
       "homologationStart": "12.2020",
       "homologationEnd": "12.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "gloves"
     },
     {
       "number": "DC.114.21-Z",
@@ -1031,7 +1144,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2021",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.115.21-Z",
@@ -1040,7 +1154,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2021",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.116.21-O",
@@ -1049,7 +1164,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2021",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.117.21-G",
@@ -1058,7 +1174,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2021",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.118.21-Z",
@@ -1067,7 +1184,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2021",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.119.21-O",
@@ -1076,7 +1194,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2021",
       "homologationEnd": "01.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "firesuit"
     },
     {
       "number": "DC.120.21-G",
@@ -1085,7 +1204,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.121.21-G",
@@ -1094,7 +1214,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.122.21-G",
@@ -1103,7 +1224,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.123.21-Z",
@@ -1112,7 +1234,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.124.21-B",
@@ -1121,7 +1244,8 @@
       "productType": "Balaclava",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.125.21-T",
@@ -1130,7 +1254,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.126.21-L",
@@ -1139,7 +1264,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.127.21-T",
@@ -1148,7 +1274,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.128.21-L",
@@ -1157,7 +1284,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.129.21-B",
@@ -1166,7 +1294,8 @@
       "productType": "Balaclava",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.130.21-S",
@@ -1175,7 +1304,8 @@
       "productType": "Socks",
       "homologationStart": "02.2021",
       "homologationEnd": "02.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.131.21-G",
@@ -1184,7 +1314,8 @@
       "productType": "Gloves",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.132.21-G",
@@ -1193,7 +1324,8 @@
       "productType": "Gloves",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.133.21-G",
@@ -1202,7 +1334,8 @@
       "productType": "Gloves",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.134.21-O",
@@ -1211,7 +1344,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.135.21-G",
@@ -1220,7 +1354,8 @@
       "productType": "Gloves",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.136.21-O",
@@ -1229,7 +1364,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.137.21-O",
@@ -1238,7 +1374,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "firesuit"
     },
     {
       "number": "DC.138.21-B",
@@ -1247,7 +1384,8 @@
       "productType": "Balaclava",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "balaclava"
     },
     {
       "number": "DC.139.21-T",
@@ -1256,7 +1394,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "undergarment"
     },
     {
       "number": "DC.140.21-L",
@@ -1265,7 +1404,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "undergarment"
     },
     {
       "number": "DC.141.21-Z",
@@ -1274,7 +1414,8 @@
       "productType": "Shoes",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "shoes"
     },
     {
       "number": "DC.142.21-O",
@@ -1283,7 +1424,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2021",
       "homologationEnd": "03.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.143.21-O",
@@ -1292,7 +1434,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "firesuit"
     },
     {
       "number": "DC.144.21-Z",
@@ -1301,7 +1444,8 @@
       "productType": "Shoes",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.145.21-O",
@@ -1310,7 +1454,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.146.21-O",
@@ -1319,7 +1464,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.147.21-O",
@@ -1328,7 +1474,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "firesuit"
     },
     {
       "number": "DC.148.21-T",
@@ -1337,7 +1484,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.149.21-B",
@@ -1346,7 +1494,8 @@
       "productType": "Balaclava",
       "homologationStart": "04.2021",
       "homologationEnd": "04.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "balaclava"
     },
     {
       "number": "DC.150.21-S",
@@ -1355,7 +1504,8 @@
       "productType": "Socks",
       "homologationStart": "05.2021",
       "homologationEnd": "05.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.151.21-S",
@@ -1364,7 +1514,8 @@
       "productType": "Socks",
       "homologationStart": "05.2021",
       "homologationEnd": "05.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.152.21-O",
@@ -1373,7 +1524,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2021",
       "homologationEnd": "05.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "firesuit"
     },
     {
       "number": "DC.153.21-O",
@@ -1382,7 +1534,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2021",
       "homologationEnd": "05.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.154.21-B",
@@ -1391,7 +1544,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.155.21-L",
@@ -1400,7 +1554,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.156.21-T",
@@ -1409,7 +1564,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.157.21-O",
@@ -1418,7 +1574,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "firesuit"
     },
     {
       "number": "DC.158.21-O",
@@ -1427,7 +1584,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.159.21-O",
@@ -1436,7 +1594,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.160.21-B",
@@ -1445,7 +1604,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.161.21-T",
@@ -1454,7 +1614,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.162.21-L",
@@ -1463,7 +1624,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2021",
-      "validUntil": "2031"
+      "validUntil": "2031",
+      "category": "undergarment"
     },
     {
       "number": "DC.163.21-O",
@@ -1472,7 +1634,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.164.21-Z",
@@ -1481,7 +1644,8 @@
       "productType": "Shoes",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2021",
-      "validUntil": "2031"
+      "validUntil": "2031",
+      "category": "shoes"
     },
     {
       "number": "DC.165.21-O",
@@ -1490,7 +1654,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.166.21-G",
@@ -1499,7 +1664,8 @@
       "productType": "Gloves",
       "homologationStart": "06.2021",
       "homologationEnd": "06.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "gloves"
     },
     {
       "number": "DC.167.21-S",
@@ -1508,7 +1674,8 @@
       "productType": "Socks",
       "homologationStart": "07.2021",
       "homologationEnd": "07.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "socks"
     },
     {
       "number": "DC.168.21-S",
@@ -1517,7 +1684,8 @@
       "productType": "Socks",
       "homologationStart": "07.2021",
       "homologationEnd": "07.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "socks"
     },
     {
       "number": "DC.169.21-O",
@@ -1526,7 +1694,8 @@
       "productType": "Overalls",
       "homologationStart": "07.2021",
       "homologationEnd": "07.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.170.21-G",
@@ -1535,7 +1704,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2021",
       "homologationEnd": "08.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.171.21-T",
@@ -1544,7 +1714,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "08.2021",
       "homologationEnd": "08.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.172.21-L",
@@ -1553,7 +1724,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "08.2021",
       "homologationEnd": "08.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.173.21-T",
@@ -1562,7 +1734,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "08.2021",
       "homologationEnd": "08.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "undergarment"
     },
     {
       "number": "DC.174.21-L",
@@ -1571,7 +1744,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "08.2021",
       "homologationEnd": "08.2031",
-      "validUntil": "2041"
+      "validUntil": "2041",
+      "category": "undergarment"
     },
     {
       "number": "DC.175.21-Z",
@@ -1580,7 +1754,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.176.21-B",
@@ -1589,7 +1764,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "balaclava"
     },
     {
       "number": "DC.177.21-T",
@@ -1598,7 +1774,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.178.21-L",
@@ -1607,7 +1784,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.179.21-Z",
@@ -1616,7 +1794,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.180.21-B",
@@ -1625,7 +1804,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.181.21-T",
@@ -1634,7 +1814,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2021",
-      "validUntil": "2031"
+      "validUntil": "2031",
+      "category": "undergarment"
     },
     {
       "number": "DC.182.21-L",
@@ -1643,7 +1824,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "09.2021",
       "homologationEnd": "09.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.183.21-O",
@@ -1652,7 +1834,8 @@
       "productType": "Overalls",
       "homologationStart": "10.2021",
       "homologationEnd": "10.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.184.21-B",
@@ -1661,7 +1844,8 @@
       "productType": "Balaclava",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.185.21-B",
@@ -1670,7 +1854,8 @@
       "productType": "Balaclava",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.186.21-T",
@@ -1679,7 +1864,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.187.21-L",
@@ -1688,7 +1874,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.188.21-Z",
@@ -1697,7 +1884,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.189.21-T",
@@ -1706,7 +1894,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.190.21-L",
@@ -1715,7 +1904,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.191.21-S",
@@ -1724,7 +1914,8 @@
       "productType": "Socks",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.192.21-B",
@@ -1733,7 +1924,8 @@
       "productType": "Balaclava",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.193.21-G",
@@ -1742,7 +1934,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.194.21-Z",
@@ -1751,7 +1944,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.195.21-G",
@@ -1760,7 +1954,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2021",
       "homologationEnd": "11.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "gloves"
     },
     {
       "number": "DC.196.21-S",
@@ -1769,7 +1964,8 @@
       "productType": "Socks",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.197.21-T",
@@ -1778,7 +1974,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.198.21-T",
@@ -1787,7 +1984,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.199.21-L",
@@ -1796,7 +1994,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.200.21-B",
@@ -1805,7 +2004,8 @@
       "productType": "Balaclava",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.201.21-T",
@@ -1814,7 +2014,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.202.21-L",
@@ -1823,7 +2024,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.203.21-T",
@@ -1832,7 +2034,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.204.21-L",
@@ -1841,7 +2044,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.205.21-B",
@@ -1850,7 +2054,8 @@
       "productType": "Balaclava",
       "homologationStart": "12.2021",
       "homologationEnd": "12.2022",
-      "validUntil": "2032"
+      "validUntil": "2032",
+      "category": "balaclava"
     },
     {
       "number": "DC.206.22-Z",
@@ -1859,7 +2064,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2022",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "shoes"
     },
     {
       "number": "DC.207.22-S",
@@ -1868,7 +2074,8 @@
       "productType": "Socks",
       "homologationStart": "01.2022",
       "homologationEnd": "01.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.208.22-O",
@@ -1877,7 +2084,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2022",
       "homologationEnd": "04.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "firesuit"
     },
     {
       "number": "DC.209.22-Z",
@@ -1886,7 +2094,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2022",
       "homologationEnd": "01.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.210.22-O",
@@ -1895,7 +2104,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2022",
       "homologationEnd": "01.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.211.22-T",
@@ -1904,7 +2114,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.212.22-L",
@@ -1913,7 +2124,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.213.22-B",
@@ -1922,7 +2134,8 @@
       "productType": "Balaclava",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.214.22-O",
@@ -1931,7 +2144,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.215.22-O",
@@ -1940,7 +2154,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.216.22-B",
@@ -1949,7 +2164,8 @@
       "productType": "Balaclava",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.217.22-Z",
@@ -1958,7 +2174,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.218.22-G",
@@ -1967,7 +2184,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.219.22-Z",
@@ -1976,7 +2194,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.220.22-G",
@@ -1985,7 +2204,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.221.22-O",
@@ -1994,7 +2214,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.222.22-T",
@@ -2003,7 +2224,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.223.22-L",
@@ -2012,7 +2234,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.224.22-B",
@@ -2021,7 +2244,8 @@
       "productType": "Balaclava",
       "homologationStart": "02.2022",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.225.22-O",
@@ -2030,7 +2254,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2022",
       "homologationEnd": "03.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.226.22-O",
@@ -2039,7 +2264,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2022",
       "homologationEnd": "03.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.227.22-O",
@@ -2048,7 +2274,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2022",
       "homologationEnd": "03.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.228.22-Z",
@@ -2057,7 +2284,8 @@
       "productType": "Shoes",
       "homologationStart": "03.2022",
       "homologationEnd": "03.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.229.22-L",
@@ -2066,7 +2294,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2022",
       "homologationEnd": "03.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.230.22-S",
@@ -2075,7 +2304,8 @@
       "productType": "Socks",
       "homologationStart": "03.2022",
       "homologationEnd": "03.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "socks"
     },
     {
       "number": "DC.231.22-O",
@@ -2084,7 +2314,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2022",
       "homologationEnd": "01.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.232.22-Z",
@@ -2093,7 +2324,8 @@
       "productType": "Shoes",
       "homologationStart": "04.2022",
       "homologationEnd": "04.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.233.22-B",
@@ -2102,7 +2334,8 @@
       "productType": "Balaclava",
       "homologationStart": "04.2022",
       "homologationEnd": "04.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.234.22-O",
@@ -2111,7 +2344,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2022",
       "homologationEnd": "04.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.235.22-O",
@@ -2120,7 +2354,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2022",
       "homologationEnd": "04.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.236.22-O",
@@ -2129,7 +2364,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2022",
       "homologationEnd": "04.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.237.22-G",
@@ -2138,7 +2374,8 @@
       "productType": "Gloves",
       "homologationStart": "04.2022",
       "homologationEnd": "04.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.238.22-S",
@@ -2147,7 +2384,8 @@
       "productType": "Socks",
       "homologationStart": "05.2022",
       "homologationEnd": "05.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "socks"
     },
     {
       "number": "DC.239.22-T",
@@ -2156,7 +2394,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "05.2022",
       "homologationEnd": "05.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.240.22-L",
@@ -2165,7 +2404,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "05.2022",
       "homologationEnd": "05.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.241.22-B",
@@ -2174,7 +2414,8 @@
       "productType": "Balaclava",
       "homologationStart": "05.2022",
       "homologationEnd": "05.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.242.22-O",
@@ -2183,7 +2424,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2022",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.243.22-O",
@@ -2192,7 +2434,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2022",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.244.22-O",
@@ -2201,7 +2444,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2022",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.245.22-T",
@@ -2210,7 +2454,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2022",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.246.22-L",
@@ -2219,7 +2464,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2022",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.247.22-B",
@@ -2228,7 +2474,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2022",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.248.22-Z",
@@ -2237,7 +2484,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.249.22-G",
@@ -2246,7 +2494,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.250.22-G",
@@ -2255,7 +2504,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.251.22-G",
@@ -2264,7 +2514,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.252.22-G",
@@ -2273,7 +2524,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.253.22-G",
@@ -2282,7 +2534,8 @@
       "productType": "Gloves",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.254.22-O",
@@ -2291,7 +2544,8 @@
       "productType": "Overalls",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.255.22-B",
@@ -2300,7 +2554,8 @@
       "productType": "Balaclava",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.256.22-T",
@@ -2309,7 +2564,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2022",
-      "validUntil": "2032"
+      "validUntil": "2032",
+      "category": "undergarment"
     },
     {
       "number": "DC.257.22-L",
@@ -2318,7 +2574,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "08.2022",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.258.22-S",
@@ -2327,7 +2584,8 @@
       "productType": "Socks",
       "homologationStart": "08.2025",
       "homologationEnd": "08.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "socks"
     },
     {
       "number": "DC.259.22-S",
@@ -2336,7 +2594,8 @@
       "productType": "Socks",
       "homologationStart": "09.2022",
       "homologationEnd": "09.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "socks"
     },
     {
       "number": "DC.260.22-T",
@@ -2345,7 +2604,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "09.2022",
       "homologationEnd": "09.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.261.22-L",
@@ -2354,7 +2614,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "09.2022",
       "homologationEnd": "09.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.262.22-B",
@@ -2363,7 +2624,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2022",
       "homologationEnd": "09.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.263.22-T",
@@ -2372,7 +2634,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.264.22-L",
@@ -2381,7 +2644,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.265.22-B",
@@ -2390,7 +2654,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.266.22-T",
@@ -2399,7 +2664,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.267.22-L",
@@ -2408,7 +2674,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.268.22-B",
@@ -2417,7 +2684,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.269.22-G",
@@ -2426,7 +2694,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.270.22-G",
@@ -2435,7 +2704,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.271.22-Z",
@@ -2444,7 +2714,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.272.22-Z",
@@ -2453,7 +2724,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.273.22-G",
@@ -2462,7 +2734,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.274.22-R",
@@ -2471,7 +2744,8 @@
       "productType": "Overgarment",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.275.22-O",
@@ -2480,7 +2754,8 @@
       "productType": "Overalls",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.276.22-G",
@@ -2489,7 +2764,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.277.22-G",
@@ -2498,7 +2774,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.278.22-G",
@@ -2507,7 +2784,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.279.22-O",
@@ -2516,7 +2794,8 @@
       "productType": "Overalls",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.280.22-B",
@@ -2525,7 +2804,8 @@
       "productType": "Balaclava",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.281.22-T",
@@ -2534,7 +2814,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.282.22-L",
@@ -2543,7 +2824,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "11.2022",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.283.22-O",
@@ -2552,7 +2834,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.284.22-S",
@@ -2561,7 +2844,8 @@
       "productType": "Socks",
       "homologationStart": "12.2022",
       "homologationEnd": "05.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.285.22-T",
@@ -2570,7 +2854,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "12.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.286.22-L",
@@ -2579,7 +2864,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "12.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.287.22-B",
@@ -2588,7 +2874,8 @@
       "productType": "Balaclava",
       "homologationStart": "12.2022",
       "homologationEnd": "10.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.288.22-Z",
@@ -2597,7 +2884,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "shoes"
     },
     {
       "number": "DC.289.22-O",
@@ -2606,7 +2894,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.290.22-O",
@@ -2615,7 +2904,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.291.22-B",
@@ -2624,7 +2914,8 @@
       "productType": "Balaclava",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.292.22-T",
@@ -2633,7 +2924,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.293.22-G",
@@ -2642,7 +2934,8 @@
       "productType": "Gloves",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.294.22-O",
@@ -2651,7 +2944,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.295.22-G",
@@ -2660,7 +2954,8 @@
       "productType": "Gloves",
       "homologationStart": "12.2022",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "gloves"
     },
     {
       "number": "DC.296.23-G",
@@ -2669,7 +2964,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.297.23-G",
@@ -2678,7 +2974,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.298.23-G",
@@ -2687,7 +2984,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.299.23-Z",
@@ -2696,7 +2994,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.300.23-Z",
@@ -2705,7 +3004,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.301.23-G",
@@ -2714,7 +3014,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.302.23-G",
@@ -2723,7 +3024,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2023",
       "homologationEnd": "01.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.303.23-G",
@@ -2732,7 +3034,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.304.23-O",
@@ -2741,7 +3044,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.305.23-W",
@@ -2750,7 +3054,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.306.23-W",
@@ -2759,7 +3064,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.307.23-L",
@@ -2768,7 +3074,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.308.23-O",
@@ -2777,7 +3084,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.309.23-Z",
@@ -2786,7 +3094,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.310.23-O",
@@ -2795,7 +3104,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.311.23-G",
@@ -2804,7 +3114,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.312.23-G",
@@ -2813,7 +3124,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.313.23-G",
@@ -2822,7 +3134,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.314.23-G",
@@ -2831,7 +3144,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.315.23-O",
@@ -2840,7 +3154,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.316.23-O",
@@ -2849,7 +3164,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.317.23-G",
@@ -2858,7 +3174,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.318.23-G",
@@ -2867,7 +3184,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.319.23-G",
@@ -2876,7 +3194,8 @@
       "productType": "Gloves",
       "homologationStart": "02.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.320.23-T",
@@ -2885,7 +3204,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2023",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "undergarment"
     },
     {
       "number": "DC.321.23-B",
@@ -2894,7 +3214,8 @@
       "productType": "Balaclava",
       "homologationStart": "03.2023",
       "homologationEnd": "03.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "balaclava"
     },
     {
       "number": "DC.322.23-T",
@@ -2903,7 +3224,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2023",
       "homologationEnd": "03.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.323.23-L",
@@ -2912,7 +3234,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2023",
       "homologationEnd": "03.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.324.23-B",
@@ -2921,7 +3244,8 @@
       "productType": "Balaclava",
       "homologationStart": "03.2023",
       "homologationEnd": "03.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "balaclava"
     },
     {
       "number": "DC.325.23-T",
@@ -2930,7 +3254,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2023",
       "homologationEnd": "03.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.326.23-L",
@@ -2939,7 +3264,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2023",
       "homologationEnd": "03.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.327.23-G",
@@ -2948,7 +3274,8 @@
       "productType": "Gloves",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.328.23-W",
@@ -2957,7 +3284,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.329.23-W",
@@ -2966,7 +3294,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.330.23-S",
@@ -2975,7 +3304,8 @@
       "productType": "Socks",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "socks"
     },
     {
       "number": "DC.331.23-W",
@@ -2984,7 +3314,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.332.23-W",
@@ -2993,7 +3324,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.333.23-W",
@@ -3002,7 +3334,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.334.23-Z",
@@ -3011,7 +3344,8 @@
       "productType": "Shoes",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.335.23-Z",
@@ -3020,7 +3354,8 @@
       "productType": "Shoes",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.336.23-Z",
@@ -3029,7 +3364,8 @@
       "productType": "Shoes",
       "homologationStart": "04.2023",
       "homologationEnd": "04.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.337.23-O",
@@ -3038,7 +3374,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2023",
       "homologationEnd": "05.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.338.23-Z",
@@ -3047,7 +3384,8 @@
       "productType": "Shoes",
       "homologationStart": "05.2023",
       "homologationEnd": "05.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.339.23-W",
@@ -3056,7 +3394,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "05.2023",
       "homologationEnd": "05.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.340.23-W",
@@ -3065,7 +3404,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "05.2023",
       "homologationEnd": "05.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.341.23-W",
@@ -3074,7 +3414,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "05.2023",
       "homologationEnd": "05.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.342.23-W",
@@ -3083,7 +3424,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.343.23-W",
@@ -3092,7 +3434,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.344.23-W",
@@ -3101,7 +3444,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.345.23-O",
@@ -3110,7 +3454,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.346.23-O",
@@ -3119,7 +3464,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.347.23-Z",
@@ -3128,7 +3474,8 @@
       "productType": "Shoes",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.348.23-Z",
@@ -3137,7 +3484,8 @@
       "productType": "Shoes",
       "homologationStart": "06.2023",
       "homologationEnd": "06.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.349.23-B",
@@ -3146,7 +3494,8 @@
       "productType": "Balaclava",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "balaclava"
     },
     {
       "number": "DC.350.23-T",
@@ -3155,7 +3504,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.351.23-L",
@@ -3164,7 +3514,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.352.23-Z",
@@ -3173,7 +3524,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.353.23-G",
@@ -3182,7 +3534,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.354.23-O",
@@ -3191,7 +3544,8 @@
       "productType": "Overalls",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.355.23-G",
@@ -3200,7 +3554,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2023",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.356.23-O",
@@ -3209,7 +3564,8 @@
       "productType": "Overalls",
       "homologationStart": "08.2023",
       "homologationEnd": "08.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.357.23-Z",
@@ -3218,7 +3574,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2023",
       "homologationEnd": "08.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.358.23-Z",
@@ -3227,7 +3584,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2023",
       "homologationEnd": "08.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.359.23-S",
@@ -3236,7 +3594,8 @@
       "productType": "Socks",
       "homologationStart": "09.2023",
       "homologationEnd": "08.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "socks"
     },
     {
       "number": "DC.360.23-B",
@@ -3245,7 +3604,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2023",
       "homologationEnd": "08.2025",
-      "validUntil": "2035"
+      "validUntil": "2035",
+      "category": "balaclava"
     },
     {
       "number": "DC.361.23-G",
@@ -3254,7 +3614,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2023",
       "homologationEnd": "09.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.362.23-O",
@@ -3263,7 +3624,8 @@
       "productType": "Overalls",
       "homologationStart": "09.2023",
       "homologationEnd": "02.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.363.23-G",
@@ -3272,7 +3634,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2023",
       "homologationEnd": "09.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.364.23-Z",
@@ -3281,7 +3644,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.365.23-S",
@@ -3290,7 +3654,8 @@
       "productType": "Socks",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "socks"
     },
     {
       "number": "DC.366.23-W",
@@ -3299,7 +3664,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.367.23-W",
@@ -3308,7 +3674,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.368.23-W",
@@ -3317,7 +3684,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.369.23-S",
@@ -3326,7 +3694,8 @@
       "productType": "Socks",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "socks"
     },
     {
       "number": "DC.370.23-G",
@@ -3335,7 +3704,8 @@
       "productType": "Gloves",
       "homologationStart": "10.2023",
       "homologationEnd": "10.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.371.23-G",
@@ -3344,7 +3714,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.372.23-Z",
@@ -3353,7 +3724,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.373.23-G",
@@ -3362,7 +3734,8 @@
       "productType": "Gloves",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "gloves"
     },
     {
       "number": "DC.374.23-Z",
@@ -3371,7 +3744,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.375.23-Z",
@@ -3380,7 +3754,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "shoes"
     },
     {
       "number": "DC.376.23-W",
@@ -3389,7 +3764,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.377.23-W",
@@ -3398,7 +3774,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.378.23-W",
@@ -3407,7 +3784,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "undergarment"
     },
     {
       "number": "DC.379.23-O",
@@ -3416,7 +3794,8 @@
       "productType": "Overalls",
       "homologationStart": "11.2023",
       "homologationEnd": "11.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.380.23-S",
@@ -3425,7 +3804,8 @@
       "productType": "Socks",
       "homologationStart": "12.2023",
       "homologationEnd": "12.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "socks"
     },
     {
       "number": "DC.381.24-O",
@@ -3434,7 +3814,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2023",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.382.24-O",
@@ -3443,7 +3824,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2023",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "firesuit"
     },
     {
       "number": "DC.383.24-O",
@@ -3452,7 +3834,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2023",
       "homologationEnd": "11.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.384.23-G",
@@ -3461,7 +3844,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2024",
       "homologationEnd": "01.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.385.24-B",
@@ -3470,7 +3854,8 @@
       "productType": "Balaclava",
       "homologationStart": "01.2024",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "balaclava"
     },
     {
       "number": "DC.386.24-T",
@@ -3479,7 +3864,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "01.2024",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.387.24-L",
@@ -3488,7 +3874,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "01.2024",
       "homologationEnd": "06.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.388.24-O",
@@ -3497,7 +3884,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2024",
       "homologationEnd": "12.2024",
-      "validUntil": "2034"
+      "validUntil": "2034",
+      "category": "firesuit"
     },
     {
       "number": "DC.389.24-O",
@@ -3506,7 +3894,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2024",
       "homologationEnd": "07.2028",
-      "validUntil": "2038"
+      "validUntil": "2038",
+      "category": "firesuit"
     },
     {
       "number": "DC.390.24-O",
@@ -3515,7 +3904,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2024",
       "homologationEnd": "01.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.391.24-R",
@@ -3524,7 +3914,8 @@
       "productType": "Overgarment",
       "homologationStart": "01.2024",
       "homologationEnd": "01.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.392.24-B",
@@ -3533,7 +3924,8 @@
       "productType": "Balaclava",
       "homologationStart": "01.2024",
       "homologationEnd": "01.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.393.24-S",
@@ -3542,7 +3934,8 @@
       "productType": "Socks",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "socks"
     },
     {
       "number": "DC.394.24-O",
@@ -3551,7 +3944,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.395.24-W",
@@ -3560,7 +3954,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.396.24-W",
@@ -3569,7 +3964,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.397.24-W",
@@ -3578,7 +3974,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.398.24-W",
@@ -3587,7 +3984,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.399.24-W",
@@ -3596,7 +3994,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.400.24-W",
@@ -3605,7 +4004,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.401.24-W",
@@ -3614,7 +4014,8 @@
       "productType": "Personal Underwear",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.402.24-Z",
@@ -3623,7 +4024,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2024",
       "homologationEnd": "02.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.403.24-T",
@@ -3632,7 +4034,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2024",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.404.24-L",
@@ -3641,7 +4044,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2024",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "undergarment"
     },
     {
       "number": "DC.405.24-B",
@@ -3650,7 +4054,8 @@
       "productType": "Balaclava",
       "homologationStart": "03.2024",
       "homologationEnd": "06.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.406.24-S",
@@ -3659,7 +4064,8 @@
       "productType": "Socks",
       "homologationStart": "03.2024",
       "homologationEnd": "07.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "socks"
     },
     {
       "number": "DC.407.24-Z",
@@ -3668,7 +4074,8 @@
       "productType": "Shoes",
       "homologationStart": "03.2024",
       "homologationEnd": "03.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.408.24-Z",
@@ -3677,7 +4084,8 @@
       "productType": "Shoes",
       "homologationStart": "03.2024",
       "homologationEnd": "03.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.409.24-G",
@@ -3686,7 +4094,8 @@
       "productType": "Gloves",
       "homologationStart": "04.2024",
       "homologationEnd": "04.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.410.24-G",
@@ -3695,7 +4104,8 @@
       "productType": "Gloves",
       "homologationStart": "04.2024",
       "homologationEnd": "04.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.411.24-B",
@@ -3704,7 +4114,8 @@
       "productType": "Balaclava",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.412.24-S",
@@ -3713,7 +4124,8 @@
       "productType": "Socks",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "socks"
     },
     {
       "number": "DC.413.24-L",
@@ -3722,7 +4134,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.414.24-T",
@@ -3731,7 +4144,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.415.24-O",
@@ -3740,7 +4154,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.416.24-G",
@@ -3749,7 +4164,8 @@
       "productType": "Gloves",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.417.24-O",
@@ -3758,7 +4174,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.418.24-B",
@@ -3767,7 +4184,8 @@
       "productType": "Balaclava",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.419.24-T",
@@ -3776,7 +4194,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.420.24-L",
@@ -3785,7 +4204,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.421.24-Z",
@@ -3794,7 +4214,8 @@
       "productType": "Shoes",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.422.24-O",
@@ -3803,7 +4224,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2024",
       "homologationEnd": "05.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.423.24-O",
@@ -3812,7 +4234,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.424.24-O",
@@ -3821,7 +4244,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.425.24-T",
@@ -3830,7 +4254,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.426.24-L",
@@ -3839,7 +4264,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.427.24-B",
@@ -3848,7 +4274,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.428.24-T",
@@ -3857,7 +4284,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.429.24-L",
@@ -3866,7 +4294,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2024",
       "homologationEnd": "06.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.430.24-G",
@@ -3875,7 +4304,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.431.24-O",
@@ -3884,7 +4314,8 @@
       "productType": "Overalls",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.432.24-Z",
@@ -3893,7 +4324,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.433.24-Z",
@@ -3902,7 +4334,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.434.24-G",
@@ -3911,7 +4344,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.435.24-R",
@@ -3920,7 +4354,8 @@
       "productType": "Overgarment",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.436.24-O",
@@ -3929,7 +4364,8 @@
       "productType": "Overalls",
       "homologationStart": "07.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.437.24-O",
@@ -3938,7 +4374,8 @@
       "productType": "Overalls",
       "homologationStart": "08.2024",
       "homologationEnd": "08.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.438.24-O",
@@ -3947,7 +4384,8 @@
       "productType": "Overalls",
       "homologationStart": "08.2024",
       "homologationEnd": "08.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.439.24-B",
@@ -3956,7 +4394,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.440.24-G",
@@ -3965,7 +4404,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.441.24-G",
@@ -3974,7 +4414,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.442.24-G",
@@ -3983,7 +4424,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.443.24-G",
@@ -3992,7 +4434,8 @@
       "productType": "Gloves",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.444.24-Z",
@@ -4001,7 +4444,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.445.24-C",
@@ -4010,7 +4454,8 @@
       "productType": "Cooling Undergarment",
       "homologationStart": "09.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.446.24-O",
@@ -4019,7 +4464,8 @@
       "productType": "Overalls",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.447.24-B",
@@ -4028,7 +4474,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.448.24-T",
@@ -4037,7 +4484,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.449.24-L",
@@ -4046,7 +4494,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.450.24-G",
@@ -4055,7 +4504,8 @@
       "productType": "Gloves",
       "homologationStart": "10.2024",
       "homologationEnd": "07.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.451.24-B",
@@ -4064,7 +4514,8 @@
       "productType": "Balaclava",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.452.24-T",
@@ -4073,7 +4524,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.453.24-L",
@@ -4082,7 +4534,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.454.24-O",
@@ -4091,7 +4544,8 @@
       "productType": "Overalls",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.455.24-G",
@@ -4100,7 +4554,8 @@
       "productType": "Gloves",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "gloves"
     },
     {
       "number": "DC.456.24-Z",
@@ -4109,7 +4564,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.457.24-Z",
@@ -4118,7 +4574,8 @@
       "productType": "Shoes",
       "homologationStart": "10.2024",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.458.24-C",
@@ -4127,7 +4584,8 @@
       "productType": "Cooling Undergarment",
       "homologationStart": "11.2024",
       "homologationEnd": "09.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.459.24-O",
@@ -4136,7 +4594,8 @@
       "productType": "Overalls",
       "homologationStart": "11.2024",
       "homologationEnd": "11.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.460.24-Z",
@@ -4145,7 +4604,8 @@
       "productType": "Shoes",
       "homologationStart": "11.2024",
       "homologationEnd": "11.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.461.24-O",
@@ -4154,7 +4614,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2024",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.462.24-Z",
@@ -4163,7 +4624,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2024",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.463.24-Z",
@@ -4172,7 +4634,8 @@
       "productType": "Shoes",
       "homologationStart": "12.2024",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "shoes"
     },
     {
       "number": "DC.464.24-O",
@@ -4181,7 +4644,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2024",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.465.24-O",
@@ -4190,7 +4654,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2024",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.466.24-O",
@@ -4199,7 +4664,8 @@
       "productType": "Overalls",
       "homologationStart": "12.2024",
       "homologationEnd": "12.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.467.25-Z",
@@ -4208,7 +4674,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2025",
       "homologationEnd": "01.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.468.25-O",
@@ -4217,7 +4684,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2025",
       "homologationEnd": "12.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "firesuit"
     },
     {
       "number": "DC.469.25-G",
@@ -4226,7 +4694,8 @@
       "productType": "Gloves",
       "homologationStart": "01.2025",
       "homologationEnd": "01.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.470.25-Z",
@@ -4235,7 +4704,8 @@
       "productType": "Shoes",
       "homologationStart": "01.2025",
       "homologationEnd": "01.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.471.25-O",
@@ -4244,7 +4714,8 @@
       "productType": "Overalls",
       "homologationStart": "01.2025",
       "homologationEnd": "01.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.472.25-Z",
@@ -4253,7 +4724,8 @@
       "productType": "Shoes",
       "homologationStart": "02.2025",
       "homologationEnd": "02.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.473.25-O",
@@ -4262,7 +4734,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2025",
       "homologationEnd": "02.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.474.25-O",
@@ -4271,7 +4744,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2025",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "firesuit"
     },
     {
       "number": "DC.475.25-O",
@@ -4280,7 +4754,8 @@
       "productType": "Overalls",
       "homologationStart": "02.2025",
       "homologationEnd": "02.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.476.25-B",
@@ -4289,7 +4764,8 @@
       "productType": "Balaclava",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "balaclava"
     },
     {
       "number": "DC.477.25-T",
@@ -4298,7 +4774,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.478.25-L",
@@ -4307,7 +4784,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.479.25-G",
@@ -4316,7 +4794,8 @@
       "productType": "Gloves",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.480.25-S",
@@ -4325,7 +4804,8 @@
       "productType": "Socks",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "socks"
     },
     {
       "number": "DC.481.25-O",
@@ -4334,7 +4814,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.482.25-O",
@@ -4343,7 +4824,8 @@
       "productType": "Overalls",
       "homologationStart": "03.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.483.25-B",
@@ -4352,7 +4834,8 @@
       "productType": "Balaclava",
       "homologationStart": "03.2025",
       "homologationEnd": "02.2027",
-      "validUntil": "2037"
+      "validUntil": "2037",
+      "category": "balaclava"
     },
     {
       "number": "DC.484.25-T",
@@ -4361,7 +4844,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "03.2025",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.485.25-L",
@@ -4370,7 +4854,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "03.2025",
       "homologationEnd": "12.2026",
-      "validUntil": "2036"
+      "validUntil": "2036",
+      "category": "undergarment"
     },
     {
       "number": "DC.486.25-B",
@@ -4379,7 +4864,8 @@
       "productType": "Balaclava",
       "homologationStart": "04.2025",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "balaclava"
     },
     {
       "number": "DC.487.25-T",
@@ -4388,7 +4874,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "04.2025",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.488.25-L",
@@ -4397,7 +4884,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "04.2025",
       "homologationEnd": "10.2029",
-      "validUntil": "2039"
+      "validUntil": "2039",
+      "category": "undergarment"
     },
     {
       "number": "DC.489.25-C",
@@ -4406,7 +4894,8 @@
       "productType": "Cooling Undergarment",
       "homologationStart": "04.2025",
       "homologationEnd": "04.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.490.25-O",
@@ -4415,7 +4904,8 @@
       "productType": "Overalls",
       "homologationStart": "04.2025",
       "homologationEnd": "04.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.491.25-T",
@@ -4424,7 +4914,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "04.2025",
       "homologationEnd": "04.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.492.25-L",
@@ -4433,7 +4924,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "04.2025",
       "homologationEnd": "04.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.493.25-G",
@@ -4442,7 +4934,8 @@
       "productType": "Gloves",
       "homologationStart": "04.2025",
       "homologationEnd": "04.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.494.25-O",
@@ -4451,7 +4944,8 @@
       "productType": "Overalls",
       "homologationStart": "05.2025",
       "homologationEnd": "05.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.495.25-Z",
@@ -4460,7 +4954,8 @@
       "productType": "Shoes",
       "homologationStart": "05.2025",
       "homologationEnd": "05.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.496.25-B",
@@ -4469,7 +4964,8 @@
       "productType": "Balaclava",
       "homologationStart": "05.2025",
       "homologationEnd": "05.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "balaclava"
     },
     {
       "number": "DC.497.25-T",
@@ -4478,7 +4974,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "05.2025",
       "homologationEnd": "05.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.498.25-L",
@@ -4487,7 +4984,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "05.2025",
       "homologationEnd": "05.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.499.25-Z",
@@ -4496,7 +4994,8 @@
       "productType": "Shoes",
       "homologationStart": "05.2025",
       "homologationEnd": "05.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.500.25-O",
@@ -4505,7 +5004,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.501.25-O",
@@ -4514,7 +5014,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "03.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.502.25-G",
@@ -4523,7 +5024,8 @@
       "productType": "Gloves",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.503.25-Z",
@@ -4532,7 +5034,8 @@
       "productType": "Shoes",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.504.25-G",
@@ -4541,7 +5044,8 @@
       "productType": "Gloves",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.505.25-T",
@@ -4550,7 +5054,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.506.25-L",
@@ -4559,7 +5064,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.507.25-O",
@@ -4568,7 +5074,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.508.25-O",
@@ -4577,7 +5084,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.509.25-Z",
@@ -4586,7 +5094,8 @@
       "productType": "Shoes",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.510.25-T",
@@ -4595,7 +5104,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.511.25-L",
@@ -4604,7 +5114,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.512.25-B",
@@ -4613,7 +5124,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "balaclava"
     },
     {
       "number": "DC.513.25-T",
@@ -4622,7 +5134,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.514.25-L",
@@ -4631,7 +5144,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.515.25-S",
@@ -4640,7 +5154,8 @@
       "productType": "Socks",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "socks"
     },
     {
       "number": "DC.516.25-B",
@@ -4649,7 +5164,8 @@
       "productType": "Balaclava",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "balaclava"
     },
     {
       "number": "DC.517.25-T",
@@ -4658,7 +5174,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.518.25-L",
@@ -4667,7 +5184,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.519.25-O",
@@ -4676,7 +5194,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.520.25-O",
@@ -4685,7 +5204,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.521.25-O",
@@ -4694,7 +5214,8 @@
       "productType": "Overalls",
       "homologationStart": "06.2025",
       "homologationEnd": "06.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.522.25-G",
@@ -4703,7 +5224,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2025",
       "homologationEnd": "07.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.523.25-G",
@@ -4712,7 +5234,8 @@
       "productType": "Gloves",
       "homologationStart": "07.2025",
       "homologationEnd": "07.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "gloves"
     },
     {
       "number": "DC.524.25-Z",
@@ -4721,7 +5244,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2025",
       "homologationEnd": "07.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.525.25-Z",
@@ -4730,7 +5254,8 @@
       "productType": "Shoes",
       "homologationStart": "07.2025",
       "homologationEnd": "07.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.526.25-S",
@@ -4739,7 +5264,8 @@
       "productType": "Socks",
       "homologationStart": "07.2025",
       "homologationEnd": "07.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "socks"
     },
     {
       "number": "DC.527.25-Z",
@@ -4748,7 +5274,8 @@
       "productType": "Shoes",
       "homologationStart": "08.2025",
       "homologationEnd": "08.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.528.25-Z",
@@ -4757,7 +5284,8 @@
       "productType": "Shoes",
       "homologationStart": "09.2025",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "shoes"
     },
     {
       "number": "DC.529.25-B",
@@ -4766,7 +5294,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2025",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "balaclava"
     },
     {
       "number": "DC.530.25-B",
@@ -4775,7 +5304,8 @@
       "productType": "Balaclava",
       "homologationStart": "09.2025",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "balaclava"
     },
     {
       "number": "DC.531.25-T",
@@ -4784,7 +5314,8 @@
       "productType": "Top Undergarment",
       "homologationStart": "09.2025",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.532.25-L",
@@ -4793,7 +5324,8 @@
       "productType": "Bottom Undergarment",
       "homologationStart": "09.2025",
       "homologationEnd": "09.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.533.25-R",
@@ -4802,7 +5334,8 @@
       "productType": "Overgarment",
       "homologationStart": "10.2025",
       "homologationEnd": "10.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "undergarment"
     },
     {
       "number": "DC.534.25-O",
@@ -4811,13 +5344,15 @@
       "productType": "Overalls",
       "homologationStart": "10.2025",
       "homologationEnd": "10.2030",
-      "validUntil": "2040"
+      "validUntil": "2040",
+      "category": "firesuit"
     },
     {
       "number": "DC.535.25-Z",
       "manufacturer": "ALPINESTARS",
       "model": "RADAR v2",
-      "productType": "Shoes"
+      "productType": "Shoes",
+      "category": "shoes"
     }
   ]
 }

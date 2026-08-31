@@ -331,6 +331,21 @@ export interface FiaHomologationEntry {
   model?: string;
   /** Free text for whatever this list calls the product category column, e.g. "Overalls", "Gloves" — not this app's own EquipmentCategory. */
   productType?: string;
+  /**
+   * This entry's own EquipmentCategory, when a list's entries span several categories under one
+   * shared standardId (e.g. List 74's Overalls/Gloves/Shoes/Socks/Balaclava/Undergarment entries
+   * are all homologated under fia-8856-2018 together) and the list itself isn't narrowed via
+   * FiaTechnicalList.categories (that field scopes the WHOLE list; this scopes one entry).
+   * lookupHomologation (src/lib/fiaHomologation.ts) treats a category mismatch here as "this
+   * number doesn't exist for the category you're checking" — so a firesuit's homologation number
+   * typed into the gloves field correctly reads as not found, instead of spuriously validating.
+   * Derived automatically from `productType` at parse time (see PRODUCT_TYPE_TO_CATEGORY in
+   * scripts/parse-fia-list.mjs) wherever that text maps to a known category; left unset when it
+   * doesn't (e.g. a list whose "product type" column means something else entirely, like List
+   * 48's Single/Dual net type) or for the ordinary case of a list whose entries are all one
+   * category already.
+   */
+  category?: EquipmentCategory;
   /** Homologation start date as printed, usually "MM.YYYY". Free text since formats vary by list. */
   homologationStart?: string;
   /** Homologation end date as printed (when the list uses a start/end pair rather than a single validity year). */

@@ -61,7 +61,11 @@ export function lookupHomologation(standardId: string, rawNumber: string, catego
   }
 
   for (const list of lists) {
-    const entry = list.entries.find((e) => normalize(e.number) === target);
+    // A number match on an entry whose own `category` disagrees with the category being checked
+    // isn't a real match — e.g. a firesuit's Overalls entry in List 74 must not validate when
+    // looked up under "gloves" just because the list itself covers both. See that field's doc
+    // comment in src/data/types.ts.
+    const entry = list.entries.find((e) => normalize(e.number) === target && (!e.category || category === undefined || e.category === category));
     if (!entry) continue;
 
     const found = { listNumber: list.listNumber, sourceUrl: list.sourceUrl, entry, listsChecked };

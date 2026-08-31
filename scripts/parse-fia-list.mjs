@@ -18,6 +18,26 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 
+// Maps a list's own free-text "product type" column to this app's EquipmentCategory, applied to
+// every entry in main() below. This is what lets lookupHomologation (src/lib/fiaHomologation.ts)
+// reject a number match whose entry belongs to a different category than the one being checked
+// -- see FiaHomologationEntry.category's doc comment in src/data/types.ts. A whitelist on
+// purpose: a productType string that isn't a garment name at all (e.g. List 48's "Single"/"Dual"
+// net type, or List 101's "Grade 1" protection grade) must NOT accidentally resolve to a
+// category, so anything not listed here is simply left uncategorized.
+const PRODUCT_TYPE_TO_CATEGORY = {
+  Overalls: "firesuit",
+  Shoes: "shoes",
+  Socks: "socks",
+  Balaclava: "balaclava",
+  Gloves: "gloves",
+  "Top Undergarment": "undergarment",
+  "Bottom Undergarment": "undergarment",
+  Overgarment: "undergarment",
+  "Personal Underwear": "undergarment",
+  "Cooling Undergarment": "undergarment",
+};
+
 const LIST_CONFIG = {
   74: {
     title: "Technical List n°74 — Protective Clothing for Automobile Drivers (FIA 8856-2018)",
@@ -2956,6 +2976,12 @@ function main() {
       }
       byNumber.set(row.number, row);
       entries.push(row);
+    }
+  }
+
+  for (const e of entries) {
+    if (e.productType && PRODUCT_TYPE_TO_CATEGORY[e.productType]) {
+      e.category = PRODUCT_TYPE_TO_CATEGORY[e.productType];
     }
   }
 
