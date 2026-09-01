@@ -6,8 +6,12 @@ import { describeGeminiError } from "@/lib/geminiErrors";
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // New API keys are provisioned on the Interactions API — gemini-2.5-flash (classic generateContent)
-// returns 404 "no longer available to new users" on those. gemini-3.6-flash is the current flash model.
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+// returns 404 "no longer available to new users" on those. gemini-3.5-flash-lite is the current
+// choice: same vision/OCR task, but the free tier's daily quota is 500 RPD here vs. 20 RPD on
+// gemini-3.6-flash (confirmed directly in the AI Studio console) — the full Flash tier's quota
+// isn't viable beyond a single test session. Revisit if Flash-Lite's accuracy on small printed
+// tag text turns out worse in practice.
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 
 // Simple in-memory sliding-window limit, keyed by client IP. Not distributed — resets on cold
 // start and isn't shared across serverless instances — but it's enough to stop a runaway loop
