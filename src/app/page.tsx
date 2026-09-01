@@ -215,7 +215,7 @@ export default function Home() {
     setMode(target);
   };
 
-  const handleSaveToGarage = (name: string) => {
+  const handleSaveToGarage = (name: string): boolean => {
     const profile = {
       ...newGarageProfile(name),
       entries: { ...entries },
@@ -224,7 +224,7 @@ export default function Home() {
       carPhotoDataUrl,
       carNote,
     };
-    saveGarage([...loadGarage(), profile]);
+    return saveGarage([...loadGarage(), profile]);
   };
 
   const handleCarPhotoChange = async (file: File) => {
@@ -1111,61 +1111,78 @@ function PassTechVerdict({
   );
 }
 
-function SaveToGarageButton({ onSave }: { onSave: (name: string) => void }) {
+function SaveToGarageButton({ onSave }: { onSave: (name: string) => boolean }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  // "error" doesn't auto-clear and doesn't hide the form — the underlying problem (usually
+  // storage full) likely still needs the user to do something before Save will work.
+  const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   const save = () => {
     const trimmed = name.trim();
     if (!trimmed) return;
-    onSave(trimmed);
-    setSavedMessage(`Saved "${trimmed}" to My Gear.`);
-    setOpen(false);
-    setName("");
-    setTimeout(() => setSavedMessage(null), 4000);
+    const ok = onSave(trimmed);
+    if (ok) {
+      setResult({ ok: true, message: `Saved "${trimmed}" to My Gear.` });
+      setOpen(false);
+      setName("");
+      setTimeout(() => setResult(null), 4000);
+    } else {
+      setResult({
+        ok: false,
+        message: "Couldn't save — browser storage is full. Free up space (delete an old gear set, or remove some photos) and try again.",
+      });
+    }
   };
 
-  if (savedMessage) {
-    return <p className="mb-4 text-sm text-emerald-400">{savedMessage}</p>;
+  if (result?.ok) {
+    return <p className="mb-4 text-sm text-emerald-400">{result.message}</p>;
   }
+
+  const errorNotice = result && !result.ok && <p className="mb-2 text-sm text-red-400">{result.message}</p>;
 
   if (!open) {
     return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="mb-4 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
-      >
-        💾 Save this gear to My Gear
-      </button>
+      <div className="mb-4">
+        {errorNotice}
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+        >
+          💾 Save this gear to My Gear
+        </button>
+      </div>
     );
   }
 
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-2">
-      <input
-        type="text"
-        autoFocus
-        placeholder="Name this gear set (e.g. My road racing kit)"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && save()}
-        className="min-w-[220px] flex-1 rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100 placeholder:text-neutral-500"
-      />
-      <button type="button" onClick={save} className="rounded border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-900">
-        Save
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setOpen(false);
-          setName("");
-        }}
-        className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
-      >
-        Cancel
-      </button>
+    <div className="mb-4">
+      {errorNotice}
+      <div className="flex flex-wrap items-center gap-2">
+        <input
+          type="text"
+          autoFocus
+          placeholder="Name this gear set (e.g. My road racing kit)"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && save()}
+          className="min-w-[220px] flex-1 rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100 placeholder:text-neutral-500"
+        />
+        <button type="button" onClick={save} className="rounded border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-900">
+          Save
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(false);
+            setName("");
+          }}
+          className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }

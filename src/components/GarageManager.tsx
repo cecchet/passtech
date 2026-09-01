@@ -71,6 +71,8 @@ export function GarageManager({
   const [modeChoiceId, setModeChoiceId] = useState<string | null>(null);
   /** Set alongside autoImportOpenId only when Automatic mode was chosen for a brand-new profile — hides the rest of the editor (name/photo/codriver/manual form) until the import is done, so the upload prompt is the only thing shown. Left unset when "Add gear from photos" is used on an existing set, which shows the import panel above the full editor instead. */
   const [autoImportFocusedId, setAutoImportFocusedId] = useState<string | null>(null);
+  /** True when the most recent write to localStorage failed (almost always quota exceeded — profiles carry base64 photo data). React state still has the change, but it's only in memory until this clears — surfaced as a persistent banner rather than left silent, which used to mean a change could look saved and then vanish on the next reload. */
+  const [storageError, setStorageError] = useState(false);
 
   /* eslint-disable react-hooks/set-state-in-effect -- one-time client-side hydration from localStorage */
   useEffect(() => {
@@ -79,10 +81,12 @@ export function GarageManager({
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  /* eslint-disable react-hooks/set-state-in-effect -- syncs UI state to whether the last localStorage write actually succeeded, not derivable from props/state alone */
   useEffect(() => {
     if (!hydrated) return;
-    saveGarage(profiles);
+    setStorageError(!saveGarage(profiles));
   }, [profiles, hydrated]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Reports the "new gear set in progress" state up to the page so it can disable the global
   // Back to main menu button — cleans up on unmount too, in case this component ever goes away
@@ -199,6 +203,15 @@ export function GarageManager({
 
   return (
     <div>
+      {storageError && (
+        <div className="mb-4 rounded-lg border border-red-700 bg-red-950/60 p-3 text-sm text-red-200">
+          <p className="font-semibold">⚠️ Your last change couldn&apos;t be saved — browser storage is full.</p>
+          <p className="mt-1 text-red-300">
+            It only exists in this tab right now and will be lost if you refresh or close it. Free up space first — delete an old gear set, export one as
+            a backup file and remove it, or drop a few photos — and this will start saving again automatically.
+          </p>
+        </div>
+      )}
       {importStatus && (
         <p className="mb-4 rounded border border-sky-800 bg-sky-950/40 p-2 text-xs text-sky-200">{importStatus}</p>
       )}

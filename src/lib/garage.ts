@@ -46,12 +46,19 @@ export function loadGarage(): GarageProfile[] {
   }
 }
 
-export function saveGarage(profiles: GarageProfile[]): void {
+/**
+ * Returns whether the write actually succeeded. Storage can fail (most commonly quota exceeded —
+ * garage profiles carry base64 photo data, which adds up fast) while React state updates happily
+ * regardless, so a caller that ignores this return value will show the change in the UI right up
+ * until the next reload silently reverts it — which is exactly what used to happen here. Callers
+ * should surface a failure to the user immediately, before they navigate away or close the tab.
+ */
+export function saveGarage(profiles: GarageProfile[]): boolean {
   try {
     window.localStorage.setItem(GARAGE_STORAGE_KEY, JSON.stringify(profiles));
+    return true;
   } catch {
-    // Storage full or unavailable — the caller's in-memory state still reflects the attempted
-    // change, but it won't survive a reload. Nothing actionable to do here without a UI redesign.
+    return false;
   }
 }
 
