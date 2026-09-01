@@ -445,14 +445,16 @@ export default function Home() {
             )}
           </div>
         </div>
-        <div className="mt-2 rounded-lg border border-amber-700 bg-amber-950 p-3 text-sm text-amber-200">
-          <p>
-            <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
-            you enter against each sanctioning body&apos;s published rules as of the &quot;last reviewed&quot; date shown
-            per result. A tech inspector/scrutineer still makes the final call at the event — always verify against the
-            current official rulebook before you rely on this.
-          </p>
-        </div>
+        {mode !== "landing" && mode !== "reference" && (
+          <div className="mt-2 rounded-lg border border-amber-700 bg-amber-950 p-3 text-sm text-amber-200">
+            <p>
+              <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
+              you enter against each sanctioning body&apos;s published rules as of the &quot;last reviewed&quot; date shown
+              per result. A tech inspector/scrutineer still makes the final call at the event — always verify against the
+              current official rulebook before you rely on this.
+            </p>
+          </div>
+        )}
       </header>
 
       {mode === "landing" && <InstallPrompt />}

@@ -173,42 +173,55 @@ export function GarageManager({
 
   return (
     <div>
-      <div className="mb-4">
-        <p className="text-sm text-neutral-400">
-          Save named sets of gear here — you can load one straight into a body&apos;s tech check any time, instead of re-entering everything.
-        </p>
-      </div>
-
       {importStatus && (
         <p className="mb-4 rounded border border-sky-800 bg-sky-950/40 p-2 text-xs text-sky-200">{importStatus}</p>
       )}
 
       {!selected ? (
         <div>
-          <div className="mb-4 flex flex-wrap gap-2">
-            <button type="button" onClick={createProfile} className="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
-              + New gear set
-            </button>
-            <label className="cursor-pointer rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
-              Import
-              <input
-                type="file"
-                accept="application/json"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  e.target.value = "";
-                  if (file) handleImportFile(file);
-                }}
-              />
-            </label>
-          </div>
-
           {profiles.length === 0 ? (
-            <p className="rounded-lg border border-neutral-700 p-4 text-sm text-neutral-400">
-              Nothing saved yet — click &quot;+ New gear set&quot; to start building your My Gear collection.
-            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={createProfile}
+                className="flex-1 rounded-lg border border-emerald-700 bg-emerald-950 p-4 text-left text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+              >
+                + Enter a new gear set
+              </button>
+              <label className="flex-1 cursor-pointer rounded-lg border border-neutral-600 p-4 text-left text-sm font-semibold text-neutral-200 hover:bg-neutral-800">
+                Import gear set from file
+                <input
+                  type="file"
+                  accept="application/json"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    e.target.value = "";
+                    if (file) handleImportFile(file);
+                  }}
+                />
+              </label>
+            </div>
           ) : (
+            <>
+              <div className="mb-4 flex flex-wrap gap-2">
+                <button type="button" onClick={createProfile} className="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
+                  + New gear set
+                </button>
+                <label className="cursor-pointer rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
+                  Import
+                  <input
+                    type="file"
+                    accept="application/json"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      e.target.value = "";
+                      if (file) handleImportFile(file);
+                    }}
+                  />
+                </label>
+              </div>
             <div className="flex flex-col gap-2">
               {profiles.map((p) => (
                 <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-neutral-700 p-3">
@@ -274,12 +287,13 @@ export function GarageManager({
                 </div>
               ))}
             </div>
+            </>
           )}
         </div>
       ) : modeChoiceId === selected.id ? (
         <div className="rounded-lg border border-neutral-700 p-4">
           <button type="button" onClick={() => cancelNewProfile(selected.id)} className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300">
-            ← Back to My Gear
+            ← Cancel
           </button>
           <p className="mb-4 text-sm text-neutral-300">How do you want to build this gear set?</p>
           <div className="flex flex-col gap-3 sm:flex-row">
