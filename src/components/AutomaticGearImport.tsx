@@ -126,6 +126,9 @@ type Stage =
        * so a wide overview photo confirmed later still ends up as the item's representative photo
        * (index 0) instead of losing that spot to whichever photo was confirmed first. */
       isCloseupOnly: boolean;
+      /** Set when "Same item — add as another photo" couldn't actually add this photo because the
+       * item is already at its per-category photo limit — shown instead of a misleading "Added". */
+      photoLimitReached: boolean;
     };
 
 export function AutomaticGearImport({
@@ -183,18 +186,6 @@ export function AutomaticGearImport({
 
   const markSlotFilled = (target: Target, category: EquipmentCategory, piece: Piece | null) => {
     filledSlotsRef.current[target].add(slotKey(category, piece));
-  };
-
-  const clearSlot = (target: Target, category: EquipmentCategory, piece: Piece | null) => {
-    const existing = currentEntries(target)[category];
-    if (!existing) return;
-    if (category === "firesuit" && piece === "pants") {
-      updateEntry(target, category, { pantsCertifications: [] });
-    } else if (category === "firesuit") {
-      updateEntry(target, category, { certifications: [], photoDataUrls: [] });
-    } else {
-      updateEntry(target, category, { certifications: [], photoDataUrls: [], skipped: undefined });
-    }
   };
 
   const noteBuilt = (label: string) => setBuiltSummary((prev) => [...prev, label]);
@@ -259,6 +250,7 @@ export function AutomaticGearImport({
         certNotes: "",
         addedCerts: new Set(),
         isCloseupOnly: !!r.isCloseupOnly,
+        photoLimitReached: false,
       },
     });
   };
@@ -293,25 +285,59 @@ export function AutomaticGearImport({
     void runAnalysis(current.photo, current.dataUrl);
   };
 
-  const confirmItem = (category: EquipmentCategory, piece: Piece | null, target: Target, dataUrl: string, isCloseupOnly: boolean, helmet?: HelmetInfo) => {
+  /**
+   * `replaceExisting` clears whichever certifications/photos belong to this photo's own slot before
+   * adding the new one — folded into this same call (rather than a separate clearSlot() call ahead
+   * of it) because `existing` below is read from the `entries`/`codriverEntries` props, which don't
+   * reflect a sibling updateEntry() call until the next render. Two calls in the same handler would
+   * each start from the same pre-clear snapshot, so the second (this one) would silently resurrect
+   * everything the first just cleared — exactly the "Replace doesn't work" bug this replaced.
+   *
+   * Returns whether the photo was actually added — false when the item was already at its
+   * per-category photo limit and this wasn't a replace, so the caller can tell the user instead of
+   * claiming success.
+   */
+  const confirmItem = (
+    category: EquipmentCategory,
+    piece: Piece | null,
+    target: Target,
+    dataUrl: string,
+    isCloseupOnly: boolean,
+    helmet: HelmetInfo | undefined,
+    replaceExisting = false
+  ): boolean => {
     const existing = currentEntries(target)[category];
-    const photos = [...(existing?.photoDataUrls ?? [])];
-    if (photos.length < maxPhotosFor(category)) {
-      // A wide/overview shot always leads the list (index 0), even when confirmed after a tag
-      // close-up — that first photo is what the "Available Gear Sets" list preview shows, so it
-      // shouldn't lose that spot to a close-up that just happened to get confirmed first.
-      if (isCloseupOnly) photos.push(dataUrl);
-      else photos.unshift(dataUrl);
-    }
+    const isPantsPiece = category === "firesuit" && piece === "pants";
+    // Pants share the jacket's photoDataUrls (firesuit photos aren't per-piece), so replacing the
+    // pants slot only resets its own certifications, never the shared photos.
+    const resetPhotos = replaceExisting && !isPantsPiece;
+    const basePhotos = resetPhotos ? [] : [...(existing?.photoDataUrls ?? [])];
+    const maxPhotos = maxPhotosFor(category);
+    const photoAdded = basePhotos.length < maxPhotos;
+    // A wide/overview shot always leads the list (index 0), even when confirmed after a tag
+    // close-up — that first photo is what the "Available Gear Sets" list preview shows, so it
+    // shouldn't lose that spot to a close-up that just happened to get confirmed first.
+    const photos = photoAdded ? (isCloseupOnly ? [...basePhotos, dataUrl] : [dataUrl, ...basePhotos]) : basePhotos;
+
     updateEntry(target, category, {
       photoDataUrls: photos,
+      ...(replaceExisting
+        ? isPantsPiece
+          ? { pantsCertifications: [] }
+          : category === "firesuit"
+            ? { certifications: [] }
+            : { certifications: [], skipped: undefined }
+        : {}),
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
       ...(category === "firesuit" || CATEGORY_META[category].hybrid ? { mode: existing?.mode ?? "certified" } : {}),
       ...(helmet && helmet.helmetType && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
       ...(helmet ? { hasVisor: helmet.hasVisor, visorNote: helmet.visorNote || undefined } : {}),
     });
     markSlotFilled(target, category, piece);
-    noteBuilt(`${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""} photo`);
+    if (photoAdded) {
+      noteBuilt(`${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""} photo`);
+    }
+    return photoAdded;
   };
 
   const addTagCandidate = (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate) => {
@@ -446,6 +472,7 @@ export function AutomaticGearImport({
                                 certNotes: "",
                                 addedCerts: new Set(),
                                 isCloseupOnly: false,
+                                photoLimitReached: false,
                               },
                             }
                           : c
@@ -491,18 +518,45 @@ export function AutomaticGearImport({
                           : c
                       );
                     } else {
-                      confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
-                      setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                      const added = confirmItem(
+                        category,
+                        piece,
+                        target,
+                        current.dataUrl,
+                        current.stage.type === "result" ? current.stage.isCloseupOnly : false,
+                        current.stage.type === "result" ? current.stage.helmet : undefined
+                      );
+                      setCurrent((c) =>
+                        c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
+                      );
                     }
                   }}
                   onResolveConflictReplace={(category, piece, target) => {
-                    clearSlot(target, category, piece);
-                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
-                    setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                    confirmItem(
+                      category,
+                      piece,
+                      target,
+                      current.dataUrl,
+                      current.stage.type === "result" ? current.stage.isCloseupOnly : false,
+                      current.stage.type === "result" ? current.stage.helmet : undefined,
+                      true
+                    );
+                    setCurrent((c) =>
+                      c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null, photoLimitReached: false } } : c
+                    );
                   }}
                   onResolveConflictSameItem={(category, piece, target) => {
-                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
-                    setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                    const added = confirmItem(
+                      category,
+                      piece,
+                      target,
+                      current.dataUrl,
+                      current.stage.type === "result" ? current.stage.isCloseupOnly : false,
+                      current.stage.type === "result" ? current.stage.helmet : undefined
+                    );
+                    setCurrent((c) =>
+                      c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
+                    );
                   }}
                   onResolveConflictCodriver={(category, piece) => {
                     setCurrent((c) => (c ? { ...c, target: "codriver" } : c));
@@ -517,8 +571,19 @@ export function AutomaticGearImport({
                           : c
                       );
                     } else {
-                      confirmItem(category, piece, "codriver", current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
-                      setCurrent((c) => (c && c.stage.type === "result" ? { ...c, target: "codriver", stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                      const added = confirmItem(
+                        category,
+                        piece,
+                        "codriver",
+                        current.dataUrl,
+                        current.stage.type === "result" ? current.stage.isCloseupOnly : false,
+                        current.stage.type === "result" ? current.stage.helmet : undefined
+                      );
+                      setCurrent((c) =>
+                        c && c.stage.type === "result"
+                          ? { ...c, target: "codriver", stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } }
+                          : c
+                      );
                     }
                   }}
                   onAddCert={(category, piece, target, c, i) => {
@@ -559,7 +624,7 @@ function ResultCard({
   onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
   onNext: () => void;
 }) {
-  const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict } = stage;
+  const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached } = stage;
   return (
     <div>
       {targetToggle(target, onChangeTarget)}
@@ -577,7 +642,23 @@ function ResultCard({
       )}
       {notes && <p className="text-neutral-500">{notes}</p>}
 
-      {!conflict ? (
+      {photoLimitReached ? (
+        <div className="mt-2 rounded border border-amber-700 bg-amber-950/40 p-2 text-xs">
+          <p className="text-amber-200">
+            {CATEGORY_META[category].label} already has the maximum of {maxPhotosFor(category)} photos — this one wasn&rsquo;t added.
+            Replace discards its existing photos and certifications and starts over with just this one; to swap out a single photo
+            instead, remove it from My Gear afterward.
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button type="button" onClick={() => onResolveConflictReplace(category, piece, target)} className="rounded border border-red-700 bg-red-950 px-2 py-1 text-red-200 hover:bg-red-900">
+              Replace the existing photos
+            </button>
+            <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
+              This is for my codriver
+            </button>
+          </div>
+        </div>
+      ) : !conflict ? (
         <div className="mt-2 flex flex-wrap gap-2 text-xs">
           <button
             type="button"
