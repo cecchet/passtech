@@ -23,32 +23,36 @@ const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
 ];
 
 const MAX_PHOTOS_PER_ITEM = 3;
+// Matches the AbortController timeout below — keep these in sync so the UI copy stays honest.
+const REQUEST_TIMEOUT_MS = 120_000;
+const REQUEST_TIMEOUT_LABEL = "2 minutes";
 
 type Piece = "one_piece" | "jacket" | "pants";
+type Target = "driver" | "codriver";
 
-interface Classification {
-  isGearPhoto: boolean;
-  photoType: "item" | "tag" | "unclear";
-  category: string;
-  pieceType: Piece | "";
-  confidence: "high" | "medium" | "low";
-  notes: string;
-}
-
-interface HelmetAnalysis {
-  helmetType: "open_face" | "full_face" | "unclear";
+interface HelmetInfo {
+  helmetType: "open_face" | "full_face" | "unclear" | "";
   hasVisor: boolean;
   visorNote: string;
-  confidence: "high" | "medium" | "low";
+}
+
+interface AnalyzeGearPhotoResponse {
+  isGearPhoto: boolean;
+  category: string;
+  pieceType: Piece | "";
+  categoryConfidence: "high" | "medium" | "low";
   notes: string;
+  certifications: TagCandidate[];
+  helmetType: HelmetInfo["helmetType"];
+  hasVisor: boolean;
+  visorNote: string;
+  error?: string;
 }
 
 interface QueuedPhoto {
   file: File;
   previewUrl: string;
 }
-
-type Target = "driver" | "codriver";
 
 /** Which "slot" within a category an item-photo fills — a two-piece firesuit has two independent slots (jacket, pants); everything else has exactly one. */
 function slotKey(category: EquipmentCategory, piece: Piece | null): string {
@@ -62,7 +66,6 @@ function pieceLabel(piece: Piece | null): string {
   return "one-piece suit";
 }
 
-/** Short human-readable summary of what's already stored for a category/piece, for the conflict prompt. */
 function describeExisting(category: EquipmentCategory, piece: Piece | null, entry: EquipmentEntry | undefined): string {
   if (!entry) return CATEGORY_META[category].label;
   const certs = piece === "pants" ? entry.pantsCertifications : entry.certifications;
@@ -73,34 +76,52 @@ function describeExisting(category: EquipmentCategory, piece: Piece | null, entr
   return `${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""}`;
 }
 
+async function fetchWithTimeout(url: string, body: unknown): Promise<{ ok: boolean; status: number; data: Record<string, unknown> }> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    const data = await res.json();
+    return { ok: res.ok, status: res.status, data };
+  } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") {
+      return { ok: false, status: 0, data: { error: `This is taking longer than ${REQUEST_TIMEOUT_LABEL} — the connection or the vision service may be having trouble.` } };
+    }
+    return { ok: false, status: 0, data: { error: "Couldn't reach the server." } };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 type Stage =
-  | { type: "classifying" }
-  | { type: "error"; message: string }
+  | { type: "processing" }
+  | { type: "error"; message: string; retryable: boolean }
+  | { type: "manual_category"; notes: string }
   | {
-      type: "manual_category";
-      notes: string;
-    }
-  | {
-      type: "conflict";
-      category: EquipmentCategory;
-      piece: Piece | null;
-      existingLabel: string;
-    }
-  | {
-      type: "confirm_item";
-      category: EquipmentCategory;
-      piece: Piece | null;
-      confidence: "high" | "medium" | "low";
-      notes: string;
-      helmet?: HelmetAnalysis;
-    }
-  | {
-      type: "confirm_tag";
+      type: "manual_tag_result";
       category: EquipmentCategory;
       piece: Piece | null;
       candidates: TagCandidate[];
       tagNotes: string;
       added: Set<number>;
+    }
+  | {
+      type: "result";
+      category: EquipmentCategory;
+      piece: Piece | null;
+      confidence: "high" | "medium" | "low";
+      notes: string;
+      itemConfirmed: boolean;
+      conflict: { existingLabel: string } | null;
+      helmet?: HelmetInfo;
+      certifications: TagCandidate[];
+      certNotes: string;
+      addedCerts: Set<number>;
     };
 
 export function AutomaticGearImport({
@@ -125,9 +146,6 @@ export function AutomaticGearImport({
   const [processed, setProcessed] = useState(0);
   const [totalQueued, setTotalQueued] = useState(0);
   const [current, setCurrent] = useState<{ photo: QueuedPhoto; dataUrl: string; target: Target; stage: Stage } | null>(null);
-  // Tracks which category/piece "slots" have already gotten a confirmed item photo THIS session
-  // (per target), seeded lazily from the incoming entries the first time each slot is checked —
-  // see filledSlots ref below.
   const filledSlotsRef = useRef<{ driver: Set<string>; codriver: Set<string> }>({ driver: new Set(), codriver: new Set() });
   const [builtSummary, setBuiltSummary] = useState<string[]>([]);
 
@@ -145,8 +163,6 @@ export function AutomaticGearImport({
   const isSlotFilled = (target: Target, category: EquipmentCategory, piece: Piece | null): boolean => {
     const key = slotKey(category, piece);
     if (filledSlotsRef.current[target].has(key)) return true;
-    // First time we see this slot, seed from whatever's already in the profile (e.g. entered
-    // manually before switching to Automatic mode, or from an earlier photo batch).
     const entry = currentEntries(target)[category];
     const alreadyHasData =
       category === "firesuit"
@@ -190,103 +206,89 @@ export function AutomaticGearImport({
   };
 
   const processPhoto = async (photo: QueuedPhoto) => {
-    setCurrent({ photo, dataUrl: "", target: "driver", stage: { type: "classifying" } });
+    setCurrent({ photo, dataUrl: "", target: "driver", stage: { type: "processing" } });
+    let dataUrl: string;
     try {
-      const dataUrl = await resizeImageToDataUrl(photo.file);
-      const res = await fetch("/api/classify-gear-photo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageDataUrl: dataUrl }),
-      });
-      const data: Classification & { error?: string } = await res.json();
-      if (!res.ok) {
-        setCurrent({ photo, dataUrl, target: "driver", stage: { type: "error", message: data.error ?? "Something went wrong." } });
-        return;
-      }
-      await routeClassification(photo, dataUrl, data);
+      dataUrl = await resizeImageToDataUrl(photo.file);
     } catch {
-      setCurrent((c) => (c ? { ...c, stage: { type: "error", message: "Couldn't reach the server." } } : c));
+      setCurrent({ photo, dataUrl: "", target: "driver", stage: { type: "error", message: "Couldn't read this photo file.", retryable: false } });
+      return;
     }
+    await runAnalysis(photo, dataUrl);
   };
 
-  const routeClassification = async (photo: QueuedPhoto, dataUrl: string, c: Classification) => {
-    if (!c.isGearPhoto || c.photoType === "unclear" || !c.category) {
-      setCurrent({ photo, dataUrl, target: "driver", stage: { type: "manual_category", notes: c.notes } });
+  const runAnalysis = async (photo: QueuedPhoto, dataUrl: string) => {
+    setCurrent({ photo, dataUrl, target: "driver", stage: { type: "processing" } });
+    const { ok, status, data } = await fetchWithTimeout("/api/analyze-gear-photo", { imageDataUrl: dataUrl });
+    if (!ok) {
+      const message = typeof data.error === "string" ? data.error : "Something went wrong.";
+      // A 429 (quota) will fail again on immediate retry until the window resets; anything else
+      // (network blip, 5xx, our own timeout) is worth a retry.
+      setCurrent({ photo, dataUrl, target: "driver", stage: { type: "error", message, retryable: status !== 429 } });
       return;
     }
-    const category = c.category as EquipmentCategory;
-    const piece = category === "firesuit" ? (c.pieceType || "one_piece") as Piece : null;
-
-    if (c.photoType === "tag") {
-      await runTagAnalysis(photo, dataUrl, category, piece, "driver");
-      return;
-    }
-
-    // photoType === "item"
-    if (isSlotFilled("driver", category, piece)) {
-      setCurrent({
-        photo,
-        dataUrl,
-        target: "driver",
-        stage: { type: "conflict", category, piece, existingLabel: describeExisting(category, piece, currentEntries("driver")[category]) },
-      });
-      return;
-    }
-
-    if (category === "helmet") {
-      try {
-        const res = await fetch("/api/analyze-helmet", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageDataUrl: dataUrl }),
-        });
-        const helmet: HelmetAnalysis & { error?: string } = await res.json();
-        if (!res.ok) {
-          setCurrent({ photo, dataUrl, target: "driver", stage: { type: "error", message: helmet.error ?? "Helmet analysis failed." } });
-          return;
-        }
-        setCurrent({
-          photo,
-          dataUrl,
-          target: "driver",
-          stage: { type: "confirm_item", category, piece, confidence: c.confidence, notes: c.notes, helmet },
-        });
-      } catch {
-        setCurrent({ photo, dataUrl, target: "driver", stage: { type: "error", message: "Couldn't reach the server for helmet analysis." } });
-      }
-      return;
-    }
-
-    setCurrent({ photo, dataUrl, target: "driver", stage: { type: "confirm_item", category, piece, confidence: c.confidence, notes: c.notes } });
+    const result = data as unknown as AnalyzeGearPhotoResponse;
+    routeResult(photo, dataUrl, result);
   };
 
-  const runTagAnalysis = async (photo: QueuedPhoto, dataUrl: string, category: EquipmentCategory, piece: Piece | null, target: Target) => {
-    setCurrent({ photo, dataUrl, target, stage: { type: "classifying" } });
-    try {
-      const res = await fetch("/api/analyze-tag", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category, imageDataUrl: dataUrl }),
-      });
-      const data: { candidates?: TagCandidate[]; notes?: string; error?: string } = await res.json();
-      if (!res.ok) {
-        setCurrent({ photo, dataUrl, target, stage: { type: "error", message: data.error ?? "Tag analysis failed." } });
-        return;
-      }
-      setCurrent({
-        photo,
-        dataUrl,
-        target,
-        stage: { type: "confirm_tag", category, piece, candidates: data.candidates ?? [], tagNotes: data.notes ?? "", added: new Set() },
-      });
-    } catch {
-      setCurrent({ photo, dataUrl, target, stage: { type: "error", message: "Couldn't reach the server." } });
+  const routeResult = (photo: QueuedPhoto, dataUrl: string, r: AnalyzeGearPhotoResponse) => {
+    if (!r.isGearPhoto || !r.category) {
+      setCurrent({ photo, dataUrl, target: "driver", stage: { type: "manual_category", notes: r.notes } });
+      return;
     }
+    const category = r.category as EquipmentCategory;
+    const piece = category === "firesuit" ? (r.pieceType || "one_piece") as Piece : null;
+    setCurrent({
+      photo,
+      dataUrl,
+      target: "driver",
+      stage: {
+        type: "result",
+        category,
+        piece,
+        confidence: r.categoryConfidence,
+        notes: r.notes,
+        itemConfirmed: false,
+        conflict: null,
+        helmet: r.helmetType ? { helmetType: r.helmetType, hasVisor: r.hasVisor, visorNote: r.visorNote } : undefined,
+        certifications: r.certifications ?? [],
+        certNotes: "",
+        addedCerts: new Set(),
+      },
+    });
+  };
+
+  const runManualTagAnalysis = async (photo: QueuedPhoto, dataUrl: string, category: EquipmentCategory, piece: Piece | null, target: Target) => {
+    setCurrent({ photo, dataUrl, target, stage: { type: "processing" } });
+    const { ok, status, data } = await fetchWithTimeout("/api/analyze-tag", { category, imageDataUrl: dataUrl });
+    if (!ok) {
+      const message = typeof data.error === "string" ? data.error : "Something went wrong.";
+      setCurrent({ photo, dataUrl, target, stage: { type: "error", message, retryable: status !== 429 } });
+      return;
+    }
+    setCurrent({
+      photo,
+      dataUrl,
+      target,
+      stage: {
+        type: "manual_tag_result",
+        category,
+        piece,
+        candidates: (data.candidates as TagCandidate[]) ?? [],
+        tagNotes: (data.notes as string) ?? "",
+        added: new Set(),
+      },
+    });
   };
 
   const skip = () => advance(queue.slice(1));
 
-  const confirmItem = (category: EquipmentCategory, piece: Piece | null, target: Target, dataUrl: string, helmet?: HelmetAnalysis) => {
+  const retry = () => {
+    if (!current) return;
+    void runAnalysis(current.photo, current.dataUrl);
+  };
+
+  const confirmItem = (category: EquipmentCategory, piece: Piece | null, target: Target, dataUrl: string, helmet?: HelmetInfo) => {
     const existing = currentEntries(target)[category];
     const photos = [...(existing?.photoDataUrls ?? [])];
     if (photos.length < MAX_PHOTOS_PER_ITEM) photos.push(dataUrl);
@@ -294,12 +296,11 @@ export function AutomaticGearImport({
       photoDataUrls: photos,
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
       ...(category === "firesuit" || CATEGORY_META[category].hybrid ? { mode: existing?.mode ?? "certified" } : {}),
-      ...(helmet && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
+      ...(helmet && helmet.helmetType && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
       ...(helmet ? { hasVisor: helmet.hasVisor, visorNote: helmet.visorNote || undefined } : {}),
     });
     markSlotFilled(target, category, piece);
     noteBuilt(`${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""} photo`);
-    advance(queue.slice(1));
   };
 
   const addTagCandidate = (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate) => {
@@ -338,26 +339,6 @@ export function AutomaticGearImport({
     }
   };
 
-  const targetToggle = (target: Target, onChange: (t: Target) => void) => (
-    <div className="mb-2 flex items-center gap-2 text-xs">
-      <span className="text-neutral-500">Add this to:</span>
-      <button
-        type="button"
-        onClick={() => onChange("driver")}
-        className={`rounded border px-2 py-0.5 ${target === "driver" ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400"}`}
-      >
-        Driver
-      </button>
-      <button
-        type="button"
-        onClick={() => onChange("codriver")}
-        className={`rounded border px-2 py-0.5 ${target === "codriver" ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400"}`}
-      >
-        Codriver
-      </button>
-    </div>
-  );
-
   return (
     <div className="rounded-lg border border-neutral-700 p-3">
       <input
@@ -374,10 +355,12 @@ export function AutomaticGearImport({
 
       {!current && (
         <div>
-          <p className="mb-3 text-sm text-neutral-400">
-            Upload photos of your gear — whole items and/or certification tag close-ups, in any order and any mix. We&apos;ll go through them one at a
-            time and check with you before adding anything.
+          <p className="mb-2 text-sm text-neutral-400">
+            Upload photos of your gear, in any order and any mix. One photo per item is usually enough — if a certification tag is legible in the same
+            shot (e.g. an arm restraint with its tag visible), we&apos;ll pick that up too. If a tag is hard to read in a wide photo (tucked inside a
+            helmet, hidden under a collar), add a close-up of just the tag as a separate photo and we&apos;ll attach it to the same item.
           </p>
+          <p className="mb-3 text-xs text-neutral-500">We&apos;ll go through them one at a time and check with you before adding anything.</p>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -410,14 +393,21 @@ export function AutomaticGearImport({
             {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, transient preview */}
             <img src={current.photo.previewUrl} alt="" className="h-24 w-24 shrink-0 rounded object-cover" />
             <div className="min-w-0 flex-1">
-              {current.stage.type === "classifying" && <p className="text-neutral-400">Looking at this photo…</p>}
+              {current.stage.type === "processing" && <p className="text-neutral-400">Processing this picture (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
 
               {current.stage.type === "error" && (
                 <div>
                   <p className="text-red-400">{current.stage.message}</p>
-                  <button type="button" onClick={skip} className="mt-2 rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-200 hover:bg-neutral-800">
-                    Skip this photo
-                  </button>
+                  <div className="mt-2 flex gap-2">
+                    {current.stage.retryable && (
+                      <button type="button" onClick={retry} className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900">
+                        Retry
+                      </button>
+                    )}
+                    <button type="button" onClick={skip} className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-200 hover:bg-neutral-800">
+                      Skip this photo
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -427,24 +417,26 @@ export function AutomaticGearImport({
                   onPick={(category, photoType) => {
                     const piece = category === "firesuit" ? "one_piece" : null;
                     if (photoType === "tag") {
-                      void runTagAnalysis(current.photo, current.dataUrl, category, piece, current.target);
-                    } else if (isSlotFilled(current.target, category, piece)) {
+                      void runManualTagAnalysis(current.photo, current.dataUrl, category, piece, current.target);
+                    } else {
                       setCurrent((c) =>
                         c
                           ? {
                               ...c,
                               stage: {
-                                type: "conflict",
+                                type: "result",
                                 category,
                                 piece,
-                                existingLabel: describeExisting(category, piece, currentEntries(current.target)[category]),
+                                confidence: "low",
+                                notes: "",
+                                itemConfirmed: false,
+                                conflict: null,
+                                certifications: [],
+                                certNotes: "",
+                                addedCerts: new Set(),
                               },
                             }
                           : c
-                      );
-                    } else {
-                      setCurrent((c) =>
-                        c ? { ...c, stage: { type: "confirm_item", category, piece, confidence: "low", notes: "" } } : c
                       );
                     }
                   }}
@@ -452,143 +444,19 @@ export function AutomaticGearImport({
                 />
               )}
 
-              {current.stage.type === "conflict" && (
-                <div className="rounded border border-amber-700 bg-amber-950/40 p-2">
-                  <p className="text-amber-200">
-                    You already have a {current.stage.existingLabel.toLowerCase()} in this gear set. This photo also looks like{" "}
-                    {CATEGORY_META[current.stage.category].label.toLowerCase()}
-                    {current.stage.piece ? ` (${pieceLabel(current.stage.piece)})` : ""} — a gear set can only have one, unless this is for a codriver.
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const { category, piece } = current.stage as Extract<Stage, { type: "conflict" }>;
-                        confirmItem(category, piece, current.target, current.dataUrl);
-                      }}
-                      className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800"
-                    >
-                      Same item — add as another photo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const { category, piece } = current.stage as Extract<Stage, { type: "conflict" }>;
-                        clearSlot(current.target, category, piece);
-                        confirmItem(category, piece, current.target, current.dataUrl);
-                      }}
-                      className="rounded border border-red-700 bg-red-950 px-2 py-1 text-red-200 hover:bg-red-900"
-                    >
-                      Replace the existing one
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const { category, piece } = current.stage as Extract<Stage, { type: "conflict" }>;
-                        setCurrent((c) => (c ? { ...c, target: "codriver" } : c));
-                        if (!isSlotFilled("codriver", category, piece)) {
-                          confirmItem(category, piece, "codriver", current.dataUrl);
-                        } else {
-                          setCurrent((c) =>
-                            c
-                              ? {
-                                  ...c,
-                                  target: "codriver",
-                                  stage: {
-                                    type: "conflict",
-                                    category,
-                                    piece,
-                                    existingLabel: describeExisting(category, piece, currentEntries("codriver")[category]),
-                                  },
-                                }
-                              : c
-                          );
-                        }
-                      }}
-                      className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800"
-                    >
-                      This is for my codriver
-                    </button>
-                    <button type="button" onClick={skip} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
-                      Skip this photo
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {current.stage.type === "confirm_item" && (
+              {current.stage.type === "manual_tag_result" && (
                 <div>
                   {targetToggle(current.target, (t) => setCurrent((c) => (c ? { ...c, target: t } : c)))}
-                  <p className="text-neutral-200">
-                    I detected: <b>{CATEGORY_META[current.stage.category].label}</b>
-                    {current.stage.piece && current.stage.category === "firesuit" ? ` — ${pieceLabel(current.stage.piece)}` : ""}
-                    <span className="ml-1 text-neutral-500">({current.stage.confidence} confidence)</span>
-                  </p>
-                  {current.stage.helmet && (
-                    <p className="text-neutral-400">
-                      {current.stage.helmet.helmetType === "unclear"
-                        ? "Style unclear from photo"
-                        : current.stage.helmet.helmetType === "full_face"
-                          ? "Full face (integrated chin bar)"
-                          : "Open face (no chin bar)"}
-                      {" · "}
-                      {current.stage.helmet.hasVisor ? "visor/shield detected" : "no visor/shield detected"}
-                    </p>
-                  )}
-                  {current.stage.notes && <p className="text-neutral-500">{current.stage.notes}</p>}
-                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const { category, piece, helmet } = current.stage as Extract<Stage, { type: "confirm_item" }>;
-                        confirmItem(category, piece, current.target, current.dataUrl, helmet);
-                      }}
-                      className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900"
-                    >
-                      Use this
-                    </button>
-                    <button type="button" onClick={skip} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
-                      Not right — skip
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {current.stage.type === "confirm_tag" && (
-                <div>
-                  {targetToggle(current.target, (t) => setCurrent((c) => (c ? { ...c, target: t } : c)))}
-                  <p className="text-neutral-200">
-                    I detected a <b>{CATEGORY_META[current.stage.category].label.toLowerCase()}</b> certification tag
-                    {current.stage.category === "firesuit" ? " — which piece is it from?" : ""}
-                  </p>
-                  {current.stage.category === "firesuit" && (
-                    <div className="mt-1 flex gap-2 text-xs">
-                      {(["one_piece", "jacket", "pants"] as Piece[]).map((p) => (
-                        <button
-                          key={p}
-                          type="button"
-                          onClick={() => setCurrent((c) => (c && c.stage.type === "confirm_tag" ? { ...c, stage: { ...c.stage, piece: p } } : c))}
-                          className={`rounded border px-2 py-0.5 ${
-                            current.stage.type === "confirm_tag" && current.stage.piece === p
-                              ? "border-amber-600 bg-neutral-900 text-amber-300"
-                              : "border-neutral-700 text-neutral-400"
-                          }`}
-                        >
-                          {pieceLabel(p)}
-                        </button>
-                      ))}
-                    </div>
-                  )}
                   <TagCandidateList
                     candidates={current.stage.candidates}
                     notes={current.stage.tagNotes || null}
                     added={current.stage.added}
                     category={current.stage.category}
                     onAdd={(c, i) => {
-                      const { category, piece } = current.stage as Extract<Stage, { type: "confirm_tag" }>;
+                      const { category, piece } = current.stage as Extract<Stage, { type: "manual_tag_result" }>;
                       addTagCandidate(category, piece, current.target, c);
                       setCurrent((cur) =>
-                        cur && cur.stage.type === "confirm_tag" ? { ...cur, stage: { ...cur.stage, added: new Set(cur.stage.added).add(i) } } : cur
+                        cur && cur.stage.type === "manual_tag_result" ? { ...cur, stage: { ...cur.stage, added: new Set(cur.stage.added).add(i) } } : cur
                       );
                     }}
                   />
@@ -597,10 +465,174 @@ export function AutomaticGearImport({
                   </button>
                 </div>
               )}
+
+              {current.stage.type === "result" && (
+                <ResultCard
+                  stage={current.stage}
+                  target={current.target}
+                  onChangeTarget={(t) => setCurrent((c) => (c ? { ...c, target: t } : c))}
+                  onRequestConflictCheck={(category, piece, target) => {
+                    if (isSlotFilled(target, category, piece)) {
+                      setCurrent((c) =>
+                        c && c.stage.type === "result"
+                          ? { ...c, stage: { ...c.stage, conflict: { existingLabel: describeExisting(category, piece, currentEntries(target)[category]) } } }
+                          : c
+                      );
+                    } else {
+                      confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                      setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                    }
+                  }}
+                  onResolveConflictReplace={(category, piece, target) => {
+                    clearSlot(target, category, piece);
+                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                    setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                  }}
+                  onResolveConflictSameItem={(category, piece, target) => {
+                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                    setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                  }}
+                  onResolveConflictCodriver={(category, piece) => {
+                    setCurrent((c) => (c ? { ...c, target: "codriver" } : c));
+                    if (isSlotFilled("codriver", category, piece)) {
+                      setCurrent((c) =>
+                        c && c.stage.type === "result"
+                          ? {
+                              ...c,
+                              target: "codriver",
+                              stage: { ...c.stage, conflict: { existingLabel: describeExisting(category, piece, currentEntries("codriver")[category]) } },
+                            }
+                          : c
+                      );
+                    } else {
+                      confirmItem(category, piece, "codriver", current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                      setCurrent((c) => (c && c.stage.type === "result" ? { ...c, target: "codriver", stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
+                    }
+                  }}
+                  onAddCert={(category, piece, target, c, i) => {
+                    addTagCandidate(category, piece, target, c);
+                    setCurrent((cur) =>
+                      cur && cur.stage.type === "result" ? { ...cur, stage: { ...cur.stage, addedCerts: new Set(cur.stage.addedCerts).add(i) } } : cur
+                    );
+                  }}
+                  onNext={skip}
+                />
+              )}
             </div>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ResultCard({
+  stage,
+  target,
+  onChangeTarget,
+  onRequestConflictCheck,
+  onResolveConflictReplace,
+  onResolveConflictSameItem,
+  onResolveConflictCodriver,
+  onAddCert,
+  onNext,
+}: {
+  stage: Extract<Stage, { type: "result" }>;
+  target: Target;
+  onChangeTarget: (t: Target) => void;
+  onRequestConflictCheck: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
+  onResolveConflictReplace: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
+  onResolveConflictSameItem: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
+  onResolveConflictCodriver: (category: EquipmentCategory, piece: Piece | null) => void;
+  onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
+  onNext: () => void;
+}) {
+  const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict } = stage;
+  return (
+    <div>
+      {targetToggle(target, onChangeTarget)}
+      <p className="text-neutral-200">
+        I detected: <b>{CATEGORY_META[category].label}</b>
+        {piece && category === "firesuit" ? ` — ${pieceLabel(piece)}` : ""}
+        <span className="ml-1 text-neutral-500">({confidence} confidence)</span>
+      </p>
+      {helmet && helmet.helmetType && (
+        <p className="text-neutral-400">
+          {helmet.helmetType === "unclear" ? "Style unclear from photo" : helmet.helmetType === "full_face" ? "Full face (integrated chin bar)" : "Open face (no chin bar)"}
+          {" · "}
+          {helmet.hasVisor ? "visor/shield detected" : "no visor/shield detected"}
+        </p>
+      )}
+      {notes && <p className="text-neutral-500">{notes}</p>}
+
+      {!conflict ? (
+        <div className="mt-2 flex flex-wrap gap-2 text-xs">
+          <button
+            type="button"
+            disabled={itemConfirmed}
+            onClick={() => onRequestConflictCheck(category, piece, target)}
+            className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
+          >
+            {itemConfirmed ? "Added as item photo" : "Use this as the item photo"}
+          </button>
+        </div>
+      ) : (
+        <div className="mt-2 rounded border border-amber-700 bg-amber-950/40 p-2 text-xs">
+          <p className="text-amber-200">
+            You already have a {conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one, unless this is for a codriver.
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
+              Same item — add as another photo
+            </button>
+            <button type="button" onClick={() => onResolveConflictReplace(category, piece, target)} className="rounded border border-red-700 bg-red-950 px-2 py-1 text-red-200 hover:bg-red-900">
+              Replace the existing one
+            </button>
+            <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
+              This is for my codriver
+            </button>
+          </div>
+        </div>
+      )}
+
+      {certifications.length > 0 && (
+        <div className="mt-3 border-t border-neutral-700 pt-2">
+          <p className="text-neutral-300">Certification tag found on this photo:</p>
+          <TagCandidateList
+            candidates={certifications}
+            notes={certNotes || null}
+            added={addedCerts}
+            category={category}
+            onAdd={(c, i) => onAddCert(category, piece, target, c, i)}
+          />
+        </div>
+      )}
+
+      <button type="button" onClick={onNext} className="mt-3 rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-200 hover:bg-neutral-800">
+        Next photo
+      </button>
+    </div>
+  );
+}
+
+function targetToggle(target: Target, onChange: (t: Target) => void) {
+  return (
+    <div className="mb-2 flex items-center gap-2 text-xs">
+      <span className="text-neutral-500">Add this to:</span>
+      <button
+        type="button"
+        onClick={() => onChange("driver")}
+        className={`rounded border px-2 py-0.5 ${target === "driver" ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400"}`}
+      >
+        Driver
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange("codriver")}
+        className={`rounded border px-2 py-0.5 ${target === "codriver" ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400"}`}
+      >
+        Codriver
+      </button>
     </div>
   );
 }
