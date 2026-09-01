@@ -64,6 +64,10 @@ export function GarageManager({
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   /** Which profile currently has the "upload photos" (Automatic mode) panel open, if any. */
   const [autoImportOpenId, setAutoImportOpenId] = useState<string | null>(null);
+  /** A just-created profile still showing the "Automatic mode or Manual mode?" choice, before any name/gear has been entered. */
+  const [modeChoiceId, setModeChoiceId] = useState<string | null>(null);
+  /** Set alongside autoImportOpenId only when Automatic mode was chosen for a brand-new profile — hides the rest of the editor (name/photo/codriver/manual form) until the import is done, so the upload prompt is the only thing shown. Left unset when "Add gear from photos" is used on an existing set, which shows the import panel above the full editor instead. */
+  const [autoImportFocusedId, setAutoImportFocusedId] = useState<string | null>(null);
 
   /* eslint-disable react-hooks/set-state-in-effect -- one-time client-side hydration from localStorage */
   useEffect(() => {
@@ -88,13 +92,23 @@ export function GarageManager({
     const profile = newGarageProfile("Untitled gear set");
     setProfiles((prev) => [...prev, profile]);
     setSelectedId(profile.id);
+    setModeChoiceId(profile.id);
   };
 
-  const createProfileFromPhotos = () => {
-    const profile = newGarageProfile("New gear set (from photos)");
-    setProfiles((prev) => [...prev, profile]);
-    setSelectedId(profile.id);
-    setAutoImportOpenId(profile.id);
+  const chooseManualMode = () => setModeChoiceId(null);
+
+  const chooseAutomaticMode = (id: string) => {
+    setModeChoiceId(null);
+    setAutoImportOpenId(id);
+    setAutoImportFocusedId(id);
+  };
+
+  // Backing out of the mode-choice screen — the profile has no name/gear yet, so just discard it
+  // rather than leaving an empty "Untitled gear set" behind.
+  const cancelNewProfile = (id: string) => {
+    setProfiles((prev) => prev.filter((p) => p.id !== id));
+    setModeChoiceId(null);
+    setSelectedId(null);
   };
 
   // Two-step delete (click once to arm, again to confirm) instead of window.confirm — browser
@@ -174,14 +188,6 @@ export function GarageManager({
           <div className="mb-4 flex flex-wrap gap-2">
             <button type="button" onClick={createProfile} className="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
               + New gear set
-            </button>
-            <button
-              type="button"
-              onClick={createProfileFromPhotos}
-              className="rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
-              title="Upload photos of your gear and we'll figure out what's what — you confirm each item before it's added."
-            >
-              📷 Automatic mode
             </button>
             <label className="cursor-pointer rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
               Import
@@ -269,6 +275,68 @@ export function GarageManager({
               ))}
             </div>
           )}
+        </div>
+      ) : modeChoiceId === selected.id ? (
+        <div className="rounded-lg border border-neutral-700 p-4">
+          <button type="button" onClick={() => cancelNewProfile(selected.id)} className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300">
+            ← Back to My Gear
+          </button>
+          <p className="mb-4 text-sm text-neutral-300">How do you want to build this gear set?</p>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => chooseAutomaticMode(selected.id)}
+              className="flex flex-1 flex-col items-start gap-1 rounded-lg border border-emerald-700 bg-emerald-950 p-4 text-left hover:bg-emerald-900"
+            >
+              <span className="text-sm font-semibold text-emerald-200">📷 Automatic mode</span>
+              <span className="text-xs text-emerald-300/80">
+                Upload photos of your gear — whole items and/or certification tag close-ups — and we&apos;ll figure out what&apos;s what. You confirm
+                each item before it&apos;s added.
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={chooseManualMode}
+              className="flex flex-1 flex-col items-start gap-1 rounded-lg border border-neutral-600 p-4 text-left hover:bg-neutral-800"
+            >
+              <span className="text-sm font-semibold text-neutral-200">✏️ Manual mode</span>
+              <span className="text-xs text-neutral-400">Enter your certifications and details yourself, category by category.</span>
+            </button>
+          </div>
+        </div>
+      ) : autoImportFocusedId === selected.id ? (
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              setAutoImportOpenId(null);
+              setAutoImportFocusedId(null);
+            }}
+            className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300"
+          >
+            ← Back to My Gear
+          </button>
+          <label className="mb-3 block">
+            <span className="mb-1 block text-sm font-medium">Gear set name</span>
+            <input
+              type="text"
+              value={selected.name}
+              onChange={(e) => updateSelected({ name: e.target.value })}
+              className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
+            />
+          </label>
+          <AutomaticGearImport
+            entries={selected.entries}
+            onChangeEntry={(category, entry) => updateSelected({ entries: { ...selected.entries, [category]: entry } })}
+            codriverEntries={selected.codriverEntries ?? {}}
+            onChangeCodriverEntry={(category, entry) => updateSelected({ codriverEntries: { ...(selected.codriverEntries ?? {}), [category]: entry } })}
+            hasCodriver={!!selected.hasCodriver}
+            onSetHasCodriver={(v) => updateSelected({ hasCodriver: v })}
+            onDone={() => {
+              setAutoImportOpenId(null);
+              setAutoImportFocusedId(null);
+            }}
+          />
         </div>
       ) : (
         <div>
