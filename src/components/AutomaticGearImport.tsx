@@ -286,16 +286,8 @@ export function AutomaticGearImport({
   };
 
   /**
-   * `replaceExisting` clears whichever certifications/photos belong to this photo's own slot before
-   * adding the new one — folded into this same call (rather than a separate clearSlot() call ahead
-   * of it) because `existing` below is read from the `entries`/`codriverEntries` props, which don't
-   * reflect a sibling updateEntry() call until the next render. Two calls in the same handler would
-   * each start from the same pre-clear snapshot, so the second (this one) would silently resurrect
-   * everything the first just cleared — exactly the "Replace doesn't work" bug this replaced.
-   *
    * Returns whether the photo was actually added — false when the item was already at its
-   * per-category photo limit and this wasn't a replace, so the caller can tell the user instead of
-   * claiming success.
+   * per-category photo limit, so the caller can tell the user instead of claiming success.
    */
   const confirmItem = (
     category: EquipmentCategory,
@@ -303,31 +295,21 @@ export function AutomaticGearImport({
     target: Target,
     dataUrl: string,
     isCloseupOnly: boolean,
-    helmet: HelmetInfo | undefined,
-    replaceExisting = false
+    helmet: HelmetInfo | undefined
   ): boolean => {
     const existing = currentEntries(target)[category];
-    const isPantsPiece = category === "firesuit" && piece === "pants";
-    // Pants share the jacket's photoDataUrls (firesuit photos aren't per-piece), so replacing the
-    // pants slot only resets its own certifications, never the shared photos.
-    const resetPhotos = replaceExisting && !isPantsPiece;
-    const basePhotos = resetPhotos ? [] : [...(existing?.photoDataUrls ?? [])];
-    const maxPhotos = maxPhotosFor(category);
-    const photoAdded = basePhotos.length < maxPhotos;
+    const photos = [...(existing?.photoDataUrls ?? [])];
+    const photoAdded = photos.length < maxPhotosFor(category);
     // A wide/overview shot always leads the list (index 0), even when confirmed after a tag
     // close-up — that first photo is what the "Available Gear Sets" list preview shows, so it
     // shouldn't lose that spot to a close-up that just happened to get confirmed first.
-    const photos = photoAdded ? (isCloseupOnly ? [...basePhotos, dataUrl] : [dataUrl, ...basePhotos]) : basePhotos;
+    if (photoAdded) {
+      if (isCloseupOnly) photos.push(dataUrl);
+      else photos.unshift(dataUrl);
+    }
 
     updateEntry(target, category, {
       photoDataUrls: photos,
-      ...(replaceExisting
-        ? isPantsPiece
-          ? { pantsCertifications: [] }
-          : category === "firesuit"
-            ? { certifications: [] }
-            : { certifications: [], skipped: undefined }
-        : {}),
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
       ...(category === "firesuit" || CATEGORY_META[category].hybrid ? { mode: existing?.mode ?? "certified" } : {}),
       ...(helmet && helmet.helmetType && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
@@ -531,20 +513,6 @@ export function AutomaticGearImport({
                       );
                     }
                   }}
-                  onResolveConflictReplace={(category, piece, target) => {
-                    confirmItem(
-                      category,
-                      piece,
-                      target,
-                      current.dataUrl,
-                      current.stage.type === "result" ? current.stage.isCloseupOnly : false,
-                      current.stage.type === "result" ? current.stage.helmet : undefined,
-                      true
-                    );
-                    setCurrent((c) =>
-                      c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null, photoLimitReached: false } } : c
-                    );
-                  }}
                   onResolveConflictSameItem={(category, piece, target) => {
                     const added = confirmItem(
                       category,
@@ -608,7 +576,6 @@ function ResultCard({
   target,
   onChangeTarget,
   onRequestConflictCheck,
-  onResolveConflictReplace,
   onResolveConflictSameItem,
   onResolveConflictCodriver,
   onAddCert,
@@ -618,7 +585,6 @@ function ResultCard({
   target: Target;
   onChangeTarget: (t: Target) => void;
   onRequestConflictCheck: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
-  onResolveConflictReplace: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictSameItem: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictCodriver: (category: EquipmentCategory, piece: Piece | null) => void;
   onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
@@ -646,13 +612,9 @@ function ResultCard({
         <div className="mt-2 rounded border border-amber-700 bg-amber-950/40 p-2 text-xs">
           <p className="text-amber-200">
             {CATEGORY_META[category].label} already has the maximum of {maxPhotosFor(category)} photos — this one wasn&rsquo;t added.
-            Replace discards its existing photos and certifications and starts over with just this one; to swap out a single photo
-            instead, remove it from My Gear afterward.
+            Remove a photo from this item in My Gear first if you want to add this one instead.
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
-            <button type="button" onClick={() => onResolveConflictReplace(category, piece, target)} className="rounded border border-red-700 bg-red-950 px-2 py-1 text-red-200 hover:bg-red-900">
-              Replace the existing photos
-            </button>
             <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
               This is for my codriver
             </button>
@@ -677,9 +639,6 @@ function ResultCard({
           <div className="mt-2 flex flex-wrap gap-2">
             <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
               Same item — add as another photo
-            </button>
-            <button type="button" onClick={() => onResolveConflictReplace(category, piece, target)} className="rounded border border-red-700 bg-red-950 px-2 py-1 text-red-200 hover:bg-red-900">
-              Replace the existing one
             </button>
             <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
               This is for my codriver

@@ -2,18 +2,15 @@ import { CategoryGroup, DisciplineGroup, EquipmentCategory } from "./types";
 
 export const GROUP_ORDER: CategoryGroup[] = ["driver", "car", "rollcage"];
 
-const DEFAULT_MAX_ITEM_PHOTOS = 3;
-// Rollover protection often needs multiple angles (cage overview, tags/labels, logbook page,
-// padding close-up) to document. A harness can have up to 5 separate belt tags (which should all
-// match) plus an overview shot. A two-piece firesuit or undergarment needs an overall shot plus a
-// tag close-up for each of the two pieces (jacket + pants) — 4 photos. Everything else keeps the
-// default 3. Shared between the manual per-item photo upload (EquipmentForm) and Automatic mode
-// (AutomaticGearImport) so both respect the same per-category limit.
+// Photos are only ever stored client-side, so there's no real cost to a generous limit — 6 covers
+// every ordinary case (multi-piece items, several belt tags, etc.) without the app having to guess
+// per category. Rollover protection is the one exception: documenting a cage properly can take many
+// more angles (overview, tags/labels, logbook page, padding close-ups, per-bar shots). Shared between
+// the manual per-item photo upload (EquipmentForm) and Automatic mode (AutomaticGearImport) so both
+// respect the same per-category limit.
+const DEFAULT_MAX_ITEM_PHOTOS = 6;
 const MAX_ITEM_PHOTOS_BY_CATEGORY: Partial<Record<EquipmentCategory, number>> = {
-  rollover_protection: 5,
-  belts_harness: 6,
-  firesuit: 4,
-  undergarment: 4,
+  rollover_protection: 10,
 };
 export function maxPhotosFor(category: EquipmentCategory): number {
   return MAX_ITEM_PHOTOS_BY_CATEGORY[category] ?? DEFAULT_MAX_ITEM_PHOTOS;
