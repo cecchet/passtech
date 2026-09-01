@@ -46,7 +46,7 @@ const TOURS: Record<TourId, Tour> = {
       },
       {
         targetId: "tutorial-ruleset-picker",
-        text: "Pick a sanctioning body and discipline from the dropdown. Here we've selected SCCA Solo as an example.",
+        text: "Pick a discipline first, then a sanctioning body within it — two short dropdowns instead of one long list spanning every body across every discipline. Here we've picked Autocross, then SCCA Solo.",
         onEnter: (actions) => actions.selectRuleset("scca-solo"),
       },
       {
@@ -55,6 +55,19 @@ const TOURS: Record<TourId, Tour> = {
         onEnter: (actions) => actions.selectClass("modified"),
       },
       { targetId: "tutorial-source-line", text: "Click here to download the official rulebook for the selected body and class." },
+      {
+        targetId: "tutorial-tech-sheet-link",
+        text: "Not every body publishes one, but when they do, a “View sample tech sheet” link shows up right here — an example of the actual form a scrutineer would use at the track. We've switched to Pikes Peak International Hill Climb for this example, since it has one.",
+        onEnter: (actions) => actions.selectRuleset("pikespeak-hillclimb"),
+      },
+      {
+        targetId: "tutorial-equipment-summary",
+        text: "The Equipment Summary groups everything required or conditional into a quick icon grid — click any icon to jump straight to that category below. “Download PDF report” turns the whole page into a printable copy. Back to SCCA Solo for the rest of this tour.",
+        onEnter: (actions) => {
+          actions.selectRuleset("scca-solo");
+          actions.selectClass("modified");
+        },
+      },
       {
         targetId: "category-seat",
         text: "Each category shows its requirement, a plain-language note, and any accepted certifications — straight from the rulebook. Some, like Seat here, accept plain stock/OEM equipment with no certification at all; standards the body doesn't list are collapsed under a red “Not accepted” panel, so gaps are easy to spot.",

@@ -1248,7 +1248,7 @@ function SourceLine({ ruleset, showTechSheet = false }: { ruleset: Ruleset; show
         ))}{" "}
         — last reviewed {ruleset.lastReviewed}
         {showTechSheet && ruleset.techSheet && (
-          <>
+          <span id="tutorial-tech-sheet-link">
             {" · "}
             <a
               href={ruleset.techSheet.url}
@@ -1258,7 +1258,7 @@ function SourceLine({ ruleset, showTechSheet = false }: { ruleset: Ruleset; show
             >
               View sample tech sheet ({ruleset.techSheet.format})
             </a>
-          </>
+          </span>
         )}
       </p>
       {ruleset.knownGaps && ruleset.knownGaps.length > 0 && (
