@@ -737,8 +737,10 @@ export default function Home() {
               classId={activeClassId}
               activeGroups={activeGroups}
               results={resultsForSelected}
+              entries={entries}
               hasCodriver={showCodriver && hasCodriver}
               codriverResults={codriverResultsForSelected}
+              codriverEntries={codriverEntries}
               carPhotoDataUrl={carPhotoDataUrl}
               carNote={carNote}
               onCarPhotoChange={handleCarPhotoChange}

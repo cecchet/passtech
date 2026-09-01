@@ -94,11 +94,26 @@ const LABEL_COLOR: Record<AggregateState, string> = {
   neutral: "text-sky-400",
 };
 
+/** A category's own reference photo when it has one (the overview shot always leads photoDataUrls —
+ * see AutomaticGearImport's confirmItem), falling back to the generic mascot icon otherwise. */
+function CategoryThumb({ category, entry }: { category: EquipmentCategory; entry?: EquipmentEntry }) {
+  const photo = entry?.photoDataUrls?.[0];
+  if (!photo) {
+    const Icon = CATEGORY_ICONS[category];
+    return <Icon />;
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
+    <img src={photo} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+  );
+}
+
 function IconRow({
   title,
   staticColor,
   categories,
   results,
+  entries,
   hrefSuffix = "",
   titleSuffix = "",
 }: {
@@ -106,6 +121,8 @@ function IconRow({
   staticColor: AggregateState;
   categories: EquipmentCategory[];
   results?: CategoryResults;
+  /** Entries to pull each category's reference photo from (see CategoryThumb) — omitted in reference mode, where nothing's been entered yet. */
+  entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>;
   /** Appended to each icon's #category-X jump link — used for the codriver row, whose form section has suffixed DOM ids (see EquipmentForm's occupant prop). */
   hrefSuffix?: string;
   /** Appended to each icon's title tooltip, alongside hrefSuffix. */
@@ -117,19 +134,16 @@ function IconRow({
     <div className="flex items-center gap-2">
       <span className={`min-w-24 shrink-0 whitespace-nowrap text-sm font-semibold ${labelColor}`}>{title}</span>
       <div className="flex flex-wrap gap-1.5">
-        {categories.map((category) => {
-          const Icon = CATEGORY_ICONS[category];
-          return (
-            <a
-              key={category}
-              href={`#category-${category}${hrefSuffix}`}
-              title={`${CATEGORY_META[category].label}${titleSuffix}`}
-              className={`block rounded-lg border-4 transition-colors ${iconBorderClass(category, results)}`}
-            >
-              <Icon />
-            </a>
-          );
-        })}
+        {categories.map((category) => (
+          <a
+            key={category}
+            href={`#category-${category}${hrefSuffix}`}
+            title={`${CATEGORY_META[category].label}${titleSuffix}`}
+            className={`block rounded-lg border-4 transition-colors ${iconBorderClass(category, results)}`}
+          >
+            <CategoryThumb category={category} entry={entries?.[category]} />
+          </a>
+        ))}
       </div>
     </div>
   );
@@ -140,8 +154,10 @@ export function EquipmentSummary({
   classId,
   activeGroups,
   results,
+  entries,
   hasCodriver,
   codriverResults,
+  codriverEntries,
   carPhotoDataUrl,
   carNote,
   onCarPhotoChange,
@@ -156,10 +172,14 @@ export function EquipmentSummary({
   activeGroups: ReadonlySet<CategoryGroup>;
   /** When provided, each icon's border reflects whether the entered item currently satisfies its requirement (body-first mode). Omit for a plain reference-mode summary (nothing entered yet). */
   results?: CategoryResults;
+  /** Entries to pull each icon's reference photo from (see CategoryThumb) — omitted in reference mode, where nothing's been entered yet. */
+  entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>;
   /** Rally only: whether the "Add codriver gear" toggle is on — shows a "Codriver" row alongside "Driver" when the ruleset supports it. */
   hasCodriver?: boolean;
   /** Rally only: the codriver's own results, for the "Codriver" row's icon borders (body-first mode). */
   codriverResults?: CategoryResults;
+  /** Rally only: the codriver's own entries, for the "Codriver" row's reference photos. */
+  codriverEntries?: Partial<Record<EquipmentCategory, EquipmentEntry>>;
   /** Car photo/note — only meaningful once there's real equipment to summarize (body-first mode), so omit these in reference mode. */
   carPhotoDataUrl?: string;
   carNote?: string;
@@ -214,15 +234,18 @@ export function EquipmentSummary({
         />
       )}
       <div className="flex flex-col gap-2">
-        <IconRow title="Required" staticColor="red" categories={required} results={results} />
-        <IconRow title="Conditional" staticColor="yellow" categories={conditional} results={results} />
-        {supportsCodriver && <IconRow title={driverRowTitle} staticColor="neutral" categories={occupantCategories} results={results} />}
+        <IconRow title="Required" staticColor="red" categories={required} results={results} entries={entries} />
+        <IconRow title="Conditional" staticColor="yellow" categories={conditional} results={results} entries={entries} />
+        {supportsCodriver && (
+          <IconRow title={driverRowTitle} staticColor="neutral" categories={occupantCategories} results={results} entries={entries} />
+        )}
         {supportsCodriver && hasCodriver && (
           <IconRow
             title="Codriver"
             staticColor="neutral"
             categories={occupantCategories}
             results={codriverResults}
+            entries={codriverEntries}
             hrefSuffix="-codriver"
             titleSuffix=" (Codriver)"
           />
@@ -309,7 +332,6 @@ export function FilledEquipmentSummary({
       )}
       <div className="flex flex-wrap gap-1.5">
         {items.map(({ category, isCodriver, count }) => {
-          const Icon = CATEGORY_ICONS[category];
           return (
             <a
               key={`${category}-${isCodriver ? "codriver" : "driver"}`}
@@ -319,7 +341,7 @@ export function FilledEquipmentSummary({
                 isCodriver ? "border-teal-700 hover:border-teal-400" : "border-neutral-700 hover:border-neutral-400"
               }`}
             >
-              <Icon />
+              <CategoryThumb category={category} entry={isCodriver ? codriverEntries?.[category] : entries[category]} />
               {count !== undefined && (
                 <span className="absolute -left-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-neutral-950 px-1 text-[11px] font-bold text-emerald-400 ring-1 ring-emerald-500">
                   {count}
