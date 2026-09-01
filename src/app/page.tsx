@@ -30,7 +30,7 @@ import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
 
-const reportButtonClass = "mb-4 rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800";
+const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
 
 const DISCIPLINE_GROUPS = DISCIPLINE_GROUP_ORDER.map((group) => ({
   group,
@@ -70,6 +70,26 @@ export default function Home() {
   const [toursSeen, setToursSeen] = useState<Partial<Record<TourId, boolean>>>({});
   /** True while My Gear is mid-way through creating a new gear set (mode choice or Automatic mode) — blocks navigating away so Cancel/Save to My Gear are the only two ways out. */
   const [blockMainMenuNav, setBlockMainMenuNav] = useState(false);
+  /** Set when body-first/equipment-first mode was entered by loading a saved gear set from My Gear
+   * (see handleLoadGarageProfile) — a snapshot of that profile's content as of the moment it was
+   * loaded, so later edits can be compared against it to detect unsaved changes. Null when the
+   * workspace was built from scratch (no saved profile backing it), in which case the old
+   * "Save this gear to My Gear" (create new) flow still applies. */
+  const [loadedGarageProfile, setLoadedGarageProfile] = useState<{
+    id: string;
+    name: string;
+    entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+    codriverEntries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+    hasCodriver: boolean;
+    carPhotoDataUrl?: string;
+    carNote?: string;
+  } | null>(null);
+  /** Arms the Discard/Save/Cancel choice on Back to My Gear once there are unsaved changes — mirrors the pattern in GarageManager's own Cancel button. */
+  const [confirmingBackNav, setConfirmingBackNav] = useState(false);
+  /** Set when "Save changes to this gear set" (from the Back to My Gear choice) fails, so the choice stays open with an explanation instead of silently losing the changes. */
+  const [backNavSaveError, setBackNavSaveError] = useState<string | null>(null);
+  /** Which gear set's action menu to reopen the next time GarageManager mounts — set right before navigating back to My Gear from body-first/equipment-first, so returning lands back on the same gear set instead of a blank list. Consumed once by GarageManager (see onReopenConsumed). */
+  const [reopenGarageProfileId, setReopenGarageProfileId] = useState<string | null>(null);
 
   // One-time hydration from localStorage on mount (must run client-side only, after SSR's default-state render).
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -212,10 +232,21 @@ export default function Home() {
     setHasCodriver(!!profile.hasCodriver);
     setCarPhotoDataUrl(profile.carPhotoDataUrl);
     setCarNote(profile.carNote);
+    setLoadedGarageProfile({
+      id: profile.id,
+      name: profile.name,
+      entries: { ...profile.entries },
+      codriverEntries: { ...(profile.codriverEntries ?? {}) },
+      hasCodriver: !!profile.hasCodriver,
+      carPhotoDataUrl: profile.carPhotoDataUrl,
+      carNote: profile.carNote,
+    });
+    setConfirmingBackNav(false);
+    setBackNavSaveError(null);
     setMode(target);
   };
 
-  const handleSaveToGarage = (name: string): boolean => {
+  const handleSaveToGarage = async (name: string): Promise<boolean> => {
     const profile = {
       ...newGarageProfile(name),
       entries: { ...entries },
@@ -224,11 +255,24 @@ export default function Home() {
       carPhotoDataUrl,
       carNote,
     };
-    return saveGarage([...loadGarage(), profile]);
+    return saveGarage([...(await loadGarage()), profile]);
+  };
+
+  // Writes the workspace's current entries back into the specific gear set that was loaded from My
+  // Gear (see loadedGarageProfile), instead of creating a new one — this is what "Update this gear"
+  // does in body-first/equipment-first mode once the user has actually changed something.
+  const handleUpdateLoadedProfile = async (): Promise<boolean> => {
+    if (!loadedGarageProfile) return false;
+    const all = await loadGarage();
+    const patch = { entries: { ...entries }, hasCodriver, codriverEntries: { ...codriverEntries }, carPhotoDataUrl, carNote };
+    const updated = all.map((p) => (p.id === loadedGarageProfile.id ? { ...p, ...patch, updatedAt: new Date().toISOString() } : p));
+    const ok = await saveGarage(updated);
+    if (ok) setLoadedGarageProfile((prev) => (prev ? { ...prev, ...patch } : prev));
+    return ok;
   };
 
   const handleCarPhotoChange = async (file: File) => {
-    setCarPhotoDataUrl(await resizeImageToDataUrl(file, 800, 0.75));
+    setCarPhotoDataUrl(await resizeImageToDataUrl(file, 1600, 0.85));
   };
 
   const clearAll = () => {
@@ -236,6 +280,7 @@ export default function Home() {
     setCodriverEntries({});
     setCarPhotoDataUrl(undefined);
     setCarNote(undefined);
+    setLoadedGarageProfile(null);
     window.localStorage.removeItem(STORAGE_KEY);
   };
 
@@ -402,6 +447,61 @@ export default function Home() {
     await downloadEquipmentFirstReport(disciplineFilteredResults, onlyHaveEquipment, entries, codriverEntries, carPhotoDataUrl, carNote, hideNotRequired);
   };
 
+  // Whether the workspace has actually diverged from the My Gear profile it was loaded from —
+  // drives the Discard/Save/Cancel choice on Back to My Gear below.
+  const hasGarageChanges =
+    !!loadedGarageProfile &&
+    JSON.stringify({ entries, hasCodriver, codriverEntries, carPhotoDataUrl, carNote }) !==
+      JSON.stringify({
+        entries: loadedGarageProfile.entries,
+        hasCodriver: loadedGarageProfile.hasCodriver,
+        codriverEntries: loadedGarageProfile.codriverEntries,
+        carPhotoDataUrl: loadedGarageProfile.carPhotoDataUrl,
+        carNote: loadedGarageProfile.carNote,
+      });
+
+  // body-first/equipment-first are only ever entered by loading a saved gear set from My Gear (see
+  // handleLoadGarageProfile) — there's no other way in — so for those two modes "back" always means
+  // My Gear specifically, not the landing page.
+  const isGarageCheckMode = mode === "body-first" || mode === "equipment-first";
+  const backLabel = isGarageCheckMode ? "← Back to My Gear" : "← Back to main menu";
+  const backTarget: Mode = isGarageCheckMode ? "garage" : "landing";
+
+  const navigateToGarage = (reopenId: string | null) => {
+    setConfirmingBackNav(false);
+    setBackNavSaveError(null);
+    setReopenGarageProfileId(reopenId);
+    setMode("garage");
+  };
+
+  const requestBackNav = () => {
+    if (!isGarageCheckMode) {
+      setMode(backTarget);
+      return;
+    }
+    if (hasGarageChanges) {
+      setConfirmingBackNav(true);
+    } else {
+      navigateToGarage(loadedGarageProfile?.id ?? null);
+    }
+  };
+
+  const discardBackNav = () => navigateToGarage(loadedGarageProfile?.id ?? null);
+
+  const saveAndBackNav = async () => {
+    const ok = await handleUpdateLoadedProfile();
+    if (ok) {
+      navigateToGarage(loadedGarageProfile?.id ?? null);
+    } else {
+      setBackNavSaveError("Couldn't save — browser storage is full. Free up space (delete an old gear set, or remove some photos) and try again.");
+    }
+  };
+
+  const cancelBackNav = () => {
+    setConfirmingBackNav(false);
+    setBackNavSaveError(null);
+  };
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <header className="mb-6">
@@ -447,7 +547,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        {mode !== "landing" && mode !== "reference" && (
+        {isGarageCheckMode && (
           <div className="mt-2 rounded-lg border border-amber-700 bg-amber-950 p-3 text-sm text-amber-200">
             <p>
               <strong>This is a pre-screening tool, not a certification.</strong> It checks the standard number and dates
@@ -483,16 +583,48 @@ export default function Home() {
         </>
       )}
 
-      {mode !== "landing" && (
+      {mode !== "landing" && !confirmingBackNav && (
         <button
           type="button"
           disabled={blockMainMenuNav}
-          onClick={() => setMode("landing")}
+          onClick={requestBackNav}
           title={blockMainMenuNav ? "Finish entering this gear set first — Cancel or Save to My Gear." : undefined}
           className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300 disabled:cursor-not-allowed disabled:text-neutral-600 disabled:hover:text-neutral-600"
         >
-          ← Back to main menu
+          {backLabel}
         </button>
+      )}
+
+      {mode !== "landing" && confirmingBackNav && (
+        <div className="mb-4 flex flex-col gap-3">
+          <span className="text-base font-semibold text-red-400">
+            You have unsaved changes to &quot;{loadedGarageProfile?.name}&quot; — what do you want to do?
+          </span>
+          {backNavSaveError && <span className="text-sm text-red-400">{backNavSaveError}</span>}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={saveAndBackNav}
+              className="rounded border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+            >
+              💾 Save changes to this gear set
+            </button>
+            <button
+              type="button"
+              onClick={discardBackNav}
+              className="rounded border border-red-500 bg-red-900 px-4 py-2 text-sm font-semibold text-red-100 hover:bg-red-800"
+            >
+              Discard changes
+            </button>
+            <button
+              type="button"
+              onClick={cancelBackNav}
+              className="rounded border border-neutral-600 px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-800"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       )}
 
       {mode !== "landing" && mode !== "garage" && (
@@ -555,9 +687,11 @@ export default function Home() {
               ruleset={ruleset}
               classId={activeClassId}
               activeGroups={activeGroups}
-              actions={
-                <button type="button" onClick={handleDownloadReferenceReport} className={`${reportButtonClass} mb-0`}>
-                  📄 Download PDF report
+              footerActions={
+                <button type="button" onClick={handleDownloadReferenceReport} className={reportButtonClass}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                  <img src="/pdf-export.png" alt="" className="h-5 w-5 shrink-0 object-contain" />
+                  Download PDF report
                 </button>
               }
             />
@@ -603,13 +737,14 @@ export default function Home() {
               onCarPhotoChange={handleCarPhotoChange}
               onRemoveCarPhoto={() => setCarPhotoDataUrl(undefined)}
               onCarNoteChange={(note) => setCarNote(note || undefined)}
-              actions={
-                <>
-                  <SaveToGarageButton onSave={handleSaveToGarage} />
-                  <button type="button" onClick={handleDownloadBodyFirstReport} className={`${reportButtonClass} mb-0`}>
-                    📄 Download PDF report
-                  </button>
-                </>
+              gearName={loadedGarageProfile?.name}
+              actions={!loadedGarageProfile && <SaveToGarageButton onSave={handleSaveToGarage} />}
+              footerActions={
+                <button type="button" onClick={handleDownloadBodyFirstReport} className={reportButtonClass}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                  <img src="/pdf-export.png" alt="" className="h-5 w-5 shrink-0 object-contain" />
+                  Download PDF report
+                </button>
               }
             />
           )}
@@ -731,13 +866,14 @@ export default function Home() {
             onCarPhotoChange={handleCarPhotoChange}
             onRemoveCarPhoto={() => setCarPhotoDataUrl(undefined)}
             onCarNoteChange={(note) => setCarNote(note || undefined)}
-            actions={
-              <>
-                <SaveToGarageButton onSave={handleSaveToGarage} />
-                <button type="button" onClick={handleDownloadEquipmentFirstReport} className={`${reportButtonClass} mb-0`}>
-                  📄 Download PDF report
-                </button>
-              </>
+            gearName={loadedGarageProfile?.name}
+            actions={!loadedGarageProfile && <SaveToGarageButton onSave={handleSaveToGarage} />}
+            footerActions={
+              <button type="button" onClick={handleDownloadEquipmentFirstReport} className={reportButtonClass}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                <img src="/pdf-export.png" alt="" className="h-5 w-5 shrink-0 object-contain" />
+                Download PDF report
+              </button>
             }
           />
 
@@ -827,7 +963,12 @@ export default function Home() {
             <img src="/frog-mygear.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
             My Gear
           </h2>
-          <GarageManager onLoadProfile={handleLoadGarageProfile} onBlockNavChange={setBlockMainMenuNav} />
+          <GarageManager
+            onLoadProfile={handleLoadGarageProfile}
+            onBlockNavChange={setBlockMainMenuNav}
+            initialActionMenuId={reopenGarageProfileId}
+            onInitialActionMenuConsumed={() => setReopenGarageProfileId(null)}
+          />
         </section>
       )}
 
@@ -1111,17 +1252,17 @@ function PassTechVerdict({
   );
 }
 
-function SaveToGarageButton({ onSave }: { onSave: (name: string) => boolean }) {
+function SaveToGarageButton({ onSave }: { onSave: (name: string) => Promise<boolean> }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   // "error" doesn't auto-clear and doesn't hide the form — the underlying problem (usually
   // storage full) likely still needs the user to do something before Save will work.
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
 
-  const save = () => {
+  const save = async () => {
     const trimmed = name.trim();
     if (!trimmed) return;
-    const ok = onSave(trimmed);
+    const ok = await onSave(trimmed);
     if (ok) {
       setResult({ ok: true, message: `Saved "${trimmed}" to My Gear.` });
       setOpen(false);
@@ -1264,20 +1405,14 @@ function SourceLine({ ruleset, showTechSheet = false }: { ruleset: Ruleset; show
           </span>
         ))}{" "}
         — last reviewed {ruleset.lastReviewed}
-        {showTechSheet && ruleset.techSheet && (
-          <span id="tutorial-tech-sheet-link">
-            {" · "}
-            <a
-              href={ruleset.techSheet.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-white"
-            >
-              View sample tech sheet ({ruleset.techSheet.format})
-            </a>
-          </span>
-        )}
       </p>
+      {showTechSheet && ruleset.techSheet && (
+        <p id="tutorial-tech-sheet-link" className="-mt-4 mb-6 rounded-lg border border-violet-800 bg-violet-950/40 p-3 text-sm text-violet-200">
+          <a href={ruleset.techSheet.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">
+            View sample tech sheet ({ruleset.techSheet.format})
+          </a>
+        </p>
+      )}
       {ruleset.knownGaps && ruleset.knownGaps.length > 0 && (
         <div className="-mt-4 mb-6 rounded-lg border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-200">
           <p className="font-semibold">⚠️ Not tracked by this app:</p>

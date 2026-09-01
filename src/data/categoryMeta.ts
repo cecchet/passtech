@@ -2,18 +2,20 @@ import { CategoryGroup, DisciplineGroup, EquipmentCategory } from "./types";
 
 export const GROUP_ORDER: CategoryGroup[] = ["driver", "car", "rollcage"];
 
-/** Canonical display order for the 10 discipline groups — used by the main ruleset picker, the Option 3 discipline filter/grouping, and the matching PDF report. */
+/** Canonical display order for the 10 discipline groups — alphabetical, so every dropdown/checkbox
+ * list/grouping that iterates this (the main ruleset picker, the Option 3 discipline filter and
+ * results grouping, and the matching PDF report) stays consistent and easy to scan. */
 export const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Autocross",
-  "RallyCross",
-  "Rally",
-  "Road Racing",
-  "Hillclimb",
-  "Ice Racing",
-  "Endurance Racing",
-  "HPDE / Track Day",
   "Drag Racing",
+  "Endurance Racing",
+  "Hillclimb",
+  "HPDE / Track Day",
+  "Ice Racing",
   "Karting",
+  "Rally",
+  "RallyCross",
+  "Road Racing",
 ];
 
 export const GROUP_LABELS: Record<CategoryGroup, string> = {

@@ -18,7 +18,59 @@ export interface GarageProfile {
   carNote?: string;
 }
 
-const GARAGE_STORAGE_KEY = "safety-gear-check:garage:v1";
+/** Pre-IndexedDB storage location — garage profiles lived here (as one JSON string) before the
+ * quota was too easy to blow through with a few photo-heavy gear sets. Only read once, to migrate
+ * a returning user's data into IndexedDB; never written to again. */
+const LEGACY_LOCALSTORAGE_KEY = "safety-gear-check:garage:v1";
+
+const DB_NAME = "passtech";
+const DB_VERSION = 1;
+const STORE_NAME = "garage";
+/** The whole profiles array is stored as one record under this fixed key — same shape the app has
+ * always worked with (load the full array, mutate it in React state, save the full array back),
+ * just moved to a store with a much higher quota than localStorage's ~5-10MB per origin. */
+const RECORD_KEY = "profiles";
+
+function openDb(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const req = window.indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = () => {
+      if (!req.result.objectStoreNames.contains(STORE_NAME)) req.result.createObjectStore(STORE_NAME);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function getProfilesRecord(db: IDBDatabase): Promise<GarageProfile[] | undefined> {
+  return new Promise((resolve, reject) => {
+    const req = db.transaction(STORE_NAME, "readonly").objectStore(STORE_NAME).get(RECORD_KEY);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function putProfilesRecord(db: IDBDatabase, profiles: GarageProfile[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    tx.objectStore(STORE_NAME).put(profiles, RECORD_KEY);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+/** One-time read of the old localStorage-based store — used only to migrate a returning user's
+ * data into IndexedDB the first time loadGarage() finds nothing there yet. */
+function readLegacyLocalStorage(): GarageProfile[] {
+  try {
+    const raw = window.localStorage.getItem(LEGACY_LOCALSTORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 
 function newId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -34,32 +86,63 @@ export function newGarageProfile(name: string): GarageProfile {
   return { id: newId(), name, createdAt: now, updatedAt: now, entries: {} };
 }
 
-/** Reads all saved profiles from localStorage. Returns an empty array if nothing is saved yet, or the stored data is corrupt/unavailable. */
-export function loadGarage(): GarageProfile[] {
+/**
+ * Reads all saved profiles from IndexedDB. Returns an empty array if nothing is saved yet, or the
+ * stored data is corrupt/unavailable (e.g. a browser with IndexedDB disabled).
+ *
+ * The first time this finds no IndexedDB record, it checks the old localStorage-based store for a
+ * returning user's data, migrates it into IndexedDB, and — only once that write actually succeeds
+ * — clears the old localStorage key so the space is freed. If the IndexedDB write fails, the
+ * localStorage copy is left in place rather than risk losing it.
+ */
+export async function loadGarage(): Promise<GarageProfile[]> {
   try {
-    const raw = window.localStorage.getItem(GARAGE_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    const db = await openDb();
+    const existing = await getProfilesRecord(db);
+    db.close();
+    if (existing) return existing;
   } catch {
     return [];
   }
+
+  const legacy = readLegacyLocalStorage();
+  if (legacy.length > 0 && (await saveGarage(legacy))) {
+    window.localStorage.removeItem(LEGACY_LOCALSTORAGE_KEY);
+  }
+  return legacy;
 }
 
+/** Chains every saveGarage() write onto the previous one so they land in IndexedDB in the same
+ * order they were called, no matter how their underlying promises happen to resolve. Without this,
+ * two writes fired in quick succession (e.g. two profiles-state updates in the same tick) could
+ * finish out of order and leave the *older* one as what's actually persisted. localStorage's
+ * setItem was synchronous, so this couldn't happen before the IndexedDB migration. */
+let writeQueue: Promise<void> = Promise.resolve();
+
 /**
- * Returns whether the write actually succeeded. Storage can fail (most commonly quota exceeded —
- * garage profiles carry base64 photo data, which adds up fast) while React state updates happily
+ * Returns whether the write actually succeeded. Storage can fail (quota exceeded is far less
+ * likely under IndexedDB than it was under localStorage, but browsers can still refuse — private
+ * browsing, a disk that's actually full, IndexedDB disabled) while React state updates happily
  * regardless, so a caller that ignores this return value will show the change in the UI right up
- * until the next reload silently reverts it — which is exactly what used to happen here. Callers
- * should surface a failure to the user immediately, before they navigate away or close the tab.
+ * until the next reload silently reverts it. Callers should surface a failure to the user
+ * immediately, before they navigate away or close the tab.
  */
-export function saveGarage(profiles: GarageProfile[]): boolean {
-  try {
-    window.localStorage.setItem(GARAGE_STORAGE_KEY, JSON.stringify(profiles));
-    return true;
-  } catch {
-    return false;
-  }
+export function saveGarage(profiles: GarageProfile[]): Promise<boolean> {
+  const outcome = writeQueue.then(async (): Promise<boolean> => {
+    try {
+      const db = await openDb();
+      await putProfilesRecord(db, profiles);
+      db.close();
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  writeQueue = outcome.then(
+    () => undefined,
+    () => undefined
+  );
+  return outcome;
 }
 
 /** How many categories in a profile actually have data — shown in the profile list so an empty/skeleton profile is visually distinguishable from one that's actually filled in. */

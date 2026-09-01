@@ -3,6 +3,7 @@ import { CATEGORY_META, CATEGORY_ORDER, filterCategoriesByGroups, isPerOccupantC
 import { CategoryGroup, EquipmentCategory, Ruleset } from "@/data/types";
 import { CategoryResults, EquipmentEntry, effectiveCategories, effectiveRequirementLevel, isEntryEmpty, isPendingConditional, isViolation } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
+import { ZoomableThumb } from "@/components/ZoomableThumb";
 
 type AggregateState = "red" | "yellow" | "green" | "neutral";
 
@@ -31,8 +32,7 @@ function CarPhotoRow({
     <div className="mb-3 flex flex-wrap items-center gap-3 rounded-lg border border-neutral-700 p-2">
       {carPhotoDataUrl ? (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo */}
-          <img src={carPhotoDataUrl} alt="" className="h-14 w-14 shrink-0 rounded object-cover" />
+          <ZoomableThumb src={carPhotoDataUrl} className="h-14 w-14 shrink-0 rounded object-cover" />
           <button type="button" onClick={onRemovePhoto} className={smallButtonClass}>
             Remove car photo
           </button>
@@ -147,7 +147,9 @@ export function EquipmentSummary({
   onCarPhotoChange,
   onRemoveCarPhoto,
   onCarNoteChange,
+  gearName,
   actions,
+  footerActions,
 }: {
   ruleset: Ruleset;
   classId?: string;
@@ -164,8 +166,12 @@ export function EquipmentSummary({
   onCarPhotoChange?: (file: File) => void;
   onRemoveCarPhoto?: () => void;
   onCarNoteChange?: (note: string) => void;
-  /** Buttons (save to garage, download PDF, etc.) shown alongside the "Equipment summary" label. */
+  /** Name of the My Gear profile this workspace was loaded from, if any — shown next to the "Equipment summary" label so it's clear which saved gear set is being checked. */
+  gearName?: string;
+  /** Buttons (save to garage, etc.) shown alongside the "Equipment summary" label. */
   actions?: ReactNode;
+  /** Buttons shown at the bottom of the box, below the icon rows — for actions that aren't really about the summary itself (e.g. downloading the PDF report). */
+  footerActions?: ReactNode;
 }) {
   const effective = effectiveCategories(ruleset, classId);
   const categories = filterCategoriesByGroups(CATEGORY_ORDER.filter((c) => effective[c]), activeGroups);
@@ -192,7 +198,10 @@ export function EquipmentSummary({
   return (
     <div id="tutorial-equipment-summary" className="mb-6 rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Equipment summary</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+          Equipment summary
+          {gearName && <span className="normal-case text-amber-400"> — {gearName}</span>}
+        </p>
         {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
       </div>
       {showCarRow && (
@@ -219,6 +228,7 @@ export function EquipmentSummary({
           />
         )}
       </div>
+      {footerActions && <div className="mt-3 border-t border-neutral-800 pt-3">{footerActions}</div>}
     </div>
   );
 }
@@ -244,7 +254,9 @@ export function FilledEquipmentSummary({
   onCarPhotoChange,
   onRemoveCarPhoto,
   onCarNoteChange,
+  gearName,
   actions,
+  footerActions,
 }: {
   entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
   codriverEntries?: Partial<Record<EquipmentCategory, EquipmentEntry>>;
@@ -259,7 +271,11 @@ export function FilledEquipmentSummary({
   onCarPhotoChange?: (file: File) => void;
   onRemoveCarPhoto?: () => void;
   onCarNoteChange?: (note: string) => void;
+  /** Name of the My Gear profile this workspace was loaded from, if any — shown next to the "Equipment summary" label so it's clear which saved gear set is being checked. */
+  gearName?: string;
   actions?: ReactNode;
+  /** Buttons shown at the bottom of the box, below the icon row — for actions that aren't really about the summary itself (e.g. downloading the PDF report). */
+  footerActions?: ReactNode;
 }) {
   const categories = filterCategoriesByGroups(CATEGORY_ORDER, activeGroups);
   const driverProvided = categories.filter((c) => !isEntryEmpty(c, entries[c]));
@@ -276,7 +292,10 @@ export function FilledEquipmentSummary({
   return (
     <div id="tutorial-equipment-summary" className="mb-6 rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Equipment summary</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+          Equipment summary
+          {gearName && <span className="normal-case text-amber-400"> — {gearName}</span>}
+        </p>
         {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
       </div>
       {showCarRow && (
@@ -310,6 +329,7 @@ export function FilledEquipmentSummary({
           );
         })}
       </div>
+      {footerActions && <div className="mt-3 border-t border-neutral-800 pt-3">{footerActions}</div>}
     </div>
   );
 }

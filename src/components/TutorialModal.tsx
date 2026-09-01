@@ -82,7 +82,7 @@ const TOURS: Record<TourId, Tour> = {
     steps: [
       {
         targetId: "tutorial-ruleset-picker",
-        text: "Pick the sanctioning body you want to check your gear against. Here we've selected SCCA Solo as an example.",
+        text: "Pick a discipline first (step 1), then the sanctioning body within it you want to check your gear against (step 2). Here we've picked Autocross, then SCCA Solo.",
         onEnter: (actions) => actions.selectRuleset("scca-solo"),
       },
       {

@@ -16,6 +16,7 @@ import { HomologationResultBanner, FiaListLink } from "@/components/Homologation
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
+import { ZoomableThumb } from "@/components/ZoomableThumb";
 import { CategoryResult } from "@/lib/matcher";
 
 interface Props {
@@ -76,9 +77,11 @@ interface Props {
 
 const DEFAULT_MAX_ITEM_PHOTOS = 3;
 // Rollover protection often needs multiple angles (cage overview, tags/labels, logbook page,
-// padding close-up) to document — everything else keeps the default 3.
+// padding close-up) to document. A harness can have up to 5 separate belt tags (which should all
+// match) plus an overview shot. Everything else keeps the default 3.
 const MAX_ITEM_PHOTOS_BY_CATEGORY: Partial<Record<EquipmentCategory, number>> = {
   rollover_protection: 5,
+  belts_harness: 6,
 };
 function maxPhotosFor(category: EquipmentCategory): number {
   return MAX_ITEM_PHOTOS_BY_CATEGORY[category] ?? DEFAULT_MAX_ITEM_PHOTOS;
@@ -101,8 +104,7 @@ function ItemPhotoThumb({
   return (
     <div className="flex max-w-[220px] flex-col gap-1">
       <div className="flex items-start gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
-        <img src={imageDataUrl} alt="" className="h-16 w-16 shrink-0 rounded object-cover" />
+        <ZoomableThumb src={imageDataUrl} className="h-16 w-16 shrink-0 rounded object-cover" />
         <div className="flex flex-col gap-1">
           {canScan && (
             <button
@@ -176,7 +178,7 @@ function ItemPhotos({
               const file = e.target.files?.[0];
               e.target.value = "";
               if (!file) return;
-              const dataUrl = await resizeImageToDataUrl(file, 640, 0.75);
+              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
               onChange([...photos, dataUrl]);
             }}
           />
