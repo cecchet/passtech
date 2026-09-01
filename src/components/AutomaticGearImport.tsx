@@ -612,9 +612,12 @@ function ResultCard({
         <div className="mt-2 rounded border border-amber-700 bg-amber-950/40 p-2 text-xs">
           <p className="text-amber-200">
             {CATEGORY_META[category].label} already has the maximum of {maxPhotosFor(category)} photos — this one wasn&rsquo;t added.
-            Remove a photo from this item in My Gear first if you want to add this one instead.
+            Scroll down to that category below and remove one of its photos, then retry.
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
+            <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
+              Retry
+            </button>
             <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
               This is for my codriver
             </button>
