@@ -561,6 +561,13 @@ function writeReferenceCategory(w: PdfReportWriter, category: EquipmentCategory,
     w.bullet(`${base}${rule.fullFaceCondition ? ` ${rule.fullFaceCondition}` : ""}`, { size: 9 });
   }
 
+  if (category === "hnr") {
+    w.bullet("Always check that your HNR tethers are compatible with the anchors on your helmet — PassTech only checks the device's own certification, not tether/anchor compatibility.", {
+      size: 9,
+      color: COLOR.amber,
+    });
+  }
+
   if (meta.hybrid && rule.materialOnlyAccepted) {
     const base = meta.materialOnlyDescription ?? "Plain fire-resistant material accepted, no certification required.";
     w.bullet(`${base}${rule.materialNote ? ` ${rule.materialNote}` : ""}`, { size: 9 });
@@ -690,6 +697,13 @@ function writeCategoryResult(w: PdfReportWriter, result: CategoryResult, entry?:
   w.text(result.reason, { size: 8.5, color: COLOR.muted, indent: 3 });
   if (result.category === "rollover_protection" && entry && (entry.cagePaddingPresent !== undefined || entry.cageForwardHoopPaddingPresent !== undefined)) {
     w.bullet(describeCagePadding(entry), { size: 8, indent: 3, color: COLOR.faint });
+  }
+  if (result.category === "hnr") {
+    w.bullet("Always check that your HNR tethers are compatible with the anchors on your helmet — PassTech only checks the device's own certification, not tether/anchor compatibility.", {
+      size: 8,
+      indent: 3,
+      color: COLOR.amber,
+    });
   }
   result.certBreakdown?.forEach((c) => {
     w.bullet(`${c.label}: ${STATUS_LABEL[c.status]} — ${c.reason}`, { size: 8, indent: 6, color: COLOR.faint });

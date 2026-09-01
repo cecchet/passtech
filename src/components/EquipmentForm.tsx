@@ -1055,6 +1055,12 @@ export function EquipmentForm({
               )}
             </summary>
             <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
+            {category === "hnr" && (
+              <p className="mb-2 text-xs text-amber-400">
+                Always check that your HNR tethers are compatible with the anchors on your helmet &mdash; PassTech
+                only checks the device&rsquo;s own certification, not tether/anchor compatibility.
+              </p>
+            )}
 
             <div className="flex flex-col gap-2">
                 {showPhotoUpload && (
