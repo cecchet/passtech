@@ -136,6 +136,13 @@ export default function Home() {
   }, [mode, hydrated, activeTour, toursSeen]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  // Switching mode swaps in an entirely different page of content, but the browser keeps whatever
+  // scroll offset it had — on a long My Gear list that can leave the new page scrolled to (or past)
+  // its own bottom instead of showing it from the top.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [mode]);
+
   const closeTutorial = () => {
     if (activeTour) {
       setToursSeen((prev) => {

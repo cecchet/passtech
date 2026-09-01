@@ -1020,16 +1020,6 @@ export function EquipmentForm({
                 <Icon />
                 <span className="min-w-0">{meta.label}</span>
               </span>
-              {certBadges.length > 0 && (
-                <span className="flex max-w-[12rem] shrink flex-wrap items-center justify-end gap-x-1 text-xs font-normal">
-                  {certBadges.map((badge, badgeIndex) => (
-                    <span key={badge.key} className={`truncate ${badge.colorClass}`}>
-                      {badge.label}
-                      {badgeIndex < certBadges.length - 1 ? "," : ""}
-                    </span>
-                  ))}
-                </span>
-              )}
               {showPhotoUpload && entry.photoDataUrls?.[0] && (
                 // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
                 <img src={entry.photoDataUrls[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
@@ -1040,6 +1030,19 @@ export function EquipmentForm({
                 <StatusPill status={result.status} requirement={result.requirement} />
               ) : (
                 results && <StatusPill status="not_required" requirement="not_addressed" />
+              )}
+              {certBadges.length > 0 && (
+                // w-full always forces this onto its own flex line, below the name/thumbnail/pill row —
+                // sharing that row let a long category name wrap to two lines while this sat vertically
+                // centered across the whole row's height, landing its text on top of the name's.
+                <span className="flex w-full flex-wrap items-center gap-x-1 gap-y-0.5 text-xs font-normal">
+                  {certBadges.map((badge, badgeIndex) => (
+                    <span key={badge.key} className={badge.colorClass}>
+                      {badge.label}
+                      {badgeIndex < certBadges.length - 1 ? "," : ""}
+                    </span>
+                  ))}
+                </span>
               )}
             </summary>
             <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
