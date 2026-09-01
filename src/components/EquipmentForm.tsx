@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant, SourceDocument } from "@/data/types";
-import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory } from "@/data/categoryMeta";
+import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
 import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
@@ -73,18 +73,6 @@ interface Props {
   showMediaLinks?: boolean;
   /** The current ruleset's source documents, forwarded to each category's result citation so it can link out even though CategoryRule.citation almost never sets its own url. Only meaningful together with `results`. */
   sourceDocuments?: SourceDocument[];
-}
-
-const DEFAULT_MAX_ITEM_PHOTOS = 3;
-// Rollover protection often needs multiple angles (cage overview, tags/labels, logbook page,
-// padding close-up) to document. A harness can have up to 5 separate belt tags (which should all
-// match) plus an overview shot. Everything else keeps the default 3.
-const MAX_ITEM_PHOTOS_BY_CATEGORY: Partial<Record<EquipmentCategory, number>> = {
-  rollover_protection: 5,
-  belts_harness: 6,
-};
-function maxPhotosFor(category: EquipmentCategory): number {
-  return MAX_ITEM_PHOTOS_BY_CATEGORY[category] ?? DEFAULT_MAX_ITEM_PHOTOS;
 }
 
 function ItemPhotoThumb({

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
-import { CATEGORY_META } from "@/data/categoryMeta";
+import { CATEGORY_META, maxPhotosFor } from "@/data/categoryMeta";
 import { EquipmentEntry, isEntryEmpty, newCertification } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { TagCandidate } from "@/lib/useTagScanner";
@@ -22,7 +22,6 @@ const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
   "socks",
 ];
 
-const MAX_PHOTOS_PER_ITEM = 3;
 // Matches the AbortController timeout below — keep these in sync so the UI copy stays honest.
 const REQUEST_TIMEOUT_MS = 60_000;
 const REQUEST_TIMEOUT_LABEL = "a minute";
@@ -46,6 +45,7 @@ interface AnalyzeGearPhotoResponse {
   helmetType: HelmetInfo["helmetType"];
   hasVisor: boolean;
   visorNote: string;
+  isCloseupOnly: boolean;
   error?: string;
 }
 
@@ -122,6 +122,10 @@ type Stage =
       certifications: TagCandidate[];
       certNotes: string;
       addedCerts: Set<number>;
+      /** True when this photo is a tag/label close-up rather than a shot of the whole item — used
+       * so a wide overview photo confirmed later still ends up as the item's representative photo
+       * (index 0) instead of losing that spot to whichever photo was confirmed first. */
+      isCloseupOnly: boolean;
     };
 
 export function AutomaticGearImport({
@@ -254,6 +258,7 @@ export function AutomaticGearImport({
         certifications: r.certifications ?? [],
         certNotes: "",
         addedCerts: new Set(),
+        isCloseupOnly: !!r.isCloseupOnly,
       },
     });
   };
@@ -288,10 +293,16 @@ export function AutomaticGearImport({
     void runAnalysis(current.photo, current.dataUrl);
   };
 
-  const confirmItem = (category: EquipmentCategory, piece: Piece | null, target: Target, dataUrl: string, helmet?: HelmetInfo) => {
+  const confirmItem = (category: EquipmentCategory, piece: Piece | null, target: Target, dataUrl: string, isCloseupOnly: boolean, helmet?: HelmetInfo) => {
     const existing = currentEntries(target)[category];
     const photos = [...(existing?.photoDataUrls ?? [])];
-    if (photos.length < MAX_PHOTOS_PER_ITEM) photos.push(dataUrl);
+    if (photos.length < maxPhotosFor(category)) {
+      // A wide/overview shot always leads the list (index 0), even when confirmed after a tag
+      // close-up — that first photo is what the "Available Gear Sets" list preview shows, so it
+      // shouldn't lose that spot to a close-up that just happened to get confirmed first.
+      if (isCloseupOnly) photos.push(dataUrl);
+      else photos.unshift(dataUrl);
+    }
     updateEntry(target, category, {
       photoDataUrls: photos,
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
@@ -434,6 +445,7 @@ export function AutomaticGearImport({
                                 certifications: [],
                                 certNotes: "",
                                 addedCerts: new Set(),
+                                isCloseupOnly: false,
                               },
                             }
                           : c
@@ -479,17 +491,17 @@ export function AutomaticGearImport({
                           : c
                       );
                     } else {
-                      confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                      confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
                       setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
                     }
                   }}
                   onResolveConflictReplace={(category, piece, target) => {
                     clearSlot(target, category, piece);
-                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
                     setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
                   }}
                   onResolveConflictSameItem={(category, piece, target) => {
-                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                    confirmItem(category, piece, target, current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
                     setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
                   }}
                   onResolveConflictCodriver={(category, piece) => {
@@ -505,7 +517,7 @@ export function AutomaticGearImport({
                           : c
                       );
                     } else {
-                      confirmItem(category, piece, "codriver", current.dataUrl, current.stage.type === "result" ? current.stage.helmet : undefined);
+                      confirmItem(category, piece, "codriver", current.dataUrl, current.stage.type === "result" ? current.stage.isCloseupOnly : false, current.stage.type === "result" ? current.stage.helmet : undefined);
                       setCurrent((c) => (c && c.stage.type === "result" ? { ...c, target: "codriver", stage: { ...c.stage, itemConfirmed: true, conflict: null } } : c));
                     }
                   }}

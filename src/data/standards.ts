@@ -172,6 +172,9 @@ export const STANDARDS: StandardDef[] = [
   { id: "sfi-3.3-5", label: "SFI 3.3/5", family: "sfi", categories: APPAREL },
   { id: "sfi-3.3-10", label: "SFI 3.3/10", family: "sfi", categories: APPAREL },
   { id: "sfi-3.3-20", label: "SFI 3.3/20", family: "sfi", categories: APPAREL },
+  // Most arm restraint tags just print "SFI 3.3" with no TPP tier suffix at all — a real, common
+  // variant of the tag, not a typo'd/incomplete one of the tiered ratings above.
+  { id: "sfi-3.3", label: "SFI 3.3", family: "sfi", categories: ["arm_restraint"] },
 
   // Seat
   { id: "sfi-39.1", label: "SFI 39.1", family: "sfi", categories: ["seat"] },
@@ -212,7 +215,7 @@ export const STANDARDS: StandardDef[] = [
 ];
 
 /** Every SFI 3.3 tier — use when a body cites the spec generically without naming a minimum level. */
-export const SFI_3_3_IDS = ["sfi-3.3-1", "sfi-3.3-5", "sfi-3.3-10", "sfi-3.3-20"];
+export const SFI_3_3_IDS = ["sfi-3.3-1", "sfi-3.3-5", "sfi-3.3-10", "sfi-3.3-20", "sfi-3.3"];
 
 /**
  * Standard accepted-list for gloves/shoes/undergarments/arm restraints when a body cites

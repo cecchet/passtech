@@ -96,6 +96,7 @@ interface AnalyzeGearPhoto {
   helmetType: "open_face" | "full_face" | "unclear" | "";
   hasVisor: boolean;
   visorNote: string;
+  isCloseupOnly: boolean;
 }
 
 const SCHEMA = {
@@ -158,8 +159,13 @@ const SCHEMA = {
       type: "string" as const,
       description: "Brief detail about the visor when hasVisor is true (position, condition). Empty string otherwise.",
     },
+    isCloseupOnly: {
+      type: "boolean" as const,
+      description:
+        "True if this photo is a tight close-up of just a tag/label (or a small part of the item) with too little of the item itself visible to serve as a general reference photo of it — e.g. filling the frame with just the certification tag. False if enough of the whole item is visible to recognize its overall shape/condition, even if a tag is also readable in the same shot.",
+    },
   },
-  required: ["isGearPhoto", "category", "pieceType", "categoryConfidence", "notes", "certifications", "helmetType", "hasVisor", "visorNote"],
+  required: ["isGearPhoto", "category", "pieceType", "categoryConfidence", "notes", "certifications", "helmetType", "hasVisor", "visorNote", "isCloseupOnly"],
 };
 
 const categoryList = CLASSIFIABLE_CATEGORIES.map((c) => `- ${c}: ${CATEGORY_HINTS[c]}`).join("\n");
@@ -173,6 +179,8 @@ Common mix-ups to watch for: gloves vs arm restraints (gloves cover all fingers;
 2. Separately, check whether any certification/homologation tag is legible ANYWHERE in the photo — whether this is a dedicated close-up of a tag, or the tag just happens to be readable in a wider shot of the whole item (e.g. an arm restraint photographed with its sewn-in SFI tag in frame). Extract every distinct certification you can actually read into "certifications" — it's fine for this to be an empty array if no tag is legible at all in this particular photo. If a tag's text matches a standard family used by multiple product types (e.g. "SFI SPEC 3.3" appears on gloves, shoes, socks, AND arm restraints), rely on the tag's own wording (e.g. "HOOD", "ARM RESTRAINT", "GLOVES") and the product visible around it, not just the bare standard number.
 
 3. If (and only if) the category is "helmet" and the photo shows the helmet's outer shell shape, also assess helmetType (full-face vs open-face) and whether a visor/shield is attached.
+
+4. Set isCloseupOnly to true if this shot is dominated by a tag/label close-up with too little of the item itself in frame to recognize its overall shape or condition — false if enough of the whole item is visible for that, even when a tag is also legible in the same shot. This decides which photo gets shown as the item's representative thumbnail when several are uploaded, so a wide/overall shot should read false and a tight tag-only crop should read true.
 
 If the photo doesn't show any of the categories above, or isn't racing gear at all, set isGearPhoto to false. Be conservative — use "low" confidence and explain in "notes" rather than guessing when uncertain, and never invent a certification that isn't actually legible in the image.`;
 
