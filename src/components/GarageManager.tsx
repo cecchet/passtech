@@ -46,7 +46,6 @@ function downloadJson(json: string, filename: string) {
  */
 function ExportButton({ label, onExport }: { label: string; onExport: (includeHighRes: boolean) => void }) {
   const [open, setOpen] = useState(false);
-  const [includeHighRes, setIncludeHighRes] = useState(false);
 
   if (!open) {
     return (
@@ -56,23 +55,25 @@ function ExportButton({ label, onExport }: { label: string; onExport: (includeHi
     );
   }
 
+  const choose = (includeHighRes: boolean) => {
+    onExport(includeHighRes);
+    setOpen(false);
+  };
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <label className="flex items-center gap-1 text-[11px] text-neutral-500">
-        <input type="checkbox" checked={includeHighRes} onChange={(e) => setIncludeHighRes(e.target.checked)} />
-        Include high-res photos (bigger file)
-      </label>
+    <div className="flex flex-wrap items-center gap-2 rounded border border-neutral-700 bg-neutral-900 p-2">
+      <span className="text-xs text-neutral-300">Include high-resolution photos in the export?</span>
       <button
         type="button"
-        onClick={() => {
-          onExport(includeHighRes);
-          setOpen(false);
-        }}
+        onClick={() => choose(true)}
         className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
       >
-        📄 Export
+        Yes, include them
       </button>
-      <button type="button" onClick={() => setOpen(false)} className={buttonClass}>
+      <button type="button" onClick={() => choose(false)} className={buttonClass}>
+        No, keep it small
+      </button>
+      <button type="button" onClick={() => setOpen(false)} className="text-xs text-neutral-500 hover:text-neutral-300">
         Cancel
       </button>
     </div>
