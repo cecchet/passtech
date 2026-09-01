@@ -348,12 +348,17 @@ export function AutomaticGearImport({
 
   const handleFiles = (files: FileList) => {
     const photos = Array.from(files).map((file) => ({ file, previewUrl: URL.createObjectURL(file) }));
-    setTotalQueued((t) => t + photos.length);
-    setProcessed(0);
     if (!current) {
+      // Nothing's in progress — this is a fresh batch, so the counter starts over instead of
+      // carrying over the total (or the finished progress) from whatever was uploaded before.
+      setTotalQueued(photos.length);
+      setProcessed(0);
       void processPhoto(photos[0]);
       setQueue(photos.slice(1));
     } else {
+      // Still reviewing an earlier photo — these extend that same batch, so the total grows but
+      // progress-so-far is left alone.
+      setTotalQueued((t) => t + photos.length);
       setQueue((q) => [...q, ...photos]);
     }
   };
@@ -406,7 +411,7 @@ export function AutomaticGearImport({
       {current && (
         <div>
           <p className="mb-2 text-xs text-neutral-500">
-            Photo {processed} of {totalQueued} {queue.length > 0 ? `(${queue.length} more queued)` : ""}
+            Photo {processed + 1} of {totalQueued} {queue.length > 0 ? `(${queue.length} more queued)` : ""}
           </p>
           <div className="mb-2 flex gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, transient preview */}
