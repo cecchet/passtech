@@ -24,8 +24,8 @@ const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
 
 const MAX_PHOTOS_PER_ITEM = 3;
 // Matches the AbortController timeout below — keep these in sync so the UI copy stays honest.
-const REQUEST_TIMEOUT_MS = 120_000;
-const REQUEST_TIMEOUT_LABEL = "2 minutes";
+const REQUEST_TIMEOUT_MS = 60_000;
+const REQUEST_TIMEOUT_LABEL = "a minute";
 
 type Piece = "one_piece" | "jacket" | "pants";
 type Target = "driver" | "codriver";
