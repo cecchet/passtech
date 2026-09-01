@@ -235,10 +235,18 @@ export function GarageManager({
           ) : (
             <>
               <div className="mb-4 flex flex-wrap gap-2">
-                <button type="button" onClick={createProfile} className="rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
-                  + New gear set
+                <button
+                  type="button"
+                  onClick={createProfile}
+                  className="flex items-center gap-2 rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                  <img src="/gear-sets.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
+                  Add a new gear set
                 </button>
-                <label className="cursor-pointer rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
+                <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                  <img src="/file-import.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
                   Import
                   <input
                     type="file"
