@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenAI, ApiError } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { EquipmentCategory } from "@/data/types";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
+import { describeGeminiError } from "@/lib/geminiErrors";
 
 // Reads GEMINI_API_KEY from the environment server-side — never sent to the client.
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -178,15 +179,7 @@ For each certification visible on the tag, match it to one of the IDs above if i
     const parsed = JSON.parse(text) as { candidates: AnalyzeCandidate[]; notes: string };
     return NextResponse.json(parsed);
   } catch (err) {
-    if (err instanceof ApiError) {
-      if (err.status === 401 || err.status === 403) {
-        return NextResponse.json({ error: "Server's API key was rejected (check GEMINI_API_KEY)." }, { status: 500 });
-      }
-      if (err.status === 429) {
-        return NextResponse.json({ error: "Rate limited (free tier quota) — try again in a moment." }, { status: 429 });
-      }
-      return NextResponse.json({ error: `Vision analysis failed: ${err.message}` }, { status: 502 });
-    }
-    return NextResponse.json({ error: "Unexpected error analyzing the image." }, { status: 500 });
+    const { status, error } = describeGeminiError(err, "analyze-tag");
+    return NextResponse.json({ error }, { status });
   }
 }
