@@ -205,61 +205,33 @@ export function GarageManager({
 
       {!selected ? (
         <div>
-          {profiles.length === 0 ? (
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={createProfile}
-                className="flex flex-1 items-center gap-3 rounded-lg border border-emerald-700 bg-emerald-950 p-4 text-left text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
-                <img src="/gear-sets.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
-                Add a new gear set
-              </button>
-              <label className="flex flex-1 cursor-pointer items-center gap-3 rounded-lg border border-neutral-600 p-4 text-left text-sm font-semibold text-neutral-200 hover:bg-neutral-800">
-                {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
-                <img src="/file-import.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
-                Import gear set from file
-                <input
-                  type="file"
-                  accept="application/json"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    e.target.value = "";
-                    if (file) handleImportFile(file);
-                  }}
-                />
-              </label>
-            </div>
-          ) : (
-            <>
-              <div className="mb-4 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={createProfile}
-                  className="flex items-center gap-2 rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
-                  <img src="/gear-sets.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
-                  Add a new gear set
-                </button>
-                <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-neutral-600 px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
-                  <img src="/file-import.jpg" alt="" className="h-6 w-6 shrink-0 rounded bg-neutral-800 object-cover" />
-                  Import
-                  <input
-                    type="file"
-                    accept="application/json"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      e.target.value = "";
-                      if (file) handleImportFile(file);
-                    }}
-                  />
-                </label>
-              </div>
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={createProfile}
+              className="flex flex-1 items-center gap-3 rounded-lg border border-emerald-700 bg-emerald-950 p-4 text-left text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/gear-sets.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+              Add a new gear set
+            </button>
+            <label className="flex flex-1 cursor-pointer items-center gap-3 rounded-lg border border-neutral-600 p-4 text-left text-sm font-semibold text-neutral-200 hover:bg-neutral-800">
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/file-import.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+              Import gear set from file
+              <input
+                type="file"
+                accept="application/json"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (file) handleImportFile(file);
+                }}
+              />
+            </label>
+          </div>
+          {profiles.length > 0 && (
             <div className="flex flex-col gap-2">
               {profiles.map((p) => (
                 <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-neutral-700 p-3">
@@ -325,7 +297,6 @@ export function GarageManager({
                 </div>
               ))}
             </div>
-            </>
           )}
         </div>
       ) : modeChoiceId === selected.id ? (
