@@ -53,9 +53,12 @@ function ExportButton({ label, onExport }: { label: string; onExport: () => void
 
 export function GarageManager({
   onLoadProfile,
+  onBlockNavChange,
 }: {
   /** target: "body-first" loads into Option 2 (check against one body); "equipment-first" loads into Option 3 (check against every body at once). */
   onLoadProfile: (profile: GarageProfile, target: "body-first" | "equipment-first") => void;
+  /** Reports whether My Gear is currently mid-way through creating a new gear set (mode choice or Automatic mode), so the page-level "Back to main menu" can be disabled — Cancel/Save to My Gear are meant to be the only two ways out of that flow. */
+  onBlockNavChange?: (blocked: boolean) => void;
 }) {
   const [profiles, setProfiles] = useState<GarageProfile[]>([]);
   const [hydrated, setHydrated] = useState(false);
@@ -81,6 +84,15 @@ export function GarageManager({
     saveGarage(profiles);
   }, [profiles, hydrated]);
 
+  // Reports the "new gear set in progress" state up to the page so it can disable the global
+  // Back to main menu button — cleans up on unmount too, in case this component ever goes away
+  // while still mid-flow.
+  useEffect(() => {
+    onBlockNavChange?.(modeChoiceId !== null || autoImportFocusedId !== null);
+    return () => onBlockNavChange?.(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modeChoiceId, autoImportFocusedId]);
+
   const selected = profiles.find((p) => p.id === selectedId) ?? null;
 
   const updateSelected = (patch: Partial<GarageProfile>) => {
@@ -103,11 +115,25 @@ export function GarageManager({
     setAutoImportFocusedId(id);
   };
 
-  // Backing out of the mode-choice screen — the profile has no name/gear yet, so just discard it
-  // rather than leaving an empty "Untitled gear set" behind.
+  // Backing out of the mode-choice screen, or Cancel from Automatic mode's focused view — deletes
+  // the profile outright (rather than just clearing the UI state), which is what actually makes
+  // Cancel mean "discard everything entered so far": items confirmed during Automatic mode are
+  // written straight into the profile as they're confirmed (same as the rest of manual editing
+  // does), so the only way to make them not count is to remove the profile that holds them.
   const cancelNewProfile = (id: string) => {
     setProfiles((prev) => prev.filter((p) => p.id !== id));
     setModeChoiceId(null);
+    setAutoImportOpenId(null);
+    setAutoImportFocusedId(null);
+    setSelectedId(null);
+  };
+
+  // Save to My Gear from Automatic mode's focused view — everything confirmed so far is already
+  // written into the profile, so this just leaves the focused Automatic-mode view and returns to
+  // the list.
+  const saveNewProfile = () => {
+    setAutoImportOpenId(null);
+    setAutoImportFocusedId(null);
     setSelectedId(null);
   };
 
@@ -320,16 +346,18 @@ export function GarageManager({
         </div>
       ) : autoImportFocusedId === selected.id ? (
         <div>
-          <button
-            type="button"
-            onClick={() => {
-              setAutoImportOpenId(null);
-              setAutoImportFocusedId(null);
-            }}
-            className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300"
-          >
-            ← Back to My Gear
-          </button>
+          <div className="mb-4 flex items-center justify-between gap-2">
+            <button type="button" onClick={() => cancelNewProfile(selected.id)} className="text-sm font-semibold text-amber-400 hover:text-amber-300">
+              ← Cancel
+            </button>
+            <button
+              type="button"
+              onClick={saveNewProfile}
+              className="rounded border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+            >
+              💾 Save to My Gear
+            </button>
+          </div>
           <label className="mb-3 block">
             <span className="mb-1 block text-sm font-medium">Gear set name</span>
             <input
@@ -346,10 +374,7 @@ export function GarageManager({
             onChangeCodriverEntry={(category, entry) => updateSelected({ codriverEntries: { ...(selected.codriverEntries ?? {}), [category]: entry } })}
             hasCodriver={!!selected.hasCodriver}
             onSetHasCodriver={(v) => updateSelected({ hasCodriver: v })}
-            onDone={() => {
-              setAutoImportOpenId(null);
-              setAutoImportFocusedId(null);
-            }}
+            onDone={saveNewProfile}
           />
         </div>
       ) : (

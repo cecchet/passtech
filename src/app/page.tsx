@@ -68,6 +68,8 @@ export default function Home() {
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [activeTour, setActiveTour] = useState<TourId | null>(null);
   const [toursSeen, setToursSeen] = useState<Partial<Record<TourId, boolean>>>({});
+  /** True while My Gear is mid-way through creating a new gear set (mode choice or Automatic mode) — blocks navigating away so Cancel/Save to My Gear are the only two ways out. */
+  const [blockMainMenuNav, setBlockMainMenuNav] = useState(false);
 
   // One-time hydration from localStorage on mount (must run client-side only, after SSR's default-state render).
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -484,8 +486,10 @@ export default function Home() {
       {mode !== "landing" && (
         <button
           type="button"
+          disabled={blockMainMenuNav}
           onClick={() => setMode("landing")}
-          className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300"
+          title={blockMainMenuNav ? "Finish entering this gear set first — Cancel or Save to My Gear." : undefined}
+          className="mb-4 text-sm font-semibold text-amber-400 hover:text-amber-300 disabled:cursor-not-allowed disabled:text-neutral-600 disabled:hover:text-neutral-600"
         >
           ← Back to main menu
         </button>
@@ -823,7 +827,7 @@ export default function Home() {
             <img src="/frog-mygear.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
             My Gear
           </h2>
-          <GarageManager onLoadProfile={handleLoadGarageProfile} />
+          <GarageManager onLoadProfile={handleLoadGarageProfile} onBlockNavChange={setBlockMainMenuNav} />
         </section>
       )}
 
