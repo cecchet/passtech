@@ -106,7 +106,7 @@ function ItemPhotoThumb({
             </button>
           )}
           <button type="button" onClick={onRemove} className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
-            Remove photo
+            🗑️ Remove photo
           </button>
         </div>
       </div>
@@ -1045,9 +1045,9 @@ export function EquipmentForm({
                 <Icon />
                 <span className="min-w-0">{meta.label}</span>
               </span>
-              {showPhotoUpload && entry.photoDataUrls?.[0] && (
+              {showPhotoUpload && (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0]) && (
                 // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
-                <img src={entry.photoDataUrls[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
+                <img src={entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
               )}
               {isEmpty && <NoDataBadge />}
               {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
@@ -1079,7 +1079,7 @@ export function EquipmentForm({
             )}
 
             <div className="flex flex-col gap-2">
-                {showPhotoUpload && (
+                {showPhotoUpload && category !== "fire_extinguisher" && (
                   <ItemPhotos
                     category={category}
                     entry={entry}
@@ -1151,9 +1151,23 @@ export function EquipmentForm({
                   </>
                 )}
 
-                {category === "fire_extinguisher" && (
-                  <ExtinguisherUnitList units={entry.extinguisherUnits ?? []} onChange={(extinguisherUnits) => update({ extinguisherUnits })} />
-                )}
+                {category === "fire_extinguisher" &&
+                  (() => {
+                    // One-time reconciliation: a brief window before per-unit photos existed wrote
+                    // straight into the shared entry.photoDataUrls (the generic per-category photo
+                    // control, now hidden for this category). Fold any leftovers from that window
+                    // into the first unit here so they don't just vanish, and clear the shared field
+                    // once the user next edits anything so this doesn't keep re-merging.
+                    const strayPhotos = entry.photoDataUrls ?? [];
+                    const baseUnits = entry.extinguisherUnits ?? [];
+                    const units =
+                      strayPhotos.length === 0
+                        ? baseUnits
+                        : baseUnits.length > 0
+                          ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
+                          : [{ ...newExtinguisherUnit(), photoDataUrls: strayPhotos }];
+                    return <ExtinguisherUnitList units={units} onChange={(extinguisherUnits) => update({ extinguisherUnits, photoDataUrls: [] })} />;
+                  })()}
 
                 {category === "rollover_protection" && (
                   <RolloverProtectionFields category={category} entry={entry} onChange={update} onReportMissing={onReportMissing} />
