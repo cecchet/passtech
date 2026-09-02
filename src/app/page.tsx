@@ -20,7 +20,7 @@ import {
   isViolation,
   overallEligibility,
 } from "@/lib/matcher";
-import { GarageProfile, newGarageProfile, loadGarage, saveGarage } from "@/lib/garage";
+import { GarageProfile, newGarageProfile, loadGarage, saveGarage, loadWorkspace, saveWorkspace, clearWorkspace } from "@/lib/garage";
 import { BUILD_DATE } from "@/lib/version";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -46,7 +46,6 @@ interface MissingReport {
 // Bump this by hand whenever a new build is deployed — it's shown next to the app title so we can
 // tell at a glance whether a user reporting an issue is on the latest version or a stale cached one.
 
-const STORAGE_KEY = "safety-gear-check:v2";
 const LEGACY_TUTORIAL_SEEN_KEY = "safety-gear-check:tutorial-seen";
 const TOURS_SEEN_KEY = "safety-gear-check:tours-seen";
 
@@ -91,41 +90,44 @@ export default function Home() {
   /** Which gear set's action menu to reopen the next time GarageManager mounts — set right before navigating back to My Gear from body-first/equipment-first, so returning lands back on the same gear set instead of a blank list. Consumed once by GarageManager (see onReopenConsumed). */
   const [reopenGarageProfileId, setReopenGarageProfileId] = useState<string | null>(null);
 
-  // One-time hydration from localStorage on mount (must run client-side only, after SSR's default-state render).
-  /* eslint-disable react-hooks/set-state-in-effect */
+  // One-time hydration on mount (must run client-side only, after SSR's default-state render).
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const saved = JSON.parse(raw);
-        if (saved.entries) setEntries(saved.entries);
-        if (saved.codriverEntries) setCodriverEntries(saved.codriverEntries);
-        if (typeof saved.hasCodriver === "boolean") setHasCodriver(saved.hasCodriver);
-        if (saved.carPhotoDataUrl) setCarPhotoDataUrl(saved.carPhotoDataUrl);
-        if (saved.carNote) setCarNote(saved.carNote);
-        if (saved.activeGroups) setActiveGroups(new Set(saved.activeGroups));
-        if (saved.rulesetId) setRulesetId(saved.rulesetId);
-        if (saved.classId) setClassId(saved.classId);
-        if (saved.mode) setMode(saved.mode);
-        if (saved.missingReports) setMissingReports(saved.missingReports);
-        if (typeof saved.onlyHaveEquipment === "boolean") setOnlyHaveEquipment(saved.onlyHaveEquipment);
-        if (typeof saved.hideNotRequired === "boolean") setHideNotRequired(saved.hideNotRequired);
-        if (saved.activeDisciplines) setActiveDisciplines(new Set(saved.activeDisciplines));
+    void (async () => {
+      try {
+        const saved = await loadWorkspace();
+        if (saved) {
+          if (saved.entries) setEntries(saved.entries);
+          if (saved.codriverEntries) setCodriverEntries(saved.codriverEntries);
+          if (typeof saved.hasCodriver === "boolean") setHasCodriver(saved.hasCodriver);
+          if (saved.carPhotoDataUrl) setCarPhotoDataUrl(saved.carPhotoDataUrl);
+          if (saved.carNote) setCarNote(saved.carNote);
+          if (saved.activeGroups) setActiveGroups(new Set(saved.activeGroups as CategoryGroup[]));
+          if (saved.rulesetId) setRulesetId(saved.rulesetId);
+          if (saved.classId) setClassId(saved.classId);
+          if (saved.mode) setMode(saved.mode as Mode);
+          if (saved.missingReports) setMissingReports(saved.missingReports);
+          if (typeof saved.onlyHaveEquipment === "boolean") setOnlyHaveEquipment(saved.onlyHaveEquipment);
+          if (typeof saved.hideNotRequired === "boolean") setHideNotRequired(saved.hideNotRequired);
+          if (saved.activeDisciplines) setActiveDisciplines(new Set(saved.activeDisciplines as DisciplineGroup[]));
+        }
+      } catch {
+        // ignore corrupt/unavailable storage
       }
-      const rawToursSeen = window.localStorage.getItem(TOURS_SEEN_KEY);
-      if (rawToursSeen) {
-        setToursSeen(JSON.parse(rawToursSeen));
-      } else if (window.localStorage.getItem(LEGACY_TUTORIAL_SEEN_KEY)) {
-        // Pre-dates the per-page tours — the visitor has already seen the landing intro, but every
-        // page-specific tour below is new to them and should still auto-launch on first visit.
-        setToursSeen({ landing: true });
+      try {
+        const rawToursSeen = window.localStorage.getItem(TOURS_SEEN_KEY);
+        if (rawToursSeen) {
+          setToursSeen(JSON.parse(rawToursSeen));
+        } else if (window.localStorage.getItem(LEGACY_TUTORIAL_SEEN_KEY)) {
+          // Pre-dates the per-page tours — the visitor has already seen the landing intro, but every
+          // page-specific tour below is new to them and should still auto-launch on first visit.
+          setToursSeen({ landing: true });
+        }
+      } catch {
+        // ignore corrupt/unavailable storage
       }
-    } catch {
-      // ignore corrupt/unavailable storage
-    }
-    setHydrated(true);
+      setHydrated(true);
+    })();
   }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Auto-launches each page's own tour the first time it's visited — but never interrupts a tour
   // already in progress, and garage/My Gear has no tour of its own to offer.
@@ -165,24 +167,21 @@ export default function Home() {
 
   useEffect(() => {
     if (!hydrated) return;
-    window.localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        entries,
-        codriverEntries,
-        hasCodriver,
-        carPhotoDataUrl,
-        carNote,
-        rulesetId,
-        classId,
-        mode,
-        missingReports,
-        onlyHaveEquipment,
-        hideNotRequired,
-        activeGroups: Array.from(activeGroups),
-        activeDisciplines: Array.from(activeDisciplines),
-      })
-    );
+    void saveWorkspace({
+      entries,
+      codriverEntries,
+      hasCodriver,
+      carPhotoDataUrl,
+      carNote,
+      rulesetId,
+      classId,
+      mode,
+      missingReports,
+      onlyHaveEquipment,
+      hideNotRequired,
+      activeGroups: Array.from(activeGroups),
+      activeDisciplines: Array.from(activeDisciplines),
+    });
   }, [
     entries,
     codriverEntries,
@@ -288,7 +287,7 @@ export default function Home() {
     setCarPhotoDataUrl(undefined);
     setCarNote(undefined);
     setLoadedGarageProfile(null);
-    window.localStorage.removeItem(STORAGE_KEY);
+    void clearWorkspace();
   };
 
   const copyMissingReports = async () => {

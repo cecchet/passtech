@@ -24,18 +24,24 @@ export interface GarageProfile {
 const LEGACY_LOCALSTORAGE_KEY = "safety-gear-check:garage:v1";
 
 const DB_NAME = "passtech";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_NAME = "garage";
 /** The whole profiles array is stored as one record under this fixed key — same shape the app has
  * always worked with (load the full array, mutate it in React state, save the full array back),
  * just moved to a store with a much higher quota than localStorage's ~5-10MB per origin. */
 const RECORD_KEY = "profiles";
 
+/** The current-workspace "resume where I left off" snapshot (see WorkspaceState) — added in v2,
+ * alongside the v1 garage store, so a browser already on v1 upgrades in place. */
+const WORKSPACE_STORE_NAME = "workspace";
+const WORKSPACE_RECORD_KEY = "state";
+
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = window.indexedDB.open(DB_NAME, DB_VERSION);
     req.onupgradeneeded = () => {
       if (!req.result.objectStoreNames.contains(STORE_NAME)) req.result.createObjectStore(STORE_NAME);
+      if (!req.result.objectStoreNames.contains(WORKSPACE_STORE_NAME)) req.result.createObjectStore(WORKSPACE_STORE_NAME);
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -182,4 +188,123 @@ export function parseGarageImport(json: string): GarageProfile[] {
   return profiles.filter(
     (p): p is GarageProfile => p && typeof p === "object" && typeof p.id === "string" && typeof p.name === "string" && typeof p.entries === "object"
   );
+}
+
+interface WorkspaceMissingReport {
+  category: EquipmentCategory;
+  label: string;
+  reportedAt: string;
+}
+
+/**
+ * The "resume where I left off" snapshot of the checker workspace (as opposed to a named,
+ * intentionally-saved GarageProfile) — everything page.tsx needs to restore on the next visit.
+ * Used to live as one JSON blob in localStorage; moved to IndexedDB for the same reason the garage
+ * store was (see LEGACY_LOCALSTORAGE_KEY above) — a few photo-heavy gear sets loaded into the
+ * workspace routinely blew past localStorage's ~5-10MB quota and crashed the app outright.
+ */
+export interface WorkspaceState {
+  entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+  codriverEntries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+  hasCodriver: boolean;
+  carPhotoDataUrl?: string;
+  carNote?: string;
+  rulesetId: string;
+  classId?: string;
+  mode: string;
+  missingReports: WorkspaceMissingReport[];
+  onlyHaveEquipment: boolean;
+  hideNotRequired: boolean;
+  activeGroups: string[];
+  activeDisciplines: string[];
+}
+
+/** Pre-IndexedDB storage location for the workspace snapshot — same one-time-migration-then-never-
+ * written-again treatment as LEGACY_LOCALSTORAGE_KEY above. */
+const LEGACY_WORKSPACE_LOCALSTORAGE_KEY = "safety-gear-check:v2";
+
+function getWorkspaceRecord(db: IDBDatabase): Promise<WorkspaceState | undefined> {
+  return new Promise((resolve, reject) => {
+    const req = db.transaction(WORKSPACE_STORE_NAME, "readonly").objectStore(WORKSPACE_STORE_NAME).get(WORKSPACE_RECORD_KEY);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function putWorkspaceRecord(db: IDBDatabase, state: WorkspaceState): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(WORKSPACE_STORE_NAME, "readwrite");
+    tx.objectStore(WORKSPACE_STORE_NAME).put(state, WORKSPACE_RECORD_KEY);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function readLegacyWorkspaceLocalStorage(): WorkspaceState | undefined {
+  try {
+    const raw = window.localStorage.getItem(LEGACY_WORKSPACE_LOCALSTORAGE_KEY);
+    return raw ? (JSON.parse(raw) as WorkspaceState) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Same migrate-once-then-clear treatment as loadGarage() — see its comment. */
+export async function loadWorkspace(): Promise<WorkspaceState | undefined> {
+  try {
+    const db = await openDb();
+    const existing = await getWorkspaceRecord(db);
+    db.close();
+    if (existing) return existing;
+  } catch {
+    return undefined;
+  }
+
+  const legacy = readLegacyWorkspaceLocalStorage();
+  if (legacy && (await saveWorkspace(legacy))) {
+    window.localStorage.removeItem(LEGACY_WORKSPACE_LOCALSTORAGE_KEY);
+  }
+  return legacy;
+}
+
+/** Own write-queue, independent of saveGarage()'s — see its comment for why one's needed at all;
+ * these two write streams target different stores so there's no ordering relationship between them
+ * to preserve, just within each one's own sequence of calls. */
+let workspaceWriteQueue: Promise<void> = Promise.resolve();
+
+/** Fire-and-forget from the caller's point of view (unlike saveGarage(), whose callers must check
+ * the result) — this is a convenience snapshot, not the record of truth, so a failed write here
+ * just means the next visit resumes from an older point rather than losing anything a user
+ * intentionally saved. */
+export function saveWorkspace(state: WorkspaceState): Promise<boolean> {
+  const outcome = workspaceWriteQueue.then(async (): Promise<boolean> => {
+    try {
+      const db = await openDb();
+      await putWorkspaceRecord(db, state);
+      db.close();
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  workspaceWriteQueue = outcome.then(
+    () => undefined,
+    () => undefined
+  );
+  return outcome;
+}
+
+export async function clearWorkspace(): Promise<void> {
+  try {
+    const db = await openDb();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(WORKSPACE_STORE_NAME, "readwrite");
+      tx.objectStore(WORKSPACE_STORE_NAME).delete(WORKSPACE_RECORD_KEY);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  } catch {
+    // ignore — worst case the next visit resumes from the last successfully-saved snapshot
+  }
 }
