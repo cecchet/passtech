@@ -1,0 +1,42 @@
+PassTech
+Copyright (C) 2026 Frog Racing
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version. See the LICENSE file in this repository
+for the full license text.
+
+If you run a modified version of this program to let others interact with
+it over a network, section 13 of the license requires that you also offer
+those users a way to get the corresponding source of your modified version.
+
+
+BRAND ASSETS -- NOT COVERED BY THE LICENSE ABOVE
+-------------------------------------------------
+The AGPLv3 license above covers this repository's source code. It does not
+extend to the "PassTech" name, the Frog Racing mascot character design, or
+its logo/icon renderings, including but not limited to:
+
+  - public/frog-racing-logo.png
+  - public/passtech-whitebackground.jpg
+  - public/icons/icon-192.png, icon-512.png, icon-maskable-512.png
+  - the mascot artwork used throughout public/ as category illustrations
+
+These remain the property of Frog Racing, all rights reserved. You may
+describe your fork as based on or derived from PassTech, but you may not
+use the PassTech name, wordmark, or mascot/logo artwork to represent a
+fork, a derivative work, or an unaffiliated deployment as PassTech itself,
+or in any way that implies Frog Racing's endorsement, without permission.
+Contact passtech@frogracing.us to ask.
+
+
+THIRD-PARTY ASSETS
+-------------------
+The following files are bundled in this repository but are not Frog
+Racing's property and are not licensed under the AGPLv3 by this project;
+they remain their respective owners':
+
+  - public/youtube-logo.png -- YouTube/Google trademark
+  - public/next.svg, public/vercel.svg, public/globe.svg, public/file.svg,
+    public/window.svg -- default Next.js/Vercel starter template assets
