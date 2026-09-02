@@ -194,6 +194,7 @@ const gravelTrials: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025", section: "9.7" },
       confidence: "high",
       notes: "Rule 9.7: front and rear tow points required. No marking/color spec given.",

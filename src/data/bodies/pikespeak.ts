@@ -272,6 +272,7 @@ const hillClimb: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...sourceDoc, section: "123" },
       confidence: "high",
       notes:
@@ -381,6 +382,7 @@ const hillClimb: Ruleset = {
       },
       tow_hook: {
         requirement: "required",
+        towHookSidesRequired: "both",
         materialNote:
           "Rule Book §414.5: a visible towing eye, front and rear, painted yellow, red, or orange, that allows passage of a 60mm (2.37') diameter cylinder — this explicitly supersedes the general 1.5' ring size (§123.2). Must allow the car to be towed on a dry surface with traction applied at up to ±15° from the car's longitudinal centerline, wheels blocked by the main braking system, checked with event-spec tires fitted.",
         citation: { ...sourceDoc, section: "414.5" },

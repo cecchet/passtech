@@ -11,6 +11,7 @@ import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
 import { HelmetPhotoScan } from "@/components/HelmetPhotoScan";
+import { ExtinguisherPhotoScan } from "@/components/ExtinguisherPhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { HomologationResultBanner, FiaListLink } from "@/components/HomologationResultBanner";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
@@ -404,7 +405,9 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
   const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
 
   return (
-    <div className="flex flex-wrap items-end gap-2 rounded border border-neutral-700 p-2">
+    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+      <ExtinguisherPhotoScan onApply={onChange} />
+      <div className="flex flex-wrap items-end gap-2">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
         Class A rating (if any)
         <input
@@ -469,6 +472,7 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
       <button type="button" onClick={onRemove} aria-label="Remove this extinguisher" className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">
         Remove
       </button>
+      </div>
     </div>
   );
 }
@@ -837,10 +841,10 @@ function RolloverProtectionFields({
 
 // Presence-only categories with no other fields of their own (tow hook, tow rope, emergency
 // triangle, first aid kit, window breaker, kill switch) — the only way the user can indicate
-// possession is a single checkbox. Fire extinguisher and rollover protection are presence-only
-// too but have their own dedicated fields, so they're excluded here.
+// possession is a single checkbox. Fire extinguisher, tow hook, and rollover protection are
+// presence-only too but have their own dedicated fields, so they're excluded here.
 function isSimplePresenceCategory(category: EquipmentCategory): boolean {
-  return CATEGORY_META[category].presenceOnly === true && category !== "fire_extinguisher" && category !== "rollover_protection";
+  return CATEGORY_META[category].presenceOnly === true && category !== "fire_extinguisher" && category !== "tow_hook" && category !== "rollover_protection";
 }
 
 const CERT_BADGE_COLOR: Record<CategoryResult["status"], string> = {
@@ -1078,6 +1082,19 @@ export function EquipmentForm({
                     <input type="checkbox" checked={entry.skipped === false} onChange={(e) => update({ skipped: e.target.checked ? false : undefined })} />
                     I have this item
                   </label>
+                )}
+
+                {category === "tow_hook" && (
+                  <div className="flex gap-4">
+                    <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
+                      <input type="checkbox" checked={entry.towHookFront === true} onChange={(e) => update({ towHookFront: e.target.checked || undefined })} />
+                      Front
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
+                      <input type="checkbox" checked={entry.towHookRear === true} onChange={(e) => update({ towHookRear: e.target.checked || undefined })} />
+                      Rear
+                    </label>
+                  </div>
                 )}
 
                 {category === "helmet" && (

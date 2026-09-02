@@ -193,6 +193,7 @@ const performanceRally: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...sourceDoc, section: "Technical Rule 12.3.13" },
       confidence: "high",
       notes:
@@ -404,6 +405,7 @@ const rallySprint: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...sourceDoc, section: "NRR 28.3.2e, cross-references Technical Rule 12.3.13" },
       confidence: "high",
       notes: "Same as Performance Rally: metal tow eye front and rear, 'TOW' sticker, painted yellow/red/orange, minimum 3/4 inch internal diameter.",

@@ -223,6 +223,7 @@ const ihraSportsmanET: Ruleset = {
     },
     tow_hook: {
       requirement: "conditional",
+      towHookSidesRequired: "front",
       condition: "Only mandatory for entries competing in National or SSNC (Summit SuperSeries National Championship) events — not a blanket requirement for every Sportsman entry at a member track.",
       citation: { ...sGeneral, section: "General Regulations - All Classes, TOW HOOK" },
       confidence: "high",

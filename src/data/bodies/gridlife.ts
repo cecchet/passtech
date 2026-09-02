@@ -241,6 +241,7 @@ const notAddressedKillSwitch: CategoryRule = {
 
 const towHookRule: CategoryRule = {
   requirement: "required",
+  towHookSidesRequired: "both",
   materialNote:
     "'All cars must have at least 1 tow hook on the front and 1 tow hook on the back, either labeled or in an obvious location. Tow hooks must be strong enough to bear the weight of the car under a snapping/yanking condition if the car becomes stuck and they must be used. OEM tie down locations are acceptable if they can easily be accessed and are labeled (tape, etc).'",
   citation: { ...sourceDoc, section: "Tow Hooks/Tow Points" },

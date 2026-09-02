@@ -190,6 +190,7 @@ const performanceRally: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.2.9" },
       confidence: "medium",
       notes:

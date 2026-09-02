@@ -274,6 +274,7 @@ const raceGear: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...rulebook, section: "6E.20" },
       confidence: "high",
       notes:

@@ -992,6 +992,7 @@ const roadRacing: Ruleset = {
     },
     tow_hook: {
       requirement: "conditional",
+      towHookSidesRequired: "both",
       condition:
         "Required, front and rear, on all cars EXCEPT Formula and Sports Racing category classes. Formula/Sports Racing cars may instead use their exposed roll bar for towing, or (uniquely among all classes) carry a removable towing eye inside the car.",
       materialNote:

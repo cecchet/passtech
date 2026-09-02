@@ -273,6 +273,7 @@ const endurance: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...sourceDoc, section: "3.16" },
       confidence: "high",
       notes:

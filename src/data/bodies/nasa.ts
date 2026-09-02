@@ -227,6 +227,7 @@ const roadRacing: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       materialNote:
         "CCR §15.12 ('Tow Eyes'): all race vehicles except formula cars must have at least two easily accessible, usable tow eyes/points — one front, one rear. Must not protrude dangerously or require removing bodywork/panels to access. CCR warns that without them, the tow crew will hook onto whatever's available (at the competitor's own risk) — NASA and the tow crew disclaim liability for resulting damage.",
       citation: { title: "NASA CCR", version: "2026.3", section: "15.12" },
@@ -554,6 +555,7 @@ const rallySport: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       materialNote:
         "GRR §3.26: fixed, all-metal towing attachment points (plates, rings, or hoops) required front and rear, attached directly to the chassis/shell, made obvious with paint and/or arrows in yellow/red/orange, and readily accessible without crawling or reaching under the car. The opening must be large enough to pass a standard golf ball through and shaped so it won't cut a soft shackle or strap threaded through it. A separate hook may optionally be added in addition to these points, installed close to the bumper/bodywork without protruding to the side (pedestrian-safety consideration).",
       citation: { title: "NASA Rally Sport GRR Section 3", version: "16.0", section: "3.26" },

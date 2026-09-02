@@ -474,6 +474,7 @@ const clubRacing: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...clubRacingSourceDoc, section: "General Requirements 3" },
       confidence: "high",
       notes: "Front and rear tow hook, strap, or other suitable device. Recommended (not required) to be positioned for easy access in a gravel trap and to not protrude beyond the bumper.",

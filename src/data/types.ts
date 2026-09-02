@@ -152,6 +152,13 @@ export interface CategoryRule {
    */
   fireExtinguisherOptions?: ExtinguisherOption[];
   /**
+   * Tow hook only: which mounting point(s) the body actually requires. Most bodies that address
+   * tow hooks at all require both ends ("front and rear tow points"); a few (e.g. IHRA) only
+   * mandate one specific end. Omit for bodies that just want "a tow hook" with no front/rear
+   * distinction in the rule text -- either one entered then satisfies it.
+   */
+  towHookSidesRequired?: "front" | "rear" | "both";
+  /**
    * This category's requirement can also be satisfied by having a valid, currently-accepted entry
    * for the named alternative category instead (e.g. many bodies accept EITHER arm restraints OR a
    * window net, not both — arm_restraint.satisfiedByAlternative = "window_net" and vice versa). Set

@@ -226,6 +226,7 @@ const clubRacing: Ruleset = {
     },
     tow_hook: {
       requirement: "required",
+      towHookSidesRequired: "both",
       citation: { ...sourceDoc, section: "II.D, General Requirements — Tow Points" },
       confidence: "high",
       notes:

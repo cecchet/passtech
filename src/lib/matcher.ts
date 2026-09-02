@@ -120,13 +120,18 @@ export interface EquipmentEntry {
   /** Rollover protection only: free-text standard name when cagePaddingStandardId is NOT_LISTED. */
   cagePaddingStandardCustom?: string;
   /**
-   * Presence-only categories with no other fields (tow hook, tow rope, emergency triangle, first
-   * aid kit, window breaker, kill switch) only: the single "I have this item" checkbox. `false`
-   * means checked/present; anything else (including undefined) reads as "no data yet". Categories
-   * with real fields of their own (certifications, extinguisher units, rollover protection's
-   * dedicated fields) infer presence from those fields instead — see `isEntryEmpty`.
+   * Presence-only categories with no other fields (tow rope, emergency triangle, first aid kit,
+   * window breaker, kill switch, hood pins, spill kit, parachute) only: the single "I have this
+   * item" checkbox. `false` means checked/present; anything else (including undefined) reads as
+   * "no data yet". Categories with real fields of their own (certifications, extinguisher units,
+   * tow hook's front/rear pair, rollover protection's dedicated fields) infer presence from those
+   * fields instead — see `isEntryEmpty`.
    */
   skipped?: boolean;
+  /** Tow hook only: whether a front tow hook/point is present, entered separately from rear since some bodies require both. */
+  towHookFront?: boolean;
+  /** Tow hook only: whether a rear tow hook/point is present. */
+  towHookRear?: boolean;
   /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3 for most categories, up to 5 for rollover_protection (see EquipmentForm's MAX_ITEM_PHOTOS_BY_CATEGORY). Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
   photoDataUrls?: string[];
 }
@@ -694,6 +699,7 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
 export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry | undefined): boolean {
   if (!entry) return true;
   if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).length === 0;
+  if (category === "tow_hook") return !entry.towHookFront && !entry.towHookRear;
   if (category === "rollover_protection") return !entry.bodyStyle;
   const meta = CATEGORY_META[category];
   if (meta.presenceOnly) return entry.skipped !== false;
@@ -773,6 +779,24 @@ export function evaluateCategory(
 
   if (category === "rollover_protection") {
     return evaluateRolloverProtection(rule, entry, base);
+  }
+
+  if (category === "tow_hook" && rule.towHookSidesRequired) {
+    const hasFront = entry.towHookFront === true;
+    const hasRear = entry.towHookRear === true;
+    const need = rule.towHookSidesRequired;
+    const satisfied = need === "front" ? hasFront : need === "rear" ? hasRear : hasFront && hasRear;
+    if (!satisfied) {
+      const needLabel = need === "front" ? "a front tow hook" : need === "rear" ? "a rear tow hook" : "both a front AND a rear tow hook";
+      const haveLabel = [hasFront && "front", hasRear && "rear"].filter(Boolean).join(" and ") || "neither";
+      return {
+        ...base,
+        status: base.requirement === "recommended" ? "recommended_only" : "rejected",
+        reason: `Needs ${needLabel} — you have ${haveLabel}.`,
+      };
+    }
+    const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
+    return { ...base, status, reason: rule.materialNote ?? "Present." };
   }
 
   if (CATEGORY_META[category].presenceOnly) {
