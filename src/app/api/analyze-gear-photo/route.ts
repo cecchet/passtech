@@ -30,11 +30,10 @@ function isRateLimited(ip: string): boolean {
   return recent.length > RATE_LIMIT;
 }
 
-// Automatic Mode v1 only classifies driver-worn personal protective equipment — the set of
-// categories a person would actually photograph one item/tag at a time. Car-side categories
-// (seat, harness, window net, fuel cell, etc.) aren't included: they're less commonly
-// photographed this way, and this endpoint would need a much larger disambiguation prompt to
-// tell e.g. a harness tag from an arm-restraint tag reliably.
+// Covers every photographable category except fire extinguishers (their rating/weight/date data
+// doesn't fit this endpoint's standardId-based certification schema at all — see
+// ExtinguisherPhotoScan/analyze-extinguisher instead, which the client calls as a follow-up once
+// this endpoint classifies a photo as "fire_extinguisher").
 const CLASSIFIABLE_CATEGORIES = [
   "helmet",
   "balaclava",
@@ -46,6 +45,20 @@ const CLASSIFIABLE_CATEGORIES = [
   "arm_restraint",
   "shoes",
   "socks",
+  "seat",
+  "belts_harness",
+  "window_net",
+  "fuel_cell",
+  "fire_extinguisher",
+  "fire_suppression",
+  "kill_switch",
+  "tow_hook",
+  "emergency_triangle",
+  "window_breaker",
+  "spill_kit",
+  "hood_pins",
+  "parachute",
+  "rollover_protection",
 ] as const satisfies readonly EquipmentCategory[];
 
 const CATEGORY_HINTS: Record<(typeof CLASSIFIABLE_CATEGORIES)[number], string> = {
@@ -59,6 +72,20 @@ const CATEGORY_HINTS: Record<(typeof CLASSIFIABLE_CATEGORIES)[number], string> =
   arm_restraint: "an arm restraint — a short strap/cuff with a tether and clip, worn around the forearm/wrist, NOT a glove",
   shoes: "a pair (or single) of racing shoes/boots",
   socks: "fire-retardant socks — footwear-shaped thin fabric, not shoes",
+  seat: "a racing seat installed in a car (bucket-style shell, often with a certification label on the back or shell), not a stock/OEM seat",
+  belts_harness: "a multi-point racing harness — shoulder straps, lap belts, sometimes a sub/crotch strap, meeting at a central buckle — installed in a car or laid out",
+  window_net: "a net (mesh webbing) mounted across a car's window opening",
+  fuel_cell: "a fuel cell/tank — a metal or composite canister mounted in the trunk or rear of a car, distinct from the car's stock fuel tank",
+  fire_extinguisher: "a handheld fire extinguisher cylinder, its label and/or a manufacture-date stamp visible",
+  fire_suppression: "an onboard fire suppression SYSTEM — a fixed cylinder plumbed to nozzles around the engine/cockpit, mounted in the car (not a handheld extinguisher you'd carry)",
+  kill_switch: "a master electrical kill switch / battery cutoff — a rotary or pull switch, often red, mounted on the car's exterior or dash",
+  tow_hook: "a tow hook, eye, ring, or loop mounted at the front or rear of a car for towing/recovery",
+  emergency_triangle: "a reflective roadside warning triangle",
+  window_breaker: "a window-breaker tool or seatbelt cutter — a small handheld tool with a pointed tip and/or blade",
+  spill_kit: "a kit of absorbent material (pads, granules, or a bag/box labeled for oil/fuel/coolant absorption) for containing a fluid spill",
+  hood_pins: "a pair of hood pins — metal pins with a spring clip, mounted through a car's hood and fender/bumper to secure it",
+  parachute: "a drag-racing parachute mounted at the rear of a car, folded/packed or deployed",
+  rollover_protection: "a roll cage or roll bar installed inside a car — welded or bolted tubing forming a protective structure around the driver",
 };
 
 // Every standard registered for ANY of the classifiable categories, each annotated with which
@@ -90,6 +117,7 @@ interface AnalyzeGearPhoto {
   isGearPhoto: boolean;
   category: string;
   pieceType: "one_piece" | "jacket" | "pants" | "";
+  towHookSide: "front" | "rear" | "";
   categoryConfidence: "high" | "medium" | "low";
   notes: string;
   certifications: CertCandidate[];
@@ -115,6 +143,12 @@ const SCHEMA = {
       enum: ["one_piece", "jacket", "pants", ""],
       description:
         "Only meaningful when category is \"firesuit\": whether the photo shows a one-piece coverall, just the jacket/top half of a two-piece suit, or just the pants/bottom half. Empty string otherwise, or if you can't tell (e.g. a tag close-up with no garment shape visible).",
+    },
+    towHookSide: {
+      type: "string" as const,
+      enum: ["front", "rear", ""],
+      description:
+        "Only meaningful when category is \"tow_hook\": whether the photo shows the front or rear tow point -- look for context clues (front bumper/grille/headlights vs rear bumper/taillights/trunk). Empty string if you genuinely can't tell.",
     },
     categoryConfidence: { type: "string" as const, enum: ["high", "medium", "low"] },
     notes: {
@@ -165,7 +199,7 @@ const SCHEMA = {
         "True if this photo is a tight close-up of just a tag/label (or a small part of the item) with too little of the item itself visible to serve as a general reference photo of it — e.g. filling the frame with just the certification tag. False if enough of the whole item is visible to recognize its overall shape/condition, even if a tag is also readable in the same shot.",
     },
   },
-  required: ["isGearPhoto", "category", "pieceType", "categoryConfidence", "notes", "certifications", "helmetType", "hasVisor", "visorNote", "isCloseupOnly"],
+  required: ["isGearPhoto", "category", "pieceType", "towHookSide", "categoryConfidence", "notes", "certifications", "helmetType", "hasVisor", "visorNote", "isCloseupOnly"],
 };
 
 const categoryList = CLASSIFIABLE_CATEGORIES.map((c) => `- ${c}: ${CATEGORY_HINTS[c]}`).join("\n");
@@ -174,11 +208,13 @@ const PROMPT = `This photo was uploaded as part of a batch of racing-safety-equi
 
 1. Classify which equipment category it shows, one of:
 ${categoryList}
-Common mix-ups to watch for: gloves vs arm restraints (gloves cover all fingers; arm restraints are a wrist/forearm strap with a tether, no fingers); undergarment vs firesuit (undergarment is thin plain long underwear, firesuit is the thicker outer suit, often with brand logos/stripes); balaclava vs neck collar (balaclava is a full head/face hood, neck collar is just a padded ring around the neck).
+Common mix-ups to watch for: gloves vs arm restraints (gloves cover all fingers; arm restraints are a wrist/forearm strap with a tether, no fingers); undergarment vs firesuit (undergarment is thin plain long underwear, firesuit is the thicker outer suit, often with brand logos/stripes); balaclava vs neck collar (balaclava is a full head/face hood, neck collar is just a padded ring around the neck); fire extinguisher vs fire suppression system (a handheld cylinder you'd carry vs a fixed cylinder plumbed to nozzles and mounted in the car); tow hook vs kill switch vs hood pins (all small hardware mounted on/in the car — a tow hook is a loop/ring for towing, a kill switch is an electrical rotary/pull switch, hood pins are a pair of pins with spring clips through the hood).
 
 2. Separately, check whether any certification/homologation tag is legible ANYWHERE in the photo — whether this is a dedicated close-up of a tag, or the tag just happens to be readable in a wider shot of the whole item (e.g. an arm restraint photographed with its sewn-in SFI tag in frame). Extract every distinct certification you can actually read into "certifications" — it's fine for this to be an empty array if no tag is legible at all in this particular photo. If a tag's text matches a standard family used by multiple product types (e.g. "SFI SPEC 3.3" appears on gloves, shoes, socks, AND arm restraints), rely on the tag's own wording (e.g. "HOOD", "ARM RESTRAINT", "GLOVES") and the product visible around it, not just the bare standard number.
 
 3. If (and only if) the category is "helmet" and the photo shows the helmet's outer shell shape, also assess helmetType (full-face vs open-face) and whether a visor/shield is attached.
+
+3b. If (and only if) the category is "tow_hook", also assess towHookSide (front vs rear) from context clues in the shot (front bumper/grille vs rear bumper/trunk). Leave it empty if you can't tell.
 
 4. Set isCloseupOnly to true if this shot is dominated by a tag/label close-up with too little of the item itself in frame to recognize its overall shape or condition — false if enough of the whole item is visible for that, even when a tag is also legible in the same shot. This decides which photo gets shown as the item's representative thumbnail when several are uploaded, so a wide/overall shot should read false and a tight tag-only crop should read true.
 

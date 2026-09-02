@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, maxPhotosFor } from "@/data/categoryMeta";
-import { EquipmentEntry, isEntryEmpty, newCertification } from "@/lib/matcher";
+import { EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
@@ -20,13 +20,34 @@ const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
   "arm_restraint",
   "shoes",
   "socks",
+  "seat",
+  "belts_harness",
+  "window_net",
+  "fuel_cell",
+  "fire_extinguisher",
+  "fire_suppression",
+  "kill_switch",
+  "tow_hook",
+  "emergency_triangle",
+  "window_breaker",
+  "spill_kit",
+  "hood_pins",
+  "parachute",
+  "rollover_protection",
 ];
+
+// Categories with no fields of their own (no certification, no extinguisher-style data) — a
+// confirmed photo just needs to flip the "I have this item" flag so it actually registers,
+// mirroring the manual-entry presence checkbox (see EquipmentForm's isSimplePresenceCategory).
+// Tow hook, fire extinguisher, and rollover protection are presence-only too but have their own
+// dedicated handling below.
+const SIMPLE_PRESENCE_CATEGORIES: EquipmentCategory[] = ["kill_switch", "emergency_triangle", "window_breaker", "spill_kit", "hood_pins", "parachute"];
 
 // Matches the AbortController timeout below — keep these in sync so the UI copy stays honest.
 const REQUEST_TIMEOUT_MS = 60_000;
 const REQUEST_TIMEOUT_LABEL = "a minute";
 
-type Piece = "one_piece" | "jacket" | "pants";
+type Piece = "one_piece" | "jacket" | "pants" | "front" | "rear";
 type Target = "driver" | "codriver";
 
 interface HelmetInfo {
@@ -35,10 +56,20 @@ interface HelmetInfo {
   visorNote: string;
 }
 
+interface ExtinguisherAnalysis {
+  classARating: number;
+  bcRating: number;
+  weightLbs: number;
+  manufactureDate: string;
+  certificationDate: string;
+  certificationDueDate: string;
+}
+
 interface AnalyzeGearPhotoResponse {
   isGearPhoto: boolean;
   category: string;
   pieceType: Piece | "";
+  towHookSide: "front" | "rear" | "";
   categoryConfidence: "high" | "medium" | "low";
   notes: string;
   certifications: TagCandidate[];
@@ -54,15 +85,18 @@ interface QueuedPhoto {
   previewUrl: string;
 }
 
-/** Which "slot" within a category an item-photo fills — a two-piece firesuit has two independent slots (jacket, pants); everything else has exactly one. */
+/** Which "slot" within a category an item-photo fills — a two-piece firesuit has two independent slots (jacket, pants), tow hook has two (front, rear); everything else has exactly one. */
 function slotKey(category: EquipmentCategory, piece: Piece | null): string {
   if (category === "firesuit") return `firesuit:${piece ?? "one_piece"}`;
+  if (category === "tow_hook") return `tow_hook:${piece ?? "front"}`;
   return category;
 }
 
 function pieceLabel(piece: Piece | null): string {
   if (piece === "jacket") return "jacket/top";
   if (piece === "pants") return "pants/bottom";
+  if (piece === "front") return "front";
+  if (piece === "rear") return "rear";
   return "one-piece suit";
 }
 
@@ -129,6 +163,8 @@ type Stage =
       /** Set when "Same item — add as another photo" couldn't actually add this photo because the
        * item is already at its per-category photo limit — shown instead of a misleading "Added". */
       photoLimitReached: boolean;
+      /** Fire extinguisher only: null while the follow-up label-reading request is in flight, undefined once it's done and found nothing usable, populated once it reads a rating/date. */
+      extinguisher?: ExtinguisherAnalysis | null;
     };
 
 export function AutomaticGearImport({
@@ -176,7 +212,11 @@ export function AutomaticGearImport({
         ? piece === "pants"
           ? (entry?.pantsCertifications ?? []).length > 0
           : (entry?.certifications ?? []).length > 0 || !!entry?.photoDataUrls?.length
-        : !isEntryEmpty(category, entry);
+        : category === "tow_hook"
+          ? piece === "rear"
+            ? entry?.towHookRear === true
+            : entry?.towHookFront === true
+          : !isEntryEmpty(category, entry);
     if (alreadyHasData) {
       filledSlotsRef.current[target].add(key);
       return true;
@@ -232,7 +272,7 @@ export function AutomaticGearImport({
       return;
     }
     const category = r.category as EquipmentCategory;
-    const piece = category === "firesuit" ? (r.pieceType || "one_piece") as Piece : null;
+    const piece = category === "firesuit" ? ((r.pieceType || "one_piece") as Piece) : category === "tow_hook" ? ((r.towHookSide || null) as Piece | null) : null;
     setCurrent({
       photo,
       dataUrl,
@@ -251,7 +291,23 @@ export function AutomaticGearImport({
         addedCerts: new Set(),
         isCloseupOnly: !!r.isCloseupOnly,
         photoLimitReached: false,
+        extinguisher: category === "fire_extinguisher" ? null : undefined,
       },
+    });
+    if (category === "fire_extinguisher") void runExtinguisherAnalysis(photo, dataUrl);
+  };
+
+  // Fire extinguishers don't have a standardId-based certification tag the shared classifier
+  // schema can extract — this reuses the dedicated analyze-extinguisher endpoint (same one behind
+  // the per-unit "Scan label photo" button) as a follow-up call once the photo's been classified.
+  // Fire-and-forget: if it fails or finds nothing, confirming the item still works, just without
+  // prefilled rating/date fields.
+  const runExtinguisherAnalysis = async (photo: QueuedPhoto, dataUrl: string) => {
+    const { ok, data } = await fetchWithTimeout("/api/analyze-extinguisher", { imageDataUrl: dataUrl });
+    setCurrent((c) => {
+      if (!c || c.photo !== photo || c.stage.type !== "result") return c;
+      const extinguisher = ok ? (data as unknown as ExtinguisherAnalysis) : undefined;
+      return { ...c, stage: { ...c.stage, extinguisher } };
     });
   };
 
@@ -295,7 +351,8 @@ export function AutomaticGearImport({
     target: Target,
     dataUrl: string,
     isCloseupOnly: boolean,
-    helmet: HelmetInfo | undefined
+    helmet: HelmetInfo | undefined,
+    extinguisher?: ExtinguisherAnalysis | null
   ): boolean => {
     const existing = currentEntries(target)[category];
     const photos = [...(existing?.photoDataUrls ?? [])];
@@ -308,12 +365,28 @@ export function AutomaticGearImport({
       else photos.unshift(dataUrl);
     }
 
+    const extinguisherUnit: ExtinguisherUnit | null =
+      category === "fire_extinguisher"
+        ? {
+            ...newExtinguisherUnit(),
+            ...(extinguisher?.classARating ? { classARating: extinguisher.classARating } : {}),
+            ...(extinguisher?.bcRating ? { bcRating: extinguisher.bcRating } : {}),
+            ...(extinguisher?.weightLbs ? { weightLbs: extinguisher.weightLbs } : {}),
+            ...(extinguisher?.manufactureDate ? { manufactureDate: extinguisher.manufactureDate } : {}),
+            ...(extinguisher?.certificationDate ? { certificationDate: extinguisher.certificationDate } : {}),
+            ...(extinguisher?.certificationDueDate ? { certificationDueDate: extinguisher.certificationDueDate } : {}),
+          }
+        : null;
+
     updateEntry(target, category, {
       photoDataUrls: photos,
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
       ...(category === "firesuit" || CATEGORY_META[category].hybrid ? { mode: existing?.mode ?? "certified" } : {}),
       ...(helmet && helmet.helmetType && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
       ...(helmet ? { hasVisor: helmet.hasVisor, visorNote: helmet.visorNote || undefined } : {}),
+      ...(category === "tow_hook" ? (piece === "rear" ? { towHookRear: true } : { towHookFront: true }) : {}),
+      ...(SIMPLE_PRESENCE_CATEGORIES.includes(category) ? { skipped: false } : {}),
+      ...(extinguisherUnit ? { extinguisherUnits: [...(existing?.extinguisherUnits ?? []), extinguisherUnit] } : {}),
     });
     markSlotFilled(target, category, piece);
     if (photoAdded) {
@@ -497,6 +570,7 @@ export function AutomaticGearImport({
                   stage={current.stage}
                   target={current.target}
                   onChangeTarget={(t) => setCurrent((c) => (c ? { ...c, target: t } : c))}
+                  onSetPiece={(piece) => setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, piece } } : c))}
                   onRequestConflictCheck={(category, piece, target) => {
                     if (isSlotFilled(target, category, piece)) {
                       setCurrent((c) =>
@@ -511,7 +585,8 @@ export function AutomaticGearImport({
                         target,
                         current.dataUrl,
                         current.stage.type === "result" ? current.stage.isCloseupOnly : false,
-                        current.stage.type === "result" ? current.stage.helmet : undefined
+                        current.stage.type === "result" ? current.stage.helmet : undefined,
+                        current.stage.type === "result" ? current.stage.extinguisher : undefined
                       );
                       setCurrent((c) =>
                         c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
@@ -525,7 +600,8 @@ export function AutomaticGearImport({
                       target,
                       current.dataUrl,
                       current.stage.type === "result" ? current.stage.isCloseupOnly : false,
-                      current.stage.type === "result" ? current.stage.helmet : undefined
+                      current.stage.type === "result" ? current.stage.helmet : undefined,
+                      current.stage.type === "result" ? current.stage.extinguisher : undefined
                     );
                     setCurrent((c) =>
                       c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
@@ -550,7 +626,8 @@ export function AutomaticGearImport({
                         "codriver",
                         current.dataUrl,
                         current.stage.type === "result" ? current.stage.isCloseupOnly : false,
-                        current.stage.type === "result" ? current.stage.helmet : undefined
+                        current.stage.type === "result" ? current.stage.helmet : undefined,
+                        current.stage.type === "result" ? current.stage.extinguisher : undefined
                       );
                       setCurrent((c) =>
                         c && c.stage.type === "result"
@@ -580,6 +657,7 @@ function ResultCard({
   stage,
   target,
   onChangeTarget,
+  onSetPiece,
   onRequestConflictCheck,
   onResolveConflictSameItem,
   onResolveConflictCodriver,
@@ -589,19 +667,33 @@ function ResultCard({
   stage: Extract<Stage, { type: "result" }>;
   target: Target;
   onChangeTarget: (t: Target) => void;
+  onSetPiece: (piece: Piece) => void;
   onRequestConflictCheck: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictSameItem: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictCodriver: (category: EquipmentCategory, piece: Piece | null) => void;
   onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
   onNext: () => void;
 }) {
-  const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached } = stage;
+  const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached, extinguisher } = stage;
+  const needsSideChoice = category === "tow_hook" && !piece;
+  const extinguisherLoading = category === "fire_extinguisher" && extinguisher === null;
+  const extinguisherSummary = extinguisher
+    ? [
+        extinguisher.classARating || extinguisher.bcRating
+          ? `${extinguisher.classARating ? `${extinguisher.classARating}-A:` : ""}${extinguisher.bcRating ? `${extinguisher.bcRating}-B:C` : ""}`
+          : null,
+        extinguisher.weightLbs ? `${extinguisher.weightLbs} lb` : null,
+        extinguisher.manufactureDate ? `mfg ${extinguisher.manufactureDate}` : null,
+      ]
+        .filter(Boolean)
+        .join(", ")
+    : "";
   return (
     <div>
       {targetToggle(target, onChangeTarget)}
       <p className="text-neutral-200">
         I detected: <b>{CATEGORY_META[category].label}</b>
-        {piece && category === "firesuit" ? ` — ${pieceLabel(piece)}` : ""}
+        {piece && (category === "firesuit" || category === "tow_hook") ? ` — ${pieceLabel(piece)}` : ""}
         <span className="ml-1 text-neutral-500">({confidence} confidence)</span>
       </p>
       {helmet && helmet.helmetType && (
@@ -610,6 +702,33 @@ function ResultCard({
           {" · "}
           {helmet.hasVisor ? "visor/shield detected" : "no visor/shield detected"}
         </p>
+      )}
+      {category === "fire_extinguisher" &&
+        (extinguisherLoading ? (
+          <p className="text-neutral-500">Reading the label…</p>
+        ) : extinguisherSummary ? (
+          <p className="text-neutral-400">{extinguisherSummary}</p>
+        ) : (
+          <p className="text-neutral-500">No rating/date legible on this photo — you can fill those in (or scan again) after adding it.</p>
+        ))}
+      {category === "tow_hook" && (
+        <div className="mt-1 flex items-center gap-2 text-xs">
+          <span className="text-neutral-500">Which side:</span>
+          <button
+            type="button"
+            onClick={() => onSetPiece("front")}
+            className={`rounded border px-2 py-0.5 ${piece === "front" ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400"}`}
+          >
+            Front
+          </button>
+          <button
+            type="button"
+            onClick={() => onSetPiece("rear")}
+            className={`rounded border px-2 py-0.5 ${piece === "rear" ? "border-amber-600 bg-neutral-900 text-amber-300" : "border-neutral-700 text-neutral-400"}`}
+          >
+            Rear
+          </button>
+        </div>
       )}
       {notes && <p className="text-neutral-500">{notes}</p>}
 
@@ -632,11 +751,11 @@ function ResultCard({
         <div className="mt-2 flex flex-wrap gap-2 text-xs">
           <button
             type="button"
-            disabled={itemConfirmed}
+            disabled={itemConfirmed || needsSideChoice || extinguisherLoading}
             onClick={() => onRequestConflictCheck(category, piece, target)}
             className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
           >
-            {itemConfirmed ? "Added as item photo" : "Use this as the item photo"}
+            {itemConfirmed ? "Added as item photo" : needsSideChoice ? "Pick front or rear first" : "Use this as the item photo"}
           </button>
         </div>
       ) : (
