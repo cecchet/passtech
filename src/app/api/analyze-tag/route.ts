@@ -27,6 +27,11 @@ const VALID_CATEGORIES: EquipmentCategory[] = [
   "socks",
   "undergarment",
   "arm_restraint",
+  "seat",
+  "belts_harness",
+  "window_net",
+  "fuel_cell",
+  "fire_suppression",
 ];
 
 // Simple in-memory sliding-window limit, keyed by client IP. Not distributed — resets on cold
