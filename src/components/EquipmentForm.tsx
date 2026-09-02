@@ -11,7 +11,7 @@ import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
 import { HelmetPhotoScan } from "@/components/HelmetPhotoScan";
-import { ExtinguisherPhotoScan } from "@/components/ExtinguisherPhotoScan";
+import { ExtinguisherLabelScan } from "@/components/ExtinguisherPhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { HomologationResultBanner, FiaListLink } from "@/components/HomologationResultBanner";
 import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
@@ -404,30 +404,56 @@ const numberInputClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5
 function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherUnit; onChange: (patch: Partial<ExtinguisherUnit>) => void; onRemove: () => void }) {
   const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
   const photos = unit.photoDataUrls ?? [];
-  const removePhoto = (i: number) =>
-    onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
+  const maxPhotos = maxPhotosFor("fire_extinguisher");
+  const canAddMore = photos.length < maxPhotos;
+  const inputId = useId();
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
 
   return (
     <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
       {photos.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           {photos.map((p, i) => (
-            <div key={i} className="group relative">
-              {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
-              <img src={p} alt="" className="h-16 w-16 rounded object-cover" />
-              <button
-                type="button"
-                onClick={() => removePhoto(i)}
-                aria-label="Remove this photo"
-                className="absolute -right-1 -top-1 rounded-full border border-neutral-600 bg-neutral-900 px-1 text-[10px] text-neutral-300 hover:bg-neutral-800"
-              >
-                ✕
-              </button>
+            <div key={i} className="flex max-w-[220px] flex-col gap-1">
+              <div className="flex items-start gap-2">
+                <ZoomableThumb src={p} className="h-16 w-16 shrink-0 rounded object-cover" />
+                <div className="flex flex-col gap-1">
+                  <ExtinguisherLabelScan imageDataUrl={p} onApply={(patch) => onChange(patch)} />
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(i)}
+                    className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+                  >
+                    🗑️ Remove photo
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
-      <ExtinguisherPhotoScan onApply={(patch, photoDataUrl) => onChange({ ...patch, photoDataUrls: [...photos, photoDataUrl] })} />
+      {canAddMore && (
+        <label
+          htmlFor={inputId}
+          className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+        >
+          📷 Add a photo of this item ({photos.length}/{maxPhotos})
+          <input
+            id={inputId}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (!file) return;
+              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+              onChange({ photoDataUrls: [...photos, dataUrl] });
+            }}
+          />
+        </label>
+      )}
       <div className="flex flex-wrap items-end gap-2">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
         Class A rating (if any)
@@ -490,9 +516,28 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           onChange={(e) => onChange({ certificationDueDate: e.target.value || undefined })}
         />
       </label>
-      <button type="button" onClick={onRemove} aria-label="Remove this extinguisher" className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">
-        Remove
-      </button>
+      {!confirmRemove ? (
+        <button
+          type="button"
+          onClick={() => setConfirmRemove(true)}
+          className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800"
+        >
+          🗑️ Remove this extinguisher
+        </button>
+      ) : (
+        <>
+          <button
+            type="button"
+            onClick={onRemove}
+            className="rounded border border-red-500 bg-red-900 px-2 py-1.5 text-xs font-semibold text-red-100 hover:bg-red-800"
+          >
+            🗑️ Confirm delete{photos.length > 0 ? ` (removes ${photos.length} photo${photos.length === 1 ? "" : "s"} too)` : ""}?
+          </button>
+          <button type="button" onClick={() => setConfirmRemove(false)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800">
+            Cancel
+          </button>
+        </>
+      )}
       </div>
     </div>
   );

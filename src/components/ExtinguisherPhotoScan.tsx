@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { resizeImageToDataUrl } from "@/lib/imageResize";
+import { useState } from "react";
 import { ExtinguisherUnit } from "@/lib/matcher";
 
 interface ExtinguisherAnalysis {
@@ -15,23 +14,24 @@ interface ExtinguisherAnalysis {
   notes: string;
 }
 
-/** Scans a photo of one extinguisher's label/service tag, offers to fill in its rating/weight/dates, and keeps the photo itself attached to this unit either way. */
-export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Omit<ExtinguisherUnit, "photoDataUrls">>, photoDataUrl: string) => void }) {
-  const inputRef = useRef<HTMLInputElement>(null);
+/**
+ * Scans a photo already attached to this extinguisher unit for its rating/weight/dates and offers
+ * to fill them in — separate from adding the photo itself, so attaching a reference photo doesn't
+ * force a Gemini call every time (mirrors ItemPhotoThumb's "add photo" / "scan for tags" split for
+ * every other category).
+ */
+export function ExtinguisherLabelScan({ imageDataUrl, onApply }: { imageDataUrl: string; onApply: (patch: Partial<Omit<ExtinguisherUnit, "photoDataUrls">>) => void }) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ExtinguisherAnalysis | null>(null);
-  const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null);
   const [applied, setApplied] = useState(false);
 
-  const handleFile = async (file: File) => {
+  const scan = async () => {
     setStatus("loading");
     setError(null);
     setResult(null);
     setApplied(false);
     try {
-      const imageDataUrl = await resizeImageToDataUrl(file);
-      setPhotoDataUrl(imageDataUrl);
       const res = await fetch("/api/analyze-extinguisher", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,18 +52,15 @@ export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Om
   };
 
   const apply = () => {
-    if (!photoDataUrl) return;
-    onApply(
-      {
-        ...(result?.classARating ? { classARating: result.classARating } : {}),
-        ...(result?.bcRating ? { bcRating: result.bcRating } : {}),
-        ...(result?.weightLbs ? { weightLbs: result.weightLbs } : {}),
-        ...(result?.manufactureDate ? { manufactureDate: result.manufactureDate } : {}),
-        ...(result?.certificationDate ? { certificationDate: result.certificationDate } : {}),
-        ...(result?.certificationDueDate ? { certificationDueDate: result.certificationDueDate } : {}),
-      },
-      photoDataUrl
-    );
+    if (!result) return;
+    onApply({
+      ...(result.classARating ? { classARating: result.classARating } : {}),
+      ...(result.bcRating ? { bcRating: result.bcRating } : {}),
+      ...(result.weightLbs ? { weightLbs: result.weightLbs } : {}),
+      ...(result.manufactureDate ? { manufactureDate: result.manufactureDate } : {}),
+      ...(result.certificationDate ? { certificationDate: result.certificationDate } : {}),
+      ...(result.certificationDueDate ? { certificationDueDate: result.certificationDueDate } : {}),
+    });
     setApplied(true);
   };
 
@@ -80,44 +77,29 @@ export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Om
     : "";
 
   return (
-    <div className="rounded border border-dashed border-neutral-600 p-2 text-xs">
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleFile(file);
-          e.target.value = "";
-        }}
-      />
+    <div className="flex flex-col gap-1">
       <button
         type="button"
-        onClick={() => inputRef.current?.click()}
+        onClick={scan}
         disabled={status === "loading"}
-        className="rounded border border-neutral-600 px-2 py-1 text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
+        className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
       >
-        {status === "loading" ? "Analyzing photo…" : "📷 Scan label photo"}
+        {status === "loading" ? "Scanning…" : "🔍 Scan for tags"}
       </button>
-      <span className="ml-2 text-neutral-500">Reads the rating, weight, and dates off the cylinder&rsquo;s label or service tag.</span>
-
-      {error && <p className="mt-2 text-red-400">{error}</p>}
-
+      {error && <p className="text-xs text-red-400">{error}</p>}
       {result && (
-        <div className="mt-2 rounded border border-neutral-600 p-2">
+        <div className="rounded border border-neutral-600 p-2 text-xs">
           <p className="text-neutral-200">
-            {summary || "Nothing legible found on this photo"} <span className="ml-1 text-neutral-500">({result.confidence} confidence)</span>
+            {summary || "Nothing legible found"} <span className="ml-1 text-neutral-500">({result.confidence} confidence)</span>
           </p>
           {result.notes && <p className="mt-1 text-neutral-500">{result.notes}</p>}
           <button
             type="button"
-            disabled={applied}
+            disabled={applied || !summary}
             onClick={apply}
             className="mt-1 rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
           >
-            {applied ? "Applied" : summary ? "Use this" : "Keep photo anyway"}
+            {applied ? "Applied" : "Use this"}
           </button>
         </div>
       )}
