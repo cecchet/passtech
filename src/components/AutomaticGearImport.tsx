@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
-import { CATEGORY_META, maxPhotosFor } from "@/data/categoryMeta";
+import { CATEGORY_META, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import { EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { TagCandidate } from "@/lib/useTagScanner";
@@ -545,7 +545,7 @@ export function AutomaticGearImport({
 
               {current.stage.type === "manual_tag_result" && (
                 <div>
-                  {targetToggle(current.target, (t) => setCurrent((c) => (c ? { ...c, target: t } : c)))}
+                  {targetToggle(current.target, (t) => setCurrent((c) => (c ? { ...c, target: t } : c)), current.stage.category)}
                   <TagCandidateList
                     candidates={current.stage.candidates}
                     notes={current.stage.tagNotes || null}
@@ -675,6 +675,7 @@ function ResultCard({
   onNext: () => void;
 }) {
   const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached, extinguisher } = stage;
+  const perOccupant = isPerOccupantCategory(category);
   const needsSideChoice = category === "tow_hook" && !piece;
   const extinguisherLoading = category === "fire_extinguisher" && extinguisher === null;
   const extinguisherSummary = extinguisher
@@ -690,7 +691,7 @@ function ResultCard({
     : "";
   return (
     <div>
-      {targetToggle(target, onChangeTarget)}
+      {targetToggle(target, onChangeTarget, category)}
       <p className="text-neutral-200">
         I detected: <b>{CATEGORY_META[category].label}</b>
         {piece && (category === "firesuit" || category === "tow_hook") ? ` — ${pieceLabel(piece)}` : ""}
@@ -742,9 +743,11 @@ function ResultCard({
             <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
               Retry
             </button>
-            <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
-              This is for my codriver
-            </button>
+            {perOccupant && (
+              <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
+                This is for my codriver
+              </button>
+            )}
           </div>
         </div>
       ) : !conflict ? (
@@ -761,15 +764,17 @@ function ResultCard({
       ) : (
         <div className="mt-2 rounded border border-amber-700 bg-amber-950/40 p-2 text-xs">
           <p className="text-amber-200">
-            You already have a {conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one, unless this is for a codriver.
+            You already have a {conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one{perOccupant ? ", unless this is for a codriver" : ""}.
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
               Same item — add as another photo
             </button>
-            <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
-              This is for my codriver
-            </button>
+            {perOccupant && (
+              <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
+                This is for my codriver
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -794,7 +799,11 @@ function ResultCard({
   );
 }
 
-function targetToggle(target: Target, onChange: (t: Target) => void) {
+// Only per-occupant categories (driver-worn gear, plus seat/belts/window net) can actually have a
+// distinct codriver entry that means anything — every other category is a single shared car-level
+// item (see PER_OCCUPANT_CATEGORIES), so a "codriver" choice there would silently go nowhere.
+function targetToggle(target: Target, onChange: (t: Target) => void, category: EquipmentCategory) {
+  if (!isPerOccupantCategory(category)) return null;
   return (
     <div className="mb-2 flex items-center gap-2 text-xs">
       <span className="text-neutral-500">Add this to:</span>
