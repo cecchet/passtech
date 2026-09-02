@@ -1,6 +1,6 @@
 import { DisciplineGroup } from "@/data/types";
 
-/** Frog Race Team mascot artwork for each discipline, cropped from public/discipline1.jpg / discipline2.jpg (see public/discipline-*.jpg). */
+/** Frog Race Team mascot artwork for each discipline (see public/discipline-*.jpg). */
 export const DISCIPLINE_ICON_SRC: Record<DisciplineGroup, string> = {
   Autocross: "/discipline-autocross.jpg",
   RallyCross: "/discipline-rallycross.jpg",

@@ -29,7 +29,7 @@ interface Tour {
 
 const TOURS: Record<TourId, Tour> = {
   landing: {
-    intro: { title: "How PassTech works", text: INTRO_TEXT, image: "/disciplines.jpg" },
+    intro: { title: "How PassTech works", text: INTRO_TEXT, image: "/11disciplines.png" },
     steps: [
       { targetId: "tutorial-option-1", text: "Click Option 1 if you want to check the rules of a sanctioning body." },
       {
