@@ -946,6 +946,9 @@ export default function Home() {
               accent="border-emerald-700"
               titleColor="text-emerald-400"
               hideNotRequired={hideNotRequired}
+              onlyHaveEquipment={onlyHaveEquipment}
+              entries={entries}
+              codriverEntries={codriverEntries}
             />
             <ResultGroup
               title={`Eligible under condition (${eligibleConditional.length})`}
@@ -953,6 +956,9 @@ export default function Home() {
               accent="border-yellow-700"
               titleColor="text-yellow-400"
               hideNotRequired={hideNotRequired}
+              onlyHaveEquipment={onlyHaveEquipment}
+              entries={entries}
+              codriverEntries={codriverEntries}
             />
             <ResultGroup
               title={`Does not meet the requirements (${notEligible.length})`}
@@ -960,6 +966,9 @@ export default function Home() {
               accent="border-red-700"
               titleColor="text-red-400"
               hideNotRequired={hideNotRequired}
+              onlyHaveEquipment={onlyHaveEquipment}
+              entries={entries}
+              codriverEntries={codriverEntries}
             />
           </div>
         </section>
@@ -1519,12 +1528,86 @@ function keepForHideNotRequired(result: CategoryResults[EquipmentCategory] | und
   return !hideNotRequired || result.requirement === "required" || result.requirement === "conditional";
 }
 
+/**
+ * "Only check the equipment I have" splits a body's result grid into what's actually owned vs.
+ * what's still missing, since with that filter on the point is figuring out what to buy next —
+ * mixing owned items in with the gaps makes that harder to scan. Required/conditional gaps and
+ * not-required gaps get their own bucket too so "still need for THIS body" doesn't get lost among
+ * items nobody's asking for; both start collapsed since the point of this view is what you already
+ * have.
+ */
+function partitionByOwnership(
+  categories: EquipmentCategory[],
+  results: CategoryResults,
+  entrySource: Partial<Record<EquipmentCategory, EquipmentEntry>>
+) {
+  const have: EquipmentCategory[] = [];
+  const missingRequired: EquipmentCategory[] = [];
+  const missingNotRequired: EquipmentCategory[] = [];
+  for (const category of categories) {
+    if (!isEntryEmpty(category, entrySource[category])) have.push(category);
+    else if (results[category]?.requirement === "required" || results[category]?.requirement === "conditional") missingRequired.push(category);
+    else missingNotRequired.push(category);
+  }
+  return { have, missingRequired, missingNotRequired };
+}
+
+function OwnershipSplitResults({
+  categories,
+  results,
+  entrySource,
+  sourceDocuments,
+}: {
+  categories: EquipmentCategory[];
+  results: CategoryResults;
+  entrySource: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+  sourceDocuments: SourceDocument[];
+}) {
+  const { have, missingRequired, missingNotRequired } = partitionByOwnership(categories, results, entrySource);
+  const grid = (items: EquipmentCategory[]) => (
+    <div className="grid gap-2 sm:grid-cols-2">
+      {items.map((category) => (
+        <ResultRow key={category} result={results[category]!} sourceDocuments={sourceDocuments} />
+      ))}
+    </div>
+  );
+  return (
+    <div className="space-y-3">
+      {have.length > 0 && (
+        <div>
+          <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-neutral-400">Equipment you have ({have.length})</h4>
+          {grid(have)}
+        </div>
+      )}
+      {missingRequired.length > 0 && (
+        <details className="rounded border border-amber-800 bg-amber-950/20">
+          <summary className="cursor-pointer list-none px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-amber-400 marker:content-none [&::-webkit-details-marker]:hidden">
+            Additional equipment required to compete ({missingRequired.length}) — click to expand
+          </summary>
+          <div className="px-2 pb-2 pt-1">{grid(missingRequired)}</div>
+        </details>
+      )}
+      {missingNotRequired.length > 0 && (
+        <details className="rounded border border-neutral-700">
+          <summary className="cursor-pointer list-none px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500 marker:content-none [&::-webkit-details-marker]:hidden">
+            Not required ({missingNotRequired.length}) — click to expand
+          </summary>
+          <div className="px-2 pb-2 pt-1">{grid(missingNotRequired)}</div>
+        </details>
+      )}
+    </div>
+  );
+}
+
 function ResultGroup({
   title,
   items,
   accent,
   titleColor,
   hideNotRequired,
+  onlyHaveEquipment,
+  entries,
+  codriverEntries,
 }: {
   title: string;
   items: {
@@ -1536,6 +1619,10 @@ function ResultGroup({
   accent: string;
   titleColor: string;
   hideNotRequired?: boolean;
+  /** Splits each body's result grid into "have" / "still need" / "not required" sections — see OwnershipSplitResults. */
+  onlyHaveEquipment?: boolean;
+  entries?: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+  codriverEntries?: Partial<Record<EquipmentCategory, EquipmentEntry>>;
 }) {
   if (items.length === 0) return null;
   const groups = DISCIPLINE_GROUP_ORDER.map((discipline) => ({ discipline, items: items.filter((i) => i.rs.disciplineGroup === discipline) })).filter(
@@ -1568,10 +1655,16 @@ function ResultGroup({
                       )}
                     </summary>
                     {shownCategories.length > 0 ? (
-                      <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                        {shownCategories.map((category) => (
-                          <ResultRow key={category} result={results[category]!} sourceDocuments={rs.sourceDocuments} />
-                        ))}
+                      <div className="mt-3">
+                        {onlyHaveEquipment ? (
+                          <OwnershipSplitResults categories={shownCategories} results={results} entrySource={entries ?? {}} sourceDocuments={rs.sourceDocuments} />
+                        ) : (
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {shownCategories.map((category) => (
+                              <ResultRow key={category} result={results[category]!} sourceDocuments={rs.sourceDocuments} />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <p className="mt-3 text-xs text-neutral-400">
@@ -1581,11 +1674,20 @@ function ResultGroup({
                     {codriverResults && shownCodriverCategories.length > 0 && (
                       <div className="mt-3">
                         <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver</h3>
-                        <div className="grid gap-2 sm:grid-cols-2">
-                          {shownCodriverCategories.map((category) => (
-                            <ResultRow key={`${category}-codriver`} result={codriverResults[category]!} sourceDocuments={rs.sourceDocuments} />
-                          ))}
-                        </div>
+                        {onlyHaveEquipment ? (
+                          <OwnershipSplitResults
+                            categories={shownCodriverCategories}
+                            results={codriverResults}
+                            entrySource={codriverEntries ?? {}}
+                            sourceDocuments={rs.sourceDocuments}
+                          />
+                        ) : (
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {shownCodriverCategories.map((category) => (
+                              <ResultRow key={`${category}-codriver`} result={codriverResults[category]!} sourceDocuments={rs.sourceDocuments} />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </details>
