@@ -39,6 +39,12 @@ yarn-error.log*
 # personal test photos used to exercise the photo-scan feature, not project source
 /Safety gear tags/
 
+# local research cache of third-party copyrighted rulebook/homologation-list PDFs -- not
+# referenced by app code (see src/data/fiaHomologation/*.json for the runtime data these
+# were used to hand-derive), kept locally only, not for public redistribution
+/rulebooks/
+/fia-lists/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
