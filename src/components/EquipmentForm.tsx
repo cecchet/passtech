@@ -415,20 +415,18 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
       {photos.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {photos.map((p, i) => (
-            <div key={i} className="flex max-w-[220px] flex-col gap-1">
+            <div key={i} className="flex flex-col gap-1" style={{ width: 220, maxWidth: 220 }}>
               <div className="flex items-start gap-2">
                 <ZoomableThumb src={p} className="h-16 w-16 shrink-0 rounded object-cover" />
-                <div className="flex flex-col gap-1">
-                  <ExtinguisherLabelScan imageDataUrl={p} onApply={(patch) => onChange(patch)} />
-                  <button
-                    type="button"
-                    onClick={() => removePhoto(i)}
-                    className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-                  >
-                    🗑️ Remove photo
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => removePhoto(i)}
+                  className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+                >
+                  🗑️ Remove photo
+                </button>
               </div>
+              <ExtinguisherLabelScan imageDataUrl={p} onApply={(patch) => onChange(patch)} />
             </div>
           ))}
         </div>
