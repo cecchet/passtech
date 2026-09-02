@@ -277,7 +277,8 @@ export type DisciplineGroup =
   | "Endurance Racing"
   | "HPDE / Track Day"
   | "Drag Racing"
-  | "Karting";
+  | "Karting"
+  | "Drifting";
 
 /** One selectable car/competitor class within a ruleset whose rules differ enough from the ruleset's general picture to warrant refining by class (e.g. AMEC's Street Legal vs. Super Modified Closed). */
 export interface RulesetClass {

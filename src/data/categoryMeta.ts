@@ -16,12 +16,13 @@ export function maxPhotosFor(category: EquipmentCategory): number {
   return MAX_ITEM_PHOTOS_BY_CATEGORY[category] ?? DEFAULT_MAX_ITEM_PHOTOS;
 }
 
-/** Canonical display order for the 10 discipline groups — alphabetical, so every dropdown/checkbox
+/** Canonical display order for the 11 discipline groups — alphabetical, so every dropdown/checkbox
  * list/grouping that iterates this (the main ruleset picker, the Option 3 discipline filter and
  * results grouping, and the matching PDF report) stays consistent and easy to scan. */
 export const DISCIPLINE_GROUP_ORDER: DisciplineGroup[] = [
   "Autocross",
   "Drag Racing",
+  "Drifting",
   "Endurance Racing",
   "Hillclimb",
   "HPDE / Track Day",

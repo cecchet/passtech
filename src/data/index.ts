@@ -30,6 +30,7 @@ import { skusaRulesets } from "./bodies/skusa";
 import { uspksRulesets } from "./bodies/uspks";
 import { akraRulesets } from "./bodies/akra";
 import { wkaRulesets } from "./bodies/wka";
+import { klutchkickersRulesets } from "./bodies/klutchkickers";
 
 export const ALL_RULESETS: Ruleset[] = [
   ...sccaRulesets,
@@ -63,6 +64,7 @@ export const ALL_RULESETS: Ruleset[] = [
   ...uspksRulesets,
   ...akraRulesets,
   ...wkaRulesets,
+  ...klutchkickersRulesets,
 ];
 
 export function getRuleset(id: string): Ruleset | undefined {

@@ -12,6 +12,7 @@ export const DISCIPLINE_ICON_SRC: Record<DisciplineGroup, string> = {
   "HPDE / Track Day": "/discipline-hpde.jpg",
   "Drag Racing": "/discipline-drag-racing.jpg",
   Karting: "/discipline-karting.jpg",
+  Drifting: "/discipline-drifting.jpg",
 };
 
 export function DisciplineIcon({ group, className = "h-6 w-6" }: { group: DisciplineGroup; className?: string }) {
