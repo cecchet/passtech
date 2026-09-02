@@ -403,10 +403,31 @@ const numberInputClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5
 
 function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherUnit; onChange: (patch: Partial<ExtinguisherUnit>) => void; onRemove: () => void }) {
   const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
+  const photos = unit.photoDataUrls ?? [];
+  const removePhoto = (i: number) =>
+    onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
 
   return (
     <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
-      <ExtinguisherPhotoScan onApply={onChange} />
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {photos.map((p, i) => (
+            <div key={i} className="group relative">
+              {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
+              <img src={p} alt="" className="h-16 w-16 rounded object-cover" />
+              <button
+                type="button"
+                onClick={() => removePhoto(i)}
+                aria-label="Remove this photo"
+                className="absolute -right-1 -top-1 rounded-full border border-neutral-600 bg-neutral-900 px-1 text-[10px] text-neutral-300 hover:bg-neutral-800"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <ExtinguisherPhotoScan onApply={(patch, photoDataUrl) => onChange({ ...patch, photoDataUrls: [...photos, photoDataUrl] })} />
       <div className="flex flex-wrap items-end gap-2">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
         Class A rating (if any)

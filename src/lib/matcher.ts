@@ -59,6 +59,8 @@ export interface ExtinguisherUnit {
   certificationDate?: string;
   /** Explicit "service due by" date printed on the tag, if any — takes priority over a manufacture/certification-date-based freshness check when present. */
   certificationDueDate?: string;
+  /** This unit's own photos (overview + label close-ups) — kept per-unit rather than on the shared EquipmentEntry.photoDataUrls, since a gear set can carry several extinguishers and a scrutineer needs to see which photo documents which physical unit. */
+  photoDataUrls?: string[];
 }
 
 export interface EquipmentEntry {

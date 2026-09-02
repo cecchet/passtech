@@ -230,14 +230,19 @@ export function AutomaticGearImport({
 
   const noteBuilt = (label: string) => setBuiltSummary((prev) => [...prev, label]);
 
-  const advance = (nextQueue: QueuedPhoto[]) => {
-    setQueue(nextQueue);
+  // `remainingQueue` is everything still waiting, NOT including whatever's current (see
+  // handleFiles, which sets queue to photos.slice(1) right after starting photos[0]) -- so moving
+  // on means popping its head into the new current and leaving the rest as the new queue state.
+  const advance = (remainingQueue: QueuedPhoto[]) => {
     setProcessed((p) => p + 1);
-    if (nextQueue.length === 0) {
+    if (remainingQueue.length === 0) {
+      setQueue([]);
       setCurrent(null);
       return;
     }
-    void processPhoto(nextQueue[0]);
+    const [next, ...rest] = remainingQueue;
+    setQueue(rest);
+    void processPhoto(next);
   };
 
   const processPhoto = async (photo: QueuedPhoto) => {
@@ -334,7 +339,7 @@ export function AutomaticGearImport({
     });
   };
 
-  const skip = () => advance(queue.slice(1));
+  const skip = () => advance(queue);
 
   const retry = () => {
     if (!current) return;
@@ -352,9 +357,45 @@ export function AutomaticGearImport({
     dataUrl: string,
     isCloseupOnly: boolean,
     helmet: HelmetInfo | undefined,
-    extinguisher?: ExtinguisherAnalysis | null
+    extinguisher?: ExtinguisherAnalysis | null,
+    extinguisherMode: "new" | "merge" = "new"
   ): boolean => {
     const existing = currentEntries(target)[category];
+
+    // Fire extinguishers are handled entirely separately: a gear set can carry several, each with
+    // its own photos (so a scrutineer can tell which label documents which physical unit) rather
+    // than one shared photo pool for the category. "merge" attaches this photo/data to the most
+    // recently confirmed unit (same physical extinguisher, e.g. a wide shot then its label
+    // close-up); "new" always starts a fresh unit.
+    if (category === "fire_extinguisher") {
+      const existingUnits = existing?.extinguisherUnits ?? [];
+      const targetUnit = extinguisherMode === "merge" ? existingUnits[existingUnits.length - 1] : undefined;
+      const currentPhotos = targetUnit?.photoDataUrls ?? [];
+      const photoAdded = currentPhotos.length < maxPhotosFor(category);
+      const mergedFields = {
+        ...(extinguisher?.classARating && !targetUnit?.classARating ? { classARating: extinguisher.classARating } : {}),
+        ...(extinguisher?.bcRating && !targetUnit?.bcRating ? { bcRating: extinguisher.bcRating } : {}),
+        ...(extinguisher?.weightLbs && !targetUnit?.weightLbs ? { weightLbs: extinguisher.weightLbs } : {}),
+        ...(extinguisher?.manufactureDate && !targetUnit?.manufactureDate ? { manufactureDate: extinguisher.manufactureDate } : {}),
+        ...(extinguisher?.certificationDate && !targetUnit?.certificationDate ? { certificationDate: extinguisher.certificationDate } : {}),
+        ...(extinguisher?.certificationDueDate && !targetUnit?.certificationDueDate ? { certificationDueDate: extinguisher.certificationDueDate } : {}),
+      };
+      let units: ExtinguisherUnit[];
+      if (targetUnit) {
+        const updated: ExtinguisherUnit = { ...targetUnit, ...mergedFields, photoDataUrls: photoAdded ? [...currentPhotos, dataUrl] : currentPhotos };
+        units = existingUnits.map((u) => (u.key === targetUnit.key ? updated : u));
+      } else {
+        const newUnit: ExtinguisherUnit = { ...newExtinguisherUnit(), ...mergedFields, photoDataUrls: photoAdded ? [dataUrl] : [] };
+        units = [...existingUnits, newUnit];
+      }
+      updateEntry(target, category, { extinguisherUnits: units });
+      markSlotFilled(target, category, piece);
+      if (photoAdded) {
+        noteBuilt(`${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${targetUnit ? "" : ` #${units.length}`} photo`);
+      }
+      return photoAdded;
+    }
+
     const photos = [...(existing?.photoDataUrls ?? [])];
     const photoAdded = photos.length < maxPhotosFor(category);
     // A wide/overview shot always leads the list (index 0), even when confirmed after a tag
@@ -365,19 +406,6 @@ export function AutomaticGearImport({
       else photos.unshift(dataUrl);
     }
 
-    const extinguisherUnit: ExtinguisherUnit | null =
-      category === "fire_extinguisher"
-        ? {
-            ...newExtinguisherUnit(),
-            ...(extinguisher?.classARating ? { classARating: extinguisher.classARating } : {}),
-            ...(extinguisher?.bcRating ? { bcRating: extinguisher.bcRating } : {}),
-            ...(extinguisher?.weightLbs ? { weightLbs: extinguisher.weightLbs } : {}),
-            ...(extinguisher?.manufactureDate ? { manufactureDate: extinguisher.manufactureDate } : {}),
-            ...(extinguisher?.certificationDate ? { certificationDate: extinguisher.certificationDate } : {}),
-            ...(extinguisher?.certificationDueDate ? { certificationDueDate: extinguisher.certificationDueDate } : {}),
-          }
-        : null;
-
     updateEntry(target, category, {
       photoDataUrls: photos,
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
@@ -386,7 +414,6 @@ export function AutomaticGearImport({
       ...(helmet ? { hasVisor: helmet.hasVisor, visorNote: helmet.visorNote || undefined } : {}),
       ...(category === "tow_hook" ? (piece === "rear" ? { towHookRear: true } : { towHookFront: true }) : {}),
       ...(SIMPLE_PRESENCE_CATEGORIES.includes(category) ? { skipped: false } : {}),
-      ...(extinguisherUnit ? { extinguisherUnits: [...(existing?.extinguisherUnits ?? []), extinguisherUnit] } : {}),
     });
     markSlotFilled(target, category, piece);
     if (photoAdded) {
@@ -601,7 +628,23 @@ export function AutomaticGearImport({
                       current.dataUrl,
                       current.stage.type === "result" ? current.stage.isCloseupOnly : false,
                       current.stage.type === "result" ? current.stage.helmet : undefined,
-                      current.stage.type === "result" ? current.stage.extinguisher : undefined
+                      current.stage.type === "result" ? current.stage.extinguisher : undefined,
+                      "merge"
+                    );
+                    setCurrent((c) =>
+                      c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
+                    );
+                  }}
+                  onResolveConflictNewExtinguisher={(category, piece, target) => {
+                    const added = confirmItem(
+                      category,
+                      piece,
+                      target,
+                      current.dataUrl,
+                      current.stage.type === "result" ? current.stage.isCloseupOnly : false,
+                      current.stage.type === "result" ? current.stage.helmet : undefined,
+                      current.stage.type === "result" ? current.stage.extinguisher : undefined,
+                      "new"
                     );
                     setCurrent((c) =>
                       c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
@@ -660,6 +703,7 @@ function ResultCard({
   onSetPiece,
   onRequestConflictCheck,
   onResolveConflictSameItem,
+  onResolveConflictNewExtinguisher,
   onResolveConflictCodriver,
   onAddCert,
   onNext,
@@ -670,12 +714,14 @@ function ResultCard({
   onSetPiece: (piece: Piece) => void;
   onRequestConflictCheck: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictSameItem: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
+  onResolveConflictNewExtinguisher: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictCodriver: (category: EquipmentCategory, piece: Piece | null) => void;
   onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
   onNext: () => void;
 }) {
   const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached, extinguisher } = stage;
   const perOccupant = isPerOccupantCategory(category);
+  const isExtinguisher = category === "fire_extinguisher";
   const needsSideChoice = category === "tow_hook" && !piece;
   const extinguisherLoading = category === "fire_extinguisher" && extinguisher === null;
   const extinguisherSummary = extinguisher
@@ -764,12 +810,23 @@ function ResultCard({
       ) : (
         <div className="mt-2 rounded border border-amber-700 bg-amber-950/40 p-2 text-xs">
           <p className="text-amber-200">
-            You already have a {conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one{perOccupant ? ", unless this is for a codriver" : ""}.
+            {isExtinguisher
+              ? "You already have a fire extinguisher in this gear set — is this the same one (e.g. its label, after an overview shot) or a different extinguisher?"
+              : `You already have a ${conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one${perOccupant ? ", unless this is for a codriver" : ""}.`}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
-              Same item — add as another photo
+              {isExtinguisher ? "Same extinguisher — attach this too" : "Same item — add as another photo"}
             </button>
+            {isExtinguisher && (
+              <button
+                type="button"
+                onClick={() => onResolveConflictNewExtinguisher(category, piece, target)}
+                className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800"
+              >
+                Different extinguisher — add as new
+              </button>
+            )}
             {perOccupant && (
               <button type="button" onClick={() => onResolveConflictCodriver(category, piece)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
                 This is for my codriver

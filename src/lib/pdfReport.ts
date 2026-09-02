@@ -691,12 +691,30 @@ function writeCategoryResult(w: PdfReportWriter, result: CategoryResult, entry?:
     result.category,
     `${meta.label}  —  ${resultStatusLabel(result.status, result.requirement)}`,
     { bold: true, size: 10, color },
-    entry?.photoDataUrls?.[0],
+    entry?.photoDataUrls?.[0] ?? entry?.extinguisherUnits?.[0]?.photoDataUrls?.[0],
     certBadges
   );
   w.text(result.reason, { size: 8.5, color: COLOR.muted, indent: 3 });
   if (result.category === "rollover_protection" && entry && (entry.cagePaddingPresent !== undefined || entry.cageForwardHoopPaddingPresent !== undefined)) {
     w.bullet(describeCagePadding(entry), { size: 8, indent: 3, color: COLOR.faint });
+  }
+  if (result.category === "fire_extinguisher" && entry?.extinguisherUnits?.length) {
+    entry.extinguisherUnits.forEach((u, i) => {
+      const spec = [
+        u.classARating || u.bcRating ? `${u.classARating ? `${u.classARating}-A:` : ""}${u.bcRating ? `${u.bcRating}-B:C` : ""}` : null,
+        u.weightLbs ? `${u.weightLbs} lb` : null,
+        u.manufactureDate ? `mfg ${u.manufactureDate}` : null,
+        u.certificationDate ? `serviced ${u.certificationDate}` : null,
+        u.certificationDueDate ? `due ${u.certificationDueDate}` : null,
+      ]
+        .filter(Boolean)
+        .join(", ");
+      const photoCount = u.photoDataUrls?.length ?? 0;
+      w.bullet(
+        `Unit ${i + 1}${spec ? `: ${spec}` : ": no rating/date entered"} — ${photoCount} photo${photoCount === 1 ? "" : "s"}`,
+        { size: 8, indent: 3, color: COLOR.faint }
+      );
+    });
   }
   if (result.category === "hnr") {
     w.bullet("Always check that your HNR tethers are compatible with the anchors on your helmet — PassTech only checks the device's own certification, not tether/anchor compatibility.", {

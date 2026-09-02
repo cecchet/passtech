@@ -15,12 +15,13 @@ interface ExtinguisherAnalysis {
   notes: string;
 }
 
-/** Scans a photo of one extinguisher's label/service tag and offers to fill in its rating, weight, and dates. */
-export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<ExtinguisherUnit>) => void }) {
+/** Scans a photo of one extinguisher's label/service tag, offers to fill in its rating/weight/dates, and keeps the photo itself attached to this unit either way. */
+export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Omit<ExtinguisherUnit, "photoDataUrls">>, photoDataUrl: string) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ExtinguisherAnalysis | null>(null);
+  const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null);
   const [applied, setApplied] = useState(false);
 
   const handleFile = async (file: File) => {
@@ -30,6 +31,7 @@ export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Ex
     setApplied(false);
     try {
       const imageDataUrl = await resizeImageToDataUrl(file);
+      setPhotoDataUrl(imageDataUrl);
       const res = await fetch("/api/analyze-extinguisher", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,15 +52,18 @@ export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Ex
   };
 
   const apply = () => {
-    if (!result) return;
-    onApply({
-      ...(result.classARating ? { classARating: result.classARating } : {}),
-      ...(result.bcRating ? { bcRating: result.bcRating } : {}),
-      ...(result.weightLbs ? { weightLbs: result.weightLbs } : {}),
-      ...(result.manufactureDate ? { manufactureDate: result.manufactureDate } : {}),
-      ...(result.certificationDate ? { certificationDate: result.certificationDate } : {}),
-      ...(result.certificationDueDate ? { certificationDueDate: result.certificationDueDate } : {}),
-    });
+    if (!photoDataUrl) return;
+    onApply(
+      {
+        ...(result?.classARating ? { classARating: result.classARating } : {}),
+        ...(result?.bcRating ? { bcRating: result.bcRating } : {}),
+        ...(result?.weightLbs ? { weightLbs: result.weightLbs } : {}),
+        ...(result?.manufactureDate ? { manufactureDate: result.manufactureDate } : {}),
+        ...(result?.certificationDate ? { certificationDate: result.certificationDate } : {}),
+        ...(result?.certificationDueDate ? { certificationDueDate: result.certificationDueDate } : {}),
+      },
+      photoDataUrl
+    );
     setApplied(true);
   };
 
@@ -108,11 +113,11 @@ export function ExtinguisherPhotoScan({ onApply }: { onApply: (patch: Partial<Ex
           {result.notes && <p className="mt-1 text-neutral-500">{result.notes}</p>}
           <button
             type="button"
-            disabled={applied || !summary}
+            disabled={applied}
             onClick={apply}
             className="mt-1 rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
           >
-            {applied ? "Applied" : "Use this"}
+            {applied ? "Applied" : summary ? "Use this" : "Keep photo anyway"}
           </button>
         </div>
       )}
