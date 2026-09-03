@@ -1041,7 +1041,8 @@ export default function Home() {
           Lemons, ChampCar, American Endurance Racing, World Racing League, SCDA, PCA, Hooked on Driving, NEQ,
           MassTuning, Northeast GT, AMEC Ice Racing, GRIDLIFE, BMW CCA Club Racing, BMW CCA
           Driving Events (HPDE, Autocross, Ice Autocross), NHRA, WDRA, IHRA, and PDRA (Drag
-          Racing), NKA, SKUSA, USPKS, AKRA, and WKA (Karting), and Klutch Kickers (Drifting).
+          Racing), NKA, SKUSA, USPKS, AKRA, and WKA (Karting), and Klutch Kickers and Formula
+          Drift (PRO, PROSPEC, PRO/AM) (Drifting).
         </p>
         <p className="mt-2">
           Know a ruleset we should add, or spot a missing certification or an error in one we already cover? Email{" "}
