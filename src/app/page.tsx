@@ -1,10 +1,13 @@
 "use client";
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, RulesetClass, getRuleset } from "@/data";
+import { ALL_RULESETS, CategoryGroup, DisciplineGroup, EquipmentCategory, Ruleset, getRuleset } from "@/data";
 import { SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, DISCIPLINE_GROUP_ORDER, GROUP_COLORS, GROUP_LABELS, GROUP_ORDER, isPerOccupantCategory } from "@/data/categoryMeta";
 import { EquipmentForm } from "@/components/EquipmentForm";
+import { DISCIPLINE_GROUPS, RulesetPicker, ClassPicker } from "@/components/RulesetPicker";
+import { BuyerMode } from "@/components/BuyerMode";
+import { ScrutineerMode } from "@/components/ScrutineerMode";
 import { EquipmentSummary, FilledEquipmentSummary } from "@/components/EquipmentSummary";
 import { GarageManager } from "@/components/GarageManager";
 import { ReferenceView } from "@/components/ReferenceView";
@@ -28,14 +31,14 @@ import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
 import { TourId, TutorialActions, TutorialModal } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
-type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
+type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage" | "buyer" | "scrutineer";
+
+/** Buyer/Scrutineer mode have no tutorial of their own yet — everywhere a mode is used to key into TutorialModal's tour registry needs this narrowing first. */
+function hasTour(mode: Mode): mode is TourId {
+  return mode !== "buyer" && mode !== "scrutineer";
+}
 
 const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
-
-const DISCIPLINE_GROUPS = DISCIPLINE_GROUP_ORDER.map((group) => ({
-  group,
-  rulesets: ALL_RULESETS.filter((r) => r.disciplineGroup === group).sort((a, b) => a.bodyName.localeCompare(b.bodyName)),
-})).filter((g) => g.rulesets.length > 0);
 
 interface MissingReport {
   category: EquipmentCategory;
@@ -130,10 +133,11 @@ export default function Home() {
   }, []);
 
   // Auto-launches each page's own tour the first time it's visited — but never interrupts a tour
-  // already in progress, and garage/My Gear has no tour of its own to offer.
+  // already in progress, and garage/My Gear (opt-in via the button below) and Buyer/Scrutineer
+  // mode (no tour of their own yet) are excluded.
   /* eslint-disable react-hooks/set-state-in-effect -- opens a tour in response to a mode change (an external-ish navigation event), not something derivable during render */
   useEffect(() => {
-    if (!hydrated || activeTour || mode === "garage") return;
+    if (!hydrated || activeTour || mode === "garage" || !hasTour(mode)) return;
     if (!toursSeen[mode]) setActiveTour(mode);
   }, [mode, hydrated, activeTour, toursSeen]);
   /* eslint-enable react-hooks/set-state-in-effect */
@@ -157,7 +161,7 @@ export default function Home() {
   };
 
   const showTutorialForCurrentPage = () => {
-    setActiveTour(mode);
+    if (hasTour(mode)) setActiveTour(mode);
   };
 
   useEffect(() => {
@@ -522,13 +526,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex shrink-0 gap-2">
-            <button
-              type="button"
-              onClick={showTutorialForCurrentPage}
-              className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
-            >
-              How it works
-            </button>
+            {hasTour(mode) && (
+              <button
+                type="button"
+                onClick={showTutorialForCurrentPage}
+                className="rounded border border-neutral-600 px-3 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+              >
+                How it works
+              </button>
+            )}
             <a
               href="https://cecchet.github.io/passtech/passtech-user-manual.html"
               target="_blank"
@@ -580,6 +586,20 @@ export default function Home() {
               icon="/frog-mygear.jpg"
               onClick={() => setMode("garage")}
             />
+            <LandingCard
+              number={3}
+              title="Buyer mode"
+              description="Check the gear before you buy it! Photograph or describe one item — a helmet for sale, say — and see every sanctioning body it's eligible for."
+              icon="/buyer-mode.jpg"
+              onClick={() => setMode("buyer")}
+            />
+            <LandingCard
+              number={4}
+              title="Scrutineer mode"
+              description="Check if the gear is good for an event. Pick a discipline/body/class, then scan gear one piece at a time for a quick pass/fail call."
+              icon="/frog-option2.jpg"
+              onClick={() => setMode("scrutineer")}
+            />
           </section>
         </>
       )}
@@ -628,7 +648,7 @@ export default function Home() {
         </div>
       )}
 
-      {mode !== "landing" && mode !== "garage" && (
+      {(mode === "reference" || isGarageCheckMode) && (
         <GroupFilter
           active={activeGroups}
           onChange={setActiveGroups}
@@ -983,6 +1003,9 @@ export default function Home() {
           />
         </section>
       )}
+
+      {mode === "buyer" && <BuyerMode />}
+      {mode === "scrutineer" && <ScrutineerMode />}
 
       {missingReports.length > 0 && (
         <section className="mt-10 rounded-lg border border-orange-700 bg-orange-950 p-4">
@@ -1437,83 +1460,6 @@ function SourceLine({ ruleset, showTechSheet = false }: { ruleset: Ruleset; show
         </div>
       )}
     </>
-  );
-}
-
-function RulesetPicker({ value, onChange }: { value: string; onChange: (id: string) => void }) {
-  // Derived straight from `value` (no local state needed) — step 1 always reflects whichever
-  // ruleset is actually selected, whether that came from step 2's own select, the tutorial
-  // walkthrough, or loading a saved gear set.
-  const discipline = getRuleset(value)?.disciplineGroup ?? DISCIPLINE_GROUPS[0]?.group;
-  const rulesetsInDiscipline = DISCIPLINE_GROUPS.find((g) => g.group === discipline)?.rulesets ?? [];
-
-  const handleDisciplineChange = (group: DisciplineGroup) => {
-    const firstInGroup = DISCIPLINE_GROUPS.find((g) => g.group === group)?.rulesets[0];
-    if (firstInGroup) onChange(firstInGroup.id);
-  };
-
-  return (
-    <div id="tutorial-ruleset-picker" className="mb-4">
-      <label className="mb-3 block">
-        <span className="mb-1 block text-sm font-medium">1. Pick a discipline</span>
-        <select
-          className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
-          value={discipline}
-          onChange={(e) => handleDisciplineChange(e.target.value as DisciplineGroup)}
-        >
-          {DISCIPLINE_GROUPS.map(({ group }) => (
-            <option key={group} value={group} className="bg-neutral-900 text-neutral-100">
-              {group}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="block">
-        <span className="mb-1 block text-sm font-medium">2. Pick a sanctioning body</span>
-        <select
-          className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        >
-          {rulesetsInDiscipline.map((d) => (
-            <option key={d.id} value={d.id} className="bg-neutral-900 text-neutral-100">
-              {d.bodyName} — {d.disciplineName}
-            </option>
-          ))}
-        </select>
-      </label>
-    </div>
-  );
-}
-
-function ClassPicker({
-  classes,
-  value,
-  onChange,
-}: {
-  classes: RulesetClass[];
-  value: string | undefined;
-  onChange: (id: string | undefined) => void;
-}) {
-  return (
-    <label id="tutorial-class-picker" className="mb-4 block">
-      <span className="mb-1 block text-sm font-medium">Refine by class (optional)</span>
-      <select
-        className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
-        value={value ?? ""}
-        onChange={(e) => onChange(e.target.value || undefined)}
-      >
-        <option className="bg-neutral-900 text-neutral-100" value="">
-          All classes — general rules
-        </option>
-        {classes.map((c) => (
-          <option key={c.id} value={c.id} className="bg-neutral-900 text-neutral-100">
-            {c.label}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }
 

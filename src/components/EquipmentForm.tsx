@@ -1265,312 +1265,370 @@ export function EquipmentForm({
   return (
     <div className="flex flex-col gap-3">
       {orderedCategories.map((category, i) => {
-        const meta = CATEGORY_META[category];
         const entry = entries[category] ?? { category };
-        const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
-        const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
         const result = results?.[category];
-        const Icon = CATEGORY_ICONS[category];
         const displayGroup = groupOf(category);
         const isNewGroup = occupant === "driver" && (i === 0 || groupOf(orderedCategories[i - 1]) !== displayGroup);
-        const groupColor = occupant === "codriver" ? CODRIVER_COLOR : GROUP_COLORS[displayGroup];
-        const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
-        const isEmpty = isEntryEmpty(category, entry);
-        const certBadges = showPhotoUpload ? summarizeEntryCerts(category, entry, result) : [];
-        // With a result (Option 2, one ruleset selected): still needs attention while it's actually
-        // required/conditional for this body and not yet accepted. With no result at all (Option 3,
-        // checked against every body at once — there's no single "required" to judge against): just
-        // whether anything's been entered yet.
-        const needsAttention = result
-          ? (result.requirement === "required" || result.requirement === "conditional") && result.status !== "ok"
-          : isEmpty;
-
         return (
-          <div key={category} id={domId} className="scroll-mt-4">
-            {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[displayGroup]}</h3>}
-            <details className={`rounded-lg border p-4 ${groupColor.border}`}>
-            <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
-              <span className="flex min-w-0 flex-1 items-center gap-3">
-                <Icon />
-                <span className="min-w-0">{meta.label}</span>
-              </span>
-              {showPhotoUpload &&
-                (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ?? entry.triangleUnits?.[0]?.photoDataUrls?.[0]) && (
-                  // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
-                  <img
-                    src={
-                      entry.photoDataUrls?.[0] ??
-                      entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ??
-                      entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ??
-                      entry.triangleUnits?.[0]?.photoDataUrls?.[0]
-                    }
-                    alt=""
-                    className="h-8 w-8 shrink-0 rounded object-cover"
-                  />
-                )}
-              {isEmpty && <NoDataBadge />}
-              {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
-              {result ? (
-                <StatusPill status={result.status} requirement={result.requirement} />
-              ) : (
-                results && <StatusPill status="not_required" requirement="not_addressed" />
-              )}
-              {certBadges.length > 0 && (
-                // w-full always forces this onto its own flex line, below the name/thumbnail/pill row —
-                // sharing that row let a long category name wrap to two lines while this sat vertically
-                // centered across the whole row's height, landing its text on top of the name's.
-                <span className="flex w-full flex-wrap items-center gap-x-1 gap-y-0.5 text-xs font-normal">
-                  {certBadges.map((badge, badgeIndex) => (
-                    <span key={badge.key} className={badge.colorClass}>
-                      {badge.label}
-                      {badgeIndex < certBadges.length - 1 ? "," : ""}
-                    </span>
-                  ))}
-                </span>
-              )}
-            </summary>
-            <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
-            {category === "hnr" && (
-              <p className="mb-2 text-xs text-amber-400">
-                Always check that your HNR tethers are compatible with the anchors on your helmet &mdash; PassTech
-                only checks the device&rsquo;s own certification, not tether/anchor compatibility.
-              </p>
-            )}
-
-            <div className="flex flex-col gap-2">
-                {showPhotoUpload && category !== "fire_extinguisher" && category !== "window_breaker" && category !== "emergency_triangle" && (
-                  <ItemPhotos
-                    category={category}
-                    entry={entry}
-                    canScan={!meta.presenceOnly}
-                    onChange={(photoDataUrls) => update({ photoDataUrls })}
-                    onAddCertification={(cert) =>
-                      update({
-                        certifications: [...(entry.certifications ?? []), cert],
-                        // Finding a tag on the photo means it's a certified item — flip a hybrid
-                        // category (gloves, seat, etc.) out of "material only" mode automatically,
-                        // rather than leaving the found certification stranded under a mode that
-                        // hides the certification list.
-                        ...(meta.hybrid && entry.mode !== "certified" ? { mode: "certified" as const } : {}),
-                      })
-                    }
-                  />
-                )}
-
-                {isSimplePresenceCategory(category) && (
-                  <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
-                    <input type="checkbox" checked={entry.skipped === false} onChange={(e) => update({ skipped: e.target.checked ? false : undefined })} />
-                    I have this item
-                  </label>
-                )}
-
-                {category === "tow_hook" && (
-                  <div className="flex gap-4">
-                    <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
-                      <input type="checkbox" checked={entry.towHookFront === true} onChange={(e) => update({ towHookFront: e.target.checked || undefined })} />
-                      Front
-                    </label>
-                    <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
-                      <input type="checkbox" checked={entry.towHookRear === true} onChange={(e) => update({ towHookRear: e.target.checked || undefined })} />
-                      Rear
-                    </label>
-                  </div>
-                )}
-
-                {category === "helmet" && (
-                  <select
-                    className={selectClass}
-                    value={entry.helmetType ?? ""}
-                    onChange={(e) => update({ helmetType: (e.target.value || undefined) as EquipmentEntry["helmetType"] })}
-                  >
-                    <option className={optionClass} value="">
-                      Helmet style — select…
-                    </option>
-                    <option className={optionClass} value="full_face">
-                      Full face (integrated chin bar)
-                    </option>
-                    <option className={optionClass} value="open_face">
-                      Open face (no chin bar)
-                    </option>
-                  </select>
-                )}
-
-                {category === "helmet" && (
-                  <>
-                    <label className="flex cursor-pointer items-center gap-2 text-xs text-neutral-300">
-                      <input
-                        type="checkbox"
-                        checked={entry.hasVisor ?? false}
-                        onChange={(e) => update({ hasVisor: e.target.checked, ...(e.target.checked ? {} : { visorNote: undefined }) })}
-                      />
-                      Has a visor/face shield
-                    </label>
-                    {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
-                    <HelmetPhotoScan onApply={(patch) => update(patch)} />
-                  </>
-                )}
-
-                {category === "fire_extinguisher" &&
-                  (() => {
-                    // One-time reconciliation: a brief window before per-unit photos existed wrote
-                    // straight into the shared entry.photoDataUrls (the generic per-category photo
-                    // control, now hidden for this category). Fold any leftovers from that window
-                    // into the first unit here so they don't just vanish, and clear the shared field
-                    // once the user next edits anything so this doesn't keep re-merging.
-                    const strayPhotos = entry.photoDataUrls ?? [];
-                    const baseUnits = entry.extinguisherUnits ?? [];
-                    const units =
-                      strayPhotos.length === 0
-                        ? baseUnits
-                        : baseUnits.length > 0
-                          ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
-                          : [{ ...newExtinguisherUnit(), photoDataUrls: strayPhotos }];
-                    return <ExtinguisherUnitList units={units} onChange={(extinguisherUnits) => update({ extinguisherUnits, photoDataUrls: [] })} />;
-                  })()}
-
-                {category === "window_breaker" &&
-                  (() => {
-                    // Same one-time reconciliation as fire_extinguisher above: fold any photos left
-                    // over in the shared entry.photoDataUrls (from before per-tool units existed)
-                    // into the first tool instead of losing them.
-                    const strayPhotos = entry.photoDataUrls ?? [];
-                    const baseUnits = entry.windowBreakerUnits ?? [];
-                    const units =
-                      strayPhotos.length === 0
-                        ? baseUnits
-                        : baseUnits.length > 0
-                          ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
-                          : [{ ...newWindowBreakerUnit(), photoDataUrls: strayPhotos }];
-                    return <WindowBreakerUnitList units={units} onChange={(windowBreakerUnits) => update({ windowBreakerUnits, photoDataUrls: [] })} />;
-                  })()}
-
-                {category === "emergency_triangle" &&
-                  (() => {
-                    // Same one-time reconciliation as fire_extinguisher/window_breaker above: fold
-                    // any photos left over in the shared entry.photoDataUrls (from before per-triangle
-                    // units existed) into the first triangle instead of losing them.
-                    const strayPhotos = entry.photoDataUrls ?? [];
-                    const baseUnits = entry.triangleUnits ?? [];
-                    const units =
-                      strayPhotos.length === 0
-                        ? baseUnits
-                        : baseUnits.length > 0
-                          ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
-                          : [{ ...newTriangleUnit(), photoDataUrls: strayPhotos }];
-                    return <TriangleUnitList units={units} onChange={(triangleUnits) => update({ triangleUnits, photoDataUrls: [] })} />;
-                  })()}
-
-                {category === "rollover_protection" && (
-                  <RolloverProtectionFields category={category} entry={entry} onChange={update} onReportMissing={onReportMissing} />
-                )}
-
-                {meta.hybrid && (
-                  <select
-                    className={selectClass}
-                    value={entry.mode ?? ""}
-                    onChange={(e) =>
-                      update({
-                        mode: (e.target.value || undefined) as EquipmentEntry["mode"],
-                        certifications: [],
-                        pantsCertifications: [],
-                      })
-                    }
-                  >
-                    <option className={optionClass} value="">
-                      Select…
-                    </option>
-                    <option className={optionClass} value="material_only">
-                      {meta.materialOnlyLabel ?? "No certification (fire-resistant / non-flammable material)"}
-                    </option>
-                    <option className={optionClass} value="certified">
-                      {meta.certifiedLabel ?? "Certified (SFI or FIA rated)"}
-                    </option>
-                  </select>
-                )}
-
-                {category === "seat" && entry.mode && (
-                  <label className="flex flex-col gap-1">
-                    <span className="text-xs text-neutral-400">Fixed-mounted, or on sliders/rails?</span>
-                    <select
-                      className={selectClass}
-                      value={entry.seatMounting ?? ""}
-                      onChange={(e) => update({ seatMounting: (e.target.value || undefined) as EquipmentEntry["seatMounting"] })}
-                    >
-                      <option className={optionClass} value="">
-                        Select…
-                      </option>
-                      <option className={optionClass} value="fixed">
-                        Fixed-mounted
-                      </option>
-                      <option className={optionClass} value="rails">
-                        Sliders / rails
-                      </option>
-                    </select>
-                  </label>
-                )}
-
-                {category === "firesuit" && entry.mode === "certified" && (
-                  <select
-                    className={selectClass}
-                    value={entry.pieceType ?? "one_piece"}
-                    onChange={(e) => update({ pieceType: e.target.value as EquipmentEntry["pieceType"] })}
-                  >
-                    <option className={optionClass} value="one_piece">
-                      One piece (FIA suits are always one-piece)
-                    </option>
-                    <option className={optionClass} value="two_piece">
-                      Two piece — separate jacket + pants (SFI only, not required to match)
-                    </option>
-                  </select>
-                )}
-
-                {showCertList &&
-                  (category === "firesuit" && entry.mode === "certified" && entry.pieceType === "two_piece" ? (
-                    <div className="flex flex-col gap-3">
-                      <div>
-                        <p className="mb-1 text-xs font-semibold text-neutral-300">Jacket</p>
-                        <CertificationList
-                          category={category}
-                          certifications={entry.certifications ?? []}
-                          onChange={(certifications) => update({ certifications })}
-                          onReportMissing={onReportMissing}
-                        />
-                      </div>
-                      <div>
-                        <p className="mb-1 text-xs font-semibold text-neutral-300">Pants</p>
-                        <CertificationList
-                          category={category}
-                          certifications={entry.pantsCertifications ?? []}
-                          onChange={(pantsCertifications) => update({ pantsCertifications })}
-                          onReportMissing={onReportMissing}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <CertificationList
-                      category={category}
-                      certifications={entry.certifications ?? []}
-                      onChange={(certifications) => update({ certifications })}
-                      onReportMissing={onReportMissing}
-                    />
-                  ))}
-              </div>
-
-            {result && (
-              <div className="mt-3">
-                <ResultRow result={result} sourceDocuments={sourceDocuments} />
-              </div>
-            )}
-
-            {showMediaLinks && !needsAttention && (
-              <div className="mt-3 flex justify-end">
-                <CategoryMediaLinks category={category} />
-              </div>
-            )}
-            </details>
-          </div>
+          <CategoryCard
+            key={category}
+            category={category}
+            entry={entry}
+            result={result}
+            hasResultsContext={!!results}
+            isNewGroup={isNewGroup}
+            groupOverride={displayGroup}
+            occupant={occupant}
+            showPhotoUpload={showPhotoUpload}
+            showMediaLinks={showMediaLinks}
+            sourceDocuments={sourceDocuments}
+            onChange={onChange}
+            onReportMissing={onReportMissing}
+          />
         );
       })}
+    </div>
+  );
+}
+
+/**
+ * One category's full card — icon/name/status header, hint text, item photo + certification (or
+ * presence/dedicated-field) entry, and (when a result is available) its verdict. Used both by
+ * EquipmentForm's per-category loop above and standalone by Buyer/Scrutineer mode, which render
+ * exactly one card for whichever single category the user picked — hence every list-position
+ * concern (grouping order, which category came before it) is the CALLER's job via `isNewGroup`/
+ * `groupOverride`, not this component's.
+ */
+export function CategoryCard({
+  category,
+  entry,
+  result,
+  hasResultsContext = true,
+  isNewGroup = true,
+  groupOverride,
+  occupant = "driver",
+  showPhotoUpload,
+  showMediaLinks,
+  sourceDocuments,
+  onChange,
+  onReportMissing,
+}: {
+  category: EquipmentCategory;
+  entry: EquipmentEntry;
+  result?: CategoryResult;
+  /** Whether a `results` object exists at all for this render (Option 2's single-ruleset check) — distinct from `result` itself, which is this one category's entry in it. Governs the "not required by this body" fallback pill shown when a results context exists but this particular category has no result. Default true (assume a results context) since standalone callers — Buyer/Scrutineer mode — always have one. */
+  hasResultsContext?: boolean;
+  /** Whether to show the group header (e.g. "DRIVER SAFETY GEAR") above this card — a list-position concern the caller decides. Defaults to true for standalone single-card usage. */
+  isNewGroup?: boolean;
+  /** Overrides which group's color/label this card uses — EquipmentForm's per-occupant-as-driver-group reclassification needs this; standalone callers can omit it to use the category's own plain group. */
+  groupOverride?: CategoryGroup;
+  occupant?: Occupant;
+  showPhotoUpload?: boolean;
+  showMediaLinks?: boolean;
+  sourceDocuments?: SourceDocument[];
+  onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
+  onReportMissing?: (category: EquipmentCategory, label: string) => void;
+}) {
+  const meta = CATEGORY_META[category];
+  const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
+  const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
+  const Icon = CATEGORY_ICONS[category];
+  const displayGroup = groupOverride ?? meta.group;
+  const groupColor = occupant === "codriver" ? CODRIVER_COLOR : GROUP_COLORS[displayGroup];
+  const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
+  const isEmpty = isEntryEmpty(category, entry);
+  const certBadges = showPhotoUpload ? summarizeEntryCerts(category, entry, result) : [];
+  // With a result (Option 2, one ruleset selected): still needs attention while it's actually
+  // required/conditional for this body and not yet accepted. With no result at all (Option 3,
+  // checked against every body at once — there's no single "required" to judge against): just
+  // whether anything's been entered yet.
+  const needsAttention = result
+    ? (result.requirement === "required" || result.requirement === "conditional") && result.status !== "ok"
+    : isEmpty;
+
+  return (
+    <div key={category} id={domId} className="scroll-mt-4">
+      {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[displayGroup]}</h3>}
+      <details className={`rounded-lg border p-4 ${groupColor.border}`}>
+      <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
+        <span className="flex min-w-0 flex-1 items-center gap-3">
+          <Icon />
+          <span className="min-w-0">{meta.label}</span>
+        </span>
+        {showPhotoUpload &&
+          (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ?? entry.triangleUnits?.[0]?.photoDataUrls?.[0]) && (
+            // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
+            <img
+              src={
+                entry.photoDataUrls?.[0] ??
+                entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ??
+                entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ??
+                entry.triangleUnits?.[0]?.photoDataUrls?.[0]
+              }
+              alt=""
+              className="h-8 w-8 shrink-0 rounded object-cover"
+            />
+          )}
+        {isEmpty && <NoDataBadge />}
+        {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
+        {result ? (
+          <StatusPill status={result.status} requirement={result.requirement} />
+        ) : (
+          hasResultsContext && <StatusPill status="not_required" requirement="not_addressed" />
+        )}
+        {certBadges.length > 0 && (
+          // w-full always forces this onto its own flex line, below the name/thumbnail/pill row —
+          // sharing that row let a long category name wrap to two lines while this sat vertically
+          // centered across the whole row's height, landing its text on top of the name's.
+          <span className="flex w-full flex-wrap items-center gap-x-1 gap-y-0.5 text-xs font-normal">
+            {certBadges.map((badge, badgeIndex) => (
+              <span key={badge.key} className={badge.colorClass}>
+                {badge.label}
+                {badgeIndex < certBadges.length - 1 ? "," : ""}
+              </span>
+            ))}
+          </span>
+        )}
+      </summary>
+      <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
+      {category === "hnr" && (
+        <p className="mb-2 text-xs text-amber-400">
+          Always check that your HNR tethers are compatible with the anchors on your helmet &mdash; PassTech
+          only checks the device&rsquo;s own certification, not tether/anchor compatibility.
+        </p>
+      )}
+
+      <div className="flex flex-col gap-2">
+          {showPhotoUpload && category !== "fire_extinguisher" && category !== "window_breaker" && category !== "emergency_triangle" && (
+            <ItemPhotos
+              category={category}
+              entry={entry}
+              canScan={!meta.presenceOnly}
+              onChange={(photoDataUrls) => update({ photoDataUrls })}
+              onAddCertification={(cert) =>
+                update({
+                  certifications: [...(entry.certifications ?? []), cert],
+                  // Finding a tag on the photo means it's a certified item — flip a hybrid
+                  // category (gloves, seat, etc.) out of "material only" mode automatically,
+                  // rather than leaving the found certification stranded under a mode that
+                  // hides the certification list.
+                  ...(meta.hybrid && entry.mode !== "certified" ? { mode: "certified" as const } : {}),
+                })
+              }
+            />
+          )}
+
+          {isSimplePresenceCategory(category) && (
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
+              <input type="checkbox" checked={entry.skipped === false} onChange={(e) => update({ skipped: e.target.checked ? false : undefined })} />
+              I have this item
+            </label>
+          )}
+
+          {category === "tow_hook" && (
+            <div className="flex gap-4">
+              <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
+                <input type="checkbox" checked={entry.towHookFront === true} onChange={(e) => update({ towHookFront: e.target.checked || undefined })} />
+                Front
+              </label>
+              <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
+                <input type="checkbox" checked={entry.towHookRear === true} onChange={(e) => update({ towHookRear: e.target.checked || undefined })} />
+                Rear
+              </label>
+            </div>
+          )}
+
+          {category === "helmet" && (
+            <select
+              className={selectClass}
+              value={entry.helmetType ?? ""}
+              onChange={(e) => update({ helmetType: (e.target.value || undefined) as EquipmentEntry["helmetType"] })}
+            >
+              <option className={optionClass} value="">
+                Helmet style — select…
+              </option>
+              <option className={optionClass} value="full_face">
+                Full face (integrated chin bar)
+              </option>
+              <option className={optionClass} value="open_face">
+                Open face (no chin bar)
+              </option>
+            </select>
+          )}
+
+          {category === "helmet" && (
+            <>
+              <label className="flex cursor-pointer items-center gap-2 text-xs text-neutral-300">
+                <input
+                  type="checkbox"
+                  checked={entry.hasVisor ?? false}
+                  onChange={(e) => update({ hasVisor: e.target.checked, ...(e.target.checked ? {} : { visorNote: undefined }) })}
+                />
+                Has a visor/face shield
+              </label>
+              {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
+              <HelmetPhotoScan onApply={(patch) => update(patch)} />
+            </>
+          )}
+
+          {category === "fire_extinguisher" &&
+            (() => {
+              // One-time reconciliation: a brief window before per-unit photos existed wrote
+              // straight into the shared entry.photoDataUrls (the generic per-category photo
+              // control, now hidden for this category). Fold any leftovers from that window
+              // into the first unit here so they don't just vanish, and clear the shared field
+              // once the user next edits anything so this doesn't keep re-merging.
+              const strayPhotos = entry.photoDataUrls ?? [];
+              const baseUnits = entry.extinguisherUnits ?? [];
+              const units =
+                strayPhotos.length === 0
+                  ? baseUnits
+                  : baseUnits.length > 0
+                    ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
+                    : [{ ...newExtinguisherUnit(), photoDataUrls: strayPhotos }];
+              return <ExtinguisherUnitList units={units} onChange={(extinguisherUnits) => update({ extinguisherUnits, photoDataUrls: [] })} />;
+            })()}
+
+          {category === "window_breaker" &&
+            (() => {
+              // Same one-time reconciliation as fire_extinguisher above: fold any photos left
+              // over in the shared entry.photoDataUrls (from before per-tool units existed)
+              // into the first tool instead of losing them.
+              const strayPhotos = entry.photoDataUrls ?? [];
+              const baseUnits = entry.windowBreakerUnits ?? [];
+              const units =
+                strayPhotos.length === 0
+                  ? baseUnits
+                  : baseUnits.length > 0
+                    ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
+                    : [{ ...newWindowBreakerUnit(), photoDataUrls: strayPhotos }];
+              return <WindowBreakerUnitList units={units} onChange={(windowBreakerUnits) => update({ windowBreakerUnits, photoDataUrls: [] })} />;
+            })()}
+
+          {category === "emergency_triangle" &&
+            (() => {
+              // Same one-time reconciliation as fire_extinguisher/window_breaker above: fold
+              // any photos left over in the shared entry.photoDataUrls (from before per-triangle
+              // units existed) into the first triangle instead of losing them.
+              const strayPhotos = entry.photoDataUrls ?? [];
+              const baseUnits = entry.triangleUnits ?? [];
+              const units =
+                strayPhotos.length === 0
+                  ? baseUnits
+                  : baseUnits.length > 0
+                    ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
+                    : [{ ...newTriangleUnit(), photoDataUrls: strayPhotos }];
+              return <TriangleUnitList units={units} onChange={(triangleUnits) => update({ triangleUnits, photoDataUrls: [] })} />;
+            })()}
+
+          {category === "rollover_protection" && (
+            <RolloverProtectionFields category={category} entry={entry} onChange={update} onReportMissing={onReportMissing} />
+          )}
+
+          {meta.hybrid && (
+            <select
+              className={selectClass}
+              value={entry.mode ?? ""}
+              onChange={(e) =>
+                update({
+                  mode: (e.target.value || undefined) as EquipmentEntry["mode"],
+                  certifications: [],
+                  pantsCertifications: [],
+                })
+              }
+            >
+              <option className={optionClass} value="">
+                Select…
+              </option>
+              <option className={optionClass} value="material_only">
+                {meta.materialOnlyLabel ?? "No certification (fire-resistant / non-flammable material)"}
+              </option>
+              <option className={optionClass} value="certified">
+                {meta.certifiedLabel ?? "Certified (SFI or FIA rated)"}
+              </option>
+            </select>
+          )}
+
+          {category === "seat" && entry.mode && (
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-neutral-400">Fixed-mounted, or on sliders/rails?</span>
+              <select
+                className={selectClass}
+                value={entry.seatMounting ?? ""}
+                onChange={(e) => update({ seatMounting: (e.target.value || undefined) as EquipmentEntry["seatMounting"] })}
+              >
+                <option className={optionClass} value="">
+                  Select…
+                </option>
+                <option className={optionClass} value="fixed">
+                  Fixed-mounted
+                </option>
+                <option className={optionClass} value="rails">
+                  Sliders / rails
+                </option>
+              </select>
+            </label>
+          )}
+
+          {category === "firesuit" && entry.mode === "certified" && (
+            <select
+              className={selectClass}
+              value={entry.pieceType ?? "one_piece"}
+              onChange={(e) => update({ pieceType: e.target.value as EquipmentEntry["pieceType"] })}
+            >
+              <option className={optionClass} value="one_piece">
+                One piece (FIA suits are always one-piece)
+              </option>
+              <option className={optionClass} value="two_piece">
+                Two piece — separate jacket + pants (SFI only, not required to match)
+              </option>
+            </select>
+          )}
+
+          {showCertList &&
+            (category === "firesuit" && entry.mode === "certified" && entry.pieceType === "two_piece" ? (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <p className="mb-1 text-xs font-semibold text-neutral-300">Jacket</p>
+                  <CertificationList
+                    category={category}
+                    certifications={entry.certifications ?? []}
+                    onChange={(certifications) => update({ certifications })}
+                    onReportMissing={onReportMissing}
+                  />
+                </div>
+                <div>
+                  <p className="mb-1 text-xs font-semibold text-neutral-300">Pants</p>
+                  <CertificationList
+                    category={category}
+                    certifications={entry.pantsCertifications ?? []}
+                    onChange={(pantsCertifications) => update({ pantsCertifications })}
+                    onReportMissing={onReportMissing}
+                  />
+                </div>
+              </div>
+            ) : (
+              <CertificationList
+                category={category}
+                certifications={entry.certifications ?? []}
+                onChange={(certifications) => update({ certifications })}
+                onReportMissing={onReportMissing}
+              />
+            ))}
+        </div>
+
+      {result && (
+        <div className="mt-3">
+          <ResultRow result={result} sourceDocuments={sourceDocuments} />
+        </div>
+      )}
+
+      {showMediaLinks && !needsAttention && (
+        <div className="mt-3 flex justify-end">
+          <CategoryMediaLinks category={category} />
+        </div>
+      )}
+      </details>
     </div>
   );
 }

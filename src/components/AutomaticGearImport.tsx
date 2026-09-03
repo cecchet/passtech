@@ -15,11 +15,13 @@ import {
   newWindowBreakerUnit,
 } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
+import { REQUEST_TIMEOUT_LABEL, fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { NOT_LISTED } from "@/data/standards";
 
-const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
+/** Every category the photo classifier (and its manual-pick fallback) can recognize — also reused by QuickItemScan's own manual category dropdown for Buyer/Scrutineer mode. */
+export const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
   "helmet",
   "balaclava",
   "hnr",
@@ -49,13 +51,9 @@ const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
 // Categories with no fields of their own (no certification, no extinguisher-style data) — a
 // confirmed photo just needs to flip the "I have this item" flag so it actually registers,
 // mirroring the manual-entry presence checkbox (see EquipmentForm's isSimplePresenceCategory).
-// Tow hook, fire extinguisher, and rollover protection are presence-only too but have their own
-// dedicated handling below.
-const SIMPLE_PRESENCE_CATEGORIES: EquipmentCategory[] = ["kill_switch", "emergency_triangle", "window_breaker", "spill_kit", "hood_pins", "parachute"];
-
-// Matches the AbortController timeout below — keep these in sync so the UI copy stays honest.
-const REQUEST_TIMEOUT_MS = 60_000;
-const REQUEST_TIMEOUT_LABEL = "a minute";
+// Tow hook, fire extinguisher, window breaker, emergency triangle, and rollover protection are
+// presence-only too but have their own dedicated handling below.
+const SIMPLE_PRESENCE_CATEGORIES: EquipmentCategory[] = ["kill_switch", "spill_kit", "hood_pins", "parachute"];
 
 type Piece = "one_piece" | "jacket" | "pants" | "front" | "rear";
 type Target = "driver" | "codriver";
@@ -118,28 +116,6 @@ function describeExisting(category: EquipmentCategory, piece: Piece | null, entr
     return `${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""} — already has a certification on file`;
   }
   return `${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""}`;
-}
-
-async function fetchWithTimeout(url: string, body: unknown): Promise<{ ok: boolean; status: number; data: Record<string, unknown> }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
-    const data = await res.json();
-    return { ok: res.ok, status: res.status, data };
-  } catch (err) {
-    if (err instanceof DOMException && err.name === "AbortError") {
-      return { ok: false, status: 0, data: { error: `This is taking longer than ${REQUEST_TIMEOUT_LABEL} — the connection or the vision service may be having trouble.` } };
-    }
-    return { ok: false, status: 0, data: { error: "Couldn't reach the server." } };
-  } finally {
-    clearTimeout(timer);
-  }
 }
 
 type Stage =

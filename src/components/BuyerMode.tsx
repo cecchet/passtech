@@ -1,0 +1,159 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset } from "@/data";
+import { DISCIPLINE_GROUP_ORDER } from "@/data/categoryMeta";
+import { CategoryResult, EquipmentEntry, evaluateRuleset, overallEligibility } from "@/lib/matcher";
+import { CategoryCard } from "@/components/EquipmentForm";
+import { QuickItemScan } from "@/components/QuickItemScan";
+import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
+import { ResultRow } from "@/components/ResultRow";
+
+interface RulesetHit {
+  rs: Ruleset;
+  result: CategoryResult;
+  status: "eligible" | "eligible_conditional" | "not_eligible";
+}
+
+/** Categories whose result can depend on ANOTHER category this app has no way to know about here (undergarment's tier trigger reads the firesuit's standard; balaclava's escalation reads whether an HNR is in use) — checked in isolation, so flagged rather than silently under- or over-stating the requirement. */
+const CROSS_DEPENDENT_NOTE: Partial<Record<EquipmentCategory, string>> = {
+  undergarment: "Some bodies only require fire-resistant underwear under certain firesuit certifications — this check can't see your firesuit, so treat a conditional result here as a reminder to check by hand.",
+  balaclava: "Some bodies only require a balaclava when using a head-and-neck restraint instead of a plain neck collar — this check can't see your HNR, so treat a conditional result here as a reminder to check by hand.",
+};
+
+export function BuyerMode() {
+  const [category, setCategory] = useState<EquipmentCategory | null>(null);
+  const [entry, setEntry] = useState<EquipmentEntry>({ category: "helmet" });
+  const [activeDisciplines, setActiveDisciplines] = useState<Set<DisciplineGroup>>(new Set(DISCIPLINE_GROUP_ORDER));
+
+  const toggleDiscipline = (group: DisciplineGroup) => {
+    setActiveDisciplines((prev) => {
+      const next = new Set(prev);
+      if (next.has(group)) next.delete(group);
+      else next.add(group);
+      return next;
+    });
+  };
+
+  const hits: RulesetHit[] = useMemo(() => {
+    if (!category) return [];
+    return ALL_RULESETS.flatMap((rs) => {
+      const results = evaluateRuleset(rs, { [category]: entry });
+      const result = results[category];
+      if (!result) return [];
+      return [{ rs, result, status: overallEligibility(results) }];
+    });
+  }, [category, entry]);
+
+  const filtered = hits.filter((h) => activeDisciplines.has(h.rs.disciplineGroup));
+  const eligible = filtered.filter((h) => h.status === "eligible");
+  const eligibleConditional = filtered.filter((h) => h.status === "eligible_conditional");
+  const notEligible = filtered.filter((h) => h.status === "not_eligible");
+
+  const reset = () => {
+    setCategory(null);
+    setEntry({ category: "helmet" });
+  };
+
+  return (
+    <section>
+      <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
+        {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+        <img src="/buyer-mode.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+        Buyer mode — check the gear before you buy it
+      </h2>
+      <p className="mb-4 text-sm text-neutral-400">
+        Photograph or describe one piece of gear — a helmet for sale, say — and see every sanctioning body it&rsquo;s eligible for. Nothing here is saved to My
+        Gear; it&rsquo;s a one-off check.
+      </p>
+
+      {!category ? (
+        <QuickItemScan
+          onDone={(cat, photoDataUrl) => {
+            setCategory(cat);
+            setEntry({ category: cat, ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}) });
+          }}
+        />
+      ) : (
+        <>
+          <button type="button" onClick={reset} className="mb-3 text-xs text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
+            ← Check a different item instead
+          </button>
+
+          {/* No single result to show here — Buyer mode checks against every body at once, not one specific ruleset — so the per-item status pill is turned off (hasResultsContext=false), matching how Option 3 (equipment-first) renders these same cards. */}
+          <CategoryCard category={category} entry={entry} onChange={(_cat, next) => setEntry(next)} showPhotoUpload isNewGroup={false} hasResultsContext={false} />
+
+          {CROSS_DEPENDENT_NOTE[category] && (
+            <p className="mt-3 rounded-lg border border-amber-700 bg-amber-950/40 p-3 text-xs text-amber-200">{CROSS_DEPENDENT_NOTE[category]}</p>
+          )}
+
+          <div className="mt-4 rounded-lg border border-neutral-700 p-3">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+            <div className="flex flex-wrap gap-2">
+              {DISCIPLINE_GROUP_ORDER.map((group) => {
+                const isActive = activeDisciplines.has(group);
+                return (
+                  <label
+                    key={group}
+                    className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium ${
+                      isActive ? "border-neutral-500 bg-neutral-900 text-neutral-200" : "border-neutral-700 text-neutral-500"
+                    }`}
+                  >
+                    <input type="checkbox" checked={isActive} onChange={() => toggleDiscipline(group)} />
+                    <DisciplineIcon group={group} className="h-6 w-6" />
+                    {group}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-8">
+            <EligibilityGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
+            <EligibilityGroup
+              title={`Eligible under condition (${eligibleConditional.length})`}
+              items={eligibleConditional}
+              accent="border-yellow-700"
+              titleColor="text-yellow-400"
+            />
+            <EligibilityGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-800" titleColor="text-red-400" />
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+function EligibilityGroup({ title, items, accent, titleColor }: { title: string; items: RulesetHit[]; accent: string; titleColor: string }) {
+  if (items.length === 0) return null;
+  const groups = DISCIPLINE_GROUP_ORDER.map((discipline) => ({ discipline, items: items.filter((i) => i.rs.disciplineGroup === discipline) })).filter(
+    (g) => g.items.length > 0
+  );
+  return (
+    <div>
+      <h3 className={`mb-2 text-lg font-bold ${titleColor}`}>{title}</h3>
+      <div className="space-y-5">
+        {groups.map(({ discipline, items }) => (
+          <div key={discipline}>
+            <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-neutral-500">
+              <DisciplineIcon group={discipline} className="h-6 w-6" />
+              {discipline}
+            </h4>
+            <div className="space-y-2">
+              {items.map(({ rs, result }) => (
+                <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
+                  <summary className="cursor-pointer text-sm font-medium">
+                    {rs.bodyName} — {rs.disciplineName}
+                  </summary>
+                  <div className="mt-3">
+                    <ResultRow result={result} sourceDocuments={rs.sourceDocuments} />
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
