@@ -1003,8 +1003,8 @@ export default function Home() {
         </section>
       )}
 
-      {mode === "buyer" && <BuyerMode demoItemTrigger={demoItemTrigger} />}
-      {mode === "scrutineer" && <ScrutineerMode demoItemTrigger={demoItemTrigger} />}
+      {mode === "buyer" && <BuyerMode demoItemTrigger={demoItemTrigger} tourActive={activeTour === "buyer"} />}
+      {mode === "scrutineer" && <ScrutineerMode demoItemTrigger={demoItemTrigger} tourActive={activeTour === "scrutineer"} />}
 
       {missingReports.length > 0 && (
         <section className="mt-10 rounded-lg border border-orange-700 bg-orange-950 p-4">

@@ -174,6 +174,7 @@ function ItemPhotos({
             id={inputId}
             type="file"
             accept="image/*"
+            capture="environment"
             className="hidden"
             onChange={async (e) => {
               const file = e.target.files?.[0];
@@ -453,6 +454,7 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
             id={inputId}
             type="file"
             accept="image/*"
+            capture="environment"
             className="hidden"
             onChange={async (e) => {
               const file = e.target.files?.[0];
@@ -606,6 +608,7 @@ function WindowBreakerUnitRow({ unit, onChange, onRemove }: { unit: WindowBreake
               id={inputId}
               type="file"
               accept="image/*"
+              capture="environment"
               className="hidden"
               onChange={async (e) => {
                 const file = e.target.files?.[0];
@@ -694,6 +697,7 @@ function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onC
               id={inputId}
               type="file"
               accept="image/*"
+              capture="environment"
               className="hidden"
               onChange={async (e) => {
                 const file = e.target.files?.[0];
@@ -1310,6 +1314,7 @@ export function CategoryCard({
   showPhotoUpload,
   showMediaLinks,
   sourceDocuments,
+  defaultOpen = false,
   onChange,
   onReportMissing,
 }: {
@@ -1326,6 +1331,8 @@ export function CategoryCard({
   showPhotoUpload?: boolean;
   showMediaLinks?: boolean;
   sourceDocuments?: SourceDocument[];
+  /** Starts the card's <details> expanded — EquipmentForm's own multi-category lists default this closed (20 expanded cards would be overwhelming), but a standalone single-card caller (Buyer/Scrutineer mode) has no such space constraint and wants it open immediately. */
+  defaultOpen?: boolean;
   onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
@@ -1349,7 +1356,7 @@ export function CategoryCard({
   return (
     <div key={category} id={domId} className="scroll-mt-4">
       {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[displayGroup]}</h3>}
-      <details className={`rounded-lg border p-4 ${groupColor.border}`}>
+      <details open={defaultOpen} className={`rounded-lg border p-4 ${groupColor.border}`}>
       <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
         <span className="flex min-w-0 flex-1 items-center gap-3">
           <Icon />

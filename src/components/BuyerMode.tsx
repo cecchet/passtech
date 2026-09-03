@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset } from "@/data";
 import { DISCIPLINE_GROUP_ORDER } from "@/data/categoryMeta";
-import { CategoryResult, EquipmentEntry, evaluateRuleset, newCertification, overallEligibility } from "@/lib/matcher";
+import { CategoryResult, EquipmentEntry, evaluateRuleset, isPendingConditional, isViolation, newCertification } from "@/lib/matcher";
 import { CategoryCard } from "@/components/EquipmentForm";
 import { QuickItemScan } from "@/components/QuickItemScan";
 import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
@@ -24,7 +24,7 @@ const CROSS_DEPENDENT_NOTE: Partial<Record<EquipmentCategory, string>> = {
   balaclava: "Some bodies only require a balaclava when using a head-and-neck restraint instead of a plain neck collar — this check can't see your HNR, so treat a conditional result here as a reminder to check by hand.",
 };
 
-export function BuyerMode({ demoItemTrigger }: { demoItemTrigger?: number }) {
+export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: number; tourActive?: boolean }) {
   const [category, setCategory] = useState<EquipmentCategory | null>(null);
   const [entry, setEntry] = useState<EquipmentEntry>({ category: "helmet" });
   const [activeDisciplines, setActiveDisciplines] = useState<Set<DisciplineGroup>>(new Set(DISCIPLINE_GROUP_ORDER));
@@ -34,12 +34,34 @@ export function BuyerMode({ demoItemTrigger }: { demoItemTrigger?: number }) {
   // synchronously during render (the same "adjust state on a prop change" pattern TutorialModal
   // itself uses to reset its step) rather than in an effect: an effect here would need an extra
   // render/commit cycle to take hold, which the tutorial's own skip-past-a-missing-target check
-  // doesn't wait around for, and it would skip this step before the demo item ever appeared.
+  // doesn't wait around for, and it would skip this step before the demo item ever appeared. Only
+  // fires if there's no real item already in progress — replaying the tour shouldn't clobber it.
   const [lastDemoTrigger, setLastDemoTrigger] = useState(demoItemTrigger ?? 0);
   if ((demoItemTrigger ?? 0) !== lastDemoTrigger) {
     setLastDemoTrigger(demoItemTrigger ?? 0);
-    setCategory("helmet");
-    setEntry({ category: "helmet", certifications: [{ ...newCertification(), standardId: "snell-sa2020" }] });
+    if (!category) {
+      setCategory("helmet");
+      setEntry({ category: "helmet", certifications: [{ ...newCertification(), standardId: "snell-sa2020" }] });
+    }
+  }
+
+  // And the reverse: once the tour closes (Done, Exit, or Escape), drop back to the initial
+  // "upload a photo" screen instead of leaving the demo item sitting there mid-page — the tour is
+  // a guided example, not something a buyer coming back from it should have to clear by hand. Only
+  // when the tour itself is what put an item here, though — replaying the tour over a real,
+  // already-in-progress check must leave that check alone when the tour closes, same as it does
+  // when the tour opens.
+  const [wasTourActive, setWasTourActive] = useState(!!tourActive);
+  const [tourOwnsCurrentItem, setTourOwnsCurrentItem] = useState(false);
+  if (!!tourActive !== wasTourActive) {
+    const startingNow = !wasTourActive && tourActive;
+    const closingNow = wasTourActive && !tourActive;
+    setWasTourActive(!!tourActive);
+    if (startingNow) setTourOwnsCurrentItem(!category);
+    if (closingNow && tourOwnsCurrentItem) {
+      setCategory(null);
+      setEntry({ category: "helmet" });
+    }
   }
 
   const toggleDiscipline = (group: DisciplineGroup) => {
@@ -54,10 +76,17 @@ export function BuyerMode({ demoItemTrigger }: { demoItemTrigger?: number }) {
   const hits: RulesetHit[] = useMemo(() => {
     if (!category) return [];
     return ALL_RULESETS.flatMap((rs) => {
+      // Evaluated with only this one category's entry, so `evaluateRuleset` reports every OTHER
+      // category in the ruleset as empty/needs_info too — status must come from this category's
+      // own result alone (isViolation/isPendingConditional, the same two checks
+      // overallEligibility itself aggregates across a whole gear set), not from rolling up the
+      // whole `results` map, which would count every other item this app never asked about as
+      // missing and fail the ruleset regardless of this one item's real status.
       const results = evaluateRuleset(rs, { [category]: entry });
       const result = results[category];
       if (!result) return [];
-      return [{ rs, result, status: overallEligibility(results) }];
+      const status = isViolation(result) ? "not_eligible" : isPendingConditional(result) ? "eligible_conditional" : "eligible";
+      return [{ rs, result, status }];
     });
   }, [category, entry]);
 
@@ -86,9 +115,13 @@ export function BuyerMode({ demoItemTrigger }: { demoItemTrigger?: number }) {
       {!category ? (
         <div id="tutorial-buyer-scan">
           <QuickItemScan
-            onDone={(cat, photoDataUrl) => {
+            onDone={(cat, photoDataUrl, certifications) => {
               setCategory(cat);
-              setEntry({ category: cat, ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}) });
+              setEntry({
+                category: cat,
+                ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}),
+                ...(certifications?.length ? { certifications } : {}),
+              });
             }}
           />
         </div>
@@ -100,7 +133,15 @@ export function BuyerMode({ demoItemTrigger }: { demoItemTrigger?: number }) {
 
           {/* No single result to show here — Buyer mode checks against every body at once, not one specific ruleset — so the per-item status pill is turned off (hasResultsContext=false), matching how Option 3 (equipment-first) renders these same cards. */}
           <div id="tutorial-buyer-item-card">
-            <CategoryCard category={category} entry={entry} onChange={(_cat, next) => setEntry(next)} showPhotoUpload isNewGroup={false} hasResultsContext={false} />
+            <CategoryCard
+              category={category}
+              entry={entry}
+              onChange={(_cat, next) => setEntry(next)}
+              showPhotoUpload
+              isNewGroup={false}
+              hasResultsContext={false}
+              defaultOpen
+            />
           </div>
 
           {CROSS_DEPENDENT_NOTE[category] && (

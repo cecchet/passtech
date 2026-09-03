@@ -194,7 +194,7 @@ export const TOURS: Record<TourId, Tour> = {
       },
       {
         targetId: "tutorial-scrutineer-next",
-        text: "Tap “Scan next item” to move on — the ruleset and class stay selected, so you can go straight through a whole car.",
+        text: "“Scan another” stays on this same category — handy if you're only checking helmets, say, one after another. “Scan a different item” goes back to detecting a new category. Either way, the ruleset and class stay selected, so you can go straight through a whole car.",
       },
     ],
   },

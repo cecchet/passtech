@@ -3,31 +3,67 @@
 import { useId, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
+import { NOT_LISTED } from "@/data/standards";
+import { CertificationEntry, newCertification } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout";
+import { useTagScanner } from "@/lib/useTagScanner";
+import { TagCandidateList } from "@/components/TagCandidateList";
 import { CLASSIFIABLE_CATEGORIES } from "@/components/AutomaticGearImport";
+
+interface CertCandidate {
+  standardId: string;
+  rawText: string;
+  homologationNumber: string;
+  labelDate: string;
+  tagExpirationDate: string;
+  confidence: "high" | "medium" | "low";
+}
+
+function certCandidateToEntry(c: CertCandidate): CertificationEntry {
+  return {
+    ...newCertification(),
+    standardId: c.standardId,
+    customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
+    homologationNumber: c.homologationNumber || undefined,
+    labelDate: c.labelDate || undefined,
+    tagExpirationDate: c.tagExpirationDate || undefined,
+  };
+}
 
 /**
  * The one-photo-in, one-category-out front door for Buyer mode and Scrutineer mode: upload a
  * photo of a single piece of gear, get back which category it is (via the same
  * /api/analyze-gear-photo call AutomaticGearImport uses), or fall back to picking the category
- * yourself. Deliberately stops there — it does NOT also try to read a certification off the photo
- * (unlike AutomaticGearImport's queue, which merges category+cert detection into one step). Once
- * the category is known, the caller renders CategoryCard for it, whose own "Add a photo" / "Scan
- * tag photo" controls already handle certification reading — reusing that instead of duplicating
- * it here keeps this component small and the cert-reading UX identical everywhere it appears.
+ * yourself. That same call already reads any certification tag legible in the photo — whether
+ * it's a dedicated tag close-up or just readable within a wider item shot — so a confirmed
+ * category with a tag already found is handed straight to the caller. When none was found, this
+ * component stays open one more step and explicitly asks for a tag photo (via /api/analyze-tag,
+ * now that the category is known) rather than silently leaving that to be discovered later in
+ * CategoryCard's own, less prominent "Scan tag photo" control.
  */
-export function QuickItemScan({ onDone }: { onDone: (category: EquipmentCategory, photoDataUrl?: string) => void }) {
+export function QuickItemScan({
+  onDone,
+}: {
+  onDone: (category: EquipmentCategory, photoDataUrl?: string, certifications?: CertificationEntry[]) => void;
+}) {
   const [stage, setStage] = useState<
     | { type: "idle" }
     | { type: "analyzing" }
-    | { type: "detected"; category: EquipmentCategory; confidence: "high" | "medium" | "low"; notes: string; photoDataUrl: string }
+    | { type: "detected"; category: EquipmentCategory; confidence: "high" | "medium" | "low"; notes: string; photoDataUrl: string; certifications: CertCandidate[] }
+    | { type: "need_tag"; category: EquipmentCategory; photoDataUrl: string; itemCertifications: CertificationEntry[] }
     | { type: "not_gear"; notes: string }
     | { type: "error"; message: string }
     | { type: "manual" }
   >({ type: "idle" });
   const [manualCategory, setManualCategory] = useState<EquipmentCategory>("helmet");
   const inputId = useId();
+  const tagInputId = useId();
+
+  const scanCategory = stage.type === "need_tag" ? stage.category : "helmet";
+  const scanner = useTagScanner(scanCategory, (cert) => {
+    setStage((s) => (s.type === "need_tag" ? { ...s, itemCertifications: [...s.itemCertifications, cert] } : s));
+  });
 
   const analyzePhoto = async (file: File) => {
     setStage({ type: "analyzing" });
@@ -55,7 +91,17 @@ export function QuickItemScan({ onDone }: { onDone: (category: EquipmentCategory
       confidence: (data.categoryConfidence as "high" | "medium" | "low") ?? "medium",
       notes: (data.notes as string) ?? "",
       photoDataUrl,
+      certifications: (data.certifications as CertCandidate[]) ?? [],
     });
+  };
+
+  const confirmDetected = (s: Extract<typeof stage, { type: "detected" }>) => {
+    if (s.certifications.length > 0) {
+      onDone(s.category, s.photoDataUrl, s.certifications.map(certCandidateToEntry));
+    } else {
+      scanner.reset();
+      setStage({ type: "need_tag", category: s.category, photoDataUrl: s.photoDataUrl, itemCertifications: [] });
+    }
   };
 
   if (stage.type === "idle" || stage.type === "not_gear" || stage.type === "error") {
@@ -71,11 +117,12 @@ export function QuickItemScan({ onDone }: { onDone: (category: EquipmentCategory
           htmlFor={inputId}
           className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
         >
-          📷 Upload a photo of the item
+          📷 Upload an overall picture of the item
           <input
             id={inputId}
             type="file"
             accept="image/*"
+            capture="environment"
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -121,6 +168,56 @@ export function QuickItemScan({ onDone }: { onDone: (category: EquipmentCategory
     );
   }
 
+  if (stage.type === "need_tag") {
+    return (
+      <div className="rounded-lg border border-neutral-700 p-4">
+        {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
+        <img src={stage.photoDataUrl} alt="" className="mb-3 h-24 w-24 rounded object-cover" />
+        <p className="text-neutral-200">
+          Detected: <b>{CATEGORY_META[stage.category].label}</b>
+        </p>
+        <p className="mt-1 text-sm text-amber-400">We couldn&rsquo;t find a certification tag on that photo. Upload a picture of the tag:</p>
+        <label
+          htmlFor={tagInputId}
+          className="mt-3 flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+        >
+          📷 Upload a photo of the certification tag
+          <input
+            id={tagInputId}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (!file) return;
+              let dataUrl: string;
+              try {
+                dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+              } catch {
+                return;
+              }
+              void scanner.analyze(dataUrl);
+            }}
+          />
+        </label>
+        {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
+        {scanner.error && <p className="mt-2 text-sm text-red-400">{scanner.error}</p>}
+        {scanner.candidates && (
+          <TagCandidateList candidates={scanner.candidates} notes={scanner.notes} added={scanner.added} onAdd={scanner.addCandidate} category={stage.category} />
+        )}
+        <button
+          type="button"
+          onClick={() => onDone(stage.category, stage.photoDataUrl, stage.itemCertifications)}
+          className="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black"
+        >
+          {stage.itemCertifications.length > 0 ? `Continue with ${stage.itemCertifications.length} certification(s) added` : "Continue without a certification"}
+        </button>
+      </div>
+    );
+  }
+
   // stage.type === "detected"
   return (
     <div className="rounded-lg border border-neutral-700 p-4">
@@ -130,11 +227,16 @@ export function QuickItemScan({ onDone }: { onDone: (category: EquipmentCategory
         I detected: <b>{CATEGORY_META[stage.category].label}</b>
         <span className="ml-1 text-neutral-500">({stage.confidence} confidence)</span>
       </p>
+      {stage.certifications.length > 0 && (
+        <p className="mt-1 text-sm text-emerald-400">
+          Found {stage.certifications.length} certification{stage.certifications.length > 1 ? "s" : ""} on this photo — it&rsquo;ll be added automatically.
+        </p>
+      )}
       {stage.notes && <p className="mt-1 text-xs text-neutral-500">{stage.notes}</p>}
       <div className="mt-3 flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={() => onDone(stage.category, stage.photoDataUrl)}
+          onClick={() => confirmDetected(stage)}
           className="rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
         >
           Yes, that&rsquo;s right
