@@ -82,7 +82,7 @@ const TOURS: Record<TourId, Tour> = {
     steps: [
       {
         targetId: "tutorial-ruleset-picker",
-        text: "Pick a discipline first (step 1), then the sanctioning body within it you want to check your gear against (step 2) — whatever's already selected here is what the results below are checking against.",
+        text: "Pick a discipline first (step 1), then the sanctioning body within it you want to check your gear against (step 2).",
       },
       {
         targetId: "tutorial-class-picker",
