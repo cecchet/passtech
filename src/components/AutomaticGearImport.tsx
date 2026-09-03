@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
-import { EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import { EquipmentEntry, ExtinguisherUnit, WindowBreakerUnit, isEntryEmpty, newCertification, newExtinguisherUnit, newWindowBreakerUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
@@ -358,18 +358,18 @@ export function AutomaticGearImport({
     isCloseupOnly: boolean,
     helmet: HelmetInfo | undefined,
     extinguisher?: ExtinguisherAnalysis | null,
-    extinguisherMode: "new" | "merge" = "new"
+    unitMode: "new" | "merge" = "new"
   ): boolean => {
     const existing = currentEntries(target)[category];
 
-    // Fire extinguishers are handled entirely separately: a gear set can carry several, each with
-    // its own photos (so a scrutineer can tell which label documents which physical unit) rather
-    // than one shared photo pool for the category. "merge" attaches this photo/data to the most
-    // recently confirmed unit (same physical extinguisher, e.g. a wide shot then its label
-    // close-up); "new" always starts a fresh unit.
+    // Fire extinguishers and window breakers/seatbelt cutters are handled entirely separately: a
+    // gear set can carry several of either, each with its own photos (so a scrutineer can tell
+    // which photo documents which physical unit) rather than one shared photo pool for the
+    // category. "merge" attaches this photo/data to the most recently confirmed unit (same
+    // physical item, e.g. a wide shot then its label close-up); "new" always starts a fresh unit.
     if (category === "fire_extinguisher") {
       const existingUnits = existing?.extinguisherUnits ?? [];
-      const targetUnit = extinguisherMode === "merge" ? existingUnits[existingUnits.length - 1] : undefined;
+      const targetUnit = unitMode === "merge" ? existingUnits[existingUnits.length - 1] : undefined;
       const currentPhotos = targetUnit?.photoDataUrls ?? [];
       const photoAdded = currentPhotos.length < maxPhotosFor(category);
       const mergedFields = {
@@ -389,6 +389,27 @@ export function AutomaticGearImport({
         units = [...existingUnits, newUnit];
       }
       updateEntry(target, category, { extinguisherUnits: units });
+      markSlotFilled(target, category, piece);
+      if (photoAdded) {
+        noteBuilt(`${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${targetUnit ? "" : ` #${units.length}`} photo`);
+      }
+      return photoAdded;
+    }
+
+    if (category === "window_breaker") {
+      const existingUnits = existing?.windowBreakerUnits ?? [];
+      const targetUnit = unitMode === "merge" ? existingUnits[existingUnits.length - 1] : undefined;
+      const currentPhotos = targetUnit?.photoDataUrls ?? [];
+      const photoAdded = currentPhotos.length < maxPhotosFor(category);
+      let units: WindowBreakerUnit[];
+      if (targetUnit) {
+        const updated: WindowBreakerUnit = { ...targetUnit, photoDataUrls: photoAdded ? [...currentPhotos, dataUrl] : currentPhotos };
+        units = existingUnits.map((u) => (u.key === targetUnit.key ? updated : u));
+      } else {
+        const newUnit: WindowBreakerUnit = { ...newWindowBreakerUnit(), photoDataUrls: photoAdded ? [dataUrl] : [] };
+        units = [...existingUnits, newUnit];
+      }
+      updateEntry(target, category, { windowBreakerUnits: units });
       markSlotFilled(target, category, piece);
       if (photoAdded) {
         noteBuilt(`${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${targetUnit ? "" : ` #${units.length}`} photo`);
@@ -635,7 +656,7 @@ export function AutomaticGearImport({
                       c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, itemConfirmed: added, conflict: null, photoLimitReached: !added } } : c
                     );
                   }}
-                  onResolveConflictNewExtinguisher={(category, piece, target) => {
+                  onResolveConflictNewUnit={(category, piece, target) => {
                     const added = confirmItem(
                       category,
                       piece,
@@ -703,7 +724,7 @@ function ResultCard({
   onSetPiece,
   onRequestConflictCheck,
   onResolveConflictSameItem,
-  onResolveConflictNewExtinguisher,
+  onResolveConflictNewUnit,
   onResolveConflictCodriver,
   onAddCert,
   onNext,
@@ -714,7 +735,7 @@ function ResultCard({
   onSetPiece: (piece: Piece) => void;
   onRequestConflictCheck: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictSameItem: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
-  onResolveConflictNewExtinguisher: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
+  onResolveConflictNewUnit: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictCodriver: (category: EquipmentCategory, piece: Piece | null) => void;
   onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
   onNext: () => void;
@@ -722,6 +743,9 @@ function ResultCard({
   const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached, extinguisher } = stage;
   const perOccupant = isPerOccupantCategory(category);
   const isExtinguisher = category === "fire_extinguisher";
+  // Fire extinguishers and window breakers/seatbelt cutters both support several separately
+  // photo-documented physical units per gear set — see confirmItem's per-category branches above.
+  const isMultiUnitCategory = isExtinguisher || category === "window_breaker";
   const needsSideChoice = category === "tow_hook" && !piece;
   const extinguisherLoading = category === "fire_extinguisher" && extinguisher === null;
   const extinguisherSummary = extinguisher
@@ -812,19 +836,21 @@ function ResultCard({
           <p className="text-amber-200">
             {isExtinguisher
               ? "You already have a fire extinguisher in this gear set — is this the same one (e.g. its label, after an overview shot) or a different extinguisher?"
-              : `You already have a ${conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one${perOccupant ? ", unless this is for a codriver" : ""}.`}
+              : category === "window_breaker"
+                ? "You already have a window breaker/seatbelt cutter in this gear set — is this the same tool (another angle) or a different physical tool (e.g. one at each seat)?"
+                : `You already have a ${conflict.existingLabel.toLowerCase()} in this gear set — a gear set can only have one${perOccupant ? ", unless this is for a codriver" : ""}.`}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             <button type="button" onClick={() => onResolveConflictSameItem(category, piece, target)} className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800">
-              {isExtinguisher ? "Same extinguisher — attach this too" : "Same item — add as another photo"}
+              {isExtinguisher ? "Same extinguisher — attach this too" : isMultiUnitCategory ? "Same tool — attach this too" : "Same item — add as another photo"}
             </button>
-            {isExtinguisher && (
+            {isMultiUnitCategory && (
               <button
                 type="button"
-                onClick={() => onResolveConflictNewExtinguisher(category, piece, target)}
+                onClick={() => onResolveConflictNewUnit(category, piece, target)}
                 className="rounded border border-neutral-600 px-2 py-1 text-neutral-200 hover:bg-neutral-800"
               >
-                Different extinguisher — add as new
+                {isExtinguisher ? "Different extinguisher — add as new" : "Different tool — add as new"}
               </button>
             )}
             {perOccupant && (

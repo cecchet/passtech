@@ -4,7 +4,17 @@ import { useId, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant, SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
-import { CategoryResults, CertificationEntry, EquipmentEntry, ExtinguisherUnit, isEntryEmpty, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import {
+  CategoryResults,
+  CertificationEntry,
+  EquipmentEntry,
+  ExtinguisherUnit,
+  WindowBreakerUnit,
+  isEntryEmpty,
+  newCertification,
+  newExtinguisherUnit,
+  newWindowBreakerUnit,
+} from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fiaListsForStandard } from "@/data/fiaHomologation";
 import { lookupHomologation } from "@/lib/fiaHomologation";
@@ -558,6 +568,93 @@ function ExtinguisherUnitList({ units, onChange }: { units: ExtinguisherUnit[]; 
   );
 }
 
+// A window breaker/seatbelt cutter has no rating or date fields (unlike a fire extinguisher) —
+// this only exists so each physical tool (e.g. one at the driver's seat, one at the codriver's)
+// can carry its own photo instead of lumping every photo into one shared pool.
+function WindowBreakerUnitRow({ unit, onChange, onRemove }: { unit: WindowBreakerUnit; onChange: (patch: Partial<WindowBreakerUnit>) => void; onRemove: () => void }) {
+  const photos = unit.photoDataUrls ?? [];
+  const maxPhotos = maxPhotosFor("window_breaker");
+  const canAddMore = photos.length < maxPhotos;
+  const inputId = useId();
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
+
+  return (
+    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-3">
+          {photos.map((p, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <ZoomableThumb src={p} className="h-16 w-16 shrink-0 rounded object-cover" />
+              <button type="button" onClick={() => removePhoto(i)} className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
+                🗑️ Remove photo
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="flex flex-wrap items-center gap-2">
+        {canAddMore && (
+          <label
+            htmlFor={inputId}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+          >
+            📷 Add a photo of this item ({photos.length}/{maxPhotos})
+            <input
+              id={inputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+                onChange({ photoDataUrls: [...photos, dataUrl] });
+              }}
+            />
+          </label>
+        )}
+        {!confirmRemove ? (
+          <button type="button" onClick={() => setConfirmRemove(true)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">
+            🗑️ Remove this tool
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="rounded border border-red-500 bg-red-900 px-2 py-1.5 text-xs font-semibold text-red-100 hover:bg-red-800"
+            >
+              🗑️ Confirm delete{photos.length > 0 ? ` (removes ${photos.length} photo${photos.length === 1 ? "" : "s"} too)` : ""}?
+            </button>
+            <button type="button" onClick={() => setConfirmRemove(false)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800">
+              Cancel
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function WindowBreakerUnitList({ units, onChange }: { units: WindowBreakerUnit[]; onChange: (units: WindowBreakerUnit[]) => void }) {
+  const updateUnit = (index: number, patch: Partial<WindowBreakerUnit>) => onChange(units.map((u, i) => (i === index ? { ...u, ...patch } : u)));
+  const removeUnit = (index: number) => onChange(units.filter((_, i) => i !== index));
+  const addUnit = () => onChange([...units, newWindowBreakerUnit()]);
+
+  return (
+    <div className="flex flex-col gap-2">
+      {units.map((unit, i) => (
+        <WindowBreakerUnitRow key={unit.key} unit={unit} onChange={(patch) => updateUnit(i, patch)} onRemove={() => removeUnit(i)} />
+      ))}
+      <button type="button" onClick={addUnit} className="self-start rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
+        + Add {units.length > 0 ? "another tool" : "a tool"}
+      </button>
+    </div>
+  );
+}
+
 const BODY_STYLE_OPTIONS: { value: NonNullable<EquipmentEntry["bodyStyle"]>; label: string }[] = [
   { value: "closed_roof", label: "Closed roof (sedan / coupe / hatchback)" },
   { value: "convertible", label: "Convertible (removable soft or hard top)" },
@@ -903,12 +1000,18 @@ function RolloverProtectionFields({
   );
 }
 
-// Presence-only categories with no other fields of their own (tow hook, tow rope, emergency
-// triangle, first aid kit, window breaker, kill switch) — the only way the user can indicate
-// possession is a single checkbox. Fire extinguisher, tow hook, and rollover protection are
-// presence-only too but have their own dedicated fields, so they're excluded here.
+// Presence-only categories with no other fields of their own (tow rope, emergency triangle, first
+// aid kit, kill switch, hood pins, spill kit, parachute) — the only way the user can indicate
+// possession is a single checkbox. Fire extinguisher, window breaker, tow hook, and rollover
+// protection are presence-only too but have their own dedicated fields, so they're excluded here.
 function isSimplePresenceCategory(category: EquipmentCategory): boolean {
-  return CATEGORY_META[category].presenceOnly === true && category !== "fire_extinguisher" && category !== "tow_hook" && category !== "rollover_protection";
+  return (
+    CATEGORY_META[category].presenceOnly === true &&
+    category !== "fire_extinguisher" &&
+    category !== "window_breaker" &&
+    category !== "tow_hook" &&
+    category !== "rollover_protection"
+  );
 }
 
 const CERT_BADGE_COLOR: Record<CategoryResult["status"], string> = {
@@ -1088,9 +1191,13 @@ export function EquipmentForm({
                 <Icon />
                 <span className="min-w-0">{meta.label}</span>
               </span>
-              {showPhotoUpload && (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0]) && (
+              {showPhotoUpload && (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0]) && (
                 // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
-                <img src={entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0]} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />
+                <img
+                  src={entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0]}
+                  alt=""
+                  className="h-8 w-8 shrink-0 rounded object-cover"
+                />
               )}
               {isEmpty && <NoDataBadge />}
               {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
@@ -1122,7 +1229,7 @@ export function EquipmentForm({
             )}
 
             <div className="flex flex-col gap-2">
-                {showPhotoUpload && category !== "fire_extinguisher" && (
+                {showPhotoUpload && category !== "fire_extinguisher" && category !== "window_breaker" && (
                   <ItemPhotos
                     category={category}
                     entry={entry}
@@ -1210,6 +1317,22 @@ export function EquipmentForm({
                           ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
                           : [{ ...newExtinguisherUnit(), photoDataUrls: strayPhotos }];
                     return <ExtinguisherUnitList units={units} onChange={(extinguisherUnits) => update({ extinguisherUnits, photoDataUrls: [] })} />;
+                  })()}
+
+                {category === "window_breaker" &&
+                  (() => {
+                    // Same one-time reconciliation as fire_extinguisher above: fold any photos left
+                    // over in the shared entry.photoDataUrls (from before per-tool units existed)
+                    // into the first tool instead of losing them.
+                    const strayPhotos = entry.photoDataUrls ?? [];
+                    const baseUnits = entry.windowBreakerUnits ?? [];
+                    const units =
+                      strayPhotos.length === 0
+                        ? baseUnits
+                        : baseUnits.length > 0
+                          ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
+                          : [{ ...newWindowBreakerUnit(), photoDataUrls: strayPhotos }];
+                    return <WindowBreakerUnitList units={units} onChange={(windowBreakerUnits) => update({ windowBreakerUnits, photoDataUrls: [] })} />;
                   })()}
 
                 {category === "rollover_protection" && (

@@ -63,6 +63,18 @@ export interface ExtinguisherUnit {
   photoDataUrls?: string[];
 }
 
+/**
+ * Window breaker / seatbelt cutter only: one physical tool carried in the car. No rating or date
+ * fields — unlike a fire extinguisher, no body cites a spec for the tool itself, just presence
+ * (e.g. ARA requires "one or more" reachable by both driver and co-driver, which in practice often
+ * means a separate tool at each seat) — so this exists purely to let each physical tool carry its
+ * own photo rather than lumping them into one shared pool.
+ */
+export interface WindowBreakerUnit {
+  key: string;
+  photoDataUrls?: string[];
+}
+
 export interface EquipmentEntry {
   category: EquipmentCategory;
   /** For hybrid categories (firesuit/gloves/shoes/undergarment/arm_restraint/belts_harness/fuel_cell): whether the user is entering plain material/stock equipment or certification(s). */
@@ -87,6 +99,8 @@ export interface EquipmentEntry {
   visorNote?: string;
   /** Fire extinguisher only: one entry per physical unit carried in the car. */
   extinguisherUnits?: ExtinguisherUnit[];
+  /** Window breaker / seatbelt cutter only: one entry per physical tool carried in the car. */
+  windowBreakerUnits?: WindowBreakerUnit[];
   /** Rollover protection only: the car's body style. */
   bodyStyle?: CarBodyStyle;
   /** Rollover protection, convertible only: does the car have OEM/factory-installed rollover protection (integrated hoops)? */
@@ -123,9 +137,9 @@ export interface EquipmentEntry {
   cagePaddingStandardCustom?: string;
   /**
    * Presence-only categories with no other fields (tow rope, emergency triangle, first aid kit,
-   * window breaker, kill switch, hood pins, spill kit, parachute) only: the single "I have this
-   * item" checkbox. `false` means checked/present; anything else (including undefined) reads as
-   * "no data yet". Categories with real fields of their own (certifications, extinguisher units,
+   * kill switch, hood pins, spill kit, parachute) only: the single "I have this item" checkbox.
+   * `false` means checked/present; anything else (including undefined) reads as "no data yet".
+   * Categories with real fields of their own (certifications, extinguisher/window-breaker units,
    * tow hook's front/rear pair, rollover protection's dedicated fields) infer presence from those
    * fields instead — see `isEntryEmpty`.
    */
@@ -143,6 +157,10 @@ export function newCertification(): CertificationEntry {
 }
 
 export function newExtinguisherUnit(): ExtinguisherUnit {
+  return { key: Math.random().toString(36).slice(2) };
+}
+
+export function newWindowBreakerUnit(): WindowBreakerUnit {
   return { key: Math.random().toString(36).slice(2) };
 }
 
@@ -701,6 +719,7 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
 export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry | undefined): boolean {
   if (!entry) return true;
   if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).length === 0;
+  if (category === "window_breaker") return (entry.windowBreakerUnits ?? []).length === 0;
   if (category === "tow_hook") return !entry.towHookFront && !entry.towHookRear;
   if (category === "rollover_protection") return !entry.bodyStyle;
   const meta = CATEGORY_META[category];
