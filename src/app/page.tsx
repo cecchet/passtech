@@ -204,6 +204,8 @@ export default function Home() {
       return next;
     });
   };
+  const selectAllDisciplines = () => setActiveDisciplines(new Set(DISCIPLINE_GROUP_ORDER));
+  const deselectAllDisciplines = () => setActiveDisciplines(new Set());
 
   const handleRulesetChange = (id: string) => {
     setRulesetId(id);
@@ -856,7 +858,18 @@ export default function Home() {
           </label>
 
           <div id="tutorial-discipline-filter" className="mb-4 rounded-lg border border-neutral-700 p-3">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+              <div className="flex gap-2 text-xs">
+                <button type="button" onClick={selectAllDisciplines} className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
+                  Select all
+                </button>
+                <span className="text-neutral-700">|</span>
+                <button type="button" onClick={deselectAllDisciplines} className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
+                  Deselect all
+                </button>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-2">
               {DISCIPLINE_GROUPS.map(({ group }) => {
                 const isActive = activeDisciplines.has(group);

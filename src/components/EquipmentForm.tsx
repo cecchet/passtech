@@ -1315,6 +1315,7 @@ export function CategoryCard({
   showMediaLinks,
   sourceDocuments,
   defaultOpen = false,
+  eligibilityBadge,
   onChange,
   onReportMissing,
 }: {
@@ -1333,6 +1334,8 @@ export function CategoryCard({
   sourceDocuments?: SourceDocument[];
   /** Starts the card's <details> expanded — EquipmentForm's own multi-category lists default this closed (20 expanded cards would be overwhelming), but a standalone single-card caller (Buyer/Scrutineer mode) has no such space constraint and wants it open immediately. */
   defaultOpen?: boolean;
+  /** Buyer mode only: overlays eligible/fail counts on the category icon's top-left/top-right corners, each jumping to that bucket in the results below when clicked. Omitted everywhere else — there's no "checked against every body at once" result to summarize. */
+  eligibilityBadge?: { eligible: number; fail: number; onEligibleClick: () => void; onFailClick: () => void };
   onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
@@ -1359,7 +1362,37 @@ export function CategoryCard({
       <details open={defaultOpen} className={`rounded-lg border p-4 ${groupColor.border}`}>
       <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
         <span className="flex min-w-0 flex-1 items-center gap-3">
-          <Icon />
+          {eligibilityBadge ? (
+            <span className="relative inline-flex shrink-0">
+              <Icon />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  eligibilityBadge.onEligibleClick();
+                }}
+                title="Jump to eligible rulesets"
+                className="absolute -left-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-[10px] font-bold text-white ring-2 ring-neutral-950 hover:bg-emerald-500"
+              >
+                {eligibilityBadge.eligible}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  eligibilityBadge.onFailClick();
+                }}
+                title="Jump to rulesets this doesn't meet"
+                className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-700 px-1 text-[10px] font-bold text-white ring-2 ring-neutral-950 hover:bg-red-600"
+              >
+                {eligibilityBadge.fail}
+              </button>
+            </span>
+          ) : (
+            <Icon />
+          )}
           <span className="min-w-0">{meta.label}</span>
         </span>
         {showPhotoUpload &&

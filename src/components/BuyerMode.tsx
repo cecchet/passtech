@@ -72,6 +72,8 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
       return next;
     });
   };
+  const selectAllDisciplines = () => setActiveDisciplines(new Set(DISCIPLINE_GROUP_ORDER));
+  const deselectAllDisciplines = () => setActiveDisciplines(new Set());
 
   const hits: RulesetHit[] = useMemo(() => {
     if (!category) return [];
@@ -99,6 +101,8 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
     setCategory(null);
     setEntry({ category: "helmet" });
   };
+
+  const scrollToBucket = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <section>
@@ -141,6 +145,12 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
               isNewGroup={false}
               hasResultsContext={false}
               defaultOpen
+              eligibilityBadge={{
+                eligible: eligible.length,
+                fail: notEligible.length,
+                onEligibleClick: () => scrollToBucket("buyer-bucket-eligible"),
+                onFailClick: () => scrollToBucket("buyer-bucket-not-eligible"),
+              }}
             />
           </div>
 
@@ -149,7 +159,18 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
           )}
 
           <div id="tutorial-buyer-disciplines" className="mt-4 rounded-lg border border-neutral-700 p-3">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+              <div className="flex gap-2 text-xs">
+                <button type="button" onClick={selectAllDisciplines} className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
+                  Select all
+                </button>
+                <span className="text-neutral-700">|</span>
+                <button type="button" onClick={deselectAllDisciplines} className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
+                  Deselect all
+                </button>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-2">
               {DISCIPLINE_GROUP_ORDER.map((group) => {
                 const isActive = activeDisciplines.has(group);
@@ -182,14 +203,18 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
           )}
 
           <div id="tutorial-buyer-results" className="mt-6 space-y-8">
-            <EligibilityGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
+            <div id="buyer-bucket-eligible" className="scroll-mt-4">
+              <EligibilityGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
+            </div>
             <EligibilityGroup
               title={`Eligible under condition (${eligibleConditional.length})`}
               items={eligibleConditional}
               accent="border-yellow-700"
               titleColor="text-yellow-400"
             />
-            <EligibilityGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-800" titleColor="text-red-400" />
+            <div id="buyer-bucket-not-eligible" className="scroll-mt-4">
+              <EligibilityGroup title={`Does not meet the requirements (${notEligible.length})`} items={notEligible} accent="border-red-800" titleColor="text-red-400" />
+            </div>
           </div>
         </>
       )}
