@@ -28,15 +28,11 @@ import { BUILD_DATE } from "@/lib/version";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { BrandLogo } from "@/components/BrandLogo";
 import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
-import { TourId, TutorialActions, TutorialModal } from "@/components/TutorialModal";
+import { TourId, TutorialActions, TutorialModal, hasTour } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
 type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage" | "buyer" | "scrutineer";
 
-/** Buyer/Scrutineer mode have no tutorial of their own yet — everywhere a mode is used to key into TutorialModal's tour registry needs this narrowing first. */
-function hasTour(mode: Mode): mode is TourId {
-  return mode !== "buyer" && mode !== "scrutineer";
-}
 
 const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
 
@@ -70,6 +66,8 @@ export default function Home() {
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [activeTour, setActiveTour] = useState<TourId | null>(null);
   const [toursSeen, setToursSeen] = useState<Partial<Record<TourId, boolean>>>({});
+  /** Bumped by the Buyer/Scrutineer tours' startDemoItem action — each mode watches this itself and fills in a demo item, since their scanned-item state is local to those components, not reachable from page.tsx the way the ruleset/class actions are. */
+  const [demoItemTrigger, setDemoItemTrigger] = useState(0);
   /** True while My Gear is mid-way through creating a new gear set (mode choice or Automatic mode) — blocks navigating away so Cancel/Save to My Gear are the only two ways out. */
   const [blockMainMenuNav, setBlockMainMenuNav] = useState(false);
   /** Set when body-first/equipment-first mode was entered by loading a saved gear set from My Gear
@@ -215,6 +213,7 @@ export default function Home() {
   const tutorialActions: TutorialActions = {
     selectRuleset: handleRulesetChange,
     selectClass: setClassId,
+    startDemoItem: () => setDemoItemTrigger((n) => n + 1),
   };
 
   const handleChange = (category: EquipmentCategory, entry: EquipmentEntry) => {
@@ -597,7 +596,7 @@ export default function Home() {
               number={4}
               title="Scrutineer mode"
               description="Check if the gear is good for an event. Pick a discipline/body/class, then scan gear one piece at a time for a quick pass/fail call."
-              icon="/frog-option2.jpg"
+              icon="/scrutineer-mode.jpg"
               onClick={() => setMode("scrutineer")}
             />
           </section>
@@ -1004,8 +1003,8 @@ export default function Home() {
         </section>
       )}
 
-      {mode === "buyer" && <BuyerMode />}
-      {mode === "scrutineer" && <ScrutineerMode />}
+      {mode === "buyer" && <BuyerMode demoItemTrigger={demoItemTrigger} />}
+      {mode === "scrutineer" && <ScrutineerMode demoItemTrigger={demoItemTrigger} />}
 
       {missingReports.length > 0 && (
         <section className="mt-10 rounded-lg border border-orange-700 bg-orange-950 p-4">

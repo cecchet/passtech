@@ -9,10 +9,12 @@ const INTRO_TEXT = `PassTech checks your safety equipment against the published 
 export interface TutorialActions {
   selectRuleset: (id: string) => void;
   selectClass: (id: string | undefined) => void;
+  /** Buyer/Scrutineer mode only: both keep their scanned item in local state the tour can't reach directly (selectRuleset/selectClass only drive page.tsx's own My-Gear-flow state) — this asks the currently-open mode to fill itself in with a demo item (a Snell SA2020 helmet) so the later steps have something concrete to point at. */
+  startDemoItem?: () => void;
 }
 
 /** One page each app mode can show its own short, focused tour for — landing has no mode of its own, so it's keyed separately. */
-export type TourId = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
+export type TourId = "landing" | "reference" | "body-first" | "equipment-first" | "garage" | "buyer" | "scrutineer";
 
 interface TourStep {
   targetId: string;
@@ -27,7 +29,7 @@ interface Tour {
   steps: TourStep[];
 }
 
-const TOURS: Record<TourId, Tour> = {
+export const TOURS: Record<TourId, Tour> = {
   landing: {
     intro: { title: "How PassTech works", text: INTRO_TEXT, image: "/11disciplines.png" },
     steps: [
@@ -150,7 +152,58 @@ const TOURS: Record<TourId, Tour> = {
       },
     ],
   },
+  buyer: {
+    steps: [
+      {
+        targetId: "tutorial-buyer-scan",
+        text: "Upload a photo of one piece of gear — a helmet for sale, say — and Automatic mode figures out what it is. If that doesn't work, pick the category yourself instead.",
+      },
+      {
+        targetId: "tutorial-buyer-item-card",
+        text: "Enter what you have. We've filled in a Snell SA2020 helmet as an example — pick your own category and certification for a real check.",
+        onEnter: (actions) => actions.startDemoItem?.(),
+      },
+      {
+        targetId: "tutorial-buyer-disciplines",
+        text: "Narrow the results to just the disciplines you actually race.",
+      },
+      {
+        targetId: "tutorial-buyer-results",
+        text: "Results sort into three buckets — Eligible, Eligible under condition, and Does not meet the requirements — grouped by discipline, the same as Option 3. Nothing here is saved to My Gear.",
+      },
+    ],
+  },
+  scrutineer: {
+    steps: [
+      {
+        targetId: "tutorial-ruleset-picker",
+        text: "Pick the discipline, sanctioning body, and class you're inspecting for — same picker as Option 1/2.",
+      },
+      {
+        targetId: "tutorial-scrutineer-scan",
+        text: "Then scan gear one piece at a time: upload a photo, or pick the category yourself if that doesn't work.",
+      },
+      {
+        targetId: "tutorial-scrutineer-item-card",
+        text: "Enter what you have. We've filled in a Snell SA2020 helmet as an example — pick your own category and certification for a real check.",
+        onEnter: (actions) => actions.startDemoItem?.(),
+      },
+      {
+        targetId: "tutorial-scrutineer-verdict",
+        text: "Get an instant PASS / FAIL / CONDITIONAL call against the ruleset and class you picked.",
+      },
+      {
+        targetId: "tutorial-scrutineer-next",
+        text: "Tap “Scan next item” to move on — the ruleset and class stay selected, so you can go straight through a whole car.",
+      },
+    ],
+  },
 };
+
+/** Whether this mode has a tour registered — checked against TOURS itself (not a hardcoded list elsewhere) so a mode added without a matching tour fails safe instead of crashing here. */
+export function hasTour(mode: string): mode is TourId {
+  return mode in TOURS;
+}
 
 /** Tracks the viewport-relative rect of a target element by id, scrolling it into view and re-measuring on resize/scroll. */
 function useTargetRect(targetId: string | null) {

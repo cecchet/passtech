@@ -958,3 +958,63 @@ export async function downloadEquipmentFirstReport(
 
   w.save("passtech-eligibility-report.pdf");
 }
+
+// ---------------------------------------------------------------------------
+// Buyer mode — "Check the gear before you buy it" report (one category, every ruleset)
+// ---------------------------------------------------------------------------
+
+export interface BuyerModeReportItem {
+  rs: Ruleset;
+  result: CategoryResult;
+  status: "eligible" | "eligible_conditional" | "not_eligible";
+}
+
+/** Buyer mode — one piece of gear's eligibility across every ruleset, bucketed the same way as the on-screen results. Mirrors downloadEquipmentFirstReport but for a single category instead of a full gear set. */
+export async function downloadBuyerModeReport(category: EquipmentCategory, entry: EquipmentEntry, items: BuyerModeReportItem[]) {
+  const disciplinesPresent = DISCIPLINE_GROUP_ORDER.filter((d) => items.some((i) => i.rs.disciplineGroup === d));
+  const [, , logo] = await Promise.all([preloadCategoryIcons([category]), preloadDisciplineIcons(disciplinesPresent), loadLogo()]);
+
+  const w = new PdfReportWriter();
+  header(w, logo, "Buyer Mode — Check The Gear Before You Buy It", CATEGORY_META[category].label);
+
+  ELIGIBILITY_SECTION.forEach(({ status, title, color }) => {
+    const bucket = items.filter((i) => i.status === status);
+    if (bucket.length === 0) return;
+    w.heading(`${title} (${bucket.length})`, { color });
+    DISCIPLINE_GROUP_ORDER.forEach((discipline) => {
+      const group = bucket.filter((i) => i.rs.disciplineGroup === discipline);
+      if (group.length === 0) return;
+      w.subheadingWithIcon(discipline, COLOR.muted, disciplineIconDataUrlCache.get(discipline) ?? null);
+      group.forEach(({ rs, result }) => {
+        w.spacer(2);
+        w.text(`${rs.bodyName} — ${rs.disciplineName}`, { bold: true, size: 10.5 });
+        w.text(formatSourceLine(rs), { size: 7.5, color: COLOR.faint, italic: true });
+        writeCategoryResult(w, result, entry);
+        w.hr();
+      });
+    });
+  });
+
+  w.save(`passtech-buyer-check-${category}.pdf`);
+}
+
+// ---------------------------------------------------------------------------
+// Scrutineer mode — "Check if the gear is good for an event" report (one item, one ruleset+class)
+// ---------------------------------------------------------------------------
+
+/** Scrutineer mode — one piece of gear's pass/fail/conditional verdict against one specific ruleset+class. Mirrors downloadBodyFirstReport's verdict line but for a single scanned item instead of a whole gear set. */
+export async function downloadScrutineerReport(ruleset: Ruleset, classLabel: string | undefined, category: EquipmentCategory, entry: EquipmentEntry, result: CategoryResult) {
+  const [, logo] = await Promise.all([preloadCategoryIcons([category]), loadLogo()]);
+
+  const w = new PdfReportWriter();
+  header(w, logo, "Scrutineer Check", `${ruleset.bodyName} — ${ruleset.disciplineName}${classLabel ? ` (${classLabel})` : ""}`, formatSourceLine(ruleset));
+
+  const verdict = isViolation(result) ? "FAIL" : isPendingConditional(result) ? "CONDITIONAL" : result.status === "not_required" ? "Not required by this body" : "PASS";
+  const verdictColor = isViolation(result) ? COLOR.red : isPendingConditional(result) ? COLOR.amber : result.status === "not_required" ? COLOR.muted : COLOR.green;
+  w.text(`Verdict: ${verdict}`, { size: 13, bold: true, color: verdictColor });
+  w.spacer(3);
+
+  writeCategoryResult(w, result, entry);
+
+  w.save(`passtech-scrutineer-check-${category}.pdf`);
+}

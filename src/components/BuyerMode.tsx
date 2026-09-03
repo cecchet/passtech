@@ -3,11 +3,14 @@
 import { useMemo, useState } from "react";
 import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset } from "@/data";
 import { DISCIPLINE_GROUP_ORDER } from "@/data/categoryMeta";
-import { CategoryResult, EquipmentEntry, evaluateRuleset, overallEligibility } from "@/lib/matcher";
+import { CategoryResult, EquipmentEntry, evaluateRuleset, newCertification, overallEligibility } from "@/lib/matcher";
 import { CategoryCard } from "@/components/EquipmentForm";
 import { QuickItemScan } from "@/components/QuickItemScan";
 import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
 import { ResultRow } from "@/components/ResultRow";
+import { downloadBuyerModeReport } from "@/lib/pdfReport";
+
+const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
 
 interface RulesetHit {
   rs: Ruleset;
@@ -21,10 +24,23 @@ const CROSS_DEPENDENT_NOTE: Partial<Record<EquipmentCategory, string>> = {
   balaclava: "Some bodies only require a balaclava when using a head-and-neck restraint instead of a plain neck collar — this check can't see your HNR, so treat a conditional result here as a reminder to check by hand.",
 };
 
-export function BuyerMode() {
+export function BuyerMode({ demoItemTrigger }: { demoItemTrigger?: number }) {
   const [category, setCategory] = useState<EquipmentCategory | null>(null);
   const [entry, setEntry] = useState<EquipmentEntry>({ category: "helmet" });
   const [activeDisciplines, setActiveDisciplines] = useState<Set<DisciplineGroup>>(new Set(DISCIPLINE_GROUP_ORDER));
+
+  // Tutorial only: fills in a demo item (a Snell SA2020 helmet) so the later tour steps — the
+  // discipline filter, the eligibility buckets — have something real to point at. Done
+  // synchronously during render (the same "adjust state on a prop change" pattern TutorialModal
+  // itself uses to reset its step) rather than in an effect: an effect here would need an extra
+  // render/commit cycle to take hold, which the tutorial's own skip-past-a-missing-target check
+  // doesn't wait around for, and it would skip this step before the demo item ever appeared.
+  const [lastDemoTrigger, setLastDemoTrigger] = useState(demoItemTrigger ?? 0);
+  if ((demoItemTrigger ?? 0) !== lastDemoTrigger) {
+    setLastDemoTrigger(demoItemTrigger ?? 0);
+    setCategory("helmet");
+    setEntry({ category: "helmet", certifications: [{ ...newCertification(), standardId: "snell-sa2020" }] });
+  }
 
   const toggleDiscipline = (group: DisciplineGroup) => {
     setActiveDisciplines((prev) => {
@@ -68,12 +84,14 @@ export function BuyerMode() {
       </p>
 
       {!category ? (
-        <QuickItemScan
-          onDone={(cat, photoDataUrl) => {
-            setCategory(cat);
-            setEntry({ category: cat, ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}) });
-          }}
-        />
+        <div id="tutorial-buyer-scan">
+          <QuickItemScan
+            onDone={(cat, photoDataUrl) => {
+              setCategory(cat);
+              setEntry({ category: cat, ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}) });
+            }}
+          />
+        </div>
       ) : (
         <>
           <button type="button" onClick={reset} className="mb-3 text-xs text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
@@ -81,13 +99,15 @@ export function BuyerMode() {
           </button>
 
           {/* No single result to show here — Buyer mode checks against every body at once, not one specific ruleset — so the per-item status pill is turned off (hasResultsContext=false), matching how Option 3 (equipment-first) renders these same cards. */}
-          <CategoryCard category={category} entry={entry} onChange={(_cat, next) => setEntry(next)} showPhotoUpload isNewGroup={false} hasResultsContext={false} />
+          <div id="tutorial-buyer-item-card">
+            <CategoryCard category={category} entry={entry} onChange={(_cat, next) => setEntry(next)} showPhotoUpload isNewGroup={false} hasResultsContext={false} />
+          </div>
 
           {CROSS_DEPENDENT_NOTE[category] && (
             <p className="mt-3 rounded-lg border border-amber-700 bg-amber-950/40 p-3 text-xs text-amber-200">{CROSS_DEPENDENT_NOTE[category]}</p>
           )}
 
-          <div className="mt-4 rounded-lg border border-neutral-700 p-3">
+          <div id="tutorial-buyer-disciplines" className="mt-4 rounded-lg border border-neutral-700 p-3">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
             <div className="flex flex-wrap gap-2">
               {DISCIPLINE_GROUP_ORDER.map((group) => {
@@ -108,7 +128,19 @@ export function BuyerMode() {
             </div>
           </div>
 
-          <div className="mt-6 space-y-8">
+          {filtered.length > 0 && (
+            <button
+              type="button"
+              onClick={() => downloadBuyerModeReport(category, entry, filtered)}
+              className={`${reportButtonClass} mt-4`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/pdf-export.png" alt="" className="h-5 w-5 shrink-0 object-contain" />
+              Download PDF report
+            </button>
+          )}
+
+          <div id="tutorial-buyer-results" className="mt-6 space-y-8">
             <EligibilityGroup title={`Eligible (${eligible.length})`} items={eligible} accent="border-emerald-700" titleColor="text-emerald-400" />
             <EligibilityGroup
               title={`Eligible under condition (${eligibleConditional.length})`}
