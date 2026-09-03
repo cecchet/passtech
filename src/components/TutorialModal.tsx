@@ -12,7 +12,7 @@ export interface TutorialActions {
 }
 
 /** One page each app mode can show its own short, focused tour for — landing has no mode of its own, so it's keyed separately. */
-export type TourId = "landing" | "reference" | "body-first" | "equipment-first";
+export type TourId = "landing" | "reference" | "body-first" | "equipment-first" | "garage";
 
 interface TourStep {
   targetId: string;
@@ -132,6 +132,18 @@ const TOURS: Record<TourId, Tour> = {
       },
     ],
   },
+  garage: {
+    steps: [
+      {
+        targetId: "tutorial-garage-add",
+        text: "Build a gear set by uploading photos (Automatic mode figures out what's what) or entering it yourself (Manual mode) — or import one someone already exported to a file.",
+      },
+      {
+        targetId: "tutorial-garage-list",
+        text: "Tap a saved gear set to open its actions: check it against one sanctioning body (“Will my equipment pass tech?”), see everywhere it's currently eligible to race, edit it, export it to a file, or delete it.",
+      },
+    ],
+  },
 };
 
 /** Tracks the viewport-relative rect of a target element by id, scrolling it into view and re-measuring on resize/scroll. */
@@ -187,11 +199,19 @@ export function TutorialModal({
   const hasIntro = !!current.intro;
   const totalSteps = (hasIntro ? 1 : 0) + current.steps.length;
 
-  /* eslint-disable react-hooks/set-state-in-effect -- resets tour position when reopened, not derivable during render */
-  useEffect(() => {
-    if (open) setStep(0);
-  }, [open, tour]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+  // Reset to the first step whenever the tour is (re)opened. Done synchronously during render
+  // (React's documented "adjusting state when a prop changes" pattern — tracking the previous
+  // open/tour in state and comparing on the next render) rather than in a useEffect: this modal
+  // never unmounts between tours, so `step` can be left over from a previous run (possibly out of
+  // range for a shorter tour, or pointing at a step the skip-check effect below would need to
+  // evaluate). An effect-based reset would still commit that stale `step` for one render first,
+  // letting the skip-check effect below act on it before the reset lands — this way `step` is
+  // already correct by the time any effect for this render runs.
+  const [prevOpenTour, setPrevOpenTour] = useState({ open, tour });
+  if (open !== prevOpenTour.open || tour !== prevOpenTour.tour) {
+    setPrevOpenTour({ open, tour });
+    if (open && step !== 0) setStep(0);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -204,8 +224,6 @@ export function TutorialModal({
 
   const pointerStep = hasIntro ? (step >= 1 ? current.steps[step - 1] : null) : current.steps[step];
   const rect = useTargetRect(open ? (pointerStep?.targetId ?? null) : null);
-
-  if (!open) return null;
 
   const next = () => {
     const newStep = step + 1;
@@ -220,6 +238,24 @@ export function TutorialModal({
     current.steps[stepIndex]?.onEnter?.(actions);
     setStep(newStep);
   };
+
+  // A step's target can genuinely not exist on the page right now — "tutorial-class-picker" when
+  // the selected ruleset defines no classes, "tutorial-garage-list" with no saved gear sets yet,
+  // "tutorial-tech-sheet-link" before its onEnter switches to a ruleset that has one. The first two
+  // can never resolve; the third resolves in the same render pass as its onEnter (React batches the
+  // state updates), so by the time this runs post-commit, the DOM already reflects it either way.
+  // Showing the step anyway would leave the full-screen click-blocker below up with no visible
+  // dialog to dismiss it — an unrecoverable dead end — so silently skip forward past it instead.
+  /* eslint-disable react-hooks/set-state-in-effect -- advances past a step whose target isn't in the DOM; not derivable during render since it depends on a DOM lookup */
+  useEffect(() => {
+    if (!open || !pointerStep) return;
+    if (document.getElementById(pointerStep.targetId)) return;
+    next();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-checks whenever the pointed-at step changes; `next` closes over the render's own `step`
+  }, [open, pointerStep]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  if (!open) return null;
 
   const isLastStep = step === totalSteps - 1;
 

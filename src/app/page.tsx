@@ -157,12 +157,7 @@ export default function Home() {
   };
 
   const showTutorialForCurrentPage = () => {
-    if (mode === "garage") {
-      setMode("landing");
-      setActiveTour("landing");
-    } else {
-      setActiveTour(mode);
-    }
+    setActiveTour(mode);
   };
 
   useEffect(() => {

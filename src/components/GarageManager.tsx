@@ -395,7 +395,7 @@ export function GarageManager({
 
       {!selected ? (
         <div>
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row">
+          <div id="tutorial-garage-add" className="mb-4 flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
               onClick={createProfile}
@@ -422,7 +422,7 @@ export function GarageManager({
             </label>
           </div>
           {profiles.length > 0 && (
-            <div>
+            <div id="tutorial-garage-list">
               <h2 className="mb-2 text-sm font-semibold text-neutral-300">Available Gear Sets</h2>
               <div className="flex flex-col gap-2">
                 {profiles.map((p) => {
