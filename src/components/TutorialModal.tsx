@@ -100,6 +100,10 @@ const TOURS: Record<TourId, Tour> = {
         targetId: "tutorial-verdict",
         text: "The verdict updates live: red for a real violation, yellow when only an optional item is unresolved, green once everything required checks out.",
       },
+      {
+        targetId: "category-firesuit",
+        text: "Some categories also show up to four small logos, in this fixed order: a globe linking to Frog Racing's own write-up on that piece of gear, a Frog Racing video, a plain YouTube logo for a good outside video that isn't from Frog Racing, and a cart linking to somewhere to buy it. These are just optional research links — none of them are printed on the PDF report.",
+      },
     ],
   },
   "equipment-first": {
@@ -127,6 +131,10 @@ const TOURS: Record<TourId, Tour> = {
       {
         targetId: "tutorial-eligibility-results",
         text: "Results sort into three buckets — Eligible, Eligible under condition, and Does not meet the requirements — each grouped by discipline.",
+      },
+      {
+        targetId: "category-firesuit",
+        text: "Some categories also show up to four small logos, in this fixed order: a globe linking to Frog Racing's own write-up on that piece of gear, a Frog Racing video, a plain YouTube logo for a good outside video that isn't from Frog Racing, and a cart linking to somewhere to buy it. These are just optional research links — none of them are printed on the PDF report.",
       },
     ],
   },
