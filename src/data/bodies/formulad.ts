@@ -6,9 +6,21 @@ import { CategoryRule, EquipmentCategory, Ruleset, SourceDocument } from "../typ
 // while PRO/AM (the developmental/regional-affiliate tier) has a dedicated, safety-only
 // "PRO/AM Safety Regulations" PDF. All three are "2026 Version 1.1" per their own title pages,
 // linked from https://www.formulad.com/rulebook as retrieved 2026-09-02.
-const proDoc: SourceDocument = { title: "Formula Drift PRO Technical Regulations", version: "2026 Version 1.1", url: "https://www.formulad.com/rulebook" };
-const prospecDoc: SourceDocument = { title: "Formula Drift PROSPEC Technical Regulations", version: "2026 Version 1.1", url: "https://www.formulad.com/rulebook" };
-const proamDoc: SourceDocument = { title: "Formula Drift PRO/AM Safety Regulations", version: "2026 Version 1.1", url: "https://www.formulad.com/rulebook" };
+const proDoc: SourceDocument = {
+  title: "Formula Drift PRO Technical Regulations",
+  version: "2026 Version 1.1",
+  url: "https://www.formulad.com/rulebook/2026%20Formula%20Drift%20PRO%20Technical%20Regulations%20V1.1.pdf",
+};
+const prospecDoc: SourceDocument = {
+  title: "Formula Drift PROSPEC Technical Regulations",
+  version: "2026 Version 1.1",
+  url: "https://www.formulad.com/rulebook/2026%20Formula%20Drift%20PROSPEC%20Technical%20Regulations%20V1.1.pdf",
+};
+const proamDoc: SourceDocument = {
+  title: "Formula Drift PRO/AM Safety Regulations",
+  version: "2026 Version 1.1",
+  url: "https://www.formulad.com/rulebook/2026%20Formula%20Drift%20PROAM%20Safety%20Regulations%20V1.1.pdf",
+};
 
 /** Section numbers for the categories that read word-for-word identically between PRO and PROSPEC (only the numbering differs, since PROSPEC's document has one fewer preceding chapter). */
 interface TierSections {

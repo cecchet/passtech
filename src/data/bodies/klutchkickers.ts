@@ -24,6 +24,7 @@ const driftSeries: Ruleset = {
   disciplineGroup: "Drifting",
   lastReviewed: "2026-09-02",
   sourceDocuments: [{ ...sourceDoc, section: "Safety Equipment" }],
+  techSheet: { url: "https://www.klutchkickers.com/s/KK_2026_TechSheet.pdf", format: "PDF" },
   categories: {
     helmet: {
       requirement: "required",
