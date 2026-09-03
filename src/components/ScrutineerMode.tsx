@@ -103,7 +103,7 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
               setEntry({
                 category: cat,
                 ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}),
-                ...(certifications?.length ? { certifications } : {}),
+                ...(certifications?.length ? { certifications, ...(CATEGORY_META[cat].hybrid ? { mode: "certified" as const } : {}) } : {}),
               });
             }}
           />

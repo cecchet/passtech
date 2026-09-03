@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset } from "@/data";
-import { DISCIPLINE_GROUP_ORDER } from "@/data/categoryMeta";
+import { CATEGORY_META, DISCIPLINE_GROUP_ORDER } from "@/data/categoryMeta";
 import { CategoryResult, EquipmentEntry, evaluateRuleset, isPendingConditional, isViolation, newCertification } from "@/lib/matcher";
 import { CategoryCard } from "@/components/EquipmentForm";
 import { QuickItemScan } from "@/components/QuickItemScan";
@@ -120,7 +120,7 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
               setEntry({
                 category: cat,
                 ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}),
-                ...(certifications?.length ? { certifications } : {}),
+                ...(certifications?.length ? { certifications, ...(CATEGORY_META[cat].hybrid ? { mode: "certified" as const } : {}) } : {}),
               });
             }}
           />
