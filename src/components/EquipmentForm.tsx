@@ -9,10 +9,12 @@ import {
   CertificationEntry,
   EquipmentEntry,
   ExtinguisherUnit,
+  TriangleUnit,
   WindowBreakerUnit,
   isEntryEmpty,
   newCertification,
   newExtinguisherUnit,
+  newTriangleUnit,
   newWindowBreakerUnit,
 } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
@@ -655,6 +657,106 @@ function WindowBreakerUnitList({ units, onChange }: { units: WindowBreakerUnit[]
   );
 }
 
+// A warning triangle has one field a body can actually spec a minimum for (its side length) —
+// unlike a fire extinguisher's several rating dimensions, so this only needs the one number input
+// alongside the same per-unit photo handling.
+function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onChange: (patch: Partial<TriangleUnit>) => void; onRemove: () => void }) {
+  const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
+  const photos = unit.photoDataUrls ?? [];
+  const maxPhotos = maxPhotosFor("emergency_triangle");
+  const canAddMore = photos.length < maxPhotos;
+  const inputId = useId();
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
+
+  return (
+    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-3">
+          {photos.map((p, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <ZoomableThumb src={p} className="h-16 w-16 shrink-0 rounded object-cover" />
+              <button type="button" onClick={() => removePhoto(i)} className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
+                🗑️ Remove photo
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="flex flex-wrap items-end gap-2">
+        {canAddMore && (
+          <label
+            htmlFor={inputId}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+          >
+            📷 Add a photo of this item ({photos.length}/{maxPhotos})
+            <input
+              id={inputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+                onChange({ photoDataUrls: [...photos, dataUrl] });
+              }}
+            />
+          </label>
+        )}
+        <label className="flex flex-col gap-1 text-xs text-neutral-400">
+          Side length (in)
+          <input
+            type="number"
+            min={0}
+            step="0.5"
+            placeholder="e.g. 12"
+            className={`${numberInputClass} w-24`}
+            value={unit.sideLengthIn ?? ""}
+            onChange={(e) => onChange({ sideLengthIn: numeric(e.target.value) })}
+          />
+        </label>
+        {!confirmRemove ? (
+          <button type="button" onClick={() => setConfirmRemove(true)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">
+            🗑️ Remove this triangle
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="rounded border border-red-500 bg-red-900 px-2 py-1.5 text-xs font-semibold text-red-100 hover:bg-red-800"
+            >
+              🗑️ Confirm delete{photos.length > 0 ? ` (removes ${photos.length} photo${photos.length === 1 ? "" : "s"} too)` : ""}?
+            </button>
+            <button type="button" onClick={() => setConfirmRemove(false)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800">
+              Cancel
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TriangleUnitList({ units, onChange }: { units: TriangleUnit[]; onChange: (units: TriangleUnit[]) => void }) {
+  const updateUnit = (index: number, patch: Partial<TriangleUnit>) => onChange(units.map((u, i) => (i === index ? { ...u, ...patch } : u)));
+  const removeUnit = (index: number) => onChange(units.filter((_, i) => i !== index));
+  const addUnit = () => onChange([...units, newTriangleUnit()]);
+
+  return (
+    <div className="flex flex-col gap-2">
+      {units.map((unit, i) => (
+        <TriangleUnitRow key={unit.key} unit={unit} onChange={(patch) => updateUnit(i, patch)} onRemove={() => removeUnit(i)} />
+      ))}
+      <button type="button" onClick={addUnit} className="self-start rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
+        + Add {units.length > 0 ? "another triangle" : "a triangle"}
+      </button>
+    </div>
+  );
+}
+
 const BODY_STYLE_OPTIONS: { value: NonNullable<EquipmentEntry["bodyStyle"]>; label: string }[] = [
   { value: "closed_roof", label: "Closed roof (sedan / coupe / hatchback)" },
   { value: "convertible", label: "Convertible (removable soft or hard top)" },
@@ -1000,15 +1102,16 @@ function RolloverProtectionFields({
   );
 }
 
-// Presence-only categories with no other fields of their own (tow rope, emergency triangle, first
-// aid kit, kill switch, hood pins, spill kit, parachute) — the only way the user can indicate
-// possession is a single checkbox. Fire extinguisher, window breaker, tow hook, and rollover
+// Presence-only categories with no other fields of their own (tow rope, first aid kit, kill
+// switch, hood pins, spill kit, parachute) — the only way the user can indicate possession is a
+// single checkbox. Fire extinguisher, window breaker, emergency triangle, tow hook, and rollover
 // protection are presence-only too but have their own dedicated fields, so they're excluded here.
 function isSimplePresenceCategory(category: EquipmentCategory): boolean {
   return (
     CATEGORY_META[category].presenceOnly === true &&
     category !== "fire_extinguisher" &&
     category !== "window_breaker" &&
+    category !== "emergency_triangle" &&
     category !== "tow_hook" &&
     category !== "rollover_protection"
   );
@@ -1191,14 +1294,20 @@ export function EquipmentForm({
                 <Icon />
                 <span className="min-w-0">{meta.label}</span>
               </span>
-              {showPhotoUpload && (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0]) && (
-                // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
-                <img
-                  src={entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0]}
-                  alt=""
-                  className="h-8 w-8 shrink-0 rounded object-cover"
-                />
-              )}
+              {showPhotoUpload &&
+                (entry.photoDataUrls?.[0] ?? entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ?? entry.triangleUnits?.[0]?.photoDataUrls?.[0]) && (
+                  // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
+                  <img
+                    src={
+                      entry.photoDataUrls?.[0] ??
+                      entry.extinguisherUnits?.[0]?.photoDataUrls?.[0] ??
+                      entry.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ??
+                      entry.triangleUnits?.[0]?.photoDataUrls?.[0]
+                    }
+                    alt=""
+                    className="h-8 w-8 shrink-0 rounded object-cover"
+                  />
+                )}
               {isEmpty && <NoDataBadge />}
               {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
               {result ? (
@@ -1229,7 +1338,7 @@ export function EquipmentForm({
             )}
 
             <div className="flex flex-col gap-2">
-                {showPhotoUpload && category !== "fire_extinguisher" && category !== "window_breaker" && (
+                {showPhotoUpload && category !== "fire_extinguisher" && category !== "window_breaker" && category !== "emergency_triangle" && (
                   <ItemPhotos
                     category={category}
                     entry={entry}
@@ -1333,6 +1442,22 @@ export function EquipmentForm({
                           ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
                           : [{ ...newWindowBreakerUnit(), photoDataUrls: strayPhotos }];
                     return <WindowBreakerUnitList units={units} onChange={(windowBreakerUnits) => update({ windowBreakerUnits, photoDataUrls: [] })} />;
+                  })()}
+
+                {category === "emergency_triangle" &&
+                  (() => {
+                    // Same one-time reconciliation as fire_extinguisher/window_breaker above: fold
+                    // any photos left over in the shared entry.photoDataUrls (from before per-triangle
+                    // units existed) into the first triangle instead of losing them.
+                    const strayPhotos = entry.photoDataUrls ?? [];
+                    const baseUnits = entry.triangleUnits ?? [];
+                    const units =
+                      strayPhotos.length === 0
+                        ? baseUnits
+                        : baseUnits.length > 0
+                          ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
+                          : [{ ...newTriangleUnit(), photoDataUrls: strayPhotos }];
+                    return <TriangleUnitList units={units} onChange={(triangleUnits) => update({ triangleUnits, photoDataUrls: [] })} />;
                   })()}
 
                 {category === "rollover_protection" && (

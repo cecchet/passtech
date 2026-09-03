@@ -159,6 +159,18 @@ export interface CategoryRule {
    */
   towHookSidesRequired?: "front" | "rear" | "both";
   /**
+   * Emergency triangle only: minimum number of qualifying triangles required — a body citing a
+   * specific count (e.g. ARA requires three) rather than just "carry one." Omit for bodies that
+   * only want plain presence, with no counted minimum.
+   */
+  emergencyTriangleMinQuantity?: number;
+  /**
+   * Emergency triangle only: minimum side length (inches) a triangle must meet to count toward
+   * emergencyTriangleMinQuantity above (e.g. ARA requires 12" per side). Omit for bodies that
+   * don't specify a size — any entered triangle then counts regardless of its size.
+   */
+  emergencyTriangleMinSideLengthIn?: number;
+  /**
    * This category's requirement can also be satisfied by having a valid, currently-accepted entry
    * for the named alternative category instead (e.g. many bodies accept EITHER arm restraints OR a
    * window net, not both — arm_restraint.satisfiedByAlternative = "window_net" and vice versa). Set

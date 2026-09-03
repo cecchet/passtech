@@ -691,7 +691,10 @@ function writeCategoryResult(w: PdfReportWriter, result: CategoryResult, entry?:
     result.category,
     `${meta.label}  —  ${resultStatusLabel(result.status, result.requirement)}`,
     { bold: true, size: 10, color },
-    entry?.photoDataUrls?.[0] ?? entry?.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry?.windowBreakerUnits?.[0]?.photoDataUrls?.[0],
+    entry?.photoDataUrls?.[0] ??
+      entry?.extinguisherUnits?.[0]?.photoDataUrls?.[0] ??
+      entry?.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ??
+      entry?.triangleUnits?.[0]?.photoDataUrls?.[0],
     certBadges
   );
   w.text(result.reason, { size: 8.5, color: COLOR.muted, indent: 3 });
@@ -720,6 +723,15 @@ function writeCategoryResult(w: PdfReportWriter, result: CategoryResult, entry?:
     entry.windowBreakerUnits.forEach((u, i) => {
       const photoCount = u.photoDataUrls?.length ?? 0;
       w.bullet(`Tool ${i + 1} — ${photoCount} photo${photoCount === 1 ? "" : "s"}`, { size: 8, indent: 3, color: COLOR.faint });
+    });
+  }
+  if (result.category === "emergency_triangle" && entry?.triangleUnits?.length) {
+    entry.triangleUnits.forEach((u, i) => {
+      const photoCount = u.photoDataUrls?.length ?? 0;
+      w.bullet(
+        `Triangle ${i + 1}${u.sideLengthIn ? `: ${u.sideLengthIn}" per side` : ": no size entered"} — ${photoCount} photo${photoCount === 1 ? "" : "s"}`,
+        { size: 8, indent: 3, color: COLOR.faint }
+      );
     });
   }
   if (result.category === "hnr") {

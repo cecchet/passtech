@@ -99,7 +99,11 @@ const LABEL_COLOR: Record<AggregateState, string> = {
  * extinguishers keep their photos per-unit instead (a gear set can carry several), so this falls
  * back to the first unit's first photo for that category. */
 function CategoryThumb({ category, entry }: { category: EquipmentCategory; entry?: EquipmentEntry }) {
-  const photo = entry?.photoDataUrls?.[0] ?? entry?.extinguisherUnits?.[0]?.photoDataUrls?.[0] ?? entry?.windowBreakerUnits?.[0]?.photoDataUrls?.[0];
+  const photo =
+    entry?.photoDataUrls?.[0] ??
+    entry?.extinguisherUnits?.[0]?.photoDataUrls?.[0] ??
+    entry?.windowBreakerUnits?.[0]?.photoDataUrls?.[0] ??
+    entry?.triangleUnits?.[0]?.photoDataUrls?.[0];
   if (!photo) {
     const Icon = CATEGORY_ICONS[category];
     return <Icon />;

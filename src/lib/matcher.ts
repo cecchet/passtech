@@ -75,6 +75,18 @@ export interface WindowBreakerUnit {
   photoDataUrls?: string[];
 }
 
+/**
+ * Emergency triangle only: one physical warning triangle carried in the car. Some bodies (e.g.
+ * ARA) require a specific count each meeting a minimum side length — see
+ * CategoryRule.emergencyTriangleMinQuantity/emergencyTriangleMinSideLengthIn.
+ */
+export interface TriangleUnit {
+  key: string;
+  /** Side length in inches, as measured/printed on the triangle. */
+  sideLengthIn?: number;
+  photoDataUrls?: string[];
+}
+
 export interface EquipmentEntry {
   category: EquipmentCategory;
   /** For hybrid categories (firesuit/gloves/shoes/undergarment/arm_restraint/belts_harness/fuel_cell): whether the user is entering plain material/stock equipment or certification(s). */
@@ -101,6 +113,8 @@ export interface EquipmentEntry {
   extinguisherUnits?: ExtinguisherUnit[];
   /** Window breaker / seatbelt cutter only: one entry per physical tool carried in the car. */
   windowBreakerUnits?: WindowBreakerUnit[];
+  /** Emergency triangle only: one entry per physical triangle carried in the car. */
+  triangleUnits?: TriangleUnit[];
   /** Rollover protection only: the car's body style. */
   bodyStyle?: CarBodyStyle;
   /** Rollover protection, convertible only: does the car have OEM/factory-installed rollover protection (integrated hoops)? */
@@ -136,11 +150,11 @@ export interface EquipmentEntry {
   /** Rollover protection only: free-text standard name when cagePaddingStandardId is NOT_LISTED. */
   cagePaddingStandardCustom?: string;
   /**
-   * Presence-only categories with no other fields (tow rope, emergency triangle, first aid kit,
-   * kill switch, hood pins, spill kit, parachute) only: the single "I have this item" checkbox.
-   * `false` means checked/present; anything else (including undefined) reads as "no data yet".
-   * Categories with real fields of their own (certifications, extinguisher/window-breaker units,
-   * tow hook's front/rear pair, rollover protection's dedicated fields) infer presence from those
+   * Presence-only categories with no other fields (tow rope, first aid kit, kill switch, hood
+   * pins, spill kit, parachute) only: the single "I have this item" checkbox. `false` means
+   * checked/present; anything else (including undefined) reads as "no data yet". Categories with
+   * real fields of their own (certifications, extinguisher/window-breaker/triangle units, tow
+   * hook's front/rear pair, rollover protection's dedicated fields) infer presence from those
    * fields instead — see `isEntryEmpty`.
    */
   skipped?: boolean;
@@ -161,6 +175,10 @@ export function newExtinguisherUnit(): ExtinguisherUnit {
 }
 
 export function newWindowBreakerUnit(): WindowBreakerUnit {
+  return { key: Math.random().toString(36).slice(2) };
+}
+
+export function newTriangleUnit(): TriangleUnit {
   return { key: Math.random().toString(36).slice(2) };
 }
 
@@ -425,6 +443,32 @@ function evaluateExtinguishers(
     ...base,
     status: base.requirement === "recommended" ? "recommended_only" : "rejected",
     reason: `Doesn't meet any accepted combination — needs ${describeExtinguisherOptions(options)}.`,
+  };
+}
+
+/** Emergency triangle only: satisfied once enough entered triangles each meet the body's minimum side length (when it specifies one). */
+function evaluateTriangles(rule: CategoryRule, units: TriangleUnit[], base: Omit<CategoryResult, "status" | "reason">): CategoryResult {
+  const minQuantity = rule.emergencyTriangleMinQuantity ?? 1;
+  const minSideLengthIn = rule.emergencyTriangleMinSideLengthIn;
+
+  if (units.length === 0) {
+    return { ...base, status: "needs_info", reason: `Add at least ${minQuantity === 1 ? "one triangle" : `${minQuantity} triangles`}${minSideLengthIn ? " and its size" : ""}.` };
+  }
+  if (minSideLengthIn && units.every((u) => u.sideLengthIn === undefined)) {
+    return { ...base, status: "needs_info", reason: "Enter each triangle's side length." };
+  }
+
+  const qualifying = minSideLengthIn ? units.filter((u) => (u.sideLengthIn ?? 0) >= minSideLengthIn).length : units.length;
+  if (qualifying >= minQuantity) {
+    const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
+    const spec = minSideLengthIn ? ` at least ${minSideLengthIn}" per side` : "";
+    return { ...base, status, reason: `Meets the requirement — ${minQuantity === 1 ? "1 triangle" : `${minQuantity} triangles`}${spec}.` };
+  }
+  const spec = minSideLengthIn ? ` at least ${minSideLengthIn}" per side` : "";
+  return {
+    ...base,
+    status: base.requirement === "recommended" ? "recommended_only" : "rejected",
+    reason: `Needs ${minQuantity === 1 ? "1 triangle" : `${minQuantity} triangles`}${spec} — you have ${qualifying} qualifying.`,
   };
 }
 
@@ -720,6 +764,7 @@ export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry 
   if (!entry) return true;
   if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).length === 0;
   if (category === "window_breaker") return (entry.windowBreakerUnits ?? []).length === 0;
+  if (category === "emergency_triangle") return (entry.triangleUnits ?? []).length === 0;
   if (category === "tow_hook") return !entry.towHookFront && !entry.towHookRear;
   if (category === "rollover_protection") return !entry.bodyStyle;
   const meta = CATEGORY_META[category];
@@ -796,6 +841,10 @@ export function evaluateCategory(
 
   if (category === "fire_extinguisher" && rule.fireExtinguisherOptions) {
     return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base, asOf);
+  }
+
+  if (category === "emergency_triangle" && (rule.emergencyTriangleMinQuantity || rule.emergencyTriangleMinSideLengthIn)) {
+    return evaluateTriangles(rule, entry.triangleUnits ?? [], base);
   }
 
   if (category === "rollover_protection") {

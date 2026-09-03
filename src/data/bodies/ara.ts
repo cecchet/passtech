@@ -204,10 +204,12 @@ const performanceRally: Ruleset = {
     },
     emergency_triangle: {
       requirement: "required",
+      emergencyTriangleMinQuantity: 3,
+      emergencyTriangleMinSideLengthIn: 12,
       citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.7" },
       confidence: "medium",
       notes:
-        "Three self-supporting, light-reflecting, daylight-visible triangular warning devices, minimum 12 inches per side, must be carried; one must be located within easy reach of the driver or co-driver when seated. Devices must be permanently marked with the crew's assigned car number.",
+        "Three self-supporting, light-reflecting, daylight-visible triangular warning devices, minimum 12 inches per side, must be carried; one must be located within easy reach of the driver or co-driver when seated. Devices must be permanently marked with the crew's assigned car number (not tracked — verify separately).",
     },
     first_aid_kit: {
       requirement: "required",
