@@ -82,13 +82,11 @@ const TOURS: Record<TourId, Tour> = {
     steps: [
       {
         targetId: "tutorial-ruleset-picker",
-        text: "Pick a discipline first (step 1), then the sanctioning body within it you want to check your gear against (step 2). Here we've picked Autocross, then SCCA Solo.",
-        onEnter: (actions) => actions.selectRuleset("scca-solo"),
+        text: "Pick a discipline first (step 1), then the sanctioning body within it you want to check your gear against (step 2) — whatever's already selected here is what the results below are checking against.",
       },
       {
         targetId: "tutorial-class-picker",
-        text: "Refine by class if the body defines its own — we've picked SCCA Solo's Modified (AM / BM / CM / DM / EM / FM) class.",
-        onEnter: (actions) => actions.selectClass("modified"),
+        text: "If the body defines its own competitor classes, refine by class here.",
       },
       {
         targetId: "tutorial-hide-not-required",
