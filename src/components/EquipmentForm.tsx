@@ -216,7 +216,11 @@ function CertificationRow({
   const notListed = cert.standardId === NOT_LISTED;
 
   return (
-    <div className="rounded border border-neutral-700 p-2">
+    // A visible fill (not just a border) so each certification reads as its own box against the
+    // category card's own chrome and the neighboring "Add a photo"/"Scan tag photo" controls —
+    // with two or more certifications on one item, a border-only box was hard to tell apart from
+    // its neighbors.
+    <div className="rounded-lg border border-sky-800/70 bg-sky-950/25 p-2">
       <div className="flex items-start gap-2">
         <select
           className={`${selectClass} flex-1`}
@@ -1316,7 +1320,7 @@ export function CategoryCard({
   sourceDocuments,
   defaultOpen = false,
   eligibilityBadge,
-  expiryWarningDate,
+  expiryWarning,
   onChange,
   onReportMissing,
 }: {
@@ -1337,8 +1341,8 @@ export function CategoryCard({
   defaultOpen?: boolean;
   /** Buyer mode only: overlays eligible/fail counts on the category icon's top-left/top-right corners, each jumping to that bucket in the results below when clicked. Omitted everywhere else — there's no "checked against every body at once" result to summarize. */
   eligibilityBadge?: { eligible: number; fail: number; onEligibleClick: () => void; onFailClick: () => void };
-  /** Buyer mode only: the earliest "expires within the current year" date found among the rulesets that accept this item (see expiringSoonDate in matcher.ts) — shown right in the summary row so the caveat ("eligible now, but only for a few more months") is visible without expanding the card. */
-  expiryWarningDate?: string;
+  /** Buyer mode only: the earliest "expires within the current year" date found among the currently-eligible rulesets (see expiringSoonDate in matcher.ts), and whether every one of them shares it — shown right in the summary row so the caveat ("eligible now, but only for a few more months") is visible without expanding the card. `universal: false` means only some of the eligible bodies are affected, so the badge says so rather than implying a blanket expiry. */
+  expiryWarning?: { date: string; universal: boolean };
   onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
@@ -1413,9 +1417,10 @@ export function CategoryCard({
             />
           )}
         {isEmpty && <NoDataBadge />}
-        {expiryWarningDate && (
+        {expiryWarning && (
           <span className="flex shrink-0 items-center gap-1 rounded-full border border-amber-700 bg-amber-950/40 px-2 py-0.5 text-xs font-medium text-amber-300">
-            ⚠️ Expires {expiryWarningDate}
+            ⚠️ Expires {expiryWarning.date}
+            {!expiryWarning.universal && " with some sanctioning bodies"}
           </span>
         )}
         {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}

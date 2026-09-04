@@ -96,11 +96,16 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
   const eligible = filtered.filter((h) => h.status === "eligible");
   const eligibleConditional = filtered.filter((h) => h.status === "eligible_conditional");
   const notEligible = filtered.filter((h) => h.status === "not_eligible");
-  // Earliest "expires within the current year" date among the (currently filtered) rulesets that
-  // accept this item — surfaced right on the collapsed category card, not just buried inside each
-  // ruleset's own expanded result, so "eligible, but expiring soon" is visible at a glance.
-  const expiryDates = filtered.map((h) => expiringSoonDate(h.result.reason)).filter((d): d is string => !!d);
-  const expiryWarningDate = expiryDates.length > 0 ? expiryDates.sort()[0] : undefined;
+  // Earliest "expires within the current year" date among the rulesets that currently accept this
+  // item — surfaced right on the collapsed category card, not just buried inside each ruleset's
+  // own expanded result, so "eligible, but expiring soon" is visible at a glance. Flagged as
+  // "universal" only when every currently-eligible ruleset shares that same expiry, so the badge
+  // doesn't imply a blanket expiry when it's really just one or two stricter bodies.
+  const eligibleExpiryDates = eligible.map((h) => expiringSoonDate(h.result.reason)).filter((d): d is string => !!d);
+  const expiryWarning =
+    eligibleExpiryDates.length > 0
+      ? { date: eligibleExpiryDates.sort()[0], universal: eligibleExpiryDates.length === eligible.length }
+      : undefined;
 
   const reset = () => {
     setCategory(null);
@@ -156,7 +161,7 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
                 onEligibleClick: () => scrollToBucket("buyer-bucket-eligible"),
                 onFailClick: () => scrollToBucket("buyer-bucket-not-eligible"),
               }}
-              expiryWarningDate={expiryWarningDate}
+              expiryWarning={expiryWarning}
             />
           </div>
 
@@ -244,16 +249,25 @@ function EligibilityGroup({ title, items, accent, titleColor }: { title: string;
               {discipline}
             </h4>
             <div className="space-y-2">
-              {items.map(({ rs, result }) => (
-                <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
-                  <summary className="cursor-pointer text-sm font-medium">
-                    {rs.bodyName} — {rs.disciplineName}
-                  </summary>
-                  <div className="mt-3">
-                    <ResultRow result={result} sourceDocuments={rs.sourceDocuments} />
-                  </div>
-                </details>
-              ))}
+              {items.map(({ rs, result }) => {
+                const expiry = expiringSoonDate(result.reason);
+                return (
+                  <details key={rs.id} className={`rounded-lg border p-3 ${accent}`}>
+                    {/* The expiry date sits right on the collapsed summary line — not just inside
+                        the expanded result — so scanning down a long list of bodies shows at a
+                        glance which specific ones are expiring this item soon. */}
+                    <summary className="flex cursor-pointer flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
+                      <span>
+                        {rs.bodyName} — {rs.disciplineName}
+                      </span>
+                      {expiry && <span className="text-xs font-normal text-amber-400">⚠️ Expires {expiry}</span>}
+                    </summary>
+                    <div className="mt-3">
+                      <ResultRow result={result} sourceDocuments={rs.sourceDocuments} />
+                    </div>
+                  </details>
+                );
+              })}
             </div>
           </div>
         ))}

@@ -996,9 +996,12 @@ export async function downloadBuyerModeReport(category: EquipmentCategory, entry
   const w = new PdfReportWriter();
   header(w, logo, "Buyer Mode — Check The Gear Before You Buy It", CATEGORY_META[category].label);
 
-  const expiryDates = items.map((i) => expiringSoonDate(i.result.reason)).filter((d): d is string => !!d);
-  if (expiryDates.length > 0) {
-    w.warningBox(`⚠️ Eligible now, but this certification expires on ${expiryDates.sort()[0]} — check the date before you buy.`);
+  const eligibleItems = items.filter((i) => i.status === "eligible");
+  const eligibleExpiryDates = eligibleItems.map((i) => expiringSoonDate(i.result.reason)).filter((d): d is string => !!d);
+  if (eligibleExpiryDates.length > 0) {
+    const universal = eligibleExpiryDates.length === eligibleItems.length;
+    const qualifier = universal ? "" : " with some sanctioning bodies";
+    w.warningBox(`⚠️ Eligible now, but this certification expires on ${eligibleExpiryDates.sort()[0]}${qualifier} — check the date before you buy.`);
   }
 
   ELIGIBILITY_SECTION.forEach(({ status, title, color }) => {
@@ -1011,7 +1014,8 @@ export async function downloadBuyerModeReport(category: EquipmentCategory, entry
       w.subheadingWithIcon(discipline, COLOR.muted, disciplineIconDataUrlCache.get(discipline) ?? null);
       group.forEach(({ rs, result }) => {
         w.spacer(2);
-        w.text(`${rs.bodyName} — ${rs.disciplineName}`, { bold: true, size: 10.5 });
+        const rowExpiry = expiringSoonDate(result.reason);
+        w.text(`${rs.bodyName} — ${rs.disciplineName}${rowExpiry ? `  —  ⚠️ Expires ${rowExpiry}` : ""}`, { bold: true, size: 10.5 });
         w.text(formatSourceLine(rs), { size: 7.5, color: COLOR.faint, italic: true });
         writeCategoryResult(w, result, entry);
         w.hr();
