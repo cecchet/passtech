@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
 import { EquipmentCategory } from "@/data/types";
 import { describeGeminiError } from "@/lib/geminiErrors";
+import { createGeminiInteraction, hasGeminiKeyConfigured } from "@/lib/geminiClient";
 import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 
 // Gemini's free tier can take well over Vercel's default function timeout to respond under load —
@@ -9,9 +9,6 @@ import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 // but eventually-successful call isn't killed server-side before it has a chance to finish. Capped
 // by the Vercel plan's own maximum (Hobby: 60s) regardless of this value.
 export const maxDuration = 120;
-
-// Reads GEMINI_API_KEY from the environment server-side — never sent to the client.
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // New API keys are provisioned on the Interactions API — gemini-2.5-flash (classic generateContent)
 // returns 404 "no longer available to new users" on those. gemini-3.5-flash-lite is the current
@@ -251,7 +248,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  if (!process.env.GEMINI_API_KEY) {
+  if (!hasGeminiKeyConfigured()) {
     return NextResponse.json(
       { error: "Server isn't configured with an API key yet. Add GEMINI_API_KEY to .env.local (see .env.local.example) and restart the dev server." },
       { status: 500 }
@@ -277,7 +274,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const interaction = await ai.interactions.create({
+    const interaction = await createGeminiInteraction({
       model: MODEL,
       input: [
         { type: "image", mime_type: mediaType, data: base64Data },
