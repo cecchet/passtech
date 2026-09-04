@@ -1,9 +1,9 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
-import { NOT_LISTED } from "@/data/standards";
+import { NOT_LISTED, standardsFor } from "@/data/standards";
 import { CertificationEntry, newCertification } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout";
@@ -97,7 +97,12 @@ export function QuickItemScan({
   };
 
   const confirmDetected = (s: Extract<typeof stage, { type: "detected" }>) => {
-    if (s.certifications.length > 0) {
+    // Some categories (fire extinguishers, tow hooks, rollover protection, ...) aren't evaluated
+    // against a standardId at all — there's nothing a tag-photo scan could find for them, so asking
+    // for one would just be a dead end. Hand straight back and let the category card that follows
+    // (which does have the category-specific fields for these, e.g. ExtinguisherLabelScan) take it
+    // from here.
+    if (s.certifications.length > 0 || standardsFor(s.category).length === 0) {
       onDone(s.category, s.photoDataUrl, s.certifications.map(certCandidateToEntry));
     } else {
       scanner.reset();
@@ -279,6 +284,7 @@ export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory;
   const [certifications, setCertifications] = useState<CertificationEntry[]>([]);
   const scanner = useTagScanner(category, (cert) => setCertifications((c) => [...c, cert]));
   const tagInputId = useId();
+  const hasStandards = standardsFor(category).length > 0;
 
   const handleTagFile = async (file: File) => {
     let dataUrl: string;
@@ -289,6 +295,16 @@ export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory;
     }
     void scanner.analyze(dataUrl);
   };
+
+  // Same "nothing to scan for" case as QuickItemScan's own confirmDetected — mounted fresh each
+  // time "Scan another" is clicked, so this fires once per rescan and hands straight back without
+  // ever showing a tag-upload control that could only ever fail for this category.
+  useEffect(() => {
+    if (!hasStandards) onDone([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deliberately once-per-mount; this component remounts fresh for every "Scan another" click
+  }, []);
+
+  if (!hasStandards) return null;
 
   return (
     <div className="rounded-lg border border-neutral-700 p-4">
