@@ -3,17 +3,7 @@
 import { useState } from "react";
 import { ExtinguisherUnit } from "@/lib/matcher";
 import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
-
-interface ExtinguisherAnalysis {
-  classARating: number;
-  bcRating: number;
-  weightLbs: number;
-  manufactureDate: string;
-  certificationDate: string;
-  certificationDueDate: string;
-  confidence: "high" | "medium" | "low";
-  notes: string;
-}
+import { ExtinguisherVisionResult, extinguisherPatchFromVision, extinguisherVisionSummary } from "@/lib/extinguisherVision";
 
 /**
  * Scans a photo already attached to this extinguisher unit for its rating/weight/dates and offers
@@ -24,7 +14,7 @@ interface ExtinguisherAnalysis {
 export function ExtinguisherLabelScan({ imageDataUrl, onApply }: { imageDataUrl: string; onApply: (patch: Partial<Omit<ExtinguisherUnit, "photoDataUrls">>) => void }) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<ExtinguisherAnalysis | null>(null);
+  const [result, setResult] = useState<ExtinguisherVisionResult | null>(null);
   const [applied, setApplied] = useState(false);
 
   const scan = async () => {
@@ -38,34 +28,17 @@ export function ExtinguisherLabelScan({ imageDataUrl, onApply }: { imageDataUrl:
       setStatus("error");
       return;
     }
-    setResult(data as unknown as ExtinguisherAnalysis);
+    setResult(data as unknown as ExtinguisherVisionResult);
     setStatus("idle");
   };
 
   const apply = () => {
     if (!result) return;
-    onApply({
-      ...(result.classARating ? { classARating: result.classARating } : {}),
-      ...(result.bcRating ? { bcRating: result.bcRating } : {}),
-      ...(result.weightLbs ? { weightLbs: result.weightLbs } : {}),
-      ...(result.manufactureDate ? { manufactureDate: result.manufactureDate } : {}),
-      ...(result.certificationDate ? { certificationDate: result.certificationDate } : {}),
-      ...(result.certificationDueDate ? { certificationDueDate: result.certificationDueDate } : {}),
-    });
+    onApply(extinguisherPatchFromVision(result));
     setApplied(true);
   };
 
-  const summary = result
-    ? [
-        result.classARating || result.bcRating ? `${result.classARating ? `${result.classARating}-A:` : ""}${result.bcRating ? `${result.bcRating}-B:C` : ""}` : null,
-        result.weightLbs ? `${result.weightLbs} lb` : null,
-        result.manufactureDate ? `mfg ${result.manufactureDate}` : null,
-        result.certificationDate ? `serviced ${result.certificationDate}` : null,
-        result.certificationDueDate ? `due ${result.certificationDueDate}` : null,
-      ]
-        .filter(Boolean)
-        .join(", ")
-    : "";
+  const summary = result ? extinguisherVisionSummary(result) : "";
 
   return (
     <div className="flex flex-col gap-1">

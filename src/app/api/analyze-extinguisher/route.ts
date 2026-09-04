@@ -41,6 +41,9 @@ interface ExtinguisherAnalysis {
   manufactureDate: string;
   certificationDate: string;
   certificationDueDate: string;
+  hasMetalBracket: "yes" | "no" | "unclear";
+  metalStrapCount: number;
+  hasAntiTorpedoTabs: "yes" | "no" | "unclear";
   confidence: "high" | "medium" | "low";
   notes: string;
 }
@@ -77,16 +80,47 @@ const SCHEMA = {
       type: "string" as const,
       description: "A \"service by\", \"next inspection due\", or \"expires\" date, if printed. YYYY-MM-DD format, empty string if none visible.",
     },
+    hasMetalBracket: {
+      type: "string" as const,
+      enum: ["yes", "no", "unclear"],
+      description:
+        "Whether the extinguisher is secured in a metal bracket (as opposed to a plastic clip, velcro strap, or zip ties) -- only answer \"yes\" or \"no\" if the mount itself is actually visible in the photo (not just the extinguisher's own label). \"unclear\" if the mount isn't shown or its material can't be told from the image.",
+    },
+    metalStrapCount: {
+      type: "number" as const,
+      description:
+        "How many metal straps/fastenings visibly secure the extinguisher in its bracket, only if the mount is clearly visible and countable. 0 if the mount isn't shown, is obscured, or the count can't be determined.",
+    },
+    hasAntiTorpedoTabs: {
+      type: "string" as const,
+      enum: ["yes", "no", "unclear"],
+      description:
+        "Whether the bracket has anti-torpedo tabs -- small metal lips or flanges at the ends of the bracket that stop the cylinder from sliding forward out of its mount under hard deceleration. This is a subtle mechanical detail that often isn't identifiable from a typical photo -- default to \"unclear\" rather than guessing unless the tabs are clearly visible.",
+    },
     confidence: { type: "string" as const, enum: ["high", "medium", "low"] },
     notes: {
       type: "string" as const,
       description: "Any caveats worth surfacing: blurry/obscured photo, multiple dates that are hard to tell apart, anything uncertain. Empty string if none.",
     },
   },
-  required: ["classARating", "bcRating", "weightLbs", "manufactureDate", "certificationDate", "certificationDueDate", "confidence", "notes"],
+  required: [
+    "classARating",
+    "bcRating",
+    "weightLbs",
+    "manufactureDate",
+    "certificationDate",
+    "certificationDueDate",
+    "hasMetalBracket",
+    "metalStrapCount",
+    "hasAntiTorpedoTabs",
+    "confidence",
+    "notes",
+  ],
 };
 
-const PROMPT = `This is a photo of a handheld fire extinguisher intended for use in a race car, including its label and/or a service/inspection tag if one is attached. Extinguisher labels print a UL rating as a combined code like "1-A:10-B:C" (Class A number, then B:C number) or just "10-B:C" for a B:C-only unit -- read both numbers if present. Also read the weight if printed (often near the rating, e.g. "5 LB"), and any dates: a manufacture date is usually stamped directly into the metal on the cylinder's neck or bottom (sometimes just month/year), while a service/inspection tag (if present) may show a separate service date and/or a "next due" date. Be conservative -- if a number or date isn't clearly legible, use the 0/empty-string sentinel for that field rather than guessing, and mention the ambiguity in "notes".`;
+const PROMPT = `This is a photo of a handheld fire extinguisher intended for use in a race car, including its label and/or a service/inspection tag if one is attached. Extinguisher labels print a UL rating as a combined code like "1-A:10-B:C" (Class A number, then B:C number) or just "10-B:C" for a B:C-only unit -- read both numbers if present. Also read the weight if printed (often near the rating, e.g. "5 LB"), and any dates: a manufacture date is usually stamped directly into the metal on the cylinder's neck or bottom (sometimes just month/year), while a service/inspection tag (if present) may show a separate service date and/or a "next due" date. Be conservative -- if a number or date isn't clearly legible, use the 0/empty-string sentinel for that field rather than guessing, and mention the ambiguity in "notes".
+
+If the photo also shows how the extinguisher is mounted (not just its label), separately note: whether the bracket holding it is metal rather than plastic/velcro/zip-ties, how many metal straps or fastenings secure it, and whether the bracket has anti-torpedo tabs (small lips/flanges at the ends that stop the cylinder sliding forward under deceleration). These are secondary to the label reading above -- most photos won't show the mount clearly, or at all, and anti-torpedo tabs specifically are easy to miss even when the mount is visible. Default to "unclear"/0 rather than guessing.`;
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";

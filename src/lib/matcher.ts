@@ -209,6 +209,8 @@ export interface CategoryResult {
   pieceBreakdown?: { label: string; status: ItemStatus; reason: string }[];
   /** standardIds currently accepted/valid for this item (not rejected/expired) — lets other categories cross-reference this one (e.g. undergarment's dependence on the firesuit's tier). */
   resolvedStandardIds?: string[];
+  /** Fire extinguisher only: which specific mounting fields are still unanswered and blocking this verdict, per unit (by ExtinguisherUnit.key) — lets the entry form highlight exactly those inputs rather than just stating the gap in prose. Only populated when the mounting check itself is what's holding the result at needs_info (never alongside an outright rejection, which already has a definite cause). */
+  missingExtinguisherMountFields?: { key: string; fields: ("hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs")[] }[];
 }
 
 function findAcceptance(rule: CategoryRule, standardId?: string): StandardAcceptance | undefined {
@@ -468,34 +470,50 @@ function extinguisherStrapRequirement(tiers: { underWeightLbs?: number; minStrap
  * tabs) on top of an already-passing rating/quantity result — applied to every entered unit, not
  * just the ones counted toward the rating requirement, since every extinguisher in the car should
  * be properly mounted regardless of which one satisfies the rating math. An explicit "no" on any
- * sub-check rejects outright; an unanswered one only adds a reminder to the reason without
- * demoting the status — unconfirmed mounting isn't the same as a known failure, and downgrading a
- * required item to needs_info here would wrongly flip Buyer/Scrutineer mode's eligibility bucket
- * over a field the driver just hasn't gotten to yet. No-op when the rule doesn't specify mounting.
+ * sub-check rejects outright; an unanswered one downgrades to needs_info rather than leaving the
+ * result "ok" — a body that specifies a mounting requirement can't be verified without knowing the
+ * mount, so the verdict stays unresolved (a real failure for a required item, same as any other
+ * missing required field) until it's answered, rather than passing on an unconfirmed assumption.
+ * No-op when the rule doesn't specify mounting.
  */
 function applyMountingCheck(rule: CategoryRule, units: ExtinguisherUnit[], result: CategoryResult): CategoryResult {
   const mounting = rule.fireExtinguisherMounting;
   if (!mounting) return result;
 
-  const reminders = new Set<string>();
+  const missingPhrases = new Set<string>();
+  const missingByUnit: NonNullable<CategoryResult["missingExtinguisherMountFields"]> = [];
   let failedReason: string | undefined;
 
   for (const unit of units) {
+    const missingFields: NonNullable<CategoryResult["missingExtinguisherMountFields"]>[number]["fields"] = [];
     if (mounting.requireMetalBracket) {
       if (unit.hasMetalBracket === false) failedReason = "a metal bracket (not plastic, velcro, or zip ties)";
-      else if (unit.hasMetalBracket === undefined) reminders.add("it's mounted with a metal bracket");
+      else if (unit.hasMetalBracket === undefined) {
+        missingFields.push("hasMetalBracket");
+        missingPhrases.add("whether it's mounted with a metal bracket");
+      }
     }
     if (!failedReason && mounting.strapTiers?.length) {
       const required = extinguisherStrapRequirement(mounting.strapTiers, unit);
-      if (required === undefined) reminders.add("its weight, to confirm the required metal strap count");
-      else if (unit.metalStrapCount === undefined) reminders.add(`it has at least ${required} metal strap${required === 1 ? "" : "s"}`);
-      else if (unit.metalStrapCount < required) failedReason = `at least ${required} metal strap${required === 1 ? "" : "s"}`;
+      if (required === undefined) {
+        missingFields.push("weightLbs");
+        missingPhrases.add("its weight, to confirm the required metal strap count");
+      } else if (unit.metalStrapCount === undefined) {
+        missingFields.push("metalStrapCount");
+        missingPhrases.add(`its metal strap count (needs at least ${required})`);
+      } else if (unit.metalStrapCount < required) {
+        failedReason = `at least ${required} metal strap${required === 1 ? "" : "s"}`;
+      }
     }
     if (!failedReason && mounting.requireAntiTorpedoTabs) {
       if (unit.hasAntiTorpedoTabs === false) failedReason = "anti-torpedo tabs on the bracket";
-      else if (unit.hasAntiTorpedoTabs === undefined) reminders.add("its bracket has anti-torpedo tabs");
+      else if (unit.hasAntiTorpedoTabs === undefined) {
+        missingFields.push("hasAntiTorpedoTabs");
+        missingPhrases.add("whether its bracket has anti-torpedo tabs");
+      }
     }
     if (failedReason) break;
+    if (missingFields.length > 0) missingByUnit.push({ key: unit.key, fields: missingFields });
   }
 
   if (failedReason) {
@@ -505,8 +523,13 @@ function applyMountingCheck(rule: CategoryRule, units: ExtinguisherUnit[], resul
       reason: `Doesn't meet this body's mounting requirement — needs ${failedReason}.`,
     };
   }
-  if (reminders.size > 0) {
-    return { ...result, reason: `${result.reason} ⚠️ Also confirm ${[...reminders].join(" and ")}.` };
+  if (missingPhrases.size > 0) {
+    return {
+      ...result,
+      status: "needs_info",
+      reason: `This body also specifies a mounting requirement. Confirm ${[...missingPhrases].join(" and ")} to complete this check.`,
+      missingExtinguisherMountFields: missingByUnit,
+    };
   }
   return result;
 }

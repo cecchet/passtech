@@ -57,6 +57,20 @@ const windowNetRule = {
 const fireExtinguisherRule = {
   requirement: "required" as const,
   fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+  // §1.3.9: "non-metal straps/latches/brackets not permitted" — the plastic ban here is about the
+  // mounting hardware, not the extinguisher's own head/nozzle (no rule text anywhere addresses
+  // that). The extra-strap-over-2.5lb clause is the one weight-tiered strap rule found across
+  // every body checked so far — modeled as two tiers (2.51 as the boundary rather than 2.5 itself,
+  // since the rule says "over 2.5-lb," so an extinguisher at exactly the 2.5lb minimum still only
+  // needs the single strap).
+  fireExtinguisherMounting: {
+    requireMetalBracket: true,
+    strapTiers: [
+      { underWeightLbs: 2.51, minStraps: 1 },
+      { minStraps: 2 },
+    ],
+    requireAntiTorpedoTabs: true,
+  },
   materialNote:
     "Minimum 2.5 lb ABC portable fire extinguisher with a gauge, mounted with a metal bracket and strap (non-metal straps/latches/brackets not permitted). Inspection tag or manufacture date must be within the last 3 years. An anti-torpedo tab is required; the extinguisher must not be mounted on the floor in the driver's footwell, and the primary unit must be within reach of the driver (additional units may be mounted beyond reach). Extinguishers over 2.5-lb net require an additional metal restraining feature beyond the single latching strap.",
   citation: { ...sourceDoc, section: "1.3.9.1-1.3.9.6" },

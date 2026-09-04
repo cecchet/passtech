@@ -427,7 +427,18 @@ function CertificationList({
 
 const numberInputClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
 
-function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherUnit; onChange: (patch: Partial<ExtinguisherUnit>) => void; onRemove: () => void }) {
+function ExtinguisherUnitRow({
+  unit,
+  missingFields,
+  onChange,
+  onRemove,
+}: {
+  unit: ExtinguisherUnit;
+  /** Which fields the active ruleset's mounting requirement is still waiting on for this unit — see CategoryResult.missingExtinguisherMountFields. Highlighted red so the driver can see exactly what's blocking the verdict, not just read it in the reason text. */
+  missingFields?: ("hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs")[];
+  onChange: (patch: Partial<ExtinguisherUnit>) => void;
+  onRemove: () => void;
+}) {
   const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
   const photos = unit.photoDataUrls ?? [];
   const maxPhotos = maxPhotosFor("fire_extinguisher");
@@ -435,6 +446,8 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
   const inputId = useId();
   const [confirmRemove, setConfirmRemove] = useState(false);
   const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
+  const isMissing = (field: "hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs") => !!missingFields?.includes(field);
+  const missingRing = "border-red-500 ring-1 ring-red-500";
 
   return (
     // Same bright highlight as a certification box (CertificationRow) — one item can carry
@@ -520,7 +533,7 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           min={0}
           step="0.1"
           placeholder="e.g. 5"
-          className={`${numberInputClass} w-24`}
+          className={`${numberInputClass} w-24 ${isMissing("weightLbs") ? missingRing : ""}`}
           value={unit.weightLbs ?? ""}
           onChange={(e) => onChange({ weightLbs: numeric(e.target.value) })}
         />
@@ -552,7 +565,9 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           onChange={(e) => onChange({ certificationDueDate: e.target.value || undefined })}
         />
       </label>
-      <div className="flex flex-col gap-1 text-xs text-neutral-400">
+      </div>
+      <div className="flex flex-wrap items-end gap-2">
+      <div className={`flex flex-col gap-1 rounded p-1 text-xs text-neutral-400 ${isMissing("hasMetalBracket") ? missingRing : ""}`}>
         Metal bracket (not plastic, velcro, or zip ties)?
         <div className="flex items-center gap-3 text-neutral-300">
           <label className="flex cursor-pointer items-center gap-1">
@@ -571,12 +586,12 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           type="number"
           min={0}
           placeholder="e.g. 2"
-          className={`${numberInputClass} w-24`}
+          className={`${numberInputClass} w-24 ${isMissing("metalStrapCount") ? missingRing : ""}`}
           value={unit.metalStrapCount ?? ""}
           onChange={(e) => onChange({ metalStrapCount: numeric(e.target.value) })}
         />
       </label>
-      <div className="flex flex-col gap-1 text-xs text-neutral-400">
+      <div className={`flex flex-col gap-1 rounded p-1 text-xs text-neutral-400 ${isMissing("hasAntiTorpedoTabs") ? missingRing : ""}`}>
         Anti-torpedo tabs on the bracket?
         <div className="flex items-center gap-3 text-neutral-300">
           <label className="flex cursor-pointer items-center gap-1">
@@ -599,6 +614,8 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           </label>
         </div>
       </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
       {!confirmRemove ? (
         <button
           type="button"
@@ -626,7 +643,16 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
   );
 }
 
-function ExtinguisherUnitList({ units, onChange }: { units: ExtinguisherUnit[]; onChange: (units: ExtinguisherUnit[]) => void }) {
+function ExtinguisherUnitList({
+  units,
+  missingFieldsByUnit,
+  onChange,
+}: {
+  units: ExtinguisherUnit[];
+  /** From CategoryResult.missingExtinguisherMountFields — which unit(s) still have unanswered mounting fields blocking the verdict. */
+  missingFieldsByUnit?: { key: string; fields: ("hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs")[] }[];
+  onChange: (units: ExtinguisherUnit[]) => void;
+}) {
   const updateUnit = (index: number, patch: Partial<ExtinguisherUnit>) => onChange(units.map((u, i) => (i === index ? { ...u, ...patch } : u)));
   const removeUnit = (index: number) => onChange(units.filter((_, i) => i !== index));
   const addUnit = () => onChange([...units, newExtinguisherUnit()]);
@@ -634,7 +660,13 @@ function ExtinguisherUnitList({ units, onChange }: { units: ExtinguisherUnit[]; 
   return (
     <div className="flex flex-col gap-2">
       {units.map((unit, i) => (
-        <ExtinguisherUnitRow key={unit.key} unit={unit} onChange={(patch) => updateUnit(i, patch)} onRemove={() => removeUnit(i)} />
+        <ExtinguisherUnitRow
+          key={unit.key}
+          unit={unit}
+          missingFields={missingFieldsByUnit?.find((m) => m.key === unit.key)?.fields}
+          onChange={(patch) => updateUnit(i, patch)}
+          onRemove={() => removeUnit(i)}
+        />
       ))}
       <button type="button" onClick={addUnit} className="self-start rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
         + Add {units.length > 0 ? "another extinguisher" : "an extinguisher"}
@@ -1682,7 +1714,13 @@ export function CategoryCard({
                   : baseUnits.length > 0
                     ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
                     : [{ ...newExtinguisherUnit(), photoDataUrls: strayPhotos }];
-              return <ExtinguisherUnitList units={units} onChange={(extinguisherUnits) => update({ extinguisherUnits, photoDataUrls: [] })} />;
+              return (
+                <ExtinguisherUnitList
+                  units={units}
+                  missingFieldsByUnit={result?.missingExtinguisherMountFields}
+                  onChange={(extinguisherUnits) => update({ extinguisherUnits, photoDataUrls: [] })}
+                />
+              );
             })()}
 
           {category === "window_breaker" &&

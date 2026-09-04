@@ -5,6 +5,7 @@ import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
 import { CertificationEntry, ExtinguisherUnit, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import { ExtinguisherVisionResult, extinguisherPatchFromVision, extinguisherVisionSummary } from "@/lib/extinguisherVision";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout";
 import { useTagScanner } from "@/lib/useTagScanner";
@@ -147,30 +148,11 @@ export function QuickItemScan({
       setExtScan({ status: "error", error: typeof data.error === "string" ? data.error : "Something went wrong." });
       return;
     }
-    const classARating = data.classARating as number | undefined;
-    const bcRating = data.bcRating as number | undefined;
-    const weightLbs = data.weightLbs as number | undefined;
-    const manufactureDate = data.manufactureDate as string | undefined;
-    const certificationDate = data.certificationDate as string | undefined;
-    const certificationDueDate = data.certificationDueDate as string | undefined;
-    const unit: ExtinguisherUnit = {
-      ...newExtinguisherUnit(),
-      ...(classARating ? { classARating } : {}),
-      ...(bcRating ? { bcRating } : {}),
-      ...(weightLbs ? { weightLbs } : {}),
-      ...(manufactureDate ? { manufactureDate } : {}),
-      ...(certificationDate ? { certificationDate } : {}),
-      ...(certificationDueDate ? { certificationDueDate } : {}),
-    };
-    const summary = [
-      classARating || bcRating ? `${classARating ? `${classARating}-A:` : ""}${bcRating ? `${bcRating}-B:C` : ""}` : null,
-      weightLbs ? `${weightLbs} lb` : null,
-      manufactureDate ? `mfg ${manufactureDate}` : null,
-    ]
-      .filter(Boolean)
-      .join(", ");
+    const vision = data as unknown as ExtinguisherVisionResult;
+    const unit: ExtinguisherUnit = { ...newExtinguisherUnit(), ...extinguisherPatchFromVision(vision) };
+    const summary = extinguisherVisionSummary(vision);
     if (!summary) {
-      setExtScan({ status: "error", error: "Couldn't read a rating or weight off that label — try a clearer photo, or continue and enter it by hand." });
+      setExtScan({ status: "error", error: "Couldn't read anything off that photo — try a clearer one, or continue and enter it by hand." });
       return;
     }
     setExtScan({ status: "idle", unit, summary });
@@ -420,30 +402,11 @@ export function TagOnlyScan({
       setExtScan({ status: "error", error: typeof data.error === "string" ? data.error : "Something went wrong." });
       return;
     }
-    const classARating = data.classARating as number | undefined;
-    const bcRating = data.bcRating as number | undefined;
-    const weightLbs = data.weightLbs as number | undefined;
-    const manufactureDate = data.manufactureDate as string | undefined;
-    const certificationDate = data.certificationDate as string | undefined;
-    const certificationDueDate = data.certificationDueDate as string | undefined;
-    const unit: ExtinguisherUnit = {
-      ...newExtinguisherUnit(),
-      ...(classARating ? { classARating } : {}),
-      ...(bcRating ? { bcRating } : {}),
-      ...(weightLbs ? { weightLbs } : {}),
-      ...(manufactureDate ? { manufactureDate } : {}),
-      ...(certificationDate ? { certificationDate } : {}),
-      ...(certificationDueDate ? { certificationDueDate } : {}),
-    };
-    const summary = [
-      classARating || bcRating ? `${classARating ? `${classARating}-A:` : ""}${bcRating ? `${bcRating}-B:C` : ""}` : null,
-      weightLbs ? `${weightLbs} lb` : null,
-      manufactureDate ? `mfg ${manufactureDate}` : null,
-    ]
-      .filter(Boolean)
-      .join(", ");
+    const vision = data as unknown as ExtinguisherVisionResult;
+    const unit: ExtinguisherUnit = { ...newExtinguisherUnit(), ...extinguisherPatchFromVision(vision) };
+    const summary = extinguisherVisionSummary(vision);
     if (!summary) {
-      setExtScan({ status: "error", error: "Couldn't read a rating or weight off that label — try a clearer photo, or continue and enter it by hand." });
+      setExtScan({ status: "error", error: "Couldn't read anything off that photo — try a clearer one, or continue and enter it by hand." });
       return;
     }
     setExtScan({ status: "idle", unit, summary });
