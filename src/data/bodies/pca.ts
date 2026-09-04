@@ -450,6 +450,7 @@ const clubRacing: Ruleset = {
     fire_extinguisher: {
       requirement: "required",
       materialOnlyAccepted: true,
+      fireExtinguisherMounting: { requireMetalBracket: true },
       materialNote: "Rulebook: 'a 2-1/2 lb. or larger SFI, FIA, UL, or NFPA approved fire extinguisher capable of extinguishing B/C type fires' — no SFI/FIA extinguisher StandardDef is registered in this app, so this is checked on capacity/rating text rather than a certification lookup.",
       satisfiedByAlternative: "fire_suppression",
       citation: { ...clubRacingSourceDoc, section: "Car Requirements 2" },

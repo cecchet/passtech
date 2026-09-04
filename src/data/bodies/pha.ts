@@ -203,6 +203,7 @@ const timeTrialHillclimb: Ruleset = {
         { quantity: 1, minBcRating: 10, minWeightLbs: 2 },
         { quantity: 1, minClassARating: 1, minBcRating: 10, minWeightLbs: 2 },
       ],
+      fireExtinguisherMounting: { requireMetalBracket: true },
       materialNote:
         "PHA §9.19: Halon 1301 or 1211, 2 lb minimum capacity by weight (no UL rating specified) — OR dry chemical, 2 lb minimum with a positive charge indicator, rated either 10-B:C (potassium bicarbonate/'Purple K' recommended) or 1-A:10-B:C (multipurpose ammonium phosphate and barium sulfate, or Monnex). Must be securely mounted in the cockpit with metal, quick-release-type brackets, and reachable by the driver while seated (case-by-case exceptions approved by Tech).",
       citation: { ...sourceDoc, section: "9.19.B, 9.19.C" },

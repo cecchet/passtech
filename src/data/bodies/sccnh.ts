@@ -162,6 +162,7 @@ const gravelTrials: Ruleset = {
         { quantity: 1, minBcRating: 10 },
         { quantity: 2, minBcRating: 5 },
       ],
+      fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
       materialNote:
         "Rule 9.8: installed inside the passenger compartment, at least one within easy reach of the driver or co-driver when seated. Secured with a metal strap and metal mounting bracket, with a fill gauge visible for scrutineering.",
       citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025", section: "9.8" },
@@ -415,6 +416,9 @@ const climbToTheClouds: Ruleset = {
     fire_extinguisher: {
       requirement: "required",
       fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 5 }],
+      // Rules 1.3.3-1.3.4 say "metal straps/brackets only" but don't give a specific strap count
+      // per unit, so only the material requirement is modeled here.
+      fireExtinguisherMounting: { requireMetalBracket: true },
       materialNote:
         "Rule 1.3.1: 5 lbs total of portable fire suppression required, which may be split across one or two units mounted with steel bracket(s) — the rulebook states the 5 lb total but doesn't give a minimum weight per unit for the two-unit configuration. Rule 1.3.2: inspection tag or manufacture date must be within the last 3 years. Rules 1.3.3-1.3.4: metal straps/brackets only, mounted within the driver's reach, not in the footwell.",
       citation: { title: "2026 Climb to the Clouds Competition Classes & Safety Rules", version: "Last updated 7/12/2026", section: "1.3" },

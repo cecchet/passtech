@@ -171,6 +171,7 @@ const hpde: Ruleset = {
     },
     fire_extinguisher: {
       requirement: "recommended",
+      fireExtinguisherMounting: { requireMetalBracket: true },
       citation: { ...techForms, section: "Pre-Event Tech Inspection checklist — FIRE EXTINGUISHER" },
       confidence: "high",
       notes:

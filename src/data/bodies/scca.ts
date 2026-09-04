@@ -963,6 +963,7 @@ const roadRacing: Ruleset = {
         { quantity: 1, minBcRating: 10, minWeightLbs: 2 },
         { quantity: 1, minClassARating: 1, minBcRating: 10, minWeightLbs: 2 },
       ],
+      fireExtinguisherMounting: { requireMetalBracket: true },
       materialNote:
         "GCR §9.3.22.B: Halon 1301, 1211, or DuPont FE-36, 2 lb minimum capacity by weight — OR dry chemical, 2 lb minimum with a positive charge indicator, rated either 10-B:C (potassium bicarbonate/'Purple K' recommended) or 1-A:10-B:C (multipurpose ammonium phosphate and barium sulfate, or Monnex) — OR AFFF (aqueous film forming foam) or equivalent surfactant foam, 2.25 liter minimum by volume with a functional pressure gauge (not modeled in fireExtinguisherOptions above since that field only supports weight-based minimums, not volume). Must be securely mounted in the cockpit with metal, quick-release-type brackets.",
       citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.22.B" },
@@ -1070,6 +1071,7 @@ const roadRacing: Ruleset = {
           { quantity: 1, minBcRating: 10, minWeightLbs: 2 },
           { quantity: 1, minClassARating: 1, minBcRating: 10, minWeightLbs: 2 },
         ],
+        fireExtinguisherMounting: { requireMetalBracket: true },
         materialNote:
           "GCR §9.3.22 names T3, T4, STL, Spec Miata, B-Spec, C-Spec, and Improved Touring as the classes that use a hand-held extinguisher instead of an on-board system — Halon 1301/1211/DuPont FE-36 (2 lb min), OR dry chemical (2 lb min, 10-B:C or 1-A:10-B:C rated), OR AFFF (2.25 L min, functional pressure gauge). Securely mounted in the cockpit with metal, quick-release-type brackets.",
         citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.22.B" },
@@ -1136,6 +1138,7 @@ const roadRacing: Ruleset = {
           { quantity: 1, minBcRating: 10, minWeightLbs: 2 },
           { quantity: 1, minClassARating: 1, minBcRating: 10, minWeightLbs: 2 },
         ],
+        fireExtinguisherMounting: { requireMetalBracket: true },
         materialNote:
           "GCR §9.3.22 names Spec Miata and Improved Touring among the classes that use a hand-held extinguisher instead of an on-board system — Halon 1301/1211/DuPont FE-36 (2 lb min), OR dry chemical (2 lb min, 10-B:C or 1-A:10-B:C rated), OR AFFF (2.25 L min, functional pressure gauge). Securely mounted in the cockpit with metal, quick-release-type brackets.",
         citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.22.B" },
@@ -1212,6 +1215,7 @@ const roadRacing: Ruleset = {
           { quantity: 1, minBcRating: 10, minWeightLbs: 2 },
           { quantity: 1, minClassARating: 1, minBcRating: 10, minWeightLbs: 2 },
         ],
+        fireExtinguisherMounting: { requireMetalBracket: true },
         materialNote:
           "GCR §9.3.22 names STL specifically among the classes that use a hand-held extinguisher instead of an on-board system — Halon 1301/1211/DuPont FE-36 (2 lb min), OR dry chemical (2 lb min, 10-B:C or 1-A:10-B:C rated), OR AFFF (2.25 L min, functional pressure gauge). Securely mounted in the cockpit with metal, quick-release-type brackets.",
         citation: { title: "SCCA GCR", version: "2026, TB 26-08", section: "9.3.22.B" },

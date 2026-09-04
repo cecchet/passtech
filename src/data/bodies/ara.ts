@@ -153,6 +153,9 @@ const performanceRally: Ruleset = {
         { quantity: 2, minBcRating: 10 },
         { quantity: 1, minBcRating: 20 },
       ],
+      // RTR 2.3.5.a).ii) says the unit "must be secured with a metal strap" -- doesn't separately
+      // state the bracket/holder itself must be metal, so only the strap requirement is modeled.
+      fireExtinguisherMounting: { strapTiers: [{ minStraps: 1 }] },
       citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.5" },
       confidence: "medium",
       notes:

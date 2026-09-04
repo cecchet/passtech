@@ -183,6 +183,7 @@ export const SCCA_TT_LEVEL2_CATEGORIES: Partial<Record<EquipmentCategory, Catego
       { quantity: 1, minBcRating: 10, minWeightLbs: 2 },
       { quantity: 1, minClassARating: 1, minBcRating: 10, minWeightLbs: 2 },
     ],
+    fireExtinguisherMounting: { requireMetalBracket: true },
     satisfiedByAlternative: "fire_suppression",
     citation: { ...SCCA_TT_LEVEL2_SOURCE, section: "IV.2 Safety Level 2 — 2. Vehicle Equipment — 4. Fire Suppression" },
     confidence: "high",
