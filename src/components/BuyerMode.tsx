@@ -84,7 +84,7 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
       // overallEligibility itself aggregates across a whole gear set), not from rolling up the
       // whole `results` map, which would count every other item this app never asked about as
       // missing and fail the ruleset regardless of this one item's real status.
-      const results = evaluateRuleset(rs, { [category]: entry });
+      const results = evaluateRuleset(rs, { [category]: entry }, undefined, undefined, true);
       const result = results[category];
       if (!result) return [];
       const status = isViolation(result) ? "not_eligible" : isPendingConditional(result) ? "eligible_conditional" : "eligible";
@@ -129,12 +129,13 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
       {!category ? (
         <div id="tutorial-buyer-scan">
           <QuickItemScan
-            onDone={(cat, photoDataUrl, certifications) => {
+            onDone={(cat, photoDataUrl, certifications, extinguisherUnit) => {
               setCategory(cat);
               setEntry({
                 category: cat,
                 ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}),
                 ...(certifications?.length ? { certifications, ...(CATEGORY_META[cat].hybrid ? { mode: "certified" as const } : {}) } : {}),
+                ...(extinguisherUnit ? { extinguisherUnits: [extinguisherUnit] } : {}),
               });
             }}
           />

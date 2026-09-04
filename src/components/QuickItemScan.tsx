@@ -4,7 +4,7 @@ import { useEffect, useId, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
-import { CertificationEntry, newCertification } from "@/lib/matcher";
+import { CertificationEntry, ExtinguisherUnit, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout";
 import { useTagScanner } from "@/lib/useTagScanner";
@@ -46,20 +46,23 @@ function certCandidateToEntry(c: CertCandidate): CertificationEntry {
 export function QuickItemScan({
   onDone,
 }: {
-  onDone: (category: EquipmentCategory, photoDataUrl?: string, certifications?: CertificationEntry[]) => void;
+  onDone: (category: EquipmentCategory, photoDataUrl?: string, certifications?: CertificationEntry[], extinguisherUnit?: ExtinguisherUnit) => void;
 }) {
   const [stage, setStage] = useState<
     | { type: "idle" }
     | { type: "analyzing" }
     | { type: "detected"; category: EquipmentCategory; confidence: "high" | "medium" | "low"; notes: string; photoDataUrl: string; certifications: CertCandidate[] }
     | { type: "need_tag"; category: EquipmentCategory; photoDataUrl: string; itemCertifications: CertificationEntry[] }
+    | { type: "need_extinguisher_label"; photoDataUrl: string }
     | { type: "not_gear"; notes: string }
     | { type: "error"; message: string }
     | { type: "manual" }
   >({ type: "idle" });
   const [manualCategory, setManualCategory] = useState<EquipmentCategory>("helmet");
+  const [extScan, setExtScan] = useState<{ status: "idle" | "loading" | "error"; error?: string; unit?: ExtinguisherUnit; summary?: string }>({ status: "idle" });
   const inputId = useId();
   const tagInputId = useId();
+  const extinguisherInputId = useId();
 
   const scanCategory = stage.type === "need_tag" ? stage.category : "helmet";
   const scanner = useTagScanner(scanCategory, (cert) => {
@@ -97,17 +100,27 @@ export function QuickItemScan({
   };
 
   const confirmDetected = (s: Extract<typeof stage, { type: "detected" }>) => {
-    // Some categories (fire extinguishers, tow hooks, rollover protection, ...) aren't evaluated
-    // against a standardId at all — there's nothing a tag-photo scan could find for them, so asking
-    // for one would just be a dead end. Hand straight back and let the category card that follows
-    // (which does have the category-specific fields for these, e.g. ExtinguisherLabelScan) take it
-    // from here.
-    if (s.certifications.length > 0 || standardsFor(s.category).length === 0) {
+    if (s.certifications.length > 0) {
       onDone(s.category, s.photoDataUrl, s.certifications.map(certCandidateToEntry));
-    } else {
-      scanner.reset();
-      setStage({ type: "need_tag", category: s.category, photoDataUrl: s.photoDataUrl, itemCertifications: [] });
+      return;
     }
+    // Fire extinguishers aren't evaluated against a standardId, but they do have their own
+    // dedicated label scan (rating/weight/dates via /api/analyze-extinguisher) — offer that
+    // instead of the generic tag-photo step, which could never find anything for this category.
+    if (s.category === "fire_extinguisher") {
+      setExtScan({ status: "idle" });
+      setStage({ type: "need_extinguisher_label", photoDataUrl: s.photoDataUrl });
+      return;
+    }
+    // The remaining no-standardId categories (tow hooks, rollover protection, ...) have no
+    // per-item scan of any kind — asking for a tag photo would just be a dead end. Hand straight
+    // back and let the category card that follows take it from here.
+    if (standardsFor(s.category).length === 0) {
+      onDone(s.category, s.photoDataUrl);
+      return;
+    }
+    scanner.reset();
+    setStage({ type: "need_tag", category: s.category, photoDataUrl: s.photoDataUrl, itemCertifications: [] });
   };
 
   const handleTagFile = async (file: File) => {
@@ -118,6 +131,49 @@ export function QuickItemScan({
       return;
     }
     void scanner.analyze(dataUrl);
+  };
+
+  const handleExtinguisherLabelFile = async (file: File) => {
+    setExtScan({ status: "loading" });
+    let dataUrl: string;
+    try {
+      dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+    } catch {
+      setExtScan({ status: "error", error: "Couldn't read this photo file." });
+      return;
+    }
+    const { ok, data } = await fetchWithTimeout("/api/analyze-extinguisher", { imageDataUrl: dataUrl });
+    if (!ok) {
+      setExtScan({ status: "error", error: typeof data.error === "string" ? data.error : "Something went wrong." });
+      return;
+    }
+    const classARating = data.classARating as number | undefined;
+    const bcRating = data.bcRating as number | undefined;
+    const weightLbs = data.weightLbs as number | undefined;
+    const manufactureDate = data.manufactureDate as string | undefined;
+    const certificationDate = data.certificationDate as string | undefined;
+    const certificationDueDate = data.certificationDueDate as string | undefined;
+    const unit: ExtinguisherUnit = {
+      ...newExtinguisherUnit(),
+      ...(classARating ? { classARating } : {}),
+      ...(bcRating ? { bcRating } : {}),
+      ...(weightLbs ? { weightLbs } : {}),
+      ...(manufactureDate ? { manufactureDate } : {}),
+      ...(certificationDate ? { certificationDate } : {}),
+      ...(certificationDueDate ? { certificationDueDate } : {}),
+    };
+    const summary = [
+      classARating || bcRating ? `${classARating ? `${classARating}-A:` : ""}${bcRating ? `${bcRating}-B:C` : ""}` : null,
+      weightLbs ? `${weightLbs} lb` : null,
+      manufactureDate ? `mfg ${manufactureDate}` : null,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    if (!summary) {
+      setExtScan({ status: "error", error: "Couldn't read a rating or weight off that label — try a clearer photo, or continue and enter it by hand." });
+      return;
+    }
+    setExtScan({ status: "idle", unit, summary });
   };
 
   if (stage.type === "idle" || stage.type === "not_gear" || stage.type === "error") {
@@ -237,6 +293,52 @@ export function QuickItemScan({
     );
   }
 
+  if (stage.type === "need_extinguisher_label") {
+    return (
+      <div className="rounded-lg border border-neutral-700 p-4">
+        {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
+        <img src={stage.photoDataUrl} alt="" className="mb-3 h-24 w-24 rounded object-cover" />
+        <p className="text-neutral-200">
+          Detected: <b>Fire Extinguisher</b>
+        </p>
+        <p className="mt-1 text-sm text-amber-400">Upload a picture of the extinguisher&rsquo;s label to read its rating and dates:</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <label
+            htmlFor={extinguisherInputId}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+          >
+            📷 Upload a photo of the label
+            <input
+              id={extinguisherInputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) void handleExtinguisherLabelFile(file);
+              }}
+            />
+          </label>
+          <CameraPhotoButton
+            onFile={(file) => void handleExtinguisherLabelFile(file)}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+          />
+        </div>
+        {extScan.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the label (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
+        {extScan.status === "error" && <p className="mt-2 text-sm text-red-400">{extScan.error}</p>}
+        {extScan.summary && <p className="mt-2 text-sm text-emerald-400">Found: {extScan.summary} — it&rsquo;ll be added automatically.</p>}
+        <button
+          type="button"
+          onClick={() => onDone("fire_extinguisher", stage.photoDataUrl, undefined, extScan.unit)}
+          className="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black"
+        >
+          {extScan.unit ? "Continue with extinguisher details added" : "Continue without label details"}
+        </button>
+      </div>
+    );
+  }
+
   // stage.type === "detected"
   return (
     <div className="rounded-lg border border-neutral-700 p-4">
@@ -280,11 +382,19 @@ export function QuickItemScan({
  * category card's, once that remounts) can never carry stale "Added" candidates over from the
  * previous item.
  */
-export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory; onDone: (certifications: CertificationEntry[]) => void }) {
+export function TagOnlyScan({
+  category,
+  onDone,
+}: {
+  category: EquipmentCategory;
+  onDone: (certifications: CertificationEntry[], extinguisherUnit?: ExtinguisherUnit) => void;
+}) {
   const [certifications, setCertifications] = useState<CertificationEntry[]>([]);
   const scanner = useTagScanner(category, (cert) => setCertifications((c) => [...c, cert]));
   const tagInputId = useId();
+  const extinguisherInputId = useId();
   const hasStandards = standardsFor(category).length > 0;
+  const [extScan, setExtScan] = useState<{ status: "idle" | "loading" | "error"; error?: string; unit?: ExtinguisherUnit; summary?: string }>({ status: "idle" });
 
   const handleTagFile = async (file: File) => {
     let dataUrl: string;
@@ -296,13 +406,97 @@ export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory;
     void scanner.analyze(dataUrl);
   };
 
-  // Same "nothing to scan for" case as QuickItemScan's own confirmDetected — mounted fresh each
-  // time "Scan another" is clicked, so this fires once per rescan and hands straight back without
-  // ever showing a tag-upload control that could only ever fail for this category.
+  const handleExtinguisherLabelFile = async (file: File) => {
+    setExtScan({ status: "loading" });
+    let dataUrl: string;
+    try {
+      dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+    } catch {
+      setExtScan({ status: "error", error: "Couldn't read this photo file." });
+      return;
+    }
+    const { ok, data } = await fetchWithTimeout("/api/analyze-extinguisher", { imageDataUrl: dataUrl });
+    if (!ok) {
+      setExtScan({ status: "error", error: typeof data.error === "string" ? data.error : "Something went wrong." });
+      return;
+    }
+    const classARating = data.classARating as number | undefined;
+    const bcRating = data.bcRating as number | undefined;
+    const weightLbs = data.weightLbs as number | undefined;
+    const manufactureDate = data.manufactureDate as string | undefined;
+    const certificationDate = data.certificationDate as string | undefined;
+    const certificationDueDate = data.certificationDueDate as string | undefined;
+    const unit: ExtinguisherUnit = {
+      ...newExtinguisherUnit(),
+      ...(classARating ? { classARating } : {}),
+      ...(bcRating ? { bcRating } : {}),
+      ...(weightLbs ? { weightLbs } : {}),
+      ...(manufactureDate ? { manufactureDate } : {}),
+      ...(certificationDate ? { certificationDate } : {}),
+      ...(certificationDueDate ? { certificationDueDate } : {}),
+    };
+    const summary = [
+      classARating || bcRating ? `${classARating ? `${classARating}-A:` : ""}${bcRating ? `${bcRating}-B:C` : ""}` : null,
+      weightLbs ? `${weightLbs} lb` : null,
+      manufactureDate ? `mfg ${manufactureDate}` : null,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    if (!summary) {
+      setExtScan({ status: "error", error: "Couldn't read a rating or weight off that label — try a clearer photo, or continue and enter it by hand." });
+      return;
+    }
+    setExtScan({ status: "idle", unit, summary });
+  };
+
+  // The remaining no-standardId, no-dedicated-scan categories (tow hooks, rollover protection,
+  // ...) have nothing a photo scan could find — mounted fresh each time "Scan another" is
+  // clicked, so this fires once per rescan and hands straight back without ever showing an
+  // upload control that could only ever fail for this category.
   useEffect(() => {
-    if (!hasStandards) onDone([]);
+    if (!hasStandards && category !== "fire_extinguisher") onDone([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- deliberately once-per-mount; this component remounts fresh for every "Scan another" click
   }, []);
+
+  if (category === "fire_extinguisher") {
+    return (
+      <div className="rounded-lg border border-neutral-700 p-4">
+        <p className="text-neutral-200">
+          Scanning another: <b>{CATEGORY_META[category].label}</b>
+        </p>
+        <p className="mt-1 text-sm text-amber-400">Upload a picture of the extinguisher&rsquo;s label to read its rating and dates:</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <label
+            htmlFor={extinguisherInputId}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+          >
+            📷 Upload a photo of the label
+            <input
+              id={extinguisherInputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) void handleExtinguisherLabelFile(file);
+              }}
+            />
+          </label>
+          <CameraPhotoButton
+            onFile={(file) => void handleExtinguisherLabelFile(file)}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+          />
+        </div>
+        {extScan.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the label (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
+        {extScan.status === "error" && <p className="mt-2 text-sm text-red-400">{extScan.error}</p>}
+        {extScan.summary && <p className="mt-2 text-sm text-emerald-400">Found: {extScan.summary} — it&rsquo;ll be added automatically.</p>}
+        <button type="button" onClick={() => onDone([], extScan.unit)} className="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black">
+          {extScan.unit ? "Continue with extinguisher details added" : "Continue without label details"}
+        </button>
+      </div>
+    );
+  }
 
   if (!hasStandards) return null;
 

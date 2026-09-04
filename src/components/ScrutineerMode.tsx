@@ -89,7 +89,7 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   const activeClassId = ruleset?.classes?.some((c) => c.id === classId) ? classId : undefined;
   const activeClassLabel = ruleset?.classes?.find((c) => c.id === activeClassId)?.label;
 
-  const result = category && ruleset ? evaluateRuleset(ruleset, { [category]: entry }, undefined, activeClassId)[category] : undefined;
+  const result = category && ruleset ? evaluateRuleset(ruleset, { [category]: entry }, undefined, activeClassId, true)[category] : undefined;
 
   const hasVerdict = !!result && verdict(result).label !== NEEDS_INPUT_LABEL;
   if (hasVerdict !== hadVerdict) {
@@ -135,12 +135,13 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
       {!category ? (
         <div id="tutorial-scrutineer-scan">
           <QuickItemScan
-            onDone={(cat, photoDataUrl, certifications) => {
+            onDone={(cat, photoDataUrl, certifications, extinguisherUnit) => {
               setCategory(cat);
               setEntry({
                 category: cat,
                 ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}),
                 ...(certifications?.length ? { certifications, ...(CATEGORY_META[cat].hybrid ? { mode: "certified" as const } : {}) } : {}),
+                ...(extinguisherUnit ? { extinguisherUnits: [extinguisherUnit] } : {}),
               });
               resetCardOpenState();
             }}
@@ -149,10 +150,11 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
       ) : rescanning ? (
         <TagOnlyScan
           category={category}
-          onDone={(certifications) => {
+          onDone={(certifications, extinguisherUnit) => {
             setEntry({
               category,
               ...(certifications.length ? { certifications, ...(CATEGORY_META[category].hybrid ? { mode: "certified" as const } : {}) } : {}),
+              ...(extinguisherUnit ? { extinguisherUnits: [extinguisherUnit] } : {}),
             });
             setRescanning(false);
             resetCardOpenState();

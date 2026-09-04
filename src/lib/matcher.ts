@@ -391,6 +391,16 @@ export interface EvaluationContext {
   firesuitStandardIds?: string[];
   /** Balaclava only: whether the driver has a currently-valid hnr (head-and-neck restraint) entry — see CategoryRule.balaclavaRequiredIfHnrUsed. */
   hnrSatisfied?: boolean;
+  /**
+   * Fire extinguisher / emergency triangle only: this entry represents ONE physical item being
+   * checked in isolation (Buyer/Scrutineer mode), not a complete car's equipment. A rule needing
+   * more than one unit can never be satisfied by a single-item scan, so flatly rejecting it would
+   * be misleading — there's no way to know from one scan whether a second matching item exists
+   * elsewhere. When set, a unit that individually meets an option's per-unit rating (or size, for
+   * triangles) but falls short on quantity is reported as meeting the requirement with a warning
+   * about the remaining count, rather than rejected outright.
+   */
+  singleItemCheck?: boolean;
 }
 
 /** How recent a manufacture/certification date must be, for options that require a current date, when no explicit due date is printed. */
@@ -435,7 +445,8 @@ function evaluateExtinguishers(
   rule: CategoryRule,
   units: ExtinguisherUnit[],
   base: Omit<CategoryResult, "status" | "reason">,
-  asOf: Date
+  asOf: Date,
+  singleItemCheck?: boolean
 ): CategoryResult {
   const options = rule.fireExtinguisherOptions!;
 
@@ -452,6 +463,24 @@ function evaluateExtinguishers(
     const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
     return { ...base, status, reason: `Meets the requirement — ${optionLabel(satisfiedOption)}.` };
   }
+
+  // A single item can never itself satisfy a quantity>1 option — but if it meets that option's
+  // per-unit rating, it's genuinely one of the units toward it, not a failure. Any option reaching
+  // this point has quantity > (units meeting it), since a quantity-1 match would already have hit
+  // satisfiedOption above.
+  if (singleItemCheck) {
+    const qualifyingOption = options.find((option) => units.some((u) => unitMeetsOption(u, option, asOf)));
+    if (qualifyingOption) {
+      const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
+      const more = qualifyingOption.quantity - 1;
+      return {
+        ...base,
+        status,
+        reason: `Meets the per-unit rating for ${optionLabel(qualifyingOption)}. ⚠️ This body requires ${qualifyingOption.quantity} such extinguishers total — you'd need ${more === 1 ? "one more" : `${more} more`} to fully comply.`,
+      };
+    }
+  }
+
   return {
     ...base,
     status: base.requirement === "recommended" ? "recommended_only" : "rejected",
@@ -460,7 +489,7 @@ function evaluateExtinguishers(
 }
 
 /** Emergency triangle only: satisfied once enough entered triangles each meet the body's minimum side length (when it specifies one). */
-function evaluateTriangles(rule: CategoryRule, units: TriangleUnit[], base: Omit<CategoryResult, "status" | "reason">): CategoryResult {
+function evaluateTriangles(rule: CategoryRule, units: TriangleUnit[], base: Omit<CategoryResult, "status" | "reason">, singleItemCheck?: boolean): CategoryResult {
   const minQuantity = rule.emergencyTriangleMinQuantity ?? 1;
   const minSideLengthIn = rule.emergencyTriangleMinSideLengthIn;
 
@@ -472,12 +501,24 @@ function evaluateTriangles(rule: CategoryRule, units: TriangleUnit[], base: Omit
   }
 
   const qualifying = minSideLengthIn ? units.filter((u) => (u.sideLengthIn ?? 0) >= minSideLengthIn).length : units.length;
+  const spec = minSideLengthIn ? ` at least ${minSideLengthIn}" per side` : "";
   if (qualifying >= minQuantity) {
     const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
-    const spec = minSideLengthIn ? ` at least ${minSideLengthIn}" per side` : "";
     return { ...base, status, reason: `Meets the requirement — ${minQuantity === 1 ? "1 triangle" : `${minQuantity} triangles`}${spec}.` };
   }
-  const spec = minSideLengthIn ? ` at least ${minSideLengthIn}" per side` : "";
+
+  // Same single-item reasoning as evaluateExtinguishers above: a lone qualifying triangle is
+  // genuinely one of the required count, not a failure, when it's being checked in isolation.
+  if (singleItemCheck && qualifying > 0) {
+    const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
+    const more = minQuantity - qualifying;
+    return {
+      ...base,
+      status,
+      reason: `Meets the per-triangle requirement${spec}. ⚠️ This body requires ${minQuantity} triangles total — you'd need ${more === 1 ? "one more" : `${more} more`} to fully comply.`,
+    };
+  }
+
   return {
     ...base,
     status: base.requirement === "recommended" ? "recommended_only" : "rejected",
@@ -853,11 +894,11 @@ export function evaluateCategory(
   }
 
   if (category === "fire_extinguisher" && rule.fireExtinguisherOptions) {
-    return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base, asOf);
+    return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base, asOf, context?.singleItemCheck);
   }
 
   if (category === "emergency_triangle" && (rule.emergencyTriangleMinQuantity || rule.emergencyTriangleMinSideLengthIn)) {
-    return evaluateTriangles(rule, entry.triangleUnits ?? [], base);
+    return evaluateTriangles(rule, entry.triangleUnits ?? [], base, context?.singleItemCheck);
   }
 
   if (category === "rollover_protection") {
@@ -989,7 +1030,9 @@ export function evaluateRuleset(
   ruleset: Ruleset,
   entries: Partial<Record<EquipmentCategory, EquipmentEntry>>,
   asOf: Date = new Date(),
-  classId?: string
+  classId?: string,
+  /** Buyer/Scrutineer mode only — see EvaluationContext.singleItemCheck. */
+  singleItemCheck?: boolean
 ): CategoryResults {
   const categories = effectiveCategories(ruleset, classId);
   const results: CategoryResults = {};
@@ -1004,12 +1047,11 @@ export function evaluateRuleset(
 
   (Object.keys(categories) as EquipmentCategory[]).forEach((category) => {
     if (category === "firesuit" || category === "hnr") return;
-    const context: EvaluationContext | undefined =
-      category === "undergarment"
-        ? { firesuitStandardIds: firesuitResult?.resolvedStandardIds }
-        : category === "balaclava"
-          ? { hnrSatisfied: hnrResult?.status === "ok" || hnrResult?.status === "recommended_only" }
-          : undefined;
+    const context: EvaluationContext | undefined = {
+      ...(category === "undergarment" ? { firesuitStandardIds: firesuitResult?.resolvedStandardIds } : {}),
+      ...(category === "balaclava" ? { hnrSatisfied: hnrResult?.status === "ok" || hnrResult?.status === "recommended_only" } : {}),
+      ...(singleItemCheck ? { singleItemCheck: true } : {}),
+    };
     const result = evaluateCategory(category, categories[category], entries[category], asOf, context);
     if (result) results[category] = result;
   });
