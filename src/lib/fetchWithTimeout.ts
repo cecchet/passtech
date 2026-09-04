@@ -1,5 +1,5 @@
-export const REQUEST_TIMEOUT_MS = 60_000;
-export const REQUEST_TIMEOUT_LABEL = "a minute";
+export const REQUEST_TIMEOUT_MS = 120_000;
+export const REQUEST_TIMEOUT_LABEL = "two minutes";
 
 /** POSTs JSON with a client-side timeout, since a hung vision-API call would otherwise leave the caller waiting forever with no feedback. */
 export async function fetchWithTimeout(url: string, body: unknown): Promise<{ ok: boolean; status: number; data: Record<string, unknown> }> {

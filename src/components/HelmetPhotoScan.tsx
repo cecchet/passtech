@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { EquipmentEntry } from "@/lib/matcher";
 import { CameraPhotoButton } from "@/components/CameraPhotoButton";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 
 interface HelmetAnalysis {
   helmetType: "open_face" | "full_face" | "unclear";
@@ -30,25 +31,15 @@ export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<Equipmen
     setError(null);
     setResult(null);
     setApplied(false);
-    try {
-      const imageDataUrl = await resizeImageToDataUrl(file);
-      const res = await fetch("/api/analyze-helmet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageDataUrl }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
-        setStatus("error");
-        return;
-      }
-      setResult(data);
-      setStatus("idle");
-    } catch {
-      setError("Couldn't reach the server.");
+    const imageDataUrl = await resizeImageToDataUrl(file);
+    const { ok, data } = await fetchWithTimeout("/api/analyze-helmet", { imageDataUrl });
+    if (!ok) {
+      setError(typeof data.error === "string" ? data.error : "Something went wrong.");
       setStatus("error");
+      return;
     }
+    setResult(data as unknown as HelmetAnalysis);
+    setStatus("idle");
   };
 
   const apply = () => {

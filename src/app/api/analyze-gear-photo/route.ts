@@ -4,6 +4,12 @@ import { EquipmentCategory } from "@/data/types";
 import { describeGeminiError } from "@/lib/geminiErrors";
 import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 
+// Gemini's free tier can take well over Vercel's default function timeout to respond under load —
+// raises the ceiling to match the client's own REQUEST_TIMEOUT_MS (fetchWithTimeout.ts) so a slow
+// but eventually-successful call isn't killed server-side before it has a chance to finish. Capped
+// by the Vercel plan's own maximum (Hobby: 60s) regardless of this value.
+export const maxDuration = 120;
+
 // Reads GEMINI_API_KEY from the environment server-side — never sent to the client.
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 

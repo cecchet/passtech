@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ExtinguisherUnit } from "@/lib/matcher";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 
 interface ExtinguisherAnalysis {
   classARating: number;
@@ -31,24 +32,14 @@ export function ExtinguisherLabelScan({ imageDataUrl, onApply }: { imageDataUrl:
     setError(null);
     setResult(null);
     setApplied(false);
-    try {
-      const res = await fetch("/api/analyze-extinguisher", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageDataUrl }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
-        setStatus("error");
-        return;
-      }
-      setResult(data);
-      setStatus("idle");
-    } catch {
-      setError("Couldn't reach the server.");
+    const { ok, data } = await fetchWithTimeout("/api/analyze-extinguisher", { imageDataUrl });
+    if (!ok) {
+      setError(typeof data.error === "string" ? data.error : "Something went wrong.");
       setStatus("error");
+      return;
     }
+    setResult(data as unknown as ExtinguisherAnalysis);
+    setStatus("idle");
   };
 
   const apply = () => {

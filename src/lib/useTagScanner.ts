@@ -4,6 +4,7 @@ import { useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { NOT_LISTED } from "@/data/standards";
 import { CertificationEntry, newCertification } from "@/lib/matcher";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 
 export interface TagCandidate {
   standardId: string;
@@ -29,25 +30,15 @@ export function useTagScanner(category: EquipmentCategory, onAdd: (cert: Certifi
     setError(null);
     setCandidates(null);
     setAdded(new Set());
-    try {
-      const res = await fetch("/api/analyze-tag", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category, imageDataUrl }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
-        setStatus("error");
-        return;
-      }
-      setCandidates(data.candidates ?? []);
-      setNotes(data.notes || null);
-      setStatus("idle");
-    } catch {
-      setError("Couldn't reach the server.");
+    const { ok, data } = await fetchWithTimeout("/api/analyze-tag", { category, imageDataUrl });
+    if (!ok) {
+      setError(typeof data.error === "string" ? data.error : "Something went wrong.");
       setStatus("error");
+      return;
     }
+    setCandidates((data.candidates as TagCandidate[]) ?? []);
+    setNotes((data.notes as string) || null);
+    setStatus("idle");
   };
 
   const addCandidate = (c: TagCandidate, i: number) => {
