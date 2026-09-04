@@ -61,6 +61,12 @@ export interface ExtinguisherUnit {
   certificationDueDate?: string;
   /** This unit's own photos (overview + label close-ups) — kept per-unit rather than on the shared EquipmentEntry.photoDataUrls, since a gear set can carry several extinguishers and a scrutineer needs to see which photo documents which physical unit. */
   photoDataUrls?: string[];
+  /** Mounting: is this extinguisher secured with a metal bracket (as opposed to a plastic clip, velcro, or zip ties)? Undefined means not yet answered — distinct from `false`. */
+  hasMetalBracket?: boolean;
+  /** Mounting: how many metal straps/fastenings secure this extinguisher in its bracket. */
+  metalStrapCount?: number;
+  /** Mounting: does the bracket have anti-torpedo tabs (a lip/flange that stops the cylinder sliding forward out of its mount under hard deceleration)? Undefined means not yet answered — distinct from `false`. */
+  hasAntiTorpedoTabs?: boolean;
 }
 
 /**
@@ -440,6 +446,71 @@ function unitMeetsOption(unit: ExtinguisherUnit, option: ExtinguisherOption, asO
   return true;
 }
 
+/**
+ * Fire extinguisher mounting only: the minimum metal strap count that applies to a unit, given its
+ * weight (when the rule's tiers actually depend on weight — most don't, since bracket/strap
+ * requirements are usually flat regardless of size). Returns undefined only when the tiers
+ * genuinely differ by weight AND the unit's own weight hasn't been entered yet — the caller reads
+ * that as "need the weight to know."
+ */
+function extinguisherStrapRequirement(tiers: { underWeightLbs?: number; minStraps: number }[], unit: ExtinguisherUnit): number | undefined {
+  if (unit.weightLbs === undefined) {
+    const distinctCounts = new Set(tiers.map((t) => t.minStraps));
+    if (distinctCounts.size === 1) return tiers[0].minStraps;
+    return undefined;
+  }
+  const sorted = [...tiers].sort((a, b) => (a.underWeightLbs ?? Infinity) - (b.underWeightLbs ?? Infinity));
+  return (sorted.find((t) => t.underWeightLbs === undefined || unit.weightLbs! < t.underWeightLbs) ?? sorted[sorted.length - 1])?.minStraps;
+}
+
+/**
+ * Fire extinguisher only: layers a mounting check (metal bracket / strap count / anti-torpedo
+ * tabs) on top of an already-passing rating/quantity result — applied to every entered unit, not
+ * just the ones counted toward the rating requirement, since every extinguisher in the car should
+ * be properly mounted regardless of which one satisfies the rating math. An explicit "no" on any
+ * sub-check rejects outright; an unanswered one only adds a reminder to the reason without
+ * demoting the status — unconfirmed mounting isn't the same as a known failure, and downgrading a
+ * required item to needs_info here would wrongly flip Buyer/Scrutineer mode's eligibility bucket
+ * over a field the driver just hasn't gotten to yet. No-op when the rule doesn't specify mounting.
+ */
+function applyMountingCheck(rule: CategoryRule, units: ExtinguisherUnit[], result: CategoryResult): CategoryResult {
+  const mounting = rule.fireExtinguisherMounting;
+  if (!mounting) return result;
+
+  const reminders = new Set<string>();
+  let failedReason: string | undefined;
+
+  for (const unit of units) {
+    if (mounting.requireMetalBracket) {
+      if (unit.hasMetalBracket === false) failedReason = "a metal bracket (not plastic, velcro, or zip ties)";
+      else if (unit.hasMetalBracket === undefined) reminders.add("it's mounted with a metal bracket");
+    }
+    if (!failedReason && mounting.strapTiers?.length) {
+      const required = extinguisherStrapRequirement(mounting.strapTiers, unit);
+      if (required === undefined) reminders.add("its weight, to confirm the required metal strap count");
+      else if (unit.metalStrapCount === undefined) reminders.add(`it has at least ${required} metal strap${required === 1 ? "" : "s"}`);
+      else if (unit.metalStrapCount < required) failedReason = `at least ${required} metal strap${required === 1 ? "" : "s"}`;
+    }
+    if (!failedReason && mounting.requireAntiTorpedoTabs) {
+      if (unit.hasAntiTorpedoTabs === false) failedReason = "anti-torpedo tabs on the bracket";
+      else if (unit.hasAntiTorpedoTabs === undefined) reminders.add("its bracket has anti-torpedo tabs");
+    }
+    if (failedReason) break;
+  }
+
+  if (failedReason) {
+    return {
+      ...result,
+      status: result.requirement === "recommended" ? "recommended_only" : "rejected",
+      reason: `Doesn't meet this body's mounting requirement — needs ${failedReason}.`,
+    };
+  }
+  if (reminders.size > 0) {
+    return { ...result, reason: `${result.reason} ⚠️ Also confirm ${[...reminders].join(" and ")}.` };
+  }
+  return result;
+}
+
 /** Fire extinguisher only: satisfied if the entered units satisfy ANY one of the body's accepted (quantity, minimum rating) combinations. */
 function evaluateExtinguishers(
   rule: CategoryRule,
@@ -448,11 +519,20 @@ function evaluateExtinguishers(
   asOf: Date,
   singleItemCheck?: boolean
 ): CategoryResult {
-  const options = rule.fireExtinguisherOptions!;
+  const options = rule.fireExtinguisherOptions;
 
   if (units.length === 0) {
-    return { ...base, status: "needs_info", reason: "Add at least one extinguisher and its rating." };
+    return { ...base, status: "needs_info", reason: options?.length ? "Add at least one extinguisher and its rating." : "Add at least one extinguisher." };
   }
+
+  // A body can specify mounting requirements (metal bracket, straps, anti-torpedo tabs) without
+  // citing any numeric rating/quantity — NASA's optional handheld extinguisher, for one. Presence
+  // alone satisfies the rating dimension in that case; only the mounting check still applies.
+  if (!options || options.length === 0) {
+    const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
+    return applyMountingCheck(rule, units, { ...base, status, reason: "Present — this body doesn't specify a rating or quantity." });
+  }
+
   const unrated = units.every((u) => u.bcRating === undefined && u.classARating === undefined && u.weightLbs === undefined);
   if (unrated) {
     return { ...base, status: "needs_info", reason: "Enter each extinguisher's rating (or weight) shown on its label." };
@@ -461,7 +541,7 @@ function evaluateExtinguishers(
   const satisfiedOption = options.find((option) => units.filter((u) => unitMeetsOption(u, option, asOf)).length >= option.quantity);
   if (satisfiedOption) {
     const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
-    return { ...base, status, reason: `Meets the requirement — ${optionLabel(satisfiedOption)}.` };
+    return applyMountingCheck(rule, units, { ...base, status, reason: `Meets the requirement — ${optionLabel(satisfiedOption)}.` });
   }
 
   // A single item can never itself satisfy a quantity>1 option — but if it meets that option's
@@ -473,11 +553,11 @@ function evaluateExtinguishers(
     if (qualifyingOption) {
       const status: ItemStatus = base.requirement === "recommended" ? "recommended_only" : "ok";
       const more = qualifyingOption.quantity - 1;
-      return {
+      return applyMountingCheck(rule, units, {
         ...base,
         status,
         reason: `Meets the per-unit rating for ${optionLabel(qualifyingOption)}. ⚠️ This body requires ${qualifyingOption.quantity} such extinguishers total — you'd need ${more === 1 ? "one more" : `${more} more`} to fully comply.`,
-      };
+      });
     }
   }
 
@@ -893,7 +973,7 @@ export function evaluateCategory(
     return { ...base, status: "not_required", reason: "Recommended, not required — nothing entered." };
   }
 
-  if (category === "fire_extinguisher" && rule.fireExtinguisherOptions) {
+  if (category === "fire_extinguisher" && (rule.fireExtinguisherOptions || rule.fireExtinguisherMounting)) {
     return evaluateExtinguishers(rule, entry.extinguisherUnits ?? [], base, asOf, context?.singleItemCheck);
   }
 

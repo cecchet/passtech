@@ -112,6 +112,30 @@ export interface ExtinguisherOption {
   requireCurrentDate?: boolean;
 }
 
+/** Fire extinguisher mounting only: minimum metal straps/fastenings for extinguishers under a given weight. List lightest first; omit `underWeightLbs` on the heaviest tier to mean "and up." Mirrors RolloverTubingTier's shape. */
+export interface ExtinguisherStrapTier {
+  /** This tier applies to extinguishers under this weight (lbs); omit on the heaviest tier to mean "and up." */
+  underWeightLbs?: number;
+  /** Minimum metal straps/fastenings required for extinguishers in this weight tier. */
+  minStraps: number;
+}
+
+/**
+ * Fire extinguisher only: physical mounting requirements, separate from the extinguisher's own
+ * rating/quantity (see fireExtinguisherOptions above) — most bodies that address mounting at all
+ * require a metal bracket (as opposed to plastic clips, velcro, or zip ties) and a minimum number
+ * of metal straps/fastenings holding it in; a few also require anti-torpedo tabs (a lip/flange on
+ * the bracket that stops the cylinder sliding forward out of its mount under hard deceleration).
+ * Omit for bodies not yet researched to this level of detail — an unset field means "not checked
+ * here," not "no requirement."
+ */
+export interface FireExtinguisherMounting {
+  requireMetalBracket?: boolean;
+  /** Weight-tiered minimum strap/fastening count — see ExtinguisherStrapTier. A single entry with no `underWeightLbs` applies to every weight. */
+  strapTiers?: ExtinguisherStrapTier[];
+  requireAntiTorpedoTabs?: boolean;
+}
+
 export interface CategoryRule {
   requirement: RequirementLevel;
   /** Free-text condition, used when requirement is 'conditional' or has scope caveats. */
@@ -151,6 +175,8 @@ export interface CategoryRule {
    * presence check regardless of the ratings entered.
    */
   fireExtinguisherOptions?: ExtinguisherOption[];
+  /** Fire extinguisher only: mounting requirements (metal bracket, strap count, anti-torpedo tabs) — see FireExtinguisherMounting. */
+  fireExtinguisherMounting?: FireExtinguisherMounting;
   /**
    * Tow hook only: which mounting point(s) the body actually requires. Most bodies that address
    * tow hooks at all require both ends ("front and rear tow points"); a few (e.g. IHRA) only

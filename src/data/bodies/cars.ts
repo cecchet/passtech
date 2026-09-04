@@ -147,6 +147,7 @@ const performanceRally: Ruleset = {
     fire_extinguisher: {
       requirement: "required",
       fireExtinguisherOptions: [{ quantity: 2, minBcRating: 5 }],
+      fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 2 }], requireAntiTorpedoTabs: true },
       citation: { ...sourceDoc, section: "Technical Rule 12.3.4.1" },
       confidence: "high",
       notes:
@@ -361,6 +362,7 @@ const rallySprint: Ruleset = {
     fire_extinguisher: {
       requirement: "required",
       fireExtinguisherOptions: [{ quantity: 2, minBcRating: 5 }],
+      fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 2 }], requireAntiTorpedoTabs: true },
       citation: { ...sourceDoc, section: "NRR 28.3.3c, cross-references Technical Rule 12.3.4" },
       confidence: "high",
       notes:

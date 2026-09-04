@@ -199,6 +199,7 @@ const roadRacing: Ruleset = {
     },
     fire_extinguisher: {
       requirement: "recommended",
+      fireExtinguisherMounting: { requireMetalBracket: true },
       materialNote:
         "CCR §15.1: 'A fire extinguisher is recommended in addition to the required fire system' (see fire_suppression) — purely optional, not a substitute for or alternative to the mandatory on-board fire system. If fitted, it must be securely mounted within the driver's reach (seated, belted, wheel in place) using a metal, quick-release bracket with metal mounting hardware (no sheet-metal screws or rivets).",
       citation: { title: "NASA CCR", version: "2026.3", section: "15.1" },

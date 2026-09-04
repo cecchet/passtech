@@ -552,6 +552,53 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
           onChange={(e) => onChange({ certificationDueDate: e.target.value || undefined })}
         />
       </label>
+      <div className="flex flex-col gap-1 text-xs text-neutral-400">
+        Metal bracket (not plastic, velcro, or zip ties)?
+        <div className="flex items-center gap-3 text-neutral-300">
+          <label className="flex cursor-pointer items-center gap-1">
+            <input type="radio" name={`metal-bracket-${unit.key}`} checked={unit.hasMetalBracket === true} onChange={() => onChange({ hasMetalBracket: true })} />
+            Yes
+          </label>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input type="radio" name={`metal-bracket-${unit.key}`} checked={unit.hasMetalBracket === false} onChange={() => onChange({ hasMetalBracket: false })} />
+            No
+          </label>
+        </div>
+      </div>
+      <label className="flex flex-col gap-1 text-xs text-neutral-400">
+        Metal straps/fastenings
+        <input
+          type="number"
+          min={0}
+          placeholder="e.g. 2"
+          className={`${numberInputClass} w-24`}
+          value={unit.metalStrapCount ?? ""}
+          onChange={(e) => onChange({ metalStrapCount: numeric(e.target.value) })}
+        />
+      </label>
+      <div className="flex flex-col gap-1 text-xs text-neutral-400">
+        Anti-torpedo tabs on the bracket?
+        <div className="flex items-center gap-3 text-neutral-300">
+          <label className="flex cursor-pointer items-center gap-1">
+            <input
+              type="radio"
+              name={`anti-torpedo-${unit.key}`}
+              checked={unit.hasAntiTorpedoTabs === true}
+              onChange={() => onChange({ hasAntiTorpedoTabs: true })}
+            />
+            Yes
+          </label>
+          <label className="flex cursor-pointer items-center gap-1">
+            <input
+              type="radio"
+              name={`anti-torpedo-${unit.key}`}
+              checked={unit.hasAntiTorpedoTabs === false}
+              onChange={() => onChange({ hasAntiTorpedoTabs: false })}
+            />
+            No
+          </label>
+        </div>
+      </div>
       {!confirmRemove ? (
         <button
           type="button"

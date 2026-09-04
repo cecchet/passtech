@@ -160,6 +160,7 @@ const iceRacing: Ruleset = {
       condition:
         "Mandatory in every class except Street Legal (SL, SLS, SL4, SLS4), where installation is merely allowed, not required (§2.4.12, §3.1.2.4). Confirmed mandatory in Street Legal Modified (§3.2.2.5), Stock Sportsman (§3.3.3.6), Modified Class (§3.4.2.4), Super Modified Closed (§3.5.2.3), and Super Modified Open (§3.7.2.4); AWD follows SMC rules (§3.6). Per §2.4.12, a fire suppression system may be installed as an alternative to a handheld extinguisher — see fire_suppression category.",
       fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+      fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
       citation: { ...sourceDoc, section: "2.4.12" },
       confidence: "high",
       notes:
@@ -255,6 +256,7 @@ const iceRacing: Ruleset = {
       fire_extinguisher: {
         requirement: "recommended",
         fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+        fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
         citation: { ...sourceDoc, section: "2.4.12, 3.1.2.4" },
         confidence: "high",
         notes: "Installation is allowed but not required for Street Legal cars, unlike every other AMEC class. If fitted, must meet the same 2½ lb minimum as the mandatory classes.",
@@ -305,6 +307,7 @@ const iceRacing: Ruleset = {
       fire_extinguisher: {
         requirement: "required",
         fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+        fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
         citation: { ...sourceDoc, section: "3.2.2.5" },
         confidence: "high",
       },
@@ -357,6 +360,7 @@ const iceRacing: Ruleset = {
       fire_extinguisher: {
         requirement: "required",
         fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+        fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
         citation: { ...sourceDoc, section: "3.3.3.6" },
         confidence: "high",
       },
@@ -411,6 +415,7 @@ const iceRacing: Ruleset = {
       fire_extinguisher: {
         requirement: "required",
         fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+        fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
         citation: { ...sourceDoc, section: "3.4.2.4" },
         confidence: "high",
       },
@@ -467,6 +472,7 @@ const iceRacing: Ruleset = {
       fire_extinguisher: {
         requirement: "required",
         fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+        fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
         citation: { ...sourceDoc, section: "3.7.2.4" },
         confidence: "high",
       },
@@ -537,6 +543,7 @@ function smcClassOverrides(key: "super-modified-closed" | "awd"): Record<string,
       fire_extinguisher: {
         requirement: "required",
         fireExtinguisherOptions: [{ quantity: 1, minWeightLbs: 2.5 }],
+        fireExtinguisherMounting: { requireMetalBracket: true, strapTiers: [{ minStraps: 1 }] },
         citation: { ...sourceDoc, section: "3.5.2.3" },
         confidence: "high",
       },
