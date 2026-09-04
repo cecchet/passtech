@@ -428,7 +428,10 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
   const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
 
   return (
-    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+    // Same bright highlight as a certification box (CertificationRow) — one item can carry
+    // several of these units (extinguishers, window breakers, triangles), and a border-only box
+    // was just as hard to tell apart from its neighbors as an uncertified certification row was.
+    <div className="flex flex-col gap-2 rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
       {photos.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {photos.map((p, i) => (
@@ -588,7 +591,10 @@ function WindowBreakerUnitRow({ unit, onChange, onRemove }: { unit: WindowBreake
   const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
 
   return (
-    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+    // Same bright highlight as a certification box (CertificationRow) — one item can carry
+    // several of these units (extinguishers, window breakers, triangles), and a border-only box
+    // was just as hard to tell apart from its neighbors as an uncertified certification row was.
+    <div className="flex flex-col gap-2 rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
       {photos.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {photos.map((p, i) => (
@@ -677,7 +683,10 @@ function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onC
   const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
 
   return (
-    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+    // Same bright highlight as a certification box (CertificationRow) — one item can carry
+    // several of these units (extinguishers, window breakers, triangles), and a border-only box
+    // was just as hard to tell apart from its neighbors as an uncertified certification row was.
+    <div className="flex flex-col gap-2 rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
       {photos.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {photos.map((p, i) => (
