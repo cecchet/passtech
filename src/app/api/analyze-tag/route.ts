@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { EquipmentCategory } from "@/data/types";
-import { NOT_LISTED, standardsFor } from "@/data/standards";
+import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { describeGeminiError } from "@/lib/geminiErrors";
 
@@ -71,6 +71,7 @@ function buildSchema(allowedIds: string[]) {
           properties: {
             standardId: {
               type: "string" as const,
+              enum: [...allowedIds, NOT_LISTED],
               description: `One of: ${allowedIds.join(", ")}. If the certification visible on the tag doesn't clearly match any of these, use "${NOT_LISTED}" instead.`,
             },
             rawText: {
@@ -186,6 +187,10 @@ For each certification visible on the tag, match it to one of the IDs above if i
     }
 
     const parsed = JSON.parse(text) as { candidates: AnalyzeCandidate[]; notes: string };
+    // Belt-and-suspenders: the schema's enum should already keep the model on our exact ids, but
+    // recover a recognizable fragment (e.g. "SA2020" for "snell-sa2020") rather than let it fall
+    // through to NOT_LISTED if it doesn't.
+    parsed.candidates = parsed.candidates.map((c) => ({ ...c, standardId: resolveStandardId(c.standardId, category as EquipmentCategory) }));
     return NextResponse.json(parsed);
   } catch (err) {
     const { status, error } = describeGeminiError(err, "analyze-tag");

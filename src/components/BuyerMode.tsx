@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ALL_RULESETS, DisciplineGroup, EquipmentCategory, Ruleset } from "@/data";
 import { CATEGORY_META, DISCIPLINE_GROUP_ORDER } from "@/data/categoryMeta";
-import { CategoryResult, EquipmentEntry, evaluateRuleset, isPendingConditional, isViolation, newCertification } from "@/lib/matcher";
+import { CategoryResult, EquipmentEntry, evaluateRuleset, expiringSoonDate, isPendingConditional, isViolation, newCertification } from "@/lib/matcher";
 import { CategoryCard } from "@/components/EquipmentForm";
 import { QuickItemScan } from "@/components/QuickItemScan";
 import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
@@ -96,6 +96,11 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
   const eligible = filtered.filter((h) => h.status === "eligible");
   const eligibleConditional = filtered.filter((h) => h.status === "eligible_conditional");
   const notEligible = filtered.filter((h) => h.status === "not_eligible");
+  // Earliest "expires within the current year" date among the (currently filtered) rulesets that
+  // accept this item — surfaced right on the collapsed category card, not just buried inside each
+  // ruleset's own expanded result, so "eligible, but expiring soon" is visible at a glance.
+  const expiryDates = filtered.map((h) => expiringSoonDate(h.result.reason)).filter((d): d is string => !!d);
+  const expiryWarningDate = expiryDates.length > 0 ? expiryDates.sort()[0] : undefined;
 
   const reset = () => {
     setCategory(null);
@@ -151,6 +156,7 @@ export function BuyerMode({ demoItemTrigger, tourActive }: { demoItemTrigger?: n
                 onEligibleClick: () => scrollToBucket("buyer-bucket-eligible"),
                 onFailClick: () => scrollToBucket("buyer-bucket-not-eligible"),
               }}
+              expiryWarningDate={expiryWarningDate}
             />
           </div>
 

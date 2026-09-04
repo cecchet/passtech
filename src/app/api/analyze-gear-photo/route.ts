@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { EquipmentCategory } from "@/data/types";
 import { describeGeminiError } from "@/lib/geminiErrors";
-import { NOT_LISTED, standardsFor } from "@/data/standards";
+import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 
 // Reads GEMINI_API_KEY from the environment server-side — never sent to the client.
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -92,6 +92,14 @@ const CATEGORY_HINTS: Record<(typeof CLASSIFIABLE_CATEGORIES)[number], string> =
 // category (or categories) it applies to — since this endpoint determines the category itself,
 // it can't scope the allowed-standards list the way /api/analyze-tag does (which already knows
 // the category up front). Cross-checked against the actually-detected category server-side below.
+const ALL_STANDARD_IDS = (() => {
+  const ids = new Set<string>();
+  for (const category of CLASSIFIABLE_CATEGORIES) {
+    for (const s of standardsFor(category)) ids.add(s.id);
+  }
+  return [...ids];
+})();
+
 const ALL_STANDARDS = (() => {
   const byId = new Map<string, { label: string; categories: Set<string> }>();
   for (const category of CLASSIFIABLE_CATEGORIES) {
@@ -164,6 +172,7 @@ const SCHEMA = {
         properties: {
           standardId: {
             type: "string" as const,
+            enum: [...ALL_STANDARD_IDS, NOT_LISTED],
             description: `The specific standard this tag matches, one of:\n${ALL_STANDARDS}\nIf it doesn't clearly match any of these, use "${NOT_LISTED}" instead (still fill in rawText with what you actually see).`,
           },
           rawText: { type: "string" as const, description: "The exact text you can read on the tag (brand, spec number, wording as printed)." },
@@ -288,6 +297,10 @@ export async function POST(req: NextRequest) {
     if (validCategory) {
       const allowedIds = new Set(standardsFor(parsed.category as EquipmentCategory).map((s) => s.id));
       for (const cert of parsed.certifications) {
+        // Belt-and-suspenders: the schema's enum should already keep the model on our exact ids,
+        // but recover a recognizable fragment (e.g. "SA2020" for "snell-sa2020") before falling
+        // back to NOT_LISTED for it.
+        cert.standardId = resolveStandardId(cert.standardId, parsed.category as EquipmentCategory);
         if (cert.standardId !== NOT_LISTED && !allowedIds.has(cert.standardId)) {
           cert.standardId = NOT_LISTED;
         }

@@ -1316,6 +1316,7 @@ export function CategoryCard({
   sourceDocuments,
   defaultOpen = false,
   eligibilityBadge,
+  expiryWarningDate,
   onChange,
   onReportMissing,
 }: {
@@ -1336,6 +1337,8 @@ export function CategoryCard({
   defaultOpen?: boolean;
   /** Buyer mode only: overlays eligible/fail counts on the category icon's top-left/top-right corners, each jumping to that bucket in the results below when clicked. Omitted everywhere else — there's no "checked against every body at once" result to summarize. */
   eligibilityBadge?: { eligible: number; fail: number; onEligibleClick: () => void; onFailClick: () => void };
+  /** Buyer mode only: the earliest "expires within the current year" date found among the rulesets that accept this item (see expiringSoonDate in matcher.ts) — shown right in the summary row so the caveat ("eligible now, but only for a few more months") is visible without expanding the card. */
+  expiryWarningDate?: string;
   onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
@@ -1410,6 +1413,11 @@ export function CategoryCard({
             />
           )}
         {isEmpty && <NoDataBadge />}
+        {expiryWarningDate && (
+          <span className="flex shrink-0 items-center gap-1 rounded-full border border-amber-700 bg-amber-950/40 px-2 py-0.5 text-xs font-medium text-amber-300">
+            ⚠️ Expires {expiryWarningDate}
+          </span>
+        )}
         {showMediaLinks && needsAttention && <CategoryMediaLinks category={category} className="flex shrink-0 gap-1" />}
         {result ? (
           <StatusPill status={result.status} requirement={result.requirement} />

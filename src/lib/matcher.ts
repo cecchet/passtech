@@ -242,6 +242,17 @@ function earliestUpcomingCutoff(cert: CertificationEntry, acceptance: StandardAc
   return candidates.reduce((a, b) => (a < b ? a : b));
 }
 
+function expiringSoonSentence(cutoff: Date): string {
+  return `This equipment will expire on ${cutoff.toISOString().slice(0, 10)}.`;
+}
+
+const EXPIRING_SOON_RE = /This equipment will expire on (\d{4}-\d{2}-\d{2})\./;
+
+/** Pulls the "expires within the current calendar year" date out of a result's reason text, when the warning generated above is present — lets a summary view or PDF surface the caveat (accepted now, but expiring soon) without re-deriving the expiry logic itself. */
+export function expiringSoonDate(reason: string): string | undefined {
+  return EXPIRING_SOON_RE.exec(reason)?.[1];
+}
+
 function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cert: CertificationEntry, asOf: Date): CertResult {
   const label = cert.standardId ? standardLabel(cert.standardId) : "(no standard selected)";
 
@@ -334,9 +345,7 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
   const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
   const cutoff = earliestUpcomingCutoff(cert, acceptance, intrinsicExpiredWarning ? undefined : intrinsicCutoff);
   const expiryWarning =
-    cutoff && cutoff.getFullYear() === asOf.getFullYear() && !intrinsicExpiredWarning
-      ? ` ⚠️ This equipment will expire on ${cutoff.toISOString().slice(0, 10)}.`
-      : "";
+    cutoff && cutoff.getFullYear() === asOf.getFullYear() && !intrinsicExpiredWarning ? ` ⚠️ ${expiringSoonSentence(cutoff)}` : "";
   return {
     status,
     reason: `${label} is accepted.${acceptanceNote}${expiryWarning}${intrinsicExpiredWarning}`,

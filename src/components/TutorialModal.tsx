@@ -38,6 +38,14 @@ export const TOURS: Record<TourId, Tour> = {
         targetId: "tutorial-option-2",
         text: "Click Option 2 to save your safety gear in My Gear — from there you can check any saved gear set against a specific sanctioning body, or see everywhere it's eligible to race, without re-entering everything each time.",
       },
+      {
+        targetId: "tutorial-option-3",
+        text: "Click Option 3 — Buyer mode — to check a single piece of gear before you buy it. Photograph or describe just that one item and see every sanctioning body it's eligible for — and if its certification is due to expire soon, PassTech flags that too.",
+      },
+      {
+        targetId: "tutorial-option-4",
+        text: "Click Option 4 — Scrutineer mode — if you're working tech inspection. Pick the discipline, sanctioning body, and class once, then scan gear one piece at a time for an instant pass/fail call.",
+      },
     ],
   },
   reference: {

@@ -744,7 +744,7 @@ export default function Home() {
             </label>
           )}
 
-          {ruleset && <SourceLine ruleset={ruleset} />}
+          {ruleset && <SourceLine ruleset={ruleset} showTechSheet />}
 
           {ruleset && (
             <EquipmentSummary

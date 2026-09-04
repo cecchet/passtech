@@ -5,7 +5,7 @@ import { ALL_RULESETS, EquipmentCategory, getRuleset } from "@/data";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { CategoryResult, EquipmentEntry, evaluateRuleset, newCertification } from "@/lib/matcher";
 import { CategoryCard } from "@/components/EquipmentForm";
-import { QuickItemScan } from "@/components/QuickItemScan";
+import { QuickItemScan, TagOnlyScan } from "@/components/QuickItemScan";
 import { RulesetPicker, ClassPicker } from "@/components/RulesetPicker";
 import { statusStyle } from "@/components/ResultRow";
 import { downloadScrutineerReport } from "@/lib/pdfReport";
@@ -28,6 +28,9 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   const [classId, setClassId] = useState<string | undefined>(undefined);
   const [category, setCategory] = useState<EquipmentCategory | null>(null);
   const [entry, setEntry] = useState<EquipmentEntry>(emptyEntry("helmet"));
+  // While true, the category card (and its own tag-scanner state) is unmounted entirely and
+  // TagOnlyScan takes over — see scanAnother below for why.
+  const [rescanning, setRescanning] = useState(false);
 
   // Tutorial only: fills in a demo item (a Snell SA2020 helmet) so the later tour steps — the
   // verdict banner, the "Scan next item" button — have something real to point at. Done
@@ -59,6 +62,7 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
     if (closingNow && tourOwnsCurrentItem) {
       setCategory(null);
       setEntry(emptyEntry("helmet"));
+      setRescanning(false);
     }
   }
 
@@ -71,13 +75,16 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
 
   // Stays on the same category — a scrutineer running only helmets can scan one after another
   // without re-picking the category each time — versus scanDifferentItem, which drops back to
-  // QuickItemScan's full detect-or-pick flow.
-  const scanAnother = () => {
-    if (category) setEntry(emptyEntry(category));
-  };
+  // QuickItemScan's full detect-or-pick flow. Routes through TagOnlyScan (rescanning=true) rather
+  // than clearing the entry and leaving the category card mounted in place: staying mounted would
+  // leave its own tag-scanner state (the previous item's "Added" candidates) on screen even though
+  // the entry itself had been cleared, and it buried the next scan behind a full card the scrutineer
+  // had to hunt through for the (small) "Scan tag photo" control.
+  const scanAnother = () => setRescanning(true);
   const scanDifferentItem = () => {
     setCategory(null);
     setEntry(emptyEntry("helmet"));
+    setRescanning(false);
   };
 
   return (
@@ -108,6 +115,17 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
             }}
           />
         </div>
+      ) : rescanning ? (
+        <TagOnlyScan
+          category={category}
+          onDone={(certifications) => {
+            setEntry({
+              category,
+              ...(certifications.length ? { certifications, ...(CATEGORY_META[category].hybrid ? { mode: "certified" as const } : {}) } : {}),
+            });
+            setRescanning(false);
+          }}
+        />
       ) : (
         <>
           <div id="tutorial-scrutineer-item-card">

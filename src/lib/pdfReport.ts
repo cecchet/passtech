@@ -2,7 +2,17 @@ import jsPDF from "jspdf";
 import { CarBodyStyle, CategoryGroup, CategoryRule, DisciplineGroup, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, DISCIPLINE_GROUP_ORDER, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
 import { NOT_LISTED, logbookBodyLabel, paddingStandardLabel, standardLabel, standardsFor } from "@/data/standards";
-import { CategoryResult, CategoryResults, EquipmentEntry, bodyStyleLabel, describeExtinguisherOptions, effectiveCategories, isPendingConditional, isViolation } from "@/lib/matcher";
+import {
+  CategoryResult,
+  CategoryResults,
+  EquipmentEntry,
+  bodyStyleLabel,
+  describeExtinguisherOptions,
+  effectiveCategories,
+  expiringSoonDate,
+  isPendingConditional,
+  isViolation,
+} from "@/lib/matcher";
 import { CATEGORY_ICON_SPEC } from "@/components/icons/CategoryIcons";
 import { DISCIPLINE_ICON_SRC } from "@/components/icons/DisciplineIcons";
 import { BUILD_DATE } from "@/lib/version";
@@ -430,6 +440,15 @@ class PdfReportWriter {
 
   /** The "Source: ..." callout shown on-screen as a light-blue box (see SourceLine) — same treatment here. */
   sourceBox(value: string) {
+    this.calloutBox(value, { fill: [224, 242, 254], draw: [125, 211, 252], text: [3, 105, 161] });
+  }
+
+  /** Amber callout for a caveat that should catch the eye even at a glance — e.g. Buyer mode's "accepted, but expires soon" warning, shown once near the top rather than buried per-ruleset. */
+  warningBox(value: string) {
+    this.calloutBox(value, { fill: [69, 26, 3], draw: [180, 83, 9], text: [253, 230, 138] });
+  }
+
+  private calloutBox(value: string, colors: { fill: RGB; draw: RGB; text: RGB }) {
     const size = 8.5;
     const padding = 2.5;
     const maxWidth = CONTENT_WIDTH - padding * 2;
@@ -438,12 +457,12 @@ class PdfReportWriter {
     const lineHeight = size * 0.42;
     const boxHeight = lines.length * lineHeight + padding * 2;
     this.ensureSpace(boxHeight + 2);
-    this.doc.setFillColor(224, 242, 254);
-    this.doc.setDrawColor(125, 211, 252);
+    this.doc.setFillColor(...colors.fill);
+    this.doc.setDrawColor(...colors.draw);
     this.doc.roundedRect(MARGIN, this.y, CONTENT_WIDTH, boxHeight, 1.5, 1.5, "FD");
     this.doc.setFont("helvetica", "normal");
     this.doc.setFontSize(size);
-    this.doc.setTextColor(3, 105, 161);
+    this.doc.setTextColor(...colors.text);
     this.doc.text(clean, MARGIN + padding, this.y + padding + lineHeight * 0.75, { maxWidth });
     this.y += boxHeight + 3;
   }
@@ -976,6 +995,11 @@ export async function downloadBuyerModeReport(category: EquipmentCategory, entry
 
   const w = new PdfReportWriter();
   header(w, logo, "Buyer Mode — Check The Gear Before You Buy It", CATEGORY_META[category].label);
+
+  const expiryDates = items.map((i) => expiringSoonDate(i.result.reason)).filter((d): d is string => !!d);
+  if (expiryDates.length > 0) {
+    w.warningBox(`⚠️ Eligible now, but this certification expires on ${expiryDates.sort()[0]} — check the date before you buy.`);
+  }
 
   ELIGIBILITY_SECTION.forEach(({ status, title, color }) => {
     const bucket = items.filter((i) => i.status === status);

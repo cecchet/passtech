@@ -252,3 +252,58 @@ export function QuickItemScan({
     </div>
   );
 }
+
+/**
+ * Scrutineer mode's "Scan another [category]" front door: unlike QuickItemScan, the category is
+ * already known (same as the item just scanned) — so this skips straight to the tag photo instead
+ * of re-detecting a category or asking for an overall shot again. Mounted only while a rescan is in
+ * progress and unmounted once it hands back to the caller, so its own useTagScanner state (and the
+ * category card's, once that remounts) can never carry stale "Added" candidates over from the
+ * previous item.
+ */
+export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory; onDone: (certifications: CertificationEntry[]) => void }) {
+  const [certifications, setCertifications] = useState<CertificationEntry[]>([]);
+  const scanner = useTagScanner(category, (cert) => setCertifications((c) => [...c, cert]));
+  const tagInputId = useId();
+
+  return (
+    <div className="rounded-lg border border-neutral-700 p-4">
+      <p className="text-neutral-200">
+        Scanning another: <b>{CATEGORY_META[category].label}</b>
+      </p>
+      <label
+        htmlFor={tagInputId}
+        className="mt-3 flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+      >
+        📷 Upload a photo of the certification tag
+        <input
+          id={tagInputId}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="hidden"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            e.target.value = "";
+            if (!file) return;
+            let dataUrl: string;
+            try {
+              dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+            } catch {
+              return;
+            }
+            void scanner.analyze(dataUrl);
+          }}
+        />
+      </label>
+      {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
+      {scanner.error && <p className="mt-2 text-sm text-red-400">{scanner.error}</p>}
+      {scanner.candidates && (
+        <TagCandidateList candidates={scanner.candidates} notes={scanner.notes} added={scanner.added} onAdd={scanner.addCandidate} category={category} />
+      )}
+      <button type="button" onClick={() => onDone(certifications)} className="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black">
+        {certifications.length > 0 ? `Continue with ${certifications.length} certification(s) added` : "Continue without a certification"}
+      </button>
+    </div>
+  );
+}

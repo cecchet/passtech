@@ -266,3 +266,44 @@ export function standardLabel(id: string): string {
 export function standardFamily(id: string): StandardDef["family"] | undefined {
   return STANDARDS.find((s) => s.id === id)?.family;
 }
+
+function normalizeForMatch(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Best-effort recovery for a standardId the vision model returned that doesn't exactly match our
+ * registry — e.g. "SA2020" instead of "snell-sa2020", having dropped the family name and any
+ * separators, despite the prompt schema listing the exact ids it should pick from. A JSON-schema
+ * `enum` constraint on the API side is the primary defense against this; this is the fallback for
+ * whatever slips past it, so a recognizable fragment doesn't get dumped into NOT_LISTED. Returns the
+ * original rawId unchanged if nothing matches (including when rawId is already NOT_LISTED or already
+ * a real id), so callers can fall back to their own NOT_LISTED handling exactly as before.
+ */
+export function resolveStandardId(rawId: string, category?: EquipmentCategory): string {
+  if (!rawId || rawId === NOT_LISTED) return rawId;
+  const pool = category ? standardsFor(category) : STANDARDS;
+  if (pool.some((s) => s.id === rawId)) return rawId;
+
+  const normalizedRaw = normalizeForMatch(rawId);
+  if (!normalizedRaw) return rawId;
+
+  // Exact match once id/label are both stripped of punctuation and case (handles "SA 2020",
+  // "SA-2020", "sfi16.1" vs "sfi-16.1", etc.).
+  const exact = pool.find((s) => normalizeForMatch(s.id) === normalizedRaw || normalizeForMatch(s.label) === normalizedRaw);
+  if (exact) return exact.id;
+
+  // The model dropped the family name entirely (e.g. "SA2020" for "Snell SA2020") — match if the
+  // fragment is exactly the tail of a label's own normalized form. Only trusted when the fragment
+  // is reasonably specific (5+ characters) and the family word it dropped is short, so a short or
+  // generic fragment can't accidentally match the wrong standard.
+  if (normalizedRaw.length >= 5) {
+    const suffixMatch = pool.find((s) => {
+      const normLabel = normalizeForMatch(s.label);
+      return normLabel.endsWith(normalizedRaw) && normLabel.length - normalizedRaw.length <= 8;
+    });
+    if (suffixMatch) return suffixMatch.id;
+  }
+
+  return rawId;
+}
