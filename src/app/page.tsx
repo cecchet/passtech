@@ -1411,8 +1411,11 @@ function CodriverGearSection({
   sourceDocuments?: SourceDocument[];
 }) {
   return (
-    <div className="my-6">
-      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver Safety Gear</h3>
+    <details open className="group/section my-6">
+      <summary className="mb-1 flex cursor-pointer list-none items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-teal-400 marker:content-none [&::-webkit-details-marker]:hidden">
+        <span className="inline-block transition-transform group-open/section:rotate-90">▶</span>
+        Codriver Safety Gear
+      </summary>
       <EquipmentForm
         entries={entries}
         onChange={onChange}
@@ -1427,7 +1430,7 @@ function CodriverGearSection({
         showMediaLinks={showMediaLinks}
         sourceDocuments={sourceDocuments}
       />
-    </div>
+    </details>
   );
 }
 

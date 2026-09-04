@@ -1270,31 +1270,60 @@ export function EquipmentForm({
     return <p className={`rounded-lg border border-neutral-700 p-4 text-sm ${colorClass}`}>{message}</p>;
   }
 
+  const renderCard = (category: EquipmentCategory) => {
+    const entry = entries[category] ?? { category };
+    const result = results?.[category];
+    return (
+      <CategoryCard
+        key={category}
+        category={category}
+        entry={entry}
+        result={result}
+        hasResultsContext={!!results}
+        isNewGroup={false}
+        groupOverride={groupOf(category)}
+        occupant={occupant}
+        showPhotoUpload={showPhotoUpload}
+        showMediaLinks={showMediaLinks}
+        sourceDocuments={sourceDocuments}
+        onChange={onChange}
+        onReportMissing={onReportMissing}
+      />
+    );
+  };
+
+  // The codriver's own list (driven from CodriverGearSection, which already wraps it in its own
+  // collapsible "Codriver Safety Gear" header) is effectively a single group of personal gear —
+  // no need to subdivide it again in here. Only the driver's own list, which spans Driver/Car/
+  // Rollover at once, gets broken into per-group collapsible sections — with 20+ categories on
+  // screen at once, being able to fold away a whole section (say, Rollover Protection) that isn't
+  // relevant right now cuts down the scrolling a lot more than collapsing one card at a time.
+  if (occupant !== "driver") {
+    return <div className="flex flex-col gap-3">{orderedCategories.map(renderCard)}</div>;
+  }
+
+  const groupedSections: { group: CategoryGroup; categories: EquipmentCategory[] }[] = [];
+  for (const category of orderedCategories) {
+    const g = groupOf(category);
+    const last = groupedSections[groupedSections.length - 1];
+    if (last && last.group === g) last.categories.push(category);
+    else groupedSections.push({ group: g, categories: [category] });
+  }
+
   return (
-    <div className="flex flex-col gap-3">
-      {orderedCategories.map((category, i) => {
-        const entry = entries[category] ?? { category };
-        const result = results?.[category];
-        const displayGroup = groupOf(category);
-        const isNewGroup = occupant === "driver" && (i === 0 || groupOf(orderedCategories[i - 1]) !== displayGroup);
-        return (
-          <CategoryCard
-            key={category}
-            category={category}
-            entry={entry}
-            result={result}
-            hasResultsContext={!!results}
-            isNewGroup={isNewGroup}
-            groupOverride={displayGroup}
-            occupant={occupant}
-            showPhotoUpload={showPhotoUpload}
-            showMediaLinks={showMediaLinks}
-            sourceDocuments={sourceDocuments}
-            onChange={onChange}
-            onReportMissing={onReportMissing}
-          />
-        );
-      })}
+    <div className="flex flex-col gap-4">
+      {groupedSections.map(({ group, categories }) => (
+        <details key={group} open className="group/section">
+          <summary
+            className={`mb-2 flex cursor-pointer list-none items-center gap-1.5 text-xs font-semibold uppercase tracking-wide marker:content-none [&::-webkit-details-marker]:hidden ${GROUP_COLORS[group].text}`}
+          >
+            <span className="inline-block transition-transform group-open/section:rotate-90">▶</span>
+            {GROUP_LABELS[group]}
+            <span className="font-normal normal-case text-neutral-500">({categories.length})</span>
+          </summary>
+          <div className="flex flex-col gap-3">{categories.map(renderCard)}</div>
+        </details>
+      ))}
     </div>
   );
 }

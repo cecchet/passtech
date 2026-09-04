@@ -298,7 +298,11 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
     }
   }
 
-  if (acceptance.validityYearsFromLabel) {
+  // An explicit printed expiration date (checked above) is always binding on its own when
+  // present — it already proved this cert isn't expired, so the computed years-from-label rule
+  // (which exists only to cover tags that DON'T print their own expiration) doesn't apply, and
+  // shouldn't demand a label date the tag may simply not have printed alongside its expiration.
+  if (acceptance.validityYearsFromLabel && !cert.tagExpirationDate) {
     if (!cert.labelDate) {
       return {
         status: "needs_info",

@@ -172,6 +172,10 @@ export const TOURS: Record<TourId, Tour> = {
         onEnter: (actions) => actions.startDemoItem?.(),
       },
       {
+        targetId: "tutorial-buyer-item-card",
+        text: "The green and red numbers on the icon are how many of the currently-filtered rulesets this item is eligible for and how many it isn't — tap either one to jump straight down to that bucket in the results below.",
+      },
+      {
         targetId: "tutorial-buyer-disciplines",
         text: "Narrow the results to just the disciplines you actually race.",
       },
