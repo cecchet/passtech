@@ -338,7 +338,7 @@ export function TutorialModal({
           aria-modal="true"
           aria-labelledby="tutorial-title"
           onClick={(e) => e.stopPropagation()}
-          className="flex max-h-[85vh] w-full max-w-md flex-col overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 p-6"
+          className="flex max-h-[85vh] w-full max-w-md flex-col overflow-y-auto rounded-lg border-2 border-violet-400 bg-neutral-900 p-6 shadow-[0_0_0_4px_rgba(167,139,250,0.15),0_20px_50px_rgba(0,0,0,0.6)]"
         >
           <div className="flex items-start justify-between gap-4">
             <h2 id="tutorial-title" className="text-lg font-bold">
@@ -404,7 +404,12 @@ export function TutorialModal({
   const visBottom = rect ? Math.min(rect.bottom, viewportH) : 0;
   const spaceBelow = rect ? viewportH - visBottom : 0;
   const spaceAbove = rect ? visTop : 0;
-  const minSpace = 100;
+  // The callout's own content (step counter, up to a few lines of text, Next button, padding) runs
+  // roughly 190-250px tall on the longer tour steps. minSpace has to clear that, not just be
+  // "some" room — a side with, say, 120px free used to get picked anyway, squeezing the callout
+  // into a maxHeight far shorter than its content and leaving the Next button scrolled out of an
+  // easy-to-miss sliver of a box. 260px comfortably covers the longest step text with margin.
+  const minSpace = 260;
   const dockToBottom = rect ? spaceBelow < minSpace && spaceAbove < minSpace : false;
   const showBelow = !dockToBottom && spaceBelow >= spaceAbove;
   const calloutStyle: CSSProperties = !rect
@@ -438,10 +443,10 @@ export function TutorialModal({
         role="dialog"
         aria-modal="true"
         style={calloutStyle}
-        className="w-80 max-w-[calc(100vw-16px)] rounded-lg border border-neutral-700 bg-neutral-900 p-4 shadow-xl"
+        className="w-80 max-w-[calc(100vw-16px)] rounded-lg border-2 border-violet-400 bg-neutral-900 p-4 shadow-[0_0_0_4px_rgba(167,139,250,0.15),0_20px_50px_rgba(0,0,0,0.6)]"
       >
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs text-neutral-500">
+          <span className="text-xs font-semibold text-violet-300">
             Step {step + 1} of {totalSteps}
           </span>
           <button

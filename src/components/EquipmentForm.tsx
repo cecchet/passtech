@@ -174,7 +174,6 @@ function ItemPhotos({
             id={inputId}
             type="file"
             accept="image/*"
-            capture="environment"
             className="hidden"
             onChange={async (e) => {
               const file = e.target.files?.[0];
@@ -461,7 +460,6 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
             id={inputId}
             type="file"
             accept="image/*"
-            capture="environment"
             className="hidden"
             onChange={async (e) => {
               const file = e.target.files?.[0];
@@ -618,7 +616,6 @@ function WindowBreakerUnitRow({ unit, onChange, onRemove }: { unit: WindowBreake
               id={inputId}
               type="file"
               accept="image/*"
-              capture="environment"
               className="hidden"
               onChange={async (e) => {
                 const file = e.target.files?.[0];
@@ -710,7 +707,6 @@ function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onC
               id={inputId}
               type="file"
               accept="image/*"
-              capture="environment"
               className="hidden"
               onChange={async (e) => {
                 const file = e.target.files?.[0];

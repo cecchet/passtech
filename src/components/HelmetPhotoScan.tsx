@@ -66,7 +66,6 @@ export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<Equipmen
         ref={inputRef}
         type="file"
         accept="image/*"
-        capture="environment"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];

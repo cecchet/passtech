@@ -122,7 +122,6 @@ export function QuickItemScan({
             id={inputId}
             type="file"
             accept="image/*"
-            capture="environment"
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -186,7 +185,6 @@ export function QuickItemScan({
             id={tagInputId}
             type="file"
             accept="image/*"
-            capture="environment"
             className="hidden"
             onChange={async (e) => {
               const file = e.target.files?.[0];
@@ -280,7 +278,6 @@ export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory;
           id={tagInputId}
           type="file"
           accept="image/*"
-          capture="environment"
           className="hidden"
           onChange={async (e) => {
             const file = e.target.files?.[0];
