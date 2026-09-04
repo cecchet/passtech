@@ -7,17 +7,20 @@ import { CategoryResult, EquipmentEntry, evaluateRuleset, newCertification } fro
 import { CategoryCard } from "@/components/EquipmentForm";
 import { QuickItemScan, TagOnlyScan } from "@/components/QuickItemScan";
 import { RulesetPicker, ClassPicker } from "@/components/RulesetPicker";
-import { statusStyle } from "@/components/ResultRow";
+import { ResultRow, statusStyle } from "@/components/ResultRow";
 import { downloadScrutineerReport } from "@/lib/pdfReport";
 
 const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
+
+/** verdict()'s label when there's genuinely nothing to call yet — distinct from every other label (PASS/FAIL/CONDITIONAL/"Not required by this body"), which all represent a real, actionable verdict worth collapsing the entry card for. */
+const NEEDS_INPUT_LABEL = "Enter the item's details above to get a verdict";
 
 /** The scrutineer-facing verdict wording — punchier than the plain per-category status label (statusLabel/statusStyle in ResultRow.tsx), since a scrutineer wants a Pass/Fail/Conditional call at a glance, not a certification-form status name. Reuses statusStyle's color classes so it stays visually consistent with the rest of the app's status treatment. */
 function verdict(result: CategoryResult): { label: string; style: string } {
   if (result.status === "ok" || result.status === "recommended_only") return { label: "PASS", style: statusStyle(result.status, result.requirement) };
   if (result.status === "rejected" || result.status === "unrecognized") return { label: "FAIL", style: statusStyle(result.status, result.requirement) };
   if (result.status === "needs_info" && result.requirement === "conditional") return { label: "CONDITIONAL", style: statusStyle(result.status, result.requirement) };
-  if (result.status === "needs_info") return { label: "Enter the item's details above to get a verdict", style: statusStyle(result.status, result.requirement) };
+  if (result.status === "needs_info") return { label: NEEDS_INPUT_LABEL, style: statusStyle(result.status, result.requirement) };
   return { label: "Not required by this body", style: statusStyle(result.status, result.requirement) };
 }
 
@@ -31,6 +34,13 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   // While true, the category card (and its own tag-scanner state) is unmounted entirely and
   // TagOnlyScan takes over — see scanAnother below for why.
   const [rescanning, setRescanning] = useState(false);
+  // Collapses the entry card the moment a real verdict first appears, so a phone screen shows the
+  // verdict instead of a form the scrutineer just finished filling in. A one-time reaction to that
+  // transition, not a continuously-enforced state — once collapsed, the user can still reopen it
+  // (e.g. to add a second certification) via CategoryCard's own onOpenChange without this fighting
+  // them back open or shut on every subsequent render.
+  const [cardOpen, setCardOpen] = useState(true);
+  const [hadVerdict, setHadVerdict] = useState(false);
 
   // Tutorial only: fills in a demo item (a Snell SA2020 helmet) so the later tour steps — the
   // verdict banner, the "Scan next item" button — have something real to point at. Done
@@ -45,6 +55,12 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
     if (!category) {
       setCategory("helmet");
       setEntry({ category: "helmet", certifications: [{ ...newCertification(), standardId: "snell-sa2020" }] });
+      // Pre-filled with a certification that already passes, so the auto-collapse-on-verdict
+      // logic below would otherwise close this card before the tour's own "Enter what you have"
+      // step ever gets to show it expanded — mark the verdict as already "seen" so that step sees
+      // no transition to react to, same as if this card had opened with the verdict already there.
+      setCardOpen(true);
+      setHadVerdict(true);
     }
   }
 
@@ -63,6 +79,8 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
       setCategory(null);
       setEntry(emptyEntry("helmet"));
       setRescanning(false);
+      setCardOpen(true);
+      setHadVerdict(false);
     }
   }
 
@@ -72,6 +90,12 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   const activeClassLabel = ruleset?.classes?.find((c) => c.id === activeClassId)?.label;
 
   const result = category && ruleset ? evaluateRuleset(ruleset, { [category]: entry }, undefined, activeClassId)[category] : undefined;
+
+  const hasVerdict = !!result && verdict(result).label !== NEEDS_INPUT_LABEL;
+  if (hasVerdict !== hadVerdict) {
+    setHadVerdict(hasVerdict);
+    if (hasVerdict) setCardOpen(false);
+  }
 
   // Stays on the same category — a scrutineer running only helmets can scan one after another
   // without re-picking the category each time — versus scanDifferentItem, which drops back to
@@ -85,6 +109,12 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
     setCategory(null);
     setEntry(emptyEntry("helmet"));
     setRescanning(false);
+  };
+  // Fresh item, fresh card — reopen it and forget the previous item's verdict transition, whether
+  // that item's category stayed the same (scanAnother) or not (scanDifferentItem).
+  const resetCardOpenState = () => {
+    setCardOpen(true);
+    setHadVerdict(false);
   };
 
   return (
@@ -112,6 +142,7 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
                 ...(photoDataUrl ? { photoDataUrls: [photoDataUrl] } : {}),
                 ...(certifications?.length ? { certifications, ...(CATEGORY_META[cat].hybrid ? { mode: "certified" as const } : {}) } : {}),
               });
+              resetCardOpenState();
             }}
           />
         </div>
@@ -124,6 +155,7 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
               ...(certifications.length ? { certifications, ...(CATEGORY_META[category].hybrid ? { mode: "certified" as const } : {}) } : {}),
             });
             setRescanning(false);
+            resetCardOpenState();
           }}
         />
       ) : (
@@ -138,6 +170,9 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
               isNewGroup={false}
               sourceDocuments={ruleset?.sourceDocuments}
               defaultOpen
+              open={cardOpen}
+              onOpenChange={setCardOpen}
+              showResultRow={false}
             />
           </div>
 
@@ -145,8 +180,13 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
             (() => {
               const v = verdict(result);
               return (
-                <div id="tutorial-scrutineer-verdict" className={`mt-4 rounded-lg border p-4 text-center text-lg font-bold ${v.style}`}>
-                  {v.label}
+                <div id="tutorial-scrutineer-verdict" className={`mt-4 rounded-lg border p-4 text-center ${v.style}`}>
+                  <p className="text-lg font-bold">{v.label}</p>
+                  {v.label !== NEEDS_INPUT_LABEL && (
+                    <div className="mt-3 text-left">
+                      <ResultRow result={result} sourceDocuments={ruleset?.sourceDocuments} />
+                    </div>
+                  )}
                 </div>
               );
             })()}

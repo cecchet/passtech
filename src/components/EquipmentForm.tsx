@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant, SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
@@ -1319,6 +1319,9 @@ export function CategoryCard({
   showMediaLinks,
   sourceDocuments,
   defaultOpen = false,
+  open,
+  onOpenChange,
+  showResultRow = true,
   eligibilityBadge,
   expiryWarning,
   onChange,
@@ -1337,8 +1340,21 @@ export function CategoryCard({
   showPhotoUpload?: boolean;
   showMediaLinks?: boolean;
   sourceDocuments?: SourceDocument[];
-  /** Starts the card's <details> expanded — EquipmentForm's own multi-category lists default this closed (20 expanded cards would be overwhelming), but a standalone single-card caller (Buyer/Scrutineer mode) has no such space constraint and wants it open immediately. */
+  /** Starts the card's <details> expanded — EquipmentForm's own multi-category lists default this closed (20 expanded cards would be overwhelming), but a standalone single-card caller (Buyer/Scrutineer mode) has no such space constraint and wants it open immediately. Ignored once `open` is provided (see below). */
   defaultOpen?: boolean;
+  /**
+   * Imperatively forces the <details> open/closed after it's already mounted — plain React state
+   * can't do this for a native <details>, since React only treats its `open` attribute as an
+   * initial value, not a controlled one (unlike, say, an <input>'s `value`). Scrutineer mode uses
+   * this to auto-collapse the card the moment a verdict appears (more of the small screen shows
+   * the verdict instead of the entry form), while `onOpenChange` still reports every native
+   * toggle — including the user manually reopening it — so the caller's own state stays in sync.
+   * Omit both to keep the plain uncontrolled `defaultOpen` behavior every other caller uses.
+   */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Whether to show the category's own result explanation (ResultRow: status pill, reason, citation) inside the card. Defaults to true; Scrutineer mode turns this off and renders the same ResultRow itself inside its verdict banner instead, so the explanation stays visible even once this card auto-collapses. */
+  showResultRow?: boolean;
   /** Buyer mode only: overlays eligible/fail counts on the category icon's top-left/top-right corners, each jumping to that bucket in the results below when clicked. Omitted everywhere else — there's no "checked against every body at once" result to summarize. */
   eligibilityBadge?: { eligible: number; fail: number; onEligibleClick: () => void; onFailClick: () => void };
   /** Buyer mode only: the earliest "expires within the current year" date found among the currently-eligible rulesets (see expiringSoonDate in matcher.ts), and whether every one of them shares it — shown right in the summary row so the caveat ("eligible now, but only for a few more months") is visible without expanding the card. `universal: false` means only some of the eligible bodies are affected, so the badge says so rather than implying a blanket expiry. */
@@ -1350,6 +1366,10 @@ export function CategoryCard({
   const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
   const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
   const Icon = CATEGORY_ICONS[category];
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    if (open !== undefined && detailsRef.current) detailsRef.current.open = open;
+  }, [open]);
   const displayGroup = groupOverride ?? meta.group;
   const groupColor = occupant === "codriver" ? CODRIVER_COLOR : GROUP_COLORS[displayGroup];
   const domId = occupant === "driver" ? `category-${category}` : `category-${category}-${occupant}`;
@@ -1366,7 +1386,12 @@ export function CategoryCard({
   return (
     <div key={category} id={domId} className="scroll-mt-4">
       {isNewGroup && <h3 className={`mb-1 text-xs font-semibold uppercase tracking-wide ${groupColor.text}`}>{GROUP_LABELS[displayGroup]}</h3>}
-      <details open={defaultOpen} className={`rounded-lg border p-4 ${groupColor.border}`}>
+      <details
+        ref={detailsRef}
+        open={open ?? defaultOpen}
+        onToggle={onOpenChange ? (e) => onOpenChange((e.currentTarget as HTMLDetailsElement).open) : undefined}
+        className={`rounded-lg border p-4 ${groupColor.border}`}
+      >
       <summary className="flex flex-wrap cursor-pointer list-none items-center gap-3 text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
         <span className="flex min-w-0 flex-1 items-center gap-3">
           {eligibilityBadge ? (
@@ -1670,7 +1695,7 @@ export function CategoryCard({
             ))}
         </div>
 
-      {result && (
+      {result && showResultRow && (
         <div className="mt-3">
           <ResultRow result={result} sourceDocuments={sourceDocuments} />
         </div>
