@@ -10,6 +10,7 @@ import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout"
 import { useTagScanner } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { CLASSIFIABLE_CATEGORIES } from "@/components/AutomaticGearImport";
+import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 
 interface CertCandidate {
   standardId: string;
@@ -104,6 +105,16 @@ export function QuickItemScan({
     }
   };
 
+  const handleTagFile = async (file: File) => {
+    let dataUrl: string;
+    try {
+      dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+    } catch {
+      return;
+    }
+    void scanner.analyze(dataUrl);
+  };
+
   if (stage.type === "idle" || stage.type === "not_gear" || stage.type === "error") {
     return (
       <div className="rounded-lg border border-neutral-700 p-4">
@@ -113,23 +124,29 @@ export function QuickItemScan({
           </p>
         )}
         {stage.type === "error" && <p className="mb-3 text-sm text-amber-400">{stage.message} Try another photo, or pick the category yourself below.</p>}
-        <label
-          htmlFor={inputId}
-          className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-        >
-          📷 Upload an overall picture of the item
-          <input
-            id={inputId}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (file) void analyzePhoto(file);
-            }}
+        <div className="flex flex-wrap gap-2">
+          <label
+            htmlFor={inputId}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+          >
+            📷 Upload an overall picture of the item
+            <input
+              id={inputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) void analyzePhoto(file);
+              }}
+            />
+          </label>
+          <CameraPhotoButton
+            onFile={(file) => void analyzePhoto(file)}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           />
-        </label>
+        </div>
         <button type="button" onClick={() => setStage({ type: "manual" })} className="mt-3 block text-xs text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
           Or pick the category yourself instead
         </button>
@@ -176,30 +193,29 @@ export function QuickItemScan({
           Detected: <b>{CATEGORY_META[stage.category].label}</b>
         </p>
         <p className="mt-1 text-sm text-amber-400">We couldn&rsquo;t find a certification tag on that photo. Upload a picture of the tag:</p>
-        <label
-          htmlFor={tagInputId}
-          className="mt-3 flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-        >
-          📷 Upload a photo of the certification tag
-          <input
-            id={tagInputId}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (!file) return;
-              let dataUrl: string;
-              try {
-                dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-              } catch {
-                return;
-              }
-              void scanner.analyze(dataUrl);
-            }}
+        <div className="mt-3 flex flex-wrap gap-2">
+          <label
+            htmlFor={tagInputId}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+          >
+            📷 Upload a photo of the certification tag
+            <input
+              id={tagInputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) void handleTagFile(file);
+              }}
+            />
+          </label>
+          <CameraPhotoButton
+            onFile={(file) => void handleTagFile(file)}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           />
-        </label>
+        </div>
         {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
         {scanner.error && <p className="mt-2 text-sm text-red-400">{scanner.error}</p>}
         {scanner.candidates && (
@@ -264,35 +280,44 @@ export function TagOnlyScan({ category, onDone }: { category: EquipmentCategory;
   const scanner = useTagScanner(category, (cert) => setCertifications((c) => [...c, cert]));
   const tagInputId = useId();
 
+  const handleTagFile = async (file: File) => {
+    let dataUrl: string;
+    try {
+      dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+    } catch {
+      return;
+    }
+    void scanner.analyze(dataUrl);
+  };
+
   return (
     <div className="rounded-lg border border-neutral-700 p-4">
       <p className="text-neutral-200">
         Scanning another: <b>{CATEGORY_META[category].label}</b>
       </p>
-      <label
-        htmlFor={tagInputId}
-        className="mt-3 flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-      >
-        📷 Upload a photo of the certification tag
-        <input
-          id={tagInputId}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={async (e) => {
-            const file = e.target.files?.[0];
-            e.target.value = "";
-            if (!file) return;
-            let dataUrl: string;
-            try {
-              dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-            } catch {
-              return;
-            }
-            void scanner.analyze(dataUrl);
-          }}
+      <div className="mt-3 flex flex-wrap gap-2">
+        <label
+          htmlFor={tagInputId}
+          className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+        >
+          📷 Upload a photo of the certification tag
+          <input
+            id={tagInputId}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (file) void handleTagFile(file);
+            }}
+          />
+        </label>
+        <CameraPhotoButton
+          onFile={(file) => void handleTagFile(file)}
+          className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
         />
-      </label>
+      </div>
       {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
       {scanner.error && <p className="mt-2 text-sm text-red-400">{scanner.error}</p>}
       {scanner.candidates && (

@@ -23,6 +23,7 @@ import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
 import { HelmetPhotoScan } from "@/components/HelmetPhotoScan";
+import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 import { ExtinguisherLabelScan } from "@/components/ExtinguisherPhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { HomologationResultBanner, FiaListLink } from "@/components/HomologationResultBanner";
@@ -165,25 +166,34 @@ function ItemPhotos({
         </div>
       )}
       {canAddMore && (
-        <label
-          htmlFor={inputId}
-          className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-        >
-          📷 Add a photo of this item ({photos.length}/{maxPhotos})
-          <input
-            id={inputId}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (!file) return;
+        <div className="flex flex-wrap gap-2">
+          <label
+            htmlFor={inputId}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+          >
+            📷 Add a photo of this item ({photos.length}/{maxPhotos})
+            <input
+              id={inputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+                onChange([...photos, dataUrl]);
+              }}
+            />
+          </label>
+          <CameraPhotoButton
+            onFile={async (file) => {
               const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
               onChange([...photos, dataUrl]);
             }}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
           />
-        </label>
+        </div>
       )}
     </div>
   );
@@ -451,25 +461,34 @@ function ExtinguisherUnitRow({ unit, onChange, onRemove }: { unit: ExtinguisherU
         </div>
       )}
       {canAddMore && (
-        <label
-          htmlFor={inputId}
-          className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-        >
-          📷 Add a photo of this item ({photos.length}/{maxPhotos})
-          <input
-            id={inputId}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (!file) return;
+        <div className="flex flex-wrap gap-2">
+          <label
+            htmlFor={inputId}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+          >
+            📷 Add a photo of this item ({photos.length}/{maxPhotos})
+            <input
+              id={inputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+                onChange({ photoDataUrls: [...photos, dataUrl] });
+              }}
+            />
+          </label>
+          <CameraPhotoButton
+            onFile={async (file) => {
               const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
               onChange({ photoDataUrls: [...photos, dataUrl] });
             }}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
           />
-        </label>
+        </div>
       )}
       <div className="flex flex-wrap items-end gap-2">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
@@ -607,25 +626,34 @@ function WindowBreakerUnitRow({ unit, onChange, onRemove }: { unit: WindowBreake
       )}
       <div className="flex flex-wrap items-center gap-2">
         {canAddMore && (
-          <label
-            htmlFor={inputId}
-            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-          >
-            📷 Add a photo of this item ({photos.length}/{maxPhotos})
-            <input
-              id={inputId}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={async (e) => {
-                const file = e.target.files?.[0];
-                e.target.value = "";
-                if (!file) return;
+          <>
+            <label
+              htmlFor={inputId}
+              className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+            >
+              📷 Add a photo of this item ({photos.length}/{maxPhotos})
+              <input
+                id={inputId}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (!file) return;
+                  const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+                  onChange({ photoDataUrls: [...photos, dataUrl] });
+                }}
+              />
+            </label>
+            <CameraPhotoButton
+              onFile={async (file) => {
                 const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
                 onChange({ photoDataUrls: [...photos, dataUrl] });
               }}
+              className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
             />
-          </label>
+          </>
         )}
         {!confirmRemove ? (
           <button type="button" onClick={() => setConfirmRemove(true)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800">
@@ -698,6 +726,7 @@ function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onC
       )}
       <div className="flex flex-wrap items-end gap-2">
         {canAddMore && (
+          <>
           <label
             htmlFor={inputId}
             className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
@@ -717,6 +746,14 @@ function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onC
               }}
             />
           </label>
+          <CameraPhotoButton
+            onFile={async (file) => {
+              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+              onChange({ photoDataUrls: [...photos, dataUrl] });
+            }}
+            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+          />
+          </>
         )}
         <label className="flex flex-col gap-1 text-xs text-neutral-400">
           Side length (in)

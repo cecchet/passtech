@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { EquipmentEntry } from "@/lib/matcher";
+import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 
 interface HelmetAnalysis {
   helmetType: "open_face" | "full_face" | "unclear";
@@ -81,6 +82,11 @@ export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<Equipmen
       >
         {status === "loading" ? "Analyzing photo…" : "📷 Scan a full photo of the helmet"}
       </button>
+      <CameraPhotoButton
+        onFile={handleFile}
+        disabled={status === "loading"}
+        className="ml-2 rounded border border-neutral-600 px-2 py-1 text-neutral-300 hover:bg-neutral-800 aria-disabled:pointer-events-none aria-disabled:opacity-50"
+      />
       <span className="ml-2 text-neutral-500">
         Detects open/full face and visor from a whole-helmet photo — separate from the tag photo above, since the tag&rsquo;s usually hidden under the
         liner.
