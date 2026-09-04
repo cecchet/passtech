@@ -218,9 +218,9 @@ function CertificationRow({
   return (
     // A visible fill (not just a border) so each certification reads as its own box against the
     // category card's own chrome and the neighboring "Add a photo"/"Scan tag photo" controls —
-    // with two or more certifications on one item, a border-only box was hard to tell apart from
-    // its neighbors.
-    <div className="rounded-lg border border-sky-800/70 bg-sky-950/25 p-2">
+    // with two or more certifications on one item, a border-only box (and, before that, a low-
+    // contrast tinted one) was hard to tell apart from its neighbors.
+    <div className="rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
       <div className="flex items-start gap-2">
         <select
           className={`${selectClass} flex-1`}
