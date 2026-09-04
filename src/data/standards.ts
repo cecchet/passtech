@@ -172,9 +172,10 @@ export const STANDARDS: StandardDef[] = [
   { id: "sfi-3.3-5", label: "SFI 3.3/5", family: "sfi", categories: APPAREL },
   { id: "sfi-3.3-10", label: "SFI 3.3/10", family: "sfi", categories: APPAREL },
   { id: "sfi-3.3-20", label: "SFI 3.3/20", family: "sfi", categories: APPAREL },
-  // Most arm restraint tags just print "SFI 3.3" with no TPP tier suffix at all — a real, common
-  // variant of the tag, not a typo'd/incomplete one of the tiered ratings above.
-  { id: "sfi-3.3", label: "SFI 3.3", family: "sfi", categories: ["arm_restraint"] },
+  // Many arm restraint, balaclava, sock, and undergarment tags just print "SFI 3.3" with no TPP
+  // tier suffix at all — a real, common variant of the tag, not a typo'd/incomplete one of the
+  // tiered ratings above.
+  { id: "sfi-3.3", label: "SFI 3.3", family: "sfi", categories: ["arm_restraint", "balaclava", "socks", "undergarment"] },
 
   // Seat
   { id: "sfi-39.1", label: "SFI 39.1", family: "sfi", categories: ["seat"] },
