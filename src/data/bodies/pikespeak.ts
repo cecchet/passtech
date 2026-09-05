@@ -330,7 +330,7 @@ const hillClimb: Ruleset = {
         citation: { ...sourceDoc, section: "414.3" },
         confidence: "high",
         notes:
-          "If the seat is part of an FIA-approved safety structure, seat and headrest are defined in the homologation form. If a foam insert is used between the homologated seat and driver, minimum lateral support dimensions apply (230mm at head, 180mm at shoulder, 100mm at pelvis, verified with a template) — not modeled here as a pass/fail item. All cockpit equipment mountings (including the seat) must withstand 25G deceleration (§413.1.3).",
+          "If the seat is part of an FIA-approved safety structure, seat and headrest are defined in the homologation form. If a foam insert is used between the homologated seat and driver, minimum lateral support dimensions apply (230mm at head, 180mm at shoulder, 100mm at pelvis, verified with a template) — not modeled here as a pass/fail item. All cockpit equipment mountings (including the seat) must withstand 25G deceleration (§413.1.3). No noExpiration/validityYearsFromLabel is encoded — checked §414.3, the general seat rule (§107.1-107.3.2), and its duplicate at §1908.2 for 'expir'/'recertif'/'date of manufacture' and found nothing, while the Rule Book does carry explicit age language for belts (§108.6: 2-year SFI label rule, FIA 8853/98 end-of-year expiration) and fire suppression — seats are the one category left silent on age here too.",
       },
       belts_harness: {
         requirement: "required",

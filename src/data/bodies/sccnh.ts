@@ -109,7 +109,7 @@ const gravelTrials: Ruleset = {
       citation: { title: "2026 SCCNH Gravel Trials Rules", version: "Rev 1, 12/2025", section: "9.3" },
       confidence: "high",
       notes:
-        "Rule 9.3: driver and co-driver seats must be firmly mounted to the vehicle structure per the manufacturer's recommendations; hinged-back and OEM seats are explicitly prohibited. Seats not homologated to FIA 8855-1999 or 8862-2009 may still be accepted if 'specifically designed for motor racing' (e.g. an SFI-certified seat), subject to Chief Scrutineer approval on a case-by-case basis rather than a pre-approved standard number. Sliders/rails aren't separately addressed beyond the firm-mounting requirement.",
+        "Rule 9.3: driver and co-driver seats must be firmly mounted to the vehicle structure per the manufacturer's recommendations; hinged-back and OEM seats are explicitly prohibited. Seats not homologated to FIA 8855-1999 or 8862-2009 may still be accepted if 'specifically designed for motor racing' (e.g. an SFI-certified seat), subject to Chief Scrutineer approval on a case-by-case basis rather than a pre-approved standard number. Sliders/rails aren't separately addressed beyond the firm-mounting requirement. No noExpiration/validityYearsFromLabel is encoded — checked the full document for 'expir'/'recertif'/'date of manufacture' near seats and found nothing, unlike harnesses (9.4: 'may not be used after their expiration date and shall not be older than 5 years from date of manufacture') and helmets/HANS (12.1/12.2), so seats are conspicuously the one category this rulebook leaves silent on age.",
     },
     belts_harness: {
       requirement: "required",

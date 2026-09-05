@@ -268,7 +268,11 @@ const pro: Ruleset = {
     ...sharedCategories(proDoc, proSections),
     seat: {
       requirement: "required",
-      acceptedStandards: [{ standardId: "fia-8855-1999" }, { standardId: "fia-8862-2009" }, { standardId: "fia-8855-2021" }],
+      acceptedStandards: [
+        { standardId: "fia-8855-1999", validityYearsFromLabel: 5 },
+        { standardId: "fia-8862-2009", validityYearsFromLabel: 5 },
+        { standardId: "fia-8855-2021", validityYearsFromLabel: 5 },
+      ],
       citation: { ...proDoc, section: proSections.seats },
       confidence: "high",
       notes:
@@ -315,7 +319,11 @@ const prospec: Ruleset = {
     ...sharedCategories(prospecDoc, prospecSections),
     seat: {
       requirement: "required",
-      acceptedStandards: [{ standardId: "fia-8855-1999" }, { standardId: "fia-8862-2009" }, { standardId: "fia-8855-2021" }],
+      acceptedStandards: [
+        { standardId: "fia-8855-1999", validityYearsFromLabel: 5 },
+        { standardId: "fia-8862-2009", validityYearsFromLabel: 5 },
+        { standardId: "fia-8855-2021", validityYearsFromLabel: 5 },
+      ],
       citation: { ...prospecDoc, section: prospecSections.seats },
       confidence: "high",
       notes:
@@ -376,7 +384,11 @@ const proam: Ruleset = {
     }),
     seat: {
       requirement: "required",
-      acceptedStandards: [{ standardId: "fia-8855-1999" }, { standardId: "fia-8862-2009" }, { standardId: "fia-8855-2021" }],
+      acceptedStandards: [
+        { standardId: "fia-8855-1999", validityYearsFromLabel: 5 },
+        { standardId: "fia-8862-2009", validityYearsFromLabel: 5 },
+        { standardId: "fia-8855-2021", validityYearsFromLabel: 5 },
+      ],
       citation: { ...proamDoc, section: "1.4" },
       confidence: "high",
       notes:

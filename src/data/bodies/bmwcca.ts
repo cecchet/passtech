@@ -140,7 +140,8 @@ const clubRacing: Ruleset = {
       acceptedStandards: [
         {
           standardId: "fia-8855-1999",
-          note: "Rulebook: 'FIA 8855-1999 or higher' — homologation label must be visible; seat supports must be the type listed on FIA Technical List No. 12 (lateral, bottom, etc.). A homologated seat used this way doesn't need a seat back attached to the roll structure.",
+          noExpiration: true,
+          note: "Rulebook: 'FIA 8855-1999 or higher' — homologation label must be visible; seat supports must be the type listed on FIA Technical List No. 12 (lateral, bottom, etc.). A homologated seat used this way doesn't need a seat back attached to the roll structure. III.B.8.a.ii: 'Expired FIA certification (over 5 years) or no certification evident require seat back bracing' — an expired cert doesn't disqualify the seat itself, it just triggers the same mandatory seat-back brace as an uncertified seat (see materialNote), so noExpiration is set here rather than the generic unenforced-warning default.",
         },
       ],
       materialNote:

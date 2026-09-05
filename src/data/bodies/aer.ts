@@ -126,17 +126,17 @@ const endurance: Ruleset = {
       requirement: "required",
       materialOnlyAccepted: false,
       acceptedStandards: [
-        { standardId: "fia-8855-1999" },
-        { standardId: "fia-8862-2009" },
-        { standardId: "sfi-39.1" },
-        { standardId: "sfi-39.2" },
+        { standardId: "fia-8855-1999", expirationGraceYears: 0 },
+        { standardId: "fia-8862-2009", expirationGraceYears: 0 },
+        { standardId: "sfi-39.1", expirationGraceYears: 0 },
+        { standardId: "sfi-39.2", expirationGraceYears: 0 },
       ],
       materialNote:
         "Rulebook §2.5.8.1: 'The seat must be a one-piece, purpose-built racing seat that is manufactured to one of the following standards: FIA 8855-1999, FIA 8862-2009, SFI 39.1 or SFI 39.2' — no stock/OEM alternative is offered. Unlike PHA and other bodies with a non-caged tier, this isn't conditional on class or car type: AER §2.5.3 requires 'a minimum of a six-point cage' on 'all cars that will be used in qualifying sessions or races,' with no exemption for lower classes — since every AER car is caged, every AER car also needs the certified seat.",
       citation: { ...sourceDoc, section: "2.5.8.1" },
       confidence: "high",
       notes:
-        "Re-checked against the current online rulebook specifically to confirm whether AER, like PHA, allows a stock/OEM seat for some tier — it does not. AER runs a single uniform car-prep standard (no street/non-caged class): §2.5.3 mandates a minimum six-point roll cage on every car used in qualifying or racing, with class assignment (§2.4, done post-qualifying by lap time) affecting only competitive grouping, not safety-equipment requirements. Because there's no non-caged path in this series, materialOnlyAccepted is explicitly false — a purpose-built certified seat is mandatory for every car, no exceptions found. §2.5.8.2: seat back must extend 'at least halfway up the helmet of the driver.' §2.5.8.3-2.5.8.4: sliders/brackets are explicitly contemplated and allowed (not a fixed-mount-only rule) — 'attachment hardware, brackets, sliders, load spread plates, and washers must be adequately sized for the application,' and installation methods, seat age, and any bracing/brackets/sliders used must be compliant with the seat manufacturer's recommendations and applicable standards.",
+        "Re-checked against the current online rulebook specifically to confirm whether AER, like PHA, allows a stock/OEM seat for some tier — it does not. AER runs a single uniform car-prep standard (no street/non-caged class): §2.5.3 mandates a minimum six-point roll cage on every car used in qualifying or racing, with class assignment (§2.4, done post-qualifying by lap time) affecting only competitive grouping, not safety-equipment requirements. Because there's no non-caged path in this series, materialOnlyAccepted is explicitly false — a purpose-built certified seat is mandatory for every car, no exceptions found. §2.5.8.2: seat back must extend 'at least halfway up the helmet of the driver.' §2.5.8.3-2.5.8.4: sliders/brackets are explicitly contemplated and allowed (not a fixed-mount-only rule) — 'attachment hardware, brackets, sliders, load spread plates, and washers must be adequately sized for the application,' and installation methods, seat age, and any bracing/brackets/sliders used must be compliant with the seat manufacturer's recommendations and applicable standards. §2.5.8.4 puts compliance with 'any applicable standards' on the competitor, with no stated grace period — expirationGraceYears: 0 enforces each standard's own printed expiration exactly as printed, rather than defaulting to this app's generic unenforced-seat-expiration warning.",
     },
     belts_harness: {
       requirement: "required",
