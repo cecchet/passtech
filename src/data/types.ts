@@ -80,6 +80,15 @@ export interface StandardAcceptance {
   validityYearsFromLabel?: number;
   /** Explicitly stated to not expire, provided the item is undamaged/well maintained. */
   noExpiration?: boolean;
+  /**
+   * Extra years this body allows PAST the certification's own printed expiration date
+   * (CertificationEntry.tagExpirationDate) before actually rejecting it, instead of enforcing
+   * exactly at that date — e.g. CARS accepts an FIA 8855-1999 seat 5 years past its printed
+   * expiration. Distinct from validityYearsFromLabel, which measures a window from the
+   * manufacture/label date instead; the two commonly express the same real-world rule, just
+   * keyed off whichever date the driver actually reads off the tag and enters.
+   */
+  expirationGraceYears?: number;
   note?: string;
 }
 

@@ -239,7 +239,11 @@ function intrinsicValidityYears(category: EquipmentCategory, family: StandardDef
 function earliestUpcomingCutoff(cert: CertificationEntry, acceptance: StandardAcceptance, extraCandidate?: Date): Date | undefined {
   const candidates: Date[] = [];
   if (extraCandidate) candidates.push(extraCandidate);
-  if (cert.tagExpirationDate) candidates.push(new Date(cert.tagExpirationDate));
+  if (cert.tagExpirationDate) {
+    const tagCutoff = new Date(cert.tagExpirationDate);
+    if (acceptance.expirationGraceYears) tagCutoff.setFullYear(tagCutoff.getFullYear() + acceptance.expirationGraceYears);
+    candidates.push(tagCutoff);
+  }
   if (acceptance.expiresOn) candidates.push(new Date(acceptance.expiresOn));
   if (acceptance.validityYearsFromLabel && cert.labelDate) {
     const cutoff = new Date(cert.labelDate);
@@ -287,10 +291,39 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
     };
   }
 
-  if (cert.tagExpirationDate) {
+  // Whether THIS body has actually said anything about how long this cert stays valid — as
+  // opposed to the tag simply printing its own expiration date, which most bodies' rulebooks
+  // never actually mention enforcing (most conspicuously for seats: SFI/FIA age the cert itself,
+  // but few rulebooks police the date at tech). noExpiration/expiresOn/validityYearsFromLabel/
+  // expirationGraceYears are all ways a body can explicitly opt into enforcing it.
+  const explicitDateConfigured =
+    acceptance.noExpiration === true ||
+    acceptance.expiresOn !== undefined ||
+    acceptance.validityYearsFromLabel !== undefined ||
+    acceptance.expirationGraceYears !== undefined;
+  // Seats specifically default to a warning rather than a rejection when unconfigured — see
+  // explicitDateConfigured above. Every other category keeps today's behavior: an unconfigured
+  // printed expiration date is enforced exactly as printed, same as it always has been.
+  const unenforcedSeatExpiration = category === "seat" && !explicitDateConfigured;
+  let tagExpirationWarning = "";
+  if (cert.tagExpirationDate && !acceptance.noExpiration) {
     const tagExp = new Date(cert.tagExpirationDate);
-    if (asOf > tagExp) {
-      return { status: "rejected", reason: `${label}'s printed expiration date (${cert.tagExpirationDate}) has passed.`, label, standardId: cert.standardId };
+    const cutoff = new Date(tagExp);
+    if (acceptance.expirationGraceYears) cutoff.setFullYear(cutoff.getFullYear() + acceptance.expirationGraceYears);
+    if (asOf > cutoff) {
+      if (unenforcedSeatExpiration) {
+        tagExpirationWarning = ` ⚠️ ${label}'s printed expiration date (${cert.tagExpirationDate}) has passed, but most sanctioning bodies don't enforce seat expiration dates — check with tech.`;
+      } else {
+        const graceNote = acceptance.expirationGraceYears
+          ? ` (including this body's ${acceptance.expirationGraceYears}-year grace period past that date)`
+          : "";
+        return {
+          status: "rejected",
+          reason: `${label}'s printed expiration date (${cert.tagExpirationDate}) has passed${graceNote}.`,
+          label,
+          standardId: cert.standardId,
+        };
+      }
     }
   }
 
@@ -337,9 +370,7 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
   // actually said it enforces it.
   let intrinsicCutoff: Date | undefined;
   let intrinsicExpiredWarning = "";
-  const explicitlyConfigured =
-    acceptance.validityYearsFromLabel !== undefined || acceptance.expiresOn !== undefined || acceptance.noExpiration === true;
-  if (!explicitlyConfigured && !cert.tagExpirationDate && cert.labelDate) {
+  if (!explicitDateConfigured && !cert.tagExpirationDate && cert.labelDate) {
     const family = standardFamily(cert.standardId);
     const years = family ? intrinsicValidityYears(category, family) : undefined;
     if (years) {
@@ -357,10 +388,12 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
   const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
   const cutoff = earliestUpcomingCutoff(cert, acceptance, intrinsicExpiredWarning ? undefined : intrinsicCutoff);
   const expiryWarning =
-    cutoff && cutoff.getFullYear() === asOf.getFullYear() && !intrinsicExpiredWarning ? ` ⚠️ ${expiringSoonSentence(cutoff)}` : "";
+    cutoff && cutoff.getFullYear() === asOf.getFullYear() && !intrinsicExpiredWarning && !tagExpirationWarning
+      ? ` ⚠️ ${expiringSoonSentence(cutoff)}`
+      : "";
   return {
     status,
-    reason: `${label} is accepted.${acceptanceNote}${expiryWarning}${intrinsicExpiredWarning}`,
+    reason: `${label} is accepted.${acceptanceNote}${expiryWarning}${intrinsicExpiredWarning}${tagExpirationWarning}`,
     label,
     standardId: cert.standardId,
   };

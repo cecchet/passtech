@@ -107,9 +107,24 @@ const performanceRally: Ruleset = {
       requirement: "required",
       materialOnlyAccepted: false,
       acceptedStandards: [
-        { standardId: "fia-8855-1999", validityYearsFromLabel: 10, note: "CARS allows 10 years from date of manufacture — 5 years past the standard FIA 5-year expiration." },
-        { standardId: "fia-8862-2009", validityYearsFromLabel: 10, note: "CARS allows 10 years from date of manufacture — 5 years past the standard FIA 5-year expiration." },
-        { standardId: "fia-8855-2021", validityYearsFromLabel: 10, note: "CARS allows 10 years from date of manufacture — 5 years past the standard FIA 5-year expiration." },
+        {
+          standardId: "fia-8855-1999",
+          validityYearsFromLabel: 10,
+          expirationGraceYears: 5,
+          note: "CARS allows 10 years from date of manufacture — 5 years past the standard FIA 5-year expiration.",
+        },
+        {
+          standardId: "fia-8862-2009",
+          validityYearsFromLabel: 10,
+          expirationGraceYears: 5,
+          note: "CARS allows 10 years from date of manufacture — 5 years past the standard FIA 5-year expiration.",
+        },
+        {
+          standardId: "fia-8855-2021",
+          validityYearsFromLabel: 10,
+          expirationGraceYears: 5,
+          note: "CARS allows 10 years from date of manufacture — 5 years past the standard FIA 5-year expiration.",
+        },
       ],
       materialNote:
         "CARS Technical Rule 12.3.12.1a: 'Use of hinged-back and OEM seats is prohibited.' 12.3.12.1b: 'All the occupants' seats must be homologated by the FIA standards 8855-1999 or 8862-2009, 8855-2021 and not modified.' These FIA standards are cited as the only acceptable option (not a 'when applicable'/higher-tier-only certification) — a stock/OEM seat does NOT satisfy this rule for Performance Rally.",
