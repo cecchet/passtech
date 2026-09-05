@@ -6,6 +6,7 @@ import { EquipmentForm } from "@/components/EquipmentForm";
 import { AutomaticGearImport } from "@/components/AutomaticGearImport";
 import { SanctioningBodyPreferences } from "@/components/SanctioningBodyPreferences";
 import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
+import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
 import { downscaleDataUrl, resizeImageToDataUrl } from "@/lib/imageResize";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import {
@@ -436,6 +437,9 @@ export function GarageManager({
                 {profiles.map((p) => {
                   const photos = collectProfilePhotos(p);
                   const isOpen = actionMenuId === p.id;
+                  const expiryWarnings = computeGearExpiryWarnings(p, preferences);
+                  const hasRejected = expiryWarnings.some((w) => w.severity === "rejected");
+                  const hasOtherWarning = expiryWarnings.some((w) => w.severity !== "rejected");
                   return (
                     <div key={p.id} className="rounded-lg border border-neutral-700 p-3">
                       <div
@@ -483,10 +487,38 @@ export function GarageManager({
                             </p>
                           </div>
                         </div>
-                        <span className="shrink-0 text-neutral-500">{isOpen ? "▲" : "▼"}</span>
+                        <span className="flex shrink-0 items-center gap-2">
+                          {!isOpen && hasRejected && (
+                            <span className="text-lg" title="A preferred sanctioning body rejects some of this gear as expired">
+                              ✋
+                            </span>
+                          )}
+                          {!isOpen && !hasRejected && hasOtherWarning && (
+                            <span className="text-lg" title="Some of this gear is expired or expiring soon with a preferred sanctioning body">
+                              ⚠️
+                            </span>
+                          )}
+                          <span className="text-neutral-500">{isOpen ? "▲" : "▼"}</span>
+                        </span>
                       </div>
                       {isOpen && (
                         <div className="mt-3 border-t border-neutral-800 pt-3">
+                          {expiryWarnings.length > 0 && (
+                            <div className="mb-3 flex flex-col gap-1">
+                              {expiryWarnings.map((w) => (
+                                <p
+                                  key={`${w.category}-${w.severity}-${w.date}`}
+                                  className={
+                                    w.severity === "rejected"
+                                      ? "rounded border border-red-800 bg-red-950/40 px-2 py-1 text-xs text-red-300"
+                                      : "rounded border border-amber-800 bg-amber-950/40 px-2 py-1 text-xs text-amber-300"
+                                  }
+                                >
+                                  {w.severity === "rejected" ? "✋" : "⚠️"} {formatGearExpiryWarning(w)}
+                                </p>
+                              ))}
+                            </div>
+                          )}
                           <div className="mb-3 flex flex-wrap gap-2">
                             {confirmDeleteId !== p.id && (
                               <>

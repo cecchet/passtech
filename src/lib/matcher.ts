@@ -213,7 +213,7 @@ export interface CategoryResult {
   missingExtinguisherMountFields?: { key: string; fields: ("hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs")[] }[];
 }
 
-function findAcceptance(rule: CategoryRule, standardId?: string): StandardAcceptance | undefined {
+export function findAcceptance(rule: CategoryRule, standardId?: string): StandardAcceptance | undefined {
   if (!standardId) return undefined;
   return rule.acceptedStandards?.find((a) => a.standardId === standardId);
 }
@@ -263,6 +263,69 @@ const EXPIRING_SOON_RE = /This equipment will expire on (\d{4}-\d{2}-\d{2})\./;
 /** Pulls the "expires within the current calendar year" date out of a result's reason text, when the warning generated above is present — lets a summary view or PDF surface the caveat (accepted now, but expiring soon) without re-deriving the expiry logic itself. */
 export function expiringSoonDate(reason: string): string | undefined {
   return EXPIRING_SOON_RE.exec(reason)?.[1];
+}
+
+export interface CertExpiryInfo {
+  status: "expired" | "expiring_soon";
+  /** ISO yyyy-mm-dd cutoff date this status is based on. */
+  date: string;
+  /**
+   * Whether this body's own rule actually rejects the item once past this cutoff (true), or just
+   * attaches a warning while still accepting it (false) — currently only seats get the softer
+   * treatment, and only when nothing about expiration is explicitly configured (see
+   * evaluateSingleCert's unenforced-seat-expiration handling). Always true for "expiring_soon" —
+   * nothing has actually happened yet either way, so there's no accept/reject distinction to make.
+   */
+  enforced: boolean;
+}
+
+/**
+ * Date-only read on one certification that also reports whether THIS body's own rule actually
+ * rejects on it once past the cutoff, or just warns while still accepting it (see
+ * CertExpiryInfo.enforced) — for UI surfaces (like My Gear's per-item expiry reminders) that need
+ * to tell "expired and rejected here" apart from "expired but still accepted here" per body.
+ * "Expiring soon" means the cutoff falls within the current calendar year, same definition
+ * evaluateSingleCert's own accepted-with-warning path uses — not a rolling day/month window.
+ */
+export function getCertificationExpiryStatus(
+  category: EquipmentCategory,
+  rule: CategoryRule,
+  cert: CertificationEntry,
+  asOf: Date = new Date()
+): CertExpiryInfo | undefined {
+  if (!cert.standardId || cert.standardId === NOT_LISTED) return undefined;
+  const acceptance = findAcceptance(rule, cert.standardId);
+  if (!acceptance || acceptance.noExpiration) return undefined;
+
+  let cutoff = earliestUpcomingCutoff(cert, acceptance);
+  const explicitDateConfigured =
+    acceptance.expiresOn !== undefined || acceptance.validityYearsFromLabel !== undefined || acceptance.expirationGraceYears !== undefined;
+  // Same intrinsic fallback evaluateSingleCert applies for an unconfigured seat cert — surfaces a
+  // reminder based on FIA/SFI's own baked-in validity even though no body actually enforces it.
+  if (!cutoff && !explicitDateConfigured && !cert.tagExpirationDate && cert.labelDate) {
+    const family = standardFamily(cert.standardId);
+    const years = family ? intrinsicValidityYears(category, family) : undefined;
+    if (years) {
+      const intrinsic = new Date(cert.labelDate);
+      intrinsic.setFullYear(intrinsic.getFullYear() + years);
+      cutoff = intrinsic;
+    }
+  }
+  // A malformed date string anywhere in the chain (tagExpirationDate/labelDate/expiresOn) produces
+  // an Invalid Date here rather than throwing — every comparison against one is simply false, which
+  // is what let this slip through unnoticed elsewhere in this file (nothing else calls
+  // toISOString() on a cutoff without first passing a comparison check that Invalid Date always
+  // fails). Guard explicitly since this function computes the ISO string up front for reuse below.
+  if (!cutoff || isNaN(cutoff.getTime())) return undefined;
+
+  const date = cutoff.toISOString().slice(0, 10);
+  if (asOf > cutoff) {
+    // Same condition evaluateSingleCert uses to soften a past-cutoff rejection into a warning.
+    const enforced = !(category === "seat" && !explicitDateConfigured);
+    return { status: "expired", date, enforced };
+  }
+  if (cutoff.getFullYear() === asOf.getFullYear()) return { status: "expiring_soon", date, enforced: true };
+  return undefined;
 }
 
 function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cert: CertificationEntry, asOf: Date): CertResult {
