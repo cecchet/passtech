@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { CategoryGroup, EquipmentCategory } from "@/data/types";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { AutomaticGearImport } from "@/components/AutomaticGearImport";
+import { SanctioningBodyPreferences } from "@/components/SanctioningBodyPreferences";
 import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
 import { downscaleDataUrl, resizeImageToDataUrl } from "@/lib/imageResize";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import {
   GarageProfile,
+  UserPreferences,
   countFilledCategories,
   exportGarageToJson,
   freshGarageId,
@@ -151,6 +153,8 @@ export function GarageManager({
   onBlockNavChange,
   initialActionMenuId,
   onInitialActionMenuConsumed,
+  preferences,
+  onPreferencesChange,
 }: {
   /** target: "body-first" loads into Option 2 (check against one body); "equipment-first" loads into Option 3 (check against every body at once). */
   onLoadProfile: (profile: GarageProfile, target: "body-first" | "equipment-first") => void;
@@ -160,6 +164,9 @@ export function GarageManager({
   initialActionMenuId?: string | null;
   /** Called once right after initialActionMenuId has been applied, so the page can clear it — otherwise the same gear set would keep reopening on every future visit to My Gear, even unrelated ones. */
   onInitialActionMenuConsumed?: () => void;
+  /** The "My preferred sanctioning bodies" settings, owned by the page (read by both this panel and the body-first/equipment-first flows). */
+  preferences: UserPreferences;
+  onPreferencesChange: (next: UserPreferences) => void;
 }) {
   const [profiles, setProfiles] = useState<GarageProfile[]>([]);
   const [hydrated, setHydrated] = useState(false);
@@ -421,6 +428,7 @@ export function GarageManager({
               />
             </label>
           </div>
+          <SanctioningBodyPreferences preferences={preferences} onChange={onPreferencesChange} />
           {profiles.length > 0 && (
             <div id="tutorial-garage-list">
               <h2 className="mb-2 text-sm font-semibold text-neutral-300">Available Gear Sets</h2>

@@ -1,4 +1,4 @@
-import { EquipmentCategory } from "@/data/types";
+import { DisciplineGroup, EquipmentCategory, Ruleset } from "@/data/types";
 import { EquipmentEntry } from "@/lib/matcher";
 
 /** A saved, named set of gear the driver owns — independent of any sanctioning body. Loaded into the checker's entries when the driver wants to check it against a specific body. */
@@ -307,4 +307,70 @@ export async function clearWorkspace(): Promise<void> {
   } catch {
     // ignore — worst case the next visit resumes from the last successfully-saved snapshot
   }
+}
+
+const PREFERENCES_LOCALSTORAGE_KEY = "safety-gear-check:preferences:v1";
+
+/** Standalone user preferences — small enough (a ruleset id, optional class id, and per-discipline
+ * ruleset-id arrays) to live directly in localStorage like TOURS_SEEN_KEY in page.tsx, unlike
+ * GarageProfile/WorkspaceState which moved to IndexedDB only because of base64 photo payloads. */
+export interface UserPreferences {
+  preferredRulesetId?: string;
+  preferredClassId?: string;
+  /** Explicit allow-list of ruleset ids per discipline. An ABSENT key means "unrestricted" (every
+   * ruleset in that discipline counts as preferred, including ones added to the data set later) —
+   * only an explicit array (even []) narrows it. Never store an array covering every id currently
+   * in the group; delete the key instead, so future new rulesets in that discipline default to
+   * included rather than silently excluded. */
+  preferredBodiesByDiscipline?: Partial<Record<DisciplineGroup, string[]>>;
+}
+
+export function loadPreferences(): UserPreferences {
+  try {
+    const raw = window.localStorage.getItem(PREFERENCES_LOCALSTORAGE_KEY);
+    return raw ? (JSON.parse(raw) as UserPreferences) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function savePreferences(preferences: UserPreferences): void {
+  try {
+    window.localStorage.setItem(PREFERENCES_LOCALSTORAGE_KEY, JSON.stringify(preferences));
+  } catch {
+    // ignore — worst case the preference silently doesn't persist across reloads
+  }
+}
+
+export function isRulesetPreferred(rs: Ruleset, preferences: UserPreferences): boolean {
+  const allowed = preferences.preferredBodiesByDiscipline?.[rs.disciplineGroup];
+  return !allowed || allowed.includes(rs.id);
+}
+
+/** Pure helper for the per-discipline checkbox UI: flips one ruleset's membership in
+ * preferredBodiesByDiscipline[group]. allIdsInGroup is every ruleset id currently in that
+ * discipline — used both to materialize an explicit list when the group was previously
+ * unrestricted, and to collapse back to "unrestricted" when the toggle produces the full set
+ * again. */
+export function toggleRulesetPreference(
+  preferences: UserPreferences,
+  group: DisciplineGroup,
+  rulesetId: string,
+  allIdsInGroup: string[]
+): UserPreferences {
+  const current = preferences.preferredBodiesByDiscipline?.[group] ?? allIdsInGroup;
+  const next = current.includes(rulesetId) ? current.filter((id) => id !== rulesetId) : [...current, rulesetId];
+  const byDiscipline = { ...preferences.preferredBodiesByDiscipline };
+  if (next.length === allIdsInGroup.length) delete byDiscipline[group];
+  else byDiscipline[group] = next;
+  return { ...preferences, preferredBodiesByDiscipline: byDiscipline };
+}
+
+/** Select all (ids = undefined, deletes the key → unrestricted) / Deselect all (ids = []) for one
+ * discipline's row. */
+export function setDisciplinePreference(preferences: UserPreferences, group: DisciplineGroup, ids: string[] | undefined): UserPreferences {
+  const byDiscipline = { ...preferences.preferredBodiesByDiscipline };
+  if (ids === undefined) delete byDiscipline[group];
+  else byDiscipline[group] = ids;
+  return { ...preferences, preferredBodiesByDiscipline: byDiscipline };
 }

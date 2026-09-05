@@ -23,7 +23,19 @@ import {
   isViolation,
   overallEligibility,
 } from "@/lib/matcher";
-import { GarageProfile, newGarageProfile, loadGarage, saveGarage, loadWorkspace, saveWorkspace, clearWorkspace } from "@/lib/garage";
+import {
+  GarageProfile,
+  UserPreferences,
+  newGarageProfile,
+  loadGarage,
+  saveGarage,
+  loadWorkspace,
+  saveWorkspace,
+  clearWorkspace,
+  loadPreferences,
+  savePreferences,
+  isRulesetPreferred,
+} from "@/lib/garage";
 import { BUILD_DATE } from "@/lib/version";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -62,6 +74,12 @@ export default function Home() {
   const [onlyHaveEquipment, setOnlyHaveEquipment] = useState(false);
   const [hideNotRequired, setHideNotRequired] = useState(false);
   const [activeDisciplines, setActiveDisciplines] = useState<Set<DisciplineGroup>>(new Set(DISCIPLINE_GROUP_ORDER));
+  /** "My preferred sanctioning bodies" — set in My Gear, seeds body-first's ruleset/class on load and narrows equipment-first's results (see usePreferredBodiesFilter below). */
+  const [preferences, setPreferences] = useState<UserPreferences>({});
+  /** Session-only override for the preferred-bodies narrowing below — lets a user see everything in equipment-first without leaving the page to edit their preferences. Not persisted; always starts true. */
+  const [usePreferredBodiesFilter, setUsePreferredBodiesFilter] = useState(true);
+  /** Whether the user has actually narrowed anything down in My Gear's per-discipline body list — an empty/absent preferences object means there's nothing for usePreferredBodiesFilter to apply. */
+  const hasPreferredBodies = Object.keys(preferences.preferredBodiesByDiscipline ?? {}).length > 0;
   const [hydrated, setHydrated] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [activeTour, setActiveTour] = useState<TourId | null>(null);
@@ -123,6 +141,11 @@ export default function Home() {
           // page-specific tour below is new to them and should still auto-launch on first visit.
           setToursSeen({ landing: true });
         }
+      } catch {
+        // ignore corrupt/unavailable storage
+      }
+      try {
+        setPreferences(loadPreferences());
       } catch {
         // ignore corrupt/unavailable storage
       }
@@ -212,6 +235,11 @@ export default function Home() {
     setClassId(undefined);
   };
 
+  const handlePreferencesChange = (next: UserPreferences) => {
+    setPreferences(next);
+    savePreferences(next);
+  };
+
   const tutorialActions: TutorialActions = {
     selectRuleset: handleRulesetChange,
     selectClass: setClassId,
@@ -249,6 +277,13 @@ export default function Home() {
     });
     setConfirmingBackNav(false);
     setBackNavSaveError(null);
+    if (target === "body-first" && preferences.preferredRulesetId) {
+      const preferred = getRuleset(preferences.preferredRulesetId);
+      if (preferred) {
+        setRulesetId(preferred.id);
+        setClassId(preferred.classes?.some((c) => c.id === preferences.preferredClassId) ? preferences.preferredClassId : undefined);
+      }
+    }
     setMode(target);
   };
 
@@ -381,9 +416,15 @@ export default function Home() {
     [entries, codriverEntries, hasCodriver, activeGroups, onlyHaveEquipment]
   );
 
+  // The preferred-bodies list (My Gear) replaces the coarse discipline checkboxes when active — it's
+  // a finer-grained version of the same idea, not an additional AND'd-together restriction, so a
+  // discipline the checkboxes have narrowed away wouldn't silently hide preferred bodies within it.
   const disciplineFilteredResults = useMemo(
-    () => allResults.filter((r) => activeDisciplines.has(r.rs.disciplineGroup)),
-    [allResults, activeDisciplines]
+    () =>
+      allResults.filter((r) =>
+        usePreferredBodiesFilter && hasPreferredBodies ? isRulesetPreferred(r.rs, preferences) : activeDisciplines.has(r.rs.disciplineGroup)
+      ),
+    [allResults, activeDisciplines, preferences, usePreferredBodiesFilter, hasPreferredBodies]
   );
 
   const hasAnyEquipmentEntered =
@@ -858,35 +899,53 @@ export default function Home() {
           </label>
 
           <div id="tutorial-discipline-filter" className="mb-4 rounded-lg border border-neutral-700 p-3">
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
-              <div className="flex gap-2 text-xs">
-                <button type="button" onClick={selectAllDisciplines} className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
-                  Select all
-                </button>
-                <span className="text-neutral-700">|</span>
-                <button type="button" onClick={deselectAllDisciplines} className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
-                  Deselect all
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {DISCIPLINE_GROUPS.map(({ group }) => {
-                const isActive = activeDisciplines.has(group);
-                return (
-                  <label
-                    key={group}
-                    className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[21px] font-medium ${
-                      isActive ? "border-neutral-500 text-neutral-200 bg-neutral-900" : "border-neutral-700 text-neutral-500"
-                    }`}
-                  >
-                    <input type="checkbox" checked={isActive} onChange={() => toggleDiscipline(group)} />
-                    <DisciplineIcon group={group} className="h-9 w-9" />
-                    {group}
-                  </label>
-                );
-              })}
-            </div>
+            {hasPreferredBodies && (
+              <label className="mb-2 flex cursor-pointer items-center gap-2 text-xs text-neutral-400">
+                <input type="checkbox" checked={usePreferredBodiesFilter} onChange={(e) => setUsePreferredBodiesFilter(e.target.checked)} />
+                Only show my preferred sanctioning bodies (set in My Gear)
+              </label>
+            )}
+            {!(usePreferredBodiesFilter && hasPreferredBodies) && (
+              <>
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Pick the disciplines you are interested in</p>
+                  <div className="flex gap-2 text-xs">
+                    <button
+                      type="button"
+                      onClick={selectAllDisciplines}
+                      className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200"
+                    >
+                      Select all
+                    </button>
+                    <span className="text-neutral-700">|</span>
+                    <button
+                      type="button"
+                      onClick={deselectAllDisciplines}
+                      className="text-neutral-400 underline underline-offset-2 hover:text-neutral-200"
+                    >
+                      Deselect all
+                    </button>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {DISCIPLINE_GROUPS.map(({ group }) => {
+                    const isActive = activeDisciplines.has(group);
+                    return (
+                      <label
+                        key={group}
+                        className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[21px] font-medium ${
+                          isActive ? "border-neutral-500 text-neutral-200 bg-neutral-900" : "border-neutral-700 text-neutral-500"
+                        }`}
+                      >
+                        <input type="checkbox" checked={isActive} onChange={() => toggleDiscipline(group)} />
+                        <DisciplineIcon group={group} className="h-9 w-9" />
+                        {group}
+                      </label>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
 
           <FilledEquipmentSummary
@@ -1012,6 +1071,8 @@ export default function Home() {
             onBlockNavChange={setBlockMainMenuNav}
             initialActionMenuId={reopenGarageProfileId}
             onInitialActionMenuConsumed={() => setReopenGarageProfileId(null)}
+            preferences={preferences}
+            onPreferencesChange={handlePreferencesChange}
           />
         </section>
       )}
