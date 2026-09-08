@@ -1150,7 +1150,7 @@ export default function Home() {
           .
         </p>
         <p className="mt-2">
-          PassTech is provided by{" "}
+          PassTech is provided to you for free by{" "}
           <a href="https://www.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-300">
             Frog Racing
           </a>
@@ -1169,7 +1169,8 @@ export default function Home() {
             />
           </a>
           <p className="max-w-md text-center text-[11px] text-neutral-600">
-            Frog Racing is an affiliate of TireRack.com and earns a commission on sales made through the link above.
+            Frog Racing is an affiliate of TireRack.com and earns a commission on sales made through the link above. Support us by using
+            this link if you purchase from TireRack, no extra cost to you.
           </p>
         </div>
       </footer>
