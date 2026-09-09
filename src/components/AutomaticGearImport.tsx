@@ -18,6 +18,7 @@ import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { REQUEST_TIMEOUT_LABEL, fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
+import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 import { NOT_LISTED } from "@/data/standards";
 
 /** Every category the photo classifier (and its manual-pick fallback) can recognize — also reused by QuickItemScan's own manual category dropdown for Buyer/Scrutineer mode. */
@@ -475,7 +476,7 @@ export function AutomaticGearImport({
     );
   };
 
-  const handleFiles = (files: FileList) => {
+  const handleFiles = (files: FileList | File[]) => {
     const photos = Array.from(files).map((file) => ({ file, previewUrl: URL.createObjectURL(file) }));
     if (!current) {
       // Nothing's in progress — this is a fresh batch, so the counter starts over instead of
@@ -514,13 +515,19 @@ export function AutomaticGearImport({
             helmet, hidden under a collar), add a close-up of just the tag as a separate photo and we&apos;ll attach it to the same item.
           </p>
           <p className="mb-3 text-xs text-neutral-500">We&apos;ll go through them one at a time and check with you before adding anything.</p>
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            className="rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
-          >
-            📷 Upload gear photos
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => inputRef.current?.click()}
+              className="rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
+            >
+              📷 Upload gear photos
+            </button>
+            <CameraPhotoButton
+              onFile={(file) => handleFiles([file])}
+              className="flex w-fit cursor-pointer items-center rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
+            />
+          </div>
           {builtSummary.length > 0 && (
             <div className="mt-4 rounded border border-neutral-700 p-3 text-xs">
               <p className="mb-1 font-semibold text-neutral-300">Added so far ({builtSummary.length}):</p>
