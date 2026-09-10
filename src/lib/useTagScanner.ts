@@ -11,6 +11,7 @@ export interface TagCandidate {
   rawText: string;
   homologationNumber: string;
   labelDate: string;
+  dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
   confidence: "high" | "medium" | "low";
   categoryMismatch: boolean;
@@ -48,6 +49,7 @@ export function useTagScanner(category: EquipmentCategory, onAdd: (cert: Certifi
       customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
       homologationNumber: c.homologationNumber || undefined,
       labelDate: c.labelDate || undefined,
+      dateType: c.dateType || undefined,
       tagExpirationDate: c.tagExpirationDate || undefined,
     });
     setAdded((prev) => new Set(prev).add(i));

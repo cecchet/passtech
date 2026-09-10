@@ -35,8 +35,10 @@ export interface CertificationEntry {
   standardId?: string;
   /** Free-text description when standardId === NOT_LISTED, for reporting purposes. */
   customStandardLabel?: string;
-  /** Date printed on the tag/label, used for relative validity windows (e.g. HNR <5yrs, helmet <10yrs). */
+  /** Date printed on the tag/label, used for relative validity windows (e.g. HNR <5yrs, helmet <10yrs). Some tags (SFI-style grid/punch-hole labels) only encode month+year -- day is set to "01" in that case, see tagDateGrid.ts. */
   labelDate?: string;
+  /** Only meaningful for a labelDate read off a grid/punch-hole tag (see tagDateGrid.ts): whether the marked date was next to that tag's "Manuf. Date" or "Recertification" row. Purely informational -- validity-window math already treats labelDate as "the date to count validity from" regardless of which this is. */
+  dateType?: "manufacture" | "recertification";
   /** Explicit expiration date printed on the tag itself, if any. Always binding when present. */
   tagExpirationDate?: string;
   /** Fire suppression system only: date (month/year) of the next scheduled service, per the system's tag. */
@@ -174,6 +176,25 @@ export interface EquipmentEntry {
 
 export function newCertification(): CertificationEntry {
   return { key: Math.random().toString(36).slice(2) };
+}
+
+/**
+ * Adds a scanned certification to a list, replacing any existing entry for the SAME standard
+ * instead of blindly appending -- an item can have at most one certification per standard (e.g.
+ * one SFI 38.1 and one FIA 8858-2002, never two SFI 38.1 entries), so re-scanning the same
+ * physical tag (a wide shot, then a closer follow-up photo of the same tag) should update that
+ * one entry rather than add a duplicate. NOT_LISTED (unrecognized) certifications are never
+ * deduped against each other -- standardId alone can't tell two different unrecognized tags
+ * apart, and their free-text rawText is too unreliable an OCR read to match on instead.
+ */
+export function mergeCertification(list: CertificationEntry[], next: CertificationEntry): CertificationEntry[] {
+  if (next.standardId && next.standardId !== NOT_LISTED) {
+    const existingIndex = list.findIndex((c) => c.standardId === next.standardId);
+    if (existingIndex !== -1) {
+      return list.map((c, i) => (i === existingIndex ? next : c));
+    }
+  }
+  return [...list, next];
 }
 
 export function newExtinguisherUnit(): ExtinguisherUnit {

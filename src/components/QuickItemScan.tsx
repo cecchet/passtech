@@ -4,10 +4,11 @@ import { useEffect, useId, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
-import { CertificationEntry, ExtinguisherUnit, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import { CertificationEntry, ExtinguisherUnit, mergeCertification, newCertification, newExtinguisherUnit } from "@/lib/matcher";
 import { ExtinguisherVisionResult, extinguisherPatchFromVision, extinguisherVisionSummary } from "@/lib/extinguisherVision";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout";
+import { GRID_DATE_UI_HINT } from "@/lib/tagDateGrid";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { CLASSIFIABLE_CATEGORIES } from "@/components/AutomaticGearImport";
@@ -18,6 +19,7 @@ interface CertCandidate {
   rawText: string;
   homologationNumber: string;
   labelDate: string;
+  dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
   confidence: "high" | "medium" | "low";
 }
@@ -29,6 +31,7 @@ function certCandidateToEntry(c: CertCandidate): CertificationEntry {
     customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
     homologationNumber: c.homologationNumber || undefined,
     labelDate: c.labelDate || undefined,
+    dateType: c.dateType || undefined,
     tagExpirationDate: c.tagExpirationDate || undefined,
   };
 }
@@ -67,7 +70,7 @@ export function QuickItemScan({
 
   const scanCategory = stage.type === "need_tag" ? stage.category : "helmet";
   const scanner = useTagScanner(scanCategory, (cert) => {
-    setStage((s) => (s.type === "need_tag" ? { ...s, itemCertifications: [...s.itemCertifications, cert] } : s));
+    setStage((s) => (s.type === "need_tag" ? { ...s, itemCertifications: mergeCertification(s.itemCertifications, cert) } : s));
   });
 
   const analyzePhoto = async (file: File) => {
@@ -102,7 +105,7 @@ export function QuickItemScan({
 
   const confirmDetected = (s: Extract<typeof stage, { type: "detected" }>) => {
     if (s.certifications.length > 0) {
-      onDone(s.category, s.photoDataUrl, s.certifications.map(certCandidateToEntry));
+      onDone(s.category, s.photoDataUrl, s.certifications.reduce((acc, c) => mergeCertification(acc, certCandidateToEntry(c)), [] as CertificationEntry[]));
       return;
     }
     // Fire extinguishers aren't evaluated against a standardId, but they do have their own
@@ -259,6 +262,7 @@ export function QuickItemScan({
             className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           />
         </div>
+        <p className="mt-2 text-xs text-neutral-500">{GRID_DATE_UI_HINT}</p>
         {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
         {scanner.error && <p className="mt-2 text-sm text-red-400">{scanner.error}</p>}
         {scanner.candidates && (
@@ -372,7 +376,7 @@ export function TagOnlyScan({
   onDone: (certifications: CertificationEntry[], extinguisherUnit?: ExtinguisherUnit) => void;
 }) {
   const [certifications, setCertifications] = useState<CertificationEntry[]>([]);
-  const scanner = useTagScanner(category, (cert) => setCertifications((c) => [...c, cert]));
+  const scanner = useTagScanner(category, (cert) => setCertifications((c) => mergeCertification(c, cert)));
   const tagInputId = useId();
   const extinguisherInputId = useId();
   const hasStandards = standardsFor(category).length > 0;
@@ -491,6 +495,7 @@ export function TagOnlyScan({
           className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
         />
       </div>
+      <p className="mt-2 text-xs text-neutral-500">{GRID_DATE_UI_HINT}</p>
       {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
       {scanner.error && <p className="mt-2 text-sm text-red-400">{scanner.error}</p>}
       {scanner.candidates && (

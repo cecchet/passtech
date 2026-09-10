@@ -36,7 +36,7 @@ export function TagCandidateList({
           </p>
           {(c.labelDate || c.tagExpirationDate) && (
             <p className="text-neutral-500">
-              {c.labelDate && `Label date: ${c.labelDate} `}
+              {c.labelDate && `${c.dateType === "recertification" ? "Recertification date" : c.dateType === "manufacture" ? "Manufacture date" : "Label date"}: ${c.labelDate} `}
               {c.tagExpirationDate && `Expires: ${c.tagExpirationDate}`}
             </p>
           )}

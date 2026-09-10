@@ -9,6 +9,7 @@ import {
   TriangleUnit,
   WindowBreakerUnit,
   isEntryEmpty,
+  mergeCertification,
   newCertification,
   newExtinguisherUnit,
   newTriangleUnit,
@@ -460,6 +461,7 @@ export function AutomaticGearImport({
       customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
       homologationNumber: c.homologationNumber || undefined,
       labelDate: c.labelDate || undefined,
+      dateType: c.dateType || undefined,
       tagExpirationDate: c.tagExpirationDate || undefined,
     };
     const isPants = category === "firesuit" && piece === "pants";
@@ -467,7 +469,7 @@ export function AutomaticGearImport({
     updateEntry(target, category, {
       mode: existing?.mode ?? "certified",
       ...(category === "firesuit" && piece ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
-      ...(isPants ? { pantsCertifications: [...list, cert] } : { certifications: [...list, cert] }),
+      ...(isPants ? { pantsCertifications: mergeCertification(list, cert) } : { certifications: mergeCertification(list, cert) }),
     });
     noteBuilt(
       `${target === "codriver" ? "Codriver — " : ""}${CATEGORY_META[category].label}${piece ? ` (${pieceLabel(piece)})` : ""} — ${

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { CertificationEntry } from "@/lib/matcher";
+import { GRID_DATE_UI_HINT } from "@/lib/tagDateGrid";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { CameraPhotoButton } from "@/components/CameraPhotoButton";
@@ -70,6 +71,7 @@ export function PhotoScan({ category, onAdd }: Props) {
       ) : (
         <span className="ml-2 text-amber-400">Offline — photo scan needs a connection. Enter the certification manually below.</span>
       )}
+      <p className="mt-1 text-neutral-500">{GRID_DATE_UI_HINT}</p>
 
       {scanner.error && <p className="mt-2 text-red-400">{scanner.error}</p>}
 

@@ -3,6 +3,7 @@ import { EquipmentCategory } from "@/data/types";
 import { describeGeminiError } from "@/lib/geminiErrors";
 import { createGeminiInteraction, hasGeminiKeyConfigured } from "@/lib/geminiClient";
 import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
+import { capGridDateConfidence, DATE_TYPE_SCHEMA_PROPERTY, GRID_DATE_PROMPT_HINT, LABEL_DATE_SCHEMA_PROPERTY } from "@/lib/tagDateGrid";
 
 // Gemini's free tier can take well over Vercel's default function timeout to respond under load —
 // raises the ceiling to match the client's own REQUEST_TIMEOUT_MS (fetchWithTimeout.ts) so a slow
@@ -120,6 +121,7 @@ interface CertCandidate {
   rawText: string;
   homologationNumber: string;
   labelDate: string;
+  dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
   confidence: "high" | "medium" | "low";
 }
@@ -184,11 +186,12 @@ const SCHEMA = {
             description:
               "A separate per-product homologation/approval number printed on the tag, if any -- e.g. \"DC.001.18-O\", \"RS.001.01\". Empty string if none visible.",
           },
-          labelDate: { type: "string" as const, description: "Date printed on the tag (manufacture/conformance/homologation date) in YYYY-MM-DD format. Empty string if none visible or imprecise." },
+          labelDate: LABEL_DATE_SCHEMA_PROPERTY,
+          dateType: DATE_TYPE_SCHEMA_PROPERTY,
           tagExpirationDate: { type: "string" as const, description: "An explicit expiration date printed on the tag itself, in YYYY-MM-DD format. Empty string if none." },
           confidence: { type: "string" as const, enum: ["high", "medium", "low"] },
         },
-        required: ["standardId", "rawText", "homologationNumber", "labelDate", "tagExpirationDate", "confidence"],
+        required: ["standardId", "rawText", "homologationNumber", "labelDate", "dateType", "tagExpirationDate", "confidence"],
       },
     },
     helmetType: {
@@ -222,7 +225,7 @@ const PROMPT = `This photo was uploaded as part of a batch of racing-safety-equi
 ${categoryList}
 Common mix-ups to watch for: gloves vs arm restraints (gloves cover all fingers; arm restraints are a wrist/forearm strap with a tether, no fingers); undergarment vs firesuit (undergarment is thin plain long underwear, firesuit is the thicker outer suit, often with brand logos/stripes); balaclava vs neck collar (balaclava is a full head/face hood, neck collar is just a padded ring around the neck); fire extinguisher vs fire suppression system (a handheld cylinder you'd carry vs a fixed cylinder plumbed to nozzles and mounted in the car); tow hook vs kill switch vs hood pins (all small hardware mounted on/in the car — a tow hook is a loop/ring for towing, a kill switch is an electrical rotary/pull switch, hood pins are a pair of pins with spring clips through the hood); fire suppression's external pull cable/pin vs kill switch (both can be a red pull mechanism on the car's exterior/cowl -- the fire suppression pull cable triggers extinguishant and is usually near a fire-system brand decal, a kill switch cuts electrical power and is usually labeled electrically, e.g. "MASTER"/"BATT" or a lightning-bolt symbol). If your notes describe one category but you're about to output a different one, trust your own description and fix the category field to match it.
 
-2. Separately, check whether any certification/homologation tag is legible ANYWHERE in the photo — whether this is a dedicated close-up of a tag, or the tag just happens to be readable in a wider shot of the whole item (e.g. an arm restraint photographed with its sewn-in SFI tag in frame). Extract every distinct certification you can actually read into "certifications" — it's fine for this to be an empty array if no tag is legible at all in this particular photo. If a tag's text matches a standard family used by multiple product types (e.g. "SFI SPEC 3.3" appears on gloves, shoes, socks, AND arm restraints), rely on the tag's own wording (e.g. "HOOD", "ARM RESTRAINT", "GLOVES") and the product visible around it, not just the bare standard number.
+2. Separately, check whether any certification/homologation tag is legible ANYWHERE in the photo — whether this is a dedicated close-up of a tag, or the tag just happens to be readable in a wider shot of the whole item (e.g. an arm restraint photographed with its sewn-in SFI tag in frame). Extract every distinct certification you can actually read into "certifications" — it's fine for this to be an empty array if no tag is legible at all in this particular photo. If a tag's text matches a standard family used by multiple product types (e.g. "SFI SPEC 3.3" appears on gloves, shoes, socks, AND arm restraints), rely on the tag's own wording (e.g. "HOOD", "ARM RESTRAINT", "GLOVES") and the product visible around it, not just the bare standard number. ${GRID_DATE_PROMPT_HINT}
 
 3. If (and only if) the category is "helmet" and the photo shows the helmet's outer shell shape, also assess helmetType (full-face vs open-face) and whether a visor/shield is attached.
 
@@ -311,6 +314,7 @@ export async function POST(req: NextRequest) {
     } else {
       for (const cert of parsed.certifications) cert.standardId = NOT_LISTED;
     }
+    for (const cert of parsed.certifications) Object.assign(cert, capGridDateConfidence(cert));
 
     if (parsed.category !== "helmet") {
       parsed.helmetType = "";

@@ -12,6 +12,7 @@ import {
   TriangleUnit,
   WindowBreakerUnit,
   isEntryEmpty,
+  mergeCertification,
   newCertification,
   newExtinguisherUnit,
   newTriangleUnit,
@@ -208,6 +209,15 @@ const selectClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text
 const optionClass = "bg-neutral-900 text-neutral-100";
 const dateClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
 
+// The native date input's own calendar popup only moves the year one month-page at a time, which
+// is painful for a source (like an SFI grid/punch-hole tag) that's easy to misread by a few years
+// -- these buttons adjust just the year in one click, leaving month/day untouched.
+function shiftYear(dateStr: string, delta: number): string | undefined {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+  if (!m) return dateStr || undefined;
+  return `${(parseInt(m[1], 10) + delta).toString().padStart(4, "0")}-${m[2]}-${m[3]}`;
+}
+
 function CertificationRow({
   category,
   cert,
@@ -283,13 +293,49 @@ function CertificationRow({
         <div className="mt-2 flex flex-col gap-2 sm:flex-row">
           <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
             Manufacturing date on tag/label (if any)
-            <input
-              type="date"
-              className={dateClass}
-              value={cert.labelDate ?? ""}
-              onChange={(e) => onChange({ labelDate: e.target.value || undefined })}
-            />
+            <div className="flex items-center gap-1">
+              <input
+                type="date"
+                className={`${dateClass} flex-1`}
+                value={cert.labelDate ?? ""}
+                onChange={(e) => onChange({ labelDate: e.target.value || undefined })}
+              />
+              {cert.labelDate && (
+                <>
+                  <button
+                    type="button"
+                    title="Year minus 1 (leaves month/day unchanged)"
+                    onClick={() => onChange({ labelDate: shiftYear(cert.labelDate ?? "", -1) })}
+                    className="rounded border border-neutral-600 px-1.5 py-1 text-neutral-300 hover:bg-neutral-800"
+                  >
+                    −yr
+                  </button>
+                  <button
+                    type="button"
+                    title="Year plus 1 (leaves month/day unchanged)"
+                    onClick={() => onChange({ labelDate: shiftYear(cert.labelDate ?? "", 1) })}
+                    className="rounded border border-neutral-600 px-1.5 py-1 text-neutral-300 hover:bg-neutral-800"
+                  >
+                    +yr
+                  </button>
+                </>
+              )}
+            </div>
           </label>
+          {cert.labelDate && (
+            <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
+              Date above is a...
+              <select
+                className={selectClass}
+                value={cert.dateType ?? ""}
+                onChange={(e) => onChange({ dateType: (e.target.value || undefined) as "manufacture" | "recertification" | undefined })}
+              >
+                <option value="">Not specified</option>
+                <option value="manufacture">Manufacture date</option>
+                <option value="recertification">Recertification date</option>
+              </select>
+            </label>
+          )}
           {category === "fire_suppression" ? (
             <>
               <label className="flex flex-1 flex-col gap-1 text-xs text-neutral-400">
@@ -397,7 +443,7 @@ function CertificationList({
     onChange(certifications.filter((_, i) => i !== index));
   };
   const addCert = () => onChange([...certifications, newCertification()]);
-  const addFromScan = (cert: CertificationEntry) => onChange([...certifications, cert]);
+  const addFromScan = (cert: CertificationEntry) => onChange(mergeCertification(certifications, cert));
 
   return (
     <div className="flex flex-col gap-2">
@@ -1635,7 +1681,7 @@ export function CategoryCard({
               onChange={(photoDataUrls) => update({ photoDataUrls })}
               onAddCertification={(cert) =>
                 update({
-                  certifications: [...(entry.certifications ?? []), cert],
+                  certifications: mergeCertification(entry.certifications ?? [], cert),
                   // Finding a tag on the photo means it's a certified item — flip a hybrid
                   // category (gloves, seat, etc.) out of "material only" mode automatically,
                   // rather than leaving the found certification stranded under a mode that

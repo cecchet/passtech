@@ -4,6 +4,7 @@ import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { describeGeminiError } from "@/lib/geminiErrors";
 import { createGeminiInteraction, hasGeminiKeyConfigured } from "@/lib/geminiClient";
+import { capGridDateConfidence, DATE_TYPE_SCHEMA_PROPERTY, GRID_DATE_PROMPT_HINT, LABEL_DATE_SCHEMA_PROPERTY } from "@/lib/tagDateGrid";
 
 // Gemini's free tier can take well over Vercel's default function timeout to respond under load —
 // raises the ceiling to match the client's own REQUEST_TIMEOUT_MS (fetchWithTimeout.ts) so a slow
@@ -57,6 +58,7 @@ interface AnalyzeCandidate {
   rawText: string;
   homologationNumber: string;
   labelDate: string;
+  dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
   confidence: "high" | "medium" | "low";
   categoryMismatch: boolean;
@@ -86,10 +88,8 @@ function buildSchema(allowedIds: string[]) {
               description:
                 "The specific homologation/approval number printed on the tag for THIS product, if any -- e.g. \"DC.001.18-O\", \"RS.001.01\", \"AH.012.19-C-ABP\", \"CS.001.21\", \"FT3-4\". This is a per-product registration number (usually 2 letters, a 3-digit number, a 2-digit year, and sometimes a letter suffix), distinct from the certification standard number itself (e.g. \"FIA 8856-2018\") -- most tags with an FIA standard printed on them also carry one of these nearby. Empty string if no such number is visible or the tag only shows the standard/spec number with no separate per-product registration code.",
             },
-            labelDate: {
-              type: "string" as const,
-              description: "Date printed on the tag (manufacture date, conformance date, homologation date) in YYYY-MM-DD format. Empty string if none visible or you can't determine it precisely.",
-            },
+            labelDate: LABEL_DATE_SCHEMA_PROPERTY,
+            dateType: DATE_TYPE_SCHEMA_PROPERTY,
             tagExpirationDate: {
               type: "string" as const,
               description: "An explicit expiration date printed on the tag itself, in YYYY-MM-DD format. Empty string if the tag doesn't print an expiration date.",
@@ -104,7 +104,7 @@ function buildSchema(allowedIds: string[]) {
               description: "Only meaningful when categoryMismatch is true: which kind of equipment this tag actually looks like it's for (e.g. 'gloves', 'shoes', 'helmet'). Empty string otherwise.",
             },
           },
-          required: ["standardId", "rawText", "homologationNumber", "labelDate", "tagExpirationDate", "confidence", "categoryMismatch", "detectedCategory"],
+          required: ["standardId", "rawText", "homologationNumber", "labelDate", "dateType", "tagExpirationDate", "confidence", "categoryMismatch", "detectedCategory"],
         },
       },
       notes: {
@@ -172,7 +172,7 @@ ${standardList}
 
 IMPORTANT — check the equipment category first: look at the tag's shape, wording, and any pictograms to judge whether it's actually a "${categoryLabel}" tag at all, as opposed to a tag for a different item (e.g. a shoe or glove tag scanned while checking a firesuit, or vice versa). If it clearly looks like the wrong kind of tag, set "categoryMismatch": true and "detectedCategory" to what it actually looks like — do this even if the text also happens to resemble one of the standard IDs above, since standard families (like SFI 3.3) can appear on multiple different products. If it's plausibly the right category (even if you can't pin down the exact standard), set "categoryMismatch": false.
 
-For each certification visible on the tag, match it to one of the IDs above if it clearly corresponds, or use "${NOT_LISTED}" if it doesn't match any of them (still fill in rawText with what you actually see). Extract any date(s) printed on the tag. Also look for a separate per-product homologation/approval number distinct from the standard number itself — see the "homologationNumber" field description for examples of the format. Be conservative — if you can't read something clearly, say so in "notes" and use "low" confidence rather than guessing.`;
+For each certification visible on the tag, match it to one of the IDs above if it clearly corresponds, or use "${NOT_LISTED}" if it doesn't match any of them (still fill in rawText with what you actually see). Extract any date(s) printed on the tag. ${GRID_DATE_PROMPT_HINT} Also look for a separate per-product homologation/approval number distinct from the standard number itself — see the "homologationNumber" field description for examples of the format. Be conservative — if you can't read something clearly, say so in "notes" and use "low" confidence rather than guessing.`;
 
   try {
     const interaction = await createGeminiInteraction({
@@ -193,7 +193,7 @@ For each certification visible on the tag, match it to one of the IDs above if i
     // Belt-and-suspenders: the schema's enum should already keep the model on our exact ids, but
     // recover a recognizable fragment (e.g. "SA2020" for "snell-sa2020") rather than let it fall
     // through to NOT_LISTED if it doesn't.
-    parsed.candidates = parsed.candidates.map((c) => ({ ...c, standardId: resolveStandardId(c.standardId, category as EquipmentCategory) }));
+    parsed.candidates = parsed.candidates.map((c) => capGridDateConfidence({ ...c, standardId: resolveStandardId(c.standardId, category as EquipmentCategory) }));
     return NextResponse.json(parsed);
   } catch (err) {
     const { status, error } = describeGeminiError(err, "analyze-tag");
