@@ -1170,7 +1170,11 @@ export default function Home() {
           </a>
           <p className="max-w-md text-center text-[11px] text-neutral-600">
             Frog Racing is an affiliate of TireRack.com and earns a commission on sales made through the link above. Support us by using
-            this link if you purchase from TireRack, no extra cost to you.
+            this{" "}
+            <a href="https://www.anrdoezrs.net/click-101708275-10376887" target="_blank" rel="noopener noreferrer sponsored" className="underline hover:text-neutral-300">
+              link
+            </a>{" "}
+            if you purchase from TireRack, no extra cost to you.
           </p>
         </div>
       </footer>
