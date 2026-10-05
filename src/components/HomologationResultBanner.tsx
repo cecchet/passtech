@@ -10,6 +10,20 @@ export function FiaListLink({ listNumber, sourceUrl }: { listNumber: number; sou
 }
 
 /**
+ * A list's end-of-homologation date is when the manufacturer must stop producing the item, and its
+ * "valid until" is how long the very last unit made can be used — so neither is the expiration of
+ * the specific item in hand, which runs from that item's own manufacture date and is printed on its
+ * label (e.g. a 2024-made suit under a 02.2028/2038 homologation says 2034).
+ */
+function validityExplanation(homologationEnd?: string, validUntil?: string): string {
+  const own = " The expiration printed on your own item's label is what counts.";
+  if (homologationEnd && validUntil) return ` Can be manufactured until ${homologationEnd}; the last ones made are valid until ${validUntil}.${own}`;
+  if (validUntil) return ` The last ones made are valid until ${validUntil}.${own}`;
+  if (homologationEnd) return ` Can be manufactured until ${homologationEnd}.${own}`;
+  return "";
+}
+
+/**
  * Status banner (plus, for FIA 8855-2021 seats, the mounting-bracket pairing warning) for one
  * homologation lookup result — shared between the manual entry field (EquipmentForm's
  * HomologationCheck) and the OCR tag-scan preview (TagCandidateList), so a number the user typed
@@ -31,8 +45,8 @@ export function HomologationResultBanner({ standardId, result }: { standardId: s
       case "expired":
         return (
           <p className="rounded border border-amber-700 bg-amber-950 px-2 py-1 text-xs text-amber-200">
-            ⚠ <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} /> lists this product valid only until{" "}
-            {result.entry?.validUntil} — past that, it&rsquo;s no longer authorized regardless of physical condition.
+            ⚠ Per <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} />, even the last of these made is only valid until{" "}
+            {result.entry?.validUntil} — so every one has now expired, regardless of physical condition.
           </p>
         );
       case "found_unverified_dates":
@@ -47,8 +61,8 @@ export function HomologationResultBanner({ standardId, result }: { standardId: s
         return (
           <p className="rounded border border-emerald-800 bg-emerald-950/40 px-2 py-1 text-xs text-emerald-300">
             ✓ Found on <FiaListLink listNumber={result.listNumber!} sourceUrl={result.sourceUrl!} />
-            {result.entry?.manufacturer ? ` — ${result.entry.manufacturer}${result.entry.model ? " " + result.entry.model : ""}` : ""}
-            {result.entry?.validUntil ? `, valid until ${result.entry.validUntil}` : ""}.
+            {result.entry?.manufacturer ? ` — ${result.entry.manufacturer}${result.entry.model ? " " + result.entry.model : ""}` : ""}.
+            {validityExplanation(result.entry?.homologationEnd, result.entry?.validUntil)}
           </p>
         );
       case "not_found":

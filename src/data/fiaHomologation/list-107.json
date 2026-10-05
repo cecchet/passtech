@@ -9,7 +9,7 @@
     "helmet"
   ],
   "sourceUrl": "https://www.fia.com/sites/default/files/technical_list_107_55613.pdf",
-  "lastFetched": "2026-08-31",
+  "lastFetched": "2026-10-05",
   "entries": [
     {
       "number": "PH.001.24-O",
@@ -239,7 +239,7 @@
       "number": "PH.033.25-C",
       "manufacturer": "BELL RACING",
       "model": "R7 SPORT",
-      "homologationStart": "03.2026",
+      "homologationStart": "12.2025",
       "homologationEnd": "03.2031"
     },
     {
@@ -318,6 +318,13 @@
       "model": "DIAMANTE PREMIUM COMPOSITE",
       "homologationStart": "05.2026",
       "homologationEnd": "05.2031"
+    },
+    {
+      "number": "PH.045.26-C",
+      "manufacturer": "OMP",
+      "model": "GP-R",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031"
     }
   ]
 }

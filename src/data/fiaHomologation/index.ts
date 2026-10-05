@@ -82,7 +82,7 @@ import list108 from "./list-108.json";
  * first, but cross-checking its output against the actual pages (via `pdftoppm`) showed
  * `pdftotext -layout` doesn't reliably keep a homologation number in the same reading-order
  * position as the product row it belongs to (e.g. CS.002.21/CS.003.21 looked like bracket
- * variants of CS.001.21 in the text, but are actually two entirely different seat models). All 33
+ * variants of CS.001.21 in the text, but are actually two entirely different seat models). All 35
  * entries are complete and verified against the source images — see fia-lists/README.md and
  * LIST_91_MANUAL_ENTRIES in the parser script. Each entry's `approvedBrackets` lists every
  * bracket FIA homologated together with that specific seat — this is the first seat standard to

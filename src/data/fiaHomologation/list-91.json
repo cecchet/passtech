@@ -8,7 +8,7 @@
     "seat"
   ],
   "sourceUrl": "https://www.fia.com/system/files/documents/l91_approved_competition_seats_-_8855-2021.pdf",
-  "lastFetched": "2026-08-31",
+  "lastFetched": "2026-10-05",
   "entries": [
     {
       "number": "CS.001.21",
@@ -411,6 +411,25 @@
       "validUntil": "2041",
       "approvedBrackets": [
         "004932H & BAA0245B0"
+      ]
+    },
+    {
+      "number": "CS.034.26",
+      "manufacturer": "SPARCO",
+      "model": "SBS",
+      "approvedBrackets": [
+        "BAA0368B0"
+      ]
+    },
+    {
+      "number": "CS.035.26",
+      "manufacturer": "TBRacing",
+      "model": "RS-07",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "approvedBrackets": [
+        "RS-14"
       ]
     }
   ]

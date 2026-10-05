@@ -5,7 +5,7 @@
     "fia-8855-1999"
   ],
   "sourceUrl": "https://www.fia.com/sites/default/files/8855.pdf",
-  "lastFetched": "2026-08-31",
+  "lastFetched": "2026-10-05",
   "entries": [
     {
       "number": "CS.826.97",
@@ -2254,16 +2254,16 @@
       "manufacturer": "MOMO",
       "model": "DAYTONA SAFARI",
       "homologationStart": "01.2007",
-      "homologationEnd": "01.2027",
-      "validUntil": "2032"
+      "homologationEnd": "01.2032",
+      "validUntil": "2037"
     },
     {
       "number": "CS.189.07",
       "manufacturer": "MOMO",
       "model": "START 2007",
       "homologationStart": "01.2007",
-      "homologationEnd": "01.2027",
-      "validUntil": "2032"
+      "homologationEnd": "01.2032",
+      "validUntil": "2037"
     },
     {
       "number": "CS.190.07",

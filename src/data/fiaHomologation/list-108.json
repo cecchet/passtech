@@ -8,7 +8,7 @@
     "helmet"
   ],
   "sourceUrl": "https://www.fia.com/sites/default/files/l108_karting_helmets_8878-2024_2.pdf",
-  "lastFetched": "2026-08-31",
+  "lastFetched": "2026-10-05",
   "entries": [
     {
       "number": "KH.001.24",
@@ -79,6 +79,13 @@
       "model": "SKV-R RO",
       "homologationStart": "04.2026",
       "homologationEnd": "04.2031"
+    },
+    {
+      "number": "KH.011.26",
+      "manufacturer": "OMP",
+      "model": "GP-R K",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031"
     }
   ]
 }

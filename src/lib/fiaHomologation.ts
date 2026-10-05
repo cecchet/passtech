@@ -30,8 +30,16 @@ export interface HomologationLookupResult {
   listsChecked: FiaListRef[];
 }
 
+/**
+ * Comparison key for a homologation number. Letter O and digit 0 are folded together because
+ * FIA's own data and the physical tags disagree: List 74 (8856-2018) and the helmet lists print
+ * an "-O" suffix (letter, for Overalls/Open-face), List 101 (8877-2022) prints "-0" (digit), and
+ * embroidered tags render the two identically — so neither a driver nor the tag-reading model can
+ * reliably tell which was meant. Safe because no two entries in any list differ only by O vs 0,
+ * and O never appears anywhere but that suffix.
+ */
 function normalize(number: string): string {
-  return number.trim().toUpperCase().replace(/\s+/g, "");
+  return number.trim().toUpperCase().replace(/\s+/g, "").replace(/O/g, "0");
 }
 
 /** Best-effort "is this still within its stated validity" check against the current year — the entry's own homologation label is always the authoritative source (see FiaHomologationEntry.validUntil doc comment), this is just a sanity check on the list data itself. */

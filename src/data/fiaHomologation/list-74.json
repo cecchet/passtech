@@ -4,8 +4,8 @@
   "standardIds": [
     "fia-8856-2018"
   ],
-  "sourceUrl": "https://www.fia.com/system/files/documents/tl_74_-_8856-2018.pdf",
-  "lastFetched": "2026-08-31",
+  "sourceUrl": "https://www.fia.com/system/files/documents/technical_list_ndeg74.pdf",
+  "lastFetched": "2026-10-05",
   "entries": [
     {
       "number": "DC.001.18-O",
@@ -1763,8 +1763,8 @@
       "model": "FIRST BALACLAVA.01",
       "productType": "Balaclava",
       "homologationStart": "09.2021",
-      "homologationEnd": "09.2025",
-      "validUntil": "2035",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
       "category": "balaclava"
     },
     {
@@ -1773,8 +1773,8 @@
       "model": "FIRST TOP.01",
       "productType": "Top Undergarment",
       "homologationStart": "09.2021",
-      "homologationEnd": "09.2026",
-      "validUntil": "2036",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
       "category": "undergarment"
     },
     {
@@ -1783,8 +1783,8 @@
       "model": "FIRST BOTTOM.01",
       "productType": "Bottom Undergarment",
       "homologationStart": "09.2021",
-      "homologationEnd": "09.2026",
-      "validUntil": "2036",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
       "category": "undergarment"
     },
     {
@@ -1833,8 +1833,8 @@
       "model": "TECNICA HYBRID",
       "productType": "Overalls",
       "homologationStart": "10.2021",
-      "homologationEnd": "10.2026",
-      "validUntil": "2036",
+      "homologationEnd": "10.2031",
+      "validUntil": "2041",
       "category": "firesuit"
     },
     {
@@ -1893,8 +1893,8 @@
       "model": "SWEAT 100% NOMEX",
       "productType": "Top Undergarment",
       "homologationStart": "11.2021",
-      "homologationEnd": "11.2026",
-      "validUntil": "2036",
+      "homologationEnd": "11.2031",
+      "validUntil": "2041",
       "category": "undergarment"
     },
     {
@@ -1903,8 +1903,8 @@
       "model": "PANTALON 100% NOMEX",
       "productType": "Bottom Undergarment",
       "homologationStart": "11.2021",
-      "homologationEnd": "11.2026",
-      "validUntil": "2036",
+      "homologationEnd": "11.2031",
+      "validUntil": "2041",
       "category": "undergarment"
     },
     {
@@ -1913,8 +1913,8 @@
       "model": "CHAUSSETTE 100% NOMEX",
       "productType": "Socks",
       "homologationStart": "11.2021",
-      "homologationEnd": "11.2026",
-      "validUntil": "2036",
+      "homologationEnd": "11.2031",
+      "validUntil": "2041",
       "category": "socks"
     },
     {
@@ -1923,8 +1923,8 @@
       "model": "CAGOULE 100% NOMEX",
       "productType": "Balaclava",
       "homologationStart": "11.2021",
-      "homologationEnd": "11.2026",
-      "validUntil": "2036",
+      "homologationEnd": "11.2031",
+      "validUntil": "2041",
       "category": "balaclava"
     },
     {
@@ -1963,8 +1963,8 @@
       "model": "TECNICA SOCKS.01",
       "productType": "Socks",
       "homologationStart": "12.2021",
-      "homologationEnd": "12.2026",
-      "validUntil": "2036",
+      "homologationEnd": "12.2031",
+      "validUntil": "2041",
       "category": "socks"
     },
     {
@@ -1973,8 +1973,8 @@
       "model": "TECNICA TOP.01",
       "productType": "Top Undergarment",
       "homologationStart": "12.2021",
-      "homologationEnd": "12.2026",
-      "validUntil": "2036",
+      "homologationEnd": "12.2031",
+      "validUntil": "2041",
       "category": "undergarment"
     },
     {
@@ -5352,7 +5352,990 @@
       "manufacturer": "ALPINESTARS",
       "model": "RADAR v2",
       "productType": "Shoes",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
       "category": "shoes"
+    },
+    {
+      "number": "DC.536.25-O",
+      "manufacturer": "FLB",
+      "model": "GT2i RACE 4",
+      "productType": "Overalls",
+      "homologationStart": "11.2025",
+      "homologationEnd": "04.2030",
+      "validUntil": "2040",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.537.25-S",
+      "manufacturer": "LVRY",
+      "model": "DRVR SOCK",
+      "productType": "Socks",
+      "homologationStart": "11.2025",
+      "homologationEnd": "05.2026",
+      "validUntil": "2036",
+      "category": "socks"
+    },
+    {
+      "number": "DC.538.25-B",
+      "manufacturer": "FREE MINDS",
+      "model": "U26-CLAVA-VERTIX",
+      "productType": "Balaclava",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.539.25-T",
+      "manufacturer": "FREE MINDS",
+      "model": "U26-TOP-VERTIX",
+      "productType": "Top Undergarment",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.540.25-L",
+      "manufacturer": "FREE MINDS",
+      "model": "U26-PANTS-VERTIX",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.541.25-G",
+      "manufacturer": "FREE MINDS",
+      "model": "RAPTOR 25",
+      "productType": "Gloves",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.542.25-Z",
+      "manufacturer": "ADIDAS",
+      "model": "Feroza Pro Textile",
+      "productType": "Shoes",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.543.25-B",
+      "manufacturer": "WALERO",
+      "model": "WALERO 2.0 - DAKAR",
+      "productType": "Balaclava",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.544.25-B",
+      "manufacturer": "SABELT",
+      "model": "UI-601 BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.545.25-T",
+      "manufacturer": "SABELT",
+      "model": "UI-601 TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.546.25-L",
+      "manufacturer": "SABELT",
+      "model": "UI-601 PANT",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.547.25-Z",
+      "manufacturer": "MOMO",
+      "model": "SPEED PRO",
+      "productType": "Shoes",
+      "homologationStart": "11.2025",
+      "homologationEnd": "11.2030",
+      "validUntil": "2040",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.548.25-B",
+      "manufacturer": "RRS",
+      "model": "PROLIGHT BALACLAVA 25",
+      "productType": "Balaclava",
+      "homologationStart": "11.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2040",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.549.25-T",
+      "manufacturer": "RRS",
+      "model": "PROLIGHT TOP 25",
+      "productType": "Top Undergarment",
+      "homologationStart": "11.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.550.25-L",
+      "manufacturer": "RRS",
+      "model": "PROLIGHT PANTS 25",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "11.2025",
+      "homologationEnd": "09.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.551.25-O",
+      "manufacturer": "OFFSET",
+      "model": "RS-ONE",
+      "productType": "Overalls",
+      "homologationStart": "12.2025",
+      "homologationEnd": "03.2030",
+      "validUntil": "2040",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.552.25-B",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-Z BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.553.25-T",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-Z TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.554.25-L",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-Z BOTTOM",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.555.25-Z",
+      "manufacturer": "SABELT",
+      "model": "HYPER TB-12 L",
+      "productType": "Shoes",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.556.25-O",
+      "manufacturer": "HRX",
+      "model": "ICON IBRIDA",
+      "productType": "Overalls",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.557.25-G",
+      "manufacturer": "OMP",
+      "model": "CW0123",
+      "productType": "Gloves",
+      "homologationStart": "12.2025",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.558.26-O",
+      "manufacturer": "GLORIA",
+      "model": "LITE",
+      "productType": "Overalls",
+      "homologationStart": "12.2025",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.559.26-T",
+      "manufacturer": "STAND 21",
+      "model": "PRO FIT",
+      "productType": "Top Undergarment",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.560.26-G",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "GLN-610",
+      "productType": "Gloves",
+      "homologationStart": "12.2025",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.561.26-G",
+      "manufacturer": "HRX",
+      "model": "TUTOR EVO GLOVES",
+      "productType": "Gloves",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.562.26-B",
+      "manufacturer": "FYSHE",
+      "model": "DELFINO BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.563.26-T",
+      "manufacturer": "FYSHE",
+      "model": "DELFINO TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.564.26-L",
+      "manufacturer": "FYSHE",
+      "model": "DELFINO PANT",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.565.26-O",
+      "manufacturer": "SPARCO",
+      "model": "R591",
+      "productType": "Overalls",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.566.26-O",
+      "manufacturer": "FREE MINDS",
+      "model": "AP26 - SPECTRUM",
+      "productType": "Overalls",
+      "homologationStart": "01.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.567.26-B",
+      "manufacturer": "OFFSET",
+      "model": "BASE FR BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "01.2026",
+      "homologationEnd": "02.2027",
+      "validUntil": "2037",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.568.26-T",
+      "manufacturer": "OFFSET",
+      "model": "BASE FR TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "01.2026",
+      "homologationEnd": "12.2026",
+      "validUntil": "2036",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.569.26-L",
+      "manufacturer": "OFFSET",
+      "model": "BASE FR PANTS",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "01.2026",
+      "homologationEnd": "12.2026",
+      "validUntil": "2036",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.570.26-S",
+      "manufacturer": "SABELT",
+      "model": "UI-101 SOCKS",
+      "productType": "Socks",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "socks"
+    },
+    {
+      "number": "DC.571.26-S",
+      "manufacturer": "SABELT",
+      "model": "UI-601 SOCKS",
+      "productType": "Socks",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "socks"
+    },
+    {
+      "number": "DC.572.26-B",
+      "manufacturer": "SABELT",
+      "model": "UI-101 BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.573.26-T",
+      "manufacturer": "SABELT",
+      "model": "UI-101 TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.574.26-L",
+      "manufacturer": "SABELT",
+      "model": "UI-101 PANT",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.575.26-Z",
+      "manufacturer": "PUMA",
+      "model": "FUTURECAT PRO LEATHER SHOES",
+      "productType": "Shoes",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.576.26-G",
+      "manufacturer": "HRX",
+      "model": "TUTOR GUNNER",
+      "productType": "Gloves",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.577.26-B",
+      "manufacturer": "MARINA",
+      "model": "MARINA FACTORY BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.578.26-T",
+      "manufacturer": "MARINA",
+      "model": "MARINA FACTORY TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.579.26-L",
+      "manufacturer": "MARINA",
+      "model": "MARINA FACTORY BOTTOM",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.580.26-O",
+      "manufacturer": "SABELT",
+      "model": "HERO SUPERLIGHT TS-10.1",
+      "productType": "Overalls",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.581.26-G",
+      "manufacturer": "ZAMP",
+      "model": "ZR-70F",
+      "productType": "Gloves",
+      "homologationStart": "02.2026",
+      "homologationEnd": "02.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.582.26-O",
+      "manufacturer": "REVOLUTION RACEGEAR",
+      "model": "RPM APEX",
+      "productType": "Overalls",
+      "homologationStart": "03.2026",
+      "homologationEnd": "02.2028",
+      "validUntil": "2038",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.583.26-R",
+      "manufacturer": "HRX",
+      "model": "Revojacket",
+      "productType": "Overgarment",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.584.26-G",
+      "manufacturer": "STAND 21",
+      "model": "OS III",
+      "productType": "Gloves",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.585.26-G",
+      "manufacturer": "SIMPSON",
+      "model": "DNA SLT",
+      "productType": "Gloves",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.586.26-G",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "GLN-700",
+      "productType": "Gloves",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.587.26-C",
+      "manufacturer": "OMP",
+      "model": "CW0163",
+      "productType": "Cooling Undergarment",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.588.26-O",
+      "manufacturer": "GLORIA",
+      "model": "SL SUIT",
+      "productType": "Overalls",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.589.26-Z",
+      "manufacturer": "ZAMP",
+      "model": "ZR-70SF",
+      "productType": "Shoes",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.590.26-B",
+      "manufacturer": "ALPINESTARS",
+      "model": "RACE V4 BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.591.26-T",
+      "manufacturer": "ALPINESTARS",
+      "model": "RACE V4 LS TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.592.26-L",
+      "manufacturer": "ALPINESTARS",
+      "model": "RACE V4 BOTTOM",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "03.2026",
+      "homologationEnd": "03.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.593.26-G",
+      "manufacturer": "RRS",
+      "model": "VIRAGE 5",
+      "productType": "Gloves",
+      "homologationStart": "04.2026",
+      "homologationEnd": "01.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.594.26-O",
+      "manufacturer": "D.SPORT",
+      "model": "PSP - PRO SOUTH PRINT",
+      "productType": "Overalls",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.595.26-Z",
+      "manufacturer": "FREE MINDS",
+      "model": "S25",
+      "productType": "Shoes",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.596.26-Z",
+      "manufacturer": "STAND 21",
+      "model": "SIGNATURE",
+      "productType": "Shoes",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.597.26-Z",
+      "manufacturer": "CORSA",
+      "model": "ZR-01",
+      "productType": "Shoes",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.598.26-O",
+      "manufacturer": "ALPINESTARS",
+      "model": "GP PRO v3 / STELLA GP PRO v3",
+      "productType": "Overalls",
+      "homologationStart": "04.2026",
+      "homologationEnd": "04.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.599.26-B",
+      "manufacturer": "HRX",
+      "model": "RACER 25 BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "05.2026",
+      "homologationEnd": "05.2031",
+      "validUntil": "2041",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.600.26-T",
+      "manufacturer": "HRX",
+      "model": "RACER 25 TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "05.2026",
+      "homologationEnd": "05.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.601.26-L",
+      "manufacturer": "HRX",
+      "model": "RACER 25 PANTS",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "05.2026",
+      "homologationEnd": "05.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.602.26-Z",
+      "manufacturer": "SABELT",
+      "model": "HERO PRO TB-10.1",
+      "productType": "Shoes",
+      "homologationStart": "05.2026",
+      "homologationEnd": "05.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.603.26-O",
+      "manufacturer": "SABELT",
+      "model": "TS-12",
+      "productType": "Overalls",
+      "homologationStart": "05.2026",
+      "homologationEnd": "05.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.604.26-O",
+      "manufacturer": "MARINA",
+      "model": "UNIC PRO SUIT",
+      "productType": "Overalls",
+      "homologationStart": "05.2026",
+      "homologationEnd": "05.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.605.26-Z",
+      "manufacturer": "SABELT",
+      "model": "LASER TB-3.1",
+      "productType": "Shoes",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.606.26-O",
+      "manufacturer": "FREE MINDS",
+      "model": "A26 - ULTRA",
+      "productType": "Overalls",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.607.26-Z",
+      "manufacturer": "SABELT",
+      "model": "CLASSIC TB-2.1",
+      "productType": "Shoes",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.608.26-B",
+      "manufacturer": "SPARCO",
+      "model": "R600 BALACLAVA",
+      "productType": "Balaclava",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "balaclava"
+    },
+    {
+      "number": "DC.609.26-T",
+      "manufacturer": "SPARCO",
+      "model": "R600 TOP",
+      "productType": "Top Undergarment",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.610.26-L",
+      "manufacturer": "SPARCO",
+      "model": "R600 BOTTOM",
+      "productType": "Bottom Undergarment",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.611.26-Z",
+      "manufacturer": "ADIDAS",
+      "model": "Feroza Pro Edge",
+      "productType": "Shoes",
+      "homologationStart": "06.2026",
+      "homologationEnd": "06.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.612.26-C",
+      "manufacturer": "ALPINESTARS",
+      "model": "TECH-Z LS COOLING TOP",
+      "productType": "Cooling Undergarment",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.613.26-Z",
+      "manufacturer": "FYSHE",
+      "model": "Squalo Corsa",
+      "productType": "Shoes",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.614.26-G",
+      "manufacturer": "OMP",
+      "model": "CW0180",
+      "productType": "Gloves",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.615.26-O",
+      "manufacturer": "OMP",
+      "model": "CW0204",
+      "productType": "Overalls",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.616.26-O",
+      "manufacturer": "FIRELEX",
+      "model": "Zero FX-A18",
+      "productType": "Overalls",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.617.26-O",
+      "manufacturer": "REVOLUTION RACEGEAR",
+      "model": "PODIUM 4",
+      "productType": "Overalls",
+      "homologationStart": "07.2026",
+      "homologationEnd": "04.2030",
+      "validUntil": "2040",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.618.26-O",
+      "manufacturer": "SPARCO",
+      "model": "R589",
+      "productType": "Cooling Overalls",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.619.26-G",
+      "manufacturer": "LVRY",
+      "model": "DRVR GLOVE",
+      "productType": "Gloves",
+      "homologationStart": "07.2026",
+      "homologationEnd": "03.2030",
+      "validUntil": "2040",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.620.26-Z",
+      "manufacturer": "SPARCO",
+      "model": "SLALOM + R",
+      "productType": "Shoes",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.621.26-Z",
+      "manufacturer": "OMP",
+      "model": "CW0176",
+      "productType": "Shoes",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.622.26-Z",
+      "manufacturer": "OMP",
+      "model": "CW0201",
+      "productType": "Shoes",
+      "homologationStart": "07.2026",
+      "homologationEnd": "07.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.623.26-O",
+      "manufacturer": "ALPINESTARS",
+      "model": "SUPERTECH ULTRA SUIT",
+      "productType": "Overalls",
+      "homologationStart": "08.2026",
+      "homologationEnd": "08.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.624.26-G",
+      "manufacturer": "SABELT",
+      "model": "LASER TG-3.2",
+      "productType": "Gloves",
+      "homologationStart": "08.2026",
+      "homologationEnd": "08.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.625.26-O",
+      "manufacturer": "OFFSET",
+      "model": "RS-ADV",
+      "productType": "Overalls",
+      "homologationStart": "08.2026",
+      "homologationEnd": "12.2030",
+      "validUntil": "2040",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.626.26-O",
+      "manufacturer": "OMP",
+      "model": "CW0168",
+      "productType": "Overalls",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.627.26-O",
+      "manufacturer": "SPARCO",
+      "model": "R592",
+      "productType": "Overalls",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
+    },
+    {
+      "number": "DC.628.26-S",
+      "manufacturer": "PUMA",
+      "model": "PUMA SN SOCKS",
+      "productType": "Socks",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "socks"
+    },
+    {
+      "number": "DC.629.26-C",
+      "manufacturer": "TRP CO., LTD.",
+      "model": "UW-07T",
+      "productType": "Cooling Undergarment",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "undergarment"
+    },
+    {
+      "number": "DC.630.26-G",
+      "manufacturer": "SPARCO",
+      "model": "ARROW PRO",
+      "productType": "Gloves",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "gloves"
+    },
+    {
+      "number": "DC.631.26-Z",
+      "manufacturer": "ALPINESTARS",
+      "model": "SUPERTECH MONO SHOES",
+      "productType": "Shoes",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.632.26-Z",
+      "manufacturer": "HRX",
+      "model": "PIT LANE 26",
+      "productType": "Shoes",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "shoes"
+    },
+    {
+      "number": "DC.633.26-O",
+      "manufacturer": "PUMA",
+      "model": "SPEEDCAT SOFTGLIDE SUIT",
+      "productType": "Overalls",
+      "homologationStart": "09.2026",
+      "homologationEnd": "09.2031",
+      "validUntil": "2041",
+      "category": "firesuit"
     }
   ]
 }

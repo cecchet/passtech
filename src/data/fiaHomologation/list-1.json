@@ -9,8 +9,8 @@
   "categories": [
     "fuel_cell"
   ],
-  "sourceUrl": "https://www.fia.com/sites/default/files/ft3.pdf",
-  "lastFetched": "2026-08-31",
+  "sourceUrl": "https://www.fia.com/sites/default/files/tl01.pdf",
+  "lastFetched": "2026-10-05",
   "entries": [
     {
       "number": "FT3-1",
@@ -235,8 +235,8 @@
       "manufacturer": "PROFLEX",
       "model": "PRO-ADV-001",
       "homologationStart": "09.2018",
-      "homologationEnd": "09.2023",
-      "validUntil": "2028"
+      "homologationEnd": "09.2028",
+      "validUntil": "2033"
     },
     {
       "number": "FT3-29",
