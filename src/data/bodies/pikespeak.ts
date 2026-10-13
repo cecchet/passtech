@@ -370,6 +370,7 @@ const hillClimb: Ruleset = {
       window_net: {
         requirement: "required",
         materialOnlyAccepted: true,
+        certifiedListExclusive: true,
         acceptedStandards: [
           {
             standardId: "fia-8863-2013",

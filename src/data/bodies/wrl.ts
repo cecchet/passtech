@@ -252,12 +252,12 @@ const endurance: Ruleset = {
       acceptedStandards: [
         { standardId: "sfi-17.1" },
         {
-          standardId: "fia-8865-2015",
-          note: "WRL's rule text literally cites 'FIA technical list # 16 or 52' rather than 'FIA 8865-2015' by standard number. Technical List 16 is the FIA's own homologation register for equipment meeting the FIA 8865-2015 standard (same registry, just named by list number rather than standard number), so this entry covers List 16 fully, including number verification against the real registry.",
+          standardId: "fia-technical-list-16",
+          note: "WRL's rule text cites 'FIA technical list # 16 or 52'. List 16 is the register for the older, pre-2015 FIA plumbed-in system standard.",
         },
         {
           standardId: "fia-technical-list-52",
-          note: "Technical List 52 is a separate FIA registry from List 16 (see the fia-8865-2015 entry above) with no parsed homologation data in this app yet, so a number entered here can't be verified against it — selecting it is presence-only.",
+          note: "List 52 is the FIA 8865-2015 register — the same certification as selecting FIA 8865-2015.",
         },
       ],
       citation: { ...sourceDoc, section: "Appendix A, Section A.3.b" },

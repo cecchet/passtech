@@ -51,7 +51,7 @@ interface CertReading {
 }
 
 function readCert(category: EquipmentCategory, rule: CategoryRule, cert: CertificationEntry): CertReading | undefined {
-  if (!findAcceptance(rule, cert.standardId)) return undefined;
+  if (!findAcceptance(rule, cert.standardId, category)) return undefined;
   const info = getCertificationExpiryStatus(category, rule, cert, new Date());
   if (!info) return { cert, currentlyValid: true, expired: false, expiringSoon: false };
   if (info.status === "expiring_soon") return { cert, currentlyValid: true, expired: false, expiringSoon: true, date: info.date };

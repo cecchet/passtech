@@ -163,11 +163,11 @@ const performanceRally: Ruleset = {
     },
     fire_suppression: {
       requirement: "required",
-      acceptedStandards: [{ standardId: "sfi-17.1" }, { standardId: "fia-8865-2015" }],
+      acceptedStandards: [{ standardId: "sfi-17.1" }, { standardId: "fia-8865-2015" }, { standardId: "fia-technical-list-16" }],
       citation: { title: "ARA Rally Technical Rules", version: "2026 Edition", section: "2.3.5" },
       confidence: "medium",
       notes:
-        "RTR 2.3.5.a).i): an on-board fire suppression system (manual or automatic activation) is mandatory for all competition vehicles, with nozzles discharging into both the engine compartment and cockpit. Accepted standards are SFI 17.1, FIA 8865-2015, or a system currently listed as homologated for Rally on FIA Technical List n°16 — the fia-8865-2015 entry above covers that third path too, since List 16 is the FIA's own homologation register for that standard (same registry, just named by list number in this rule's text) and this app now has List 16's real homologation numbers parsed, so a number entered here IS checked against it. This app can't verify the rule's own 'listed for Rally' caveat specifically (no per-discipline flag exists in the parsed list data), only that the number appears on List 16 at all. Bottles must be secured with a metal strap, show a visible fill gauge, have an activation point within easy reach of both crew members, and be identified with 2 circular 'E' decals (at the release point and on the exterior bodywork).",
+        "RTR 2.3.5.a).i): an on-board fire suppression system (manual or automatic activation) is mandatory for all competition vehicles, with nozzles discharging into both the engine compartment and cockpit. Accepted standards are SFI 17.1, FIA 8865-2015, or a system currently listed as homologated for Rally on FIA Technical List n°16 — List 16 is the register for the older, pre-2015 FIA standard (FIA 8865-2015's own register is List 52), so it's listed separately above; numbers entered under either are checked against the real parsed list. This app can't verify the rule's own 'listed for Rally' caveat specifically (no per-discipline flag exists in the parsed list data), only that the number appears on List 16 at all. Bottles must be secured with a metal strap, show a visible fill gauge, have an activation point within easy reach of both crew members, and be identified with 2 circular 'E' decals (at the release point and on the exterior bodywork).",
     },
     fuel_cell: {
       requirement: "required",

@@ -3,6 +3,7 @@ import list74 from "./list-74.json";
 import list57 from "./list-57.json";
 import list24 from "./list-24.json";
 import list16 from "./list-16.json";
+import list52 from "./list-52.json";
 import list12 from "./list-12.json";
 import list27 from "./list-27.json";
 import list29 from "./list-29.json";
@@ -43,12 +44,15 @@ import list108 from "./list-108.json";
  * nearby number throughout the whole list, not just a messy section. All 599 entries are
  * hand-verified against the rendered pages — see LIST_12_MANUAL_ENTRIES in the parser script.
  *
- * List 16 (FIA 8865-2015 fire extinguisher systems) is hand-transcribed too, for a different
- * reason: many rows have a multi-line MODEL cell (several alternate part numbers stacked
- * together, e.g. one homologation covering six FX G-TEC variants), and the generic parser
- * dropped most of these rows outright rather than misattributing them — it found only 14 of the
- * real 74 entries. All 74 are hand-verified — see LIST_16_MANUAL_ENTRIES. This list has no
- * separate "valid until" column, so `validUntil` is never set for it.
+ * List 16 (plumbed-in fire extinguisher systems under the older, pre-2015 FIA standard) is
+ * hand-transcribed too, for a different reason: many rows have a multi-line MODEL cell (several
+ * alternate part numbers stacked together, e.g. one homologation covering six FX G-TEC
+ * variants), and the generic parser dropped most of these rows outright rather than
+ * misattributing them — it found only 14 of the real 74 entries. All 74 are hand-verified — see
+ * LIST_16_MANUAL_ENTRIES. This list has no separate "valid until" column, so `validUntil` is
+ * never set for it. List 52 is the FIA 8865-2015 register (it backs both fia-8865-2015 and
+ * fia-technical-list-52); same table style, also hand-transcribed (LIST_52_MANUAL_ENTRIES), Part 1
+ * plumbed-in systems only.
  *
  * List 27 (FIA 8856-2000) is scoped to `categories: ["firesuit"]` — only its Part 1 (numbered
  * overalls/suits) is wired up. Its Part 2 (undergarment/balaclava/sock/shoe manufacturers) and
@@ -132,6 +136,7 @@ export const FIA_TECHNICAL_LISTS: FiaTechnicalList[] = [
   list57,
   list24,
   list16,
+  list52,
   list12,
   list27,
   list29,

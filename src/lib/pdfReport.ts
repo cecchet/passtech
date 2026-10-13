@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import { CarBodyStyle, CategoryGroup, CategoryRule, DisciplineGroup, EquipmentCategory, RequirementLevel, Ruleset, StandardAcceptance } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, DISCIPLINE_GROUP_ORDER, GROUP_LABELS, filterCategoriesByGroups, isPerOccupantCategory } from "@/data/categoryMeta";
-import { NOT_LISTED, logbookBodyLabel, paddingStandardLabel, standardLabel, standardsFor } from "@/data/standards";
+import { NOT_LISTED, logbookBodyLabel, paddingStandardLabel, standardLabel, standardsFor, withEquivalents } from "@/data/standards";
 import {
   CategoryResult,
   CategoryResults,
@@ -10,6 +10,7 @@ import {
   describeExtinguisherOptions,
   effectiveCategories,
   expiringSoonDate,
+  findAcceptance,
   isPendingConditional,
   isViolation,
 } from "@/lib/matcher";
@@ -653,15 +654,18 @@ function writeReferenceCategory(w: PdfReportWriter, category: EquipmentCategory,
 
   if (rule.acceptedStandards && rule.acceptedStandards.length > 0) {
     w.text("Accepted certifications:", { size: 9, color: COLOR.muted, indent: 3 });
-    rule.acceptedStandards.forEach((a) => {
+    withEquivalents(rule.acceptedStandards).forEach((a) => {
       const detail = acceptanceDetail(a);
       w.bullet(`${standardLabel(a.standardId)}${detail ? ` (${detail})` : ""}`, { size: 8.5, indent: 6 });
     });
   }
 
   if (rule.requirement !== "not_addressed") {
-    const accepted = new Set((rule.acceptedStandards ?? []).map((a) => a.standardId));
-    const notAccepted = standardsFor(category).filter((s) => !accepted.has(s.id));
+    const implied = standardsFor(category).filter((s) => findAcceptance(rule, s.id, category)?.impliedByMaterialOnly);
+    if (implied.length > 0) {
+      w.bullet(`Also accepted (any certified item more than meets a no-certification rule): ${implied.map((s) => s.label).join(", ")}`, { size: 8.5 });
+    }
+    const notAccepted = standardsFor(category).filter((s) => !findAcceptance(rule, s.id, category));
     if (notAccepted.length > 0) {
       w.bullet(`Not accepted: ${notAccepted.map((s) => s.label).join(", ")}`, { size: 8, color: COLOR.faint });
     }

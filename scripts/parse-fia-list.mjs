@@ -79,17 +79,27 @@ const LIST_CONFIG = {
     manualEntries: () => LIST_24_MANUAL_ENTRIES,
   },
   16: {
-    title: "Technical List n°16 — Plumbed-in Fire Extinguisher Systems",
-    // Also backs "fia-technical-list-16" -- several bodies' rulebooks cite this registry by list
-    // number rather than by the FIA 8865-2015 standard number it's published under (e.g. NASA,
-    // Pikes Peak, SCCA, BMW CCA), and standards.ts had that as its own standardId with no backing
-    // list at all until now (same registry, just named differently -- not a distinct standard).
-    standardIds: ["fia-8865-2015", "fia-technical-list-16"],
+    title: "Technical List n°16 — Plumbed-in Fire Extinguisher Systems (pre-2015 FIA standard)",
+    // List 16 is the register for the OLDER FIA plumbed-in extinguisher standard (homologations
+    // from 1997 on) -- NOT FIA 8865-2015, whose register is List 52 below. Bodies cite it by list
+    // number (e.g. NASA, Pikes Peak, SCCA, BMW CCA), hence "fia-technical-list-16".
+    standardIds: ["fia-technical-list-16"],
     sourceUrl: "https://www.fia.com/sites/default/files/tl16_0.pdf",
     numberPattern: /^(Ex\.\d{3}\.\d{2})\s*³?\b/,
     // Hand-transcribed (see LIST_16_MANUAL_ENTRIES below), not run through the generic
     // pdftotext-based row parser — see that constant's own comment for why.
     manualEntries: () => LIST_16_MANUAL_ENTRIES,
+  },
+  52: {
+    title: "Technical List n°52 — Plumbed-in Fire Extinguisher Systems (FIA 8865-2015)",
+    // The FIA 8865-2015 register; bodies cite it either way, so it backs both standardIds.
+    standardIds: ["fia-8865-2015", "fia-technical-list-52"],
+    categories: ["fire_suppression"],
+    sourceUrl: "https://www.fia.com/sites/default/files/8865.pdf",
+    numberPattern: /^(EX\.\d{3}\.\d{2})\b/,
+    // Hand-transcribed (see LIST_52_MANUAL_ENTRIES below), not run through the generic
+    // pdftotext-based row parser — see that constant's own comment for why.
+    manualEntries: () => LIST_52_MANUAL_ENTRIES,
   },
   12: {
     title: "Technical List n°12 — Seats (FIA 8855-1999)",
@@ -2050,6 +2060,53 @@ const LIST_24_MANUAL_ENTRIES = [
 // hand-transcribed from the rendered pages; this list has no separate 'valid until' column
 // (only start/end of homologation), so validUntil is never set for it. The 1 revocation
 // (Ex.001.97) is still detected automatically from the free-text WARNING section.
+// List 52 (FIA 8865-2015), Part 1 only — Part 2 is hand-held extinguishers (ME.xxx.yy numbers), a
+// different equipment category than the plumbed-in systems this lookup checks. Transcribed from
+// the rendered pages of the 01.09.2026 edition: six systems (EX.019-021, EX.029, EX.030, EX.032)
+// were homologated for a second extinguishing medium later, giving two start dates in one row —
+// the original (earlier) one is kept. pdftotext misreads Lifeline's "Zero 3620" as "362O".
+// No 'valid until' column and no revocations ("There are no warnings for this product").
+const LIST_52_MANUAL_ENTRIES = [
+  { number: "EX.001.15", manufacturer: "LIFELINE", model: "Zero 3620 – 2.3-4.03 m3", homologationStart: "10.2015", homologationEnd: "10.2020" },
+  { number: "EX.002.15", manufacturer: "SPA DESIGN", model: "RP-D", homologationStart: "10.2015", homologationEnd: "10.2020" },
+  { number: "EX.003.15", manufacturer: "SPA DESIGN", model: "RP-T", homologationStart: "10.2015", homologationEnd: "10.2020" },
+  { number: "EX.004.15", manufacturer: "SPA DESIGN", model: "RP-S", homologationStart: "11.2015", homologationEnd: "11.2020" },
+  { number: "EX.005.15", manufacturer: "LIFELINE", model: "Zero 3620 – 1.6-2.3 m3", homologationStart: "12.2015", homologationEnd: "12.2020" },
+  { number: "EX.006.16", manufacturer: "SPA DESIGN", model: "XTREME-500", homologationStart: "10.2016", homologationEnd: "10.2021" },
+  { number: "EX.007.16", manufacturer: "SPA DESIGN", model: "XTREME-X", homologationStart: "10.2016", homologationEnd: "10.2021" },
+  { number: "EX.008.16", manufacturer: "FEV", model: "FX G-TEC3300R", homologationStart: "10.2016", homologationEnd: "10.2021" },
+  { number: "EX.009.16", manufacturer: "LIFELINE", model: "Zero 3620 Fire Marshal", homologationStart: "12.2016", homologationEnd: "12.2021" },
+  { number: "EX.010.17", manufacturer: "FEV", model: "FX G-TEC3300R3", homologationStart: "03.2017", homologationEnd: "03.2022" },
+  { number: "EX.011.17", manufacturer: "SPA DESIGN", model: "XTREME-X-1.4-2.3", homologationStart: "03.2017", homologationEnd: "03.2022" },
+  { number: "EX.012.17", manufacturer: "LIFELINE", model: "Zero 3620 Fire Marshal", homologationStart: "05.2017", homologationEnd: "05.2022" },
+  { number: "EX.013.17", manufacturer: "FEV", model: "FX G-TEC2400R3", homologationStart: "10.2017", homologationEnd: "10.2027" },
+  { number: "EX.014.17", manufacturer: "OMP", model: "CESAL4L", homologationStart: "12.2017", homologationEnd: "12.2027" },
+  { number: "EX.015.17", manufacturer: "OMP", model: "CESAL4S", homologationStart: "12.2017", homologationEnd: "12.2027" },
+  { number: "EX.016.18", manufacturer: "FEV", model: "FX G-TEC2900R3", homologationStart: "03.2018", homologationEnd: "03.2028" },
+  { number: "EX.017.18", manufacturer: "FEV", model: "FX G-TEC2900R", homologationStart: "03.2018", homologationEnd: "03.2028" },
+  { number: "EX.018.18", manufacturer: "LIFELINE", model: "ZERO 275 - 0-4 m3", homologationStart: "12.2018", homologationEnd: "12.2028" },
+  { number: "EX.019.19", manufacturer: "FEV", model: "N-TEC4100R", homologationStart: "05.2019", homologationEnd: "05.2029" },
+  { number: "EX.020.19", manufacturer: "FEV", model: "N-TEC3550R", homologationStart: "06.2019", homologationEnd: "05.2029" },
+  { number: "EX.021.19", manufacturer: "FEV", model: "N-TEC2950R", homologationStart: "06.2019", homologationEnd: "05.2029" },
+  { number: "EX.022.19", manufacturer: "OMP", model: "CESAL5L", homologationStart: "10.2019", homologationEnd: "10.2029" },
+  { number: "EX.023.19", manufacturer: "OMP", model: "CESAL5S", homologationStart: "10.2019", homologationEnd: "10.2029" },
+  { number: "EX.024.21", manufacturer: "FEV", model: "FX G-TEC2400R3SV", homologationStart: "03.2021", homologationEnd: "03.2026" },
+  { number: "EX.025.21", manufacturer: "OMP", model: "CESAL5LE", homologationStart: "07.2021", homologationEnd: "07.2031" },
+  { number: "EX.026.21", manufacturer: "OMP", model: "CESAL5SE", homologationStart: "07.2021", homologationEnd: "07.2031" },
+  { number: "EX.027.21", manufacturer: "SPARCO", model: "014777EXP", homologationStart: "10.2021", homologationEnd: "10.2026" },
+  { number: "EX.028.21", manufacturer: "SPARCO", model: "014779EXP", homologationStart: "11.2021", homologationEnd: "11.2026" },
+  { number: "EX.029.21", manufacturer: "LIFELINE", model: "ZERO EV – 1.7-3.13 m3", homologationStart: "11.2021", homologationEnd: "11.2026" },
+  { number: "EX.030.22", manufacturer: "LIFELINE", model: "ZERO EV – 2.2-4.1 m3", homologationStart: "03.2022", homologationEnd: "03.2027" },
+  { number: "EX.031.22", manufacturer: "OMP", model: "CESAL4XS", homologationStart: "05.2022", homologationEnd: "05.2027" },
+  { number: "EX.032.22", manufacturer: "LIFELINE", model: "ZERO EV – 0.96-1.7 m3", homologationStart: "10.2022", homologationEnd: "10.2027" },
+  { number: "EX.033.23", manufacturer: "LIFELINE", model: "ZERO 275L – 1.4-4.1 m3", homologationStart: "09.2023", homologationEnd: "09.2028" },
+  { number: "EX.034.24", manufacturer: "FEV", model: "CF- TEC2700EK", homologationStart: "05.2024", homologationEnd: "05.2029" },
+  { number: "EX.035.24", manufacturer: "FEV", model: "CF- TEC2700MK", homologationStart: "10.2024", homologationEnd: "10.2029" },
+  { number: "EX.036.25", manufacturer: "FEV", model: "N-TEC2700R", homologationStart: "03.2025", homologationEnd: "04.2030" },
+  { number: "EX.037.25", manufacturer: "OMP", model: "CESAL4LE", homologationStart: "07.2025", homologationEnd: "07.2030" },
+  { number: "EX.038.25", manufacturer: "OMP", model: "CESAL4SE", homologationStart: "07.2025", homologationEnd: "07.2030" },
+];
+
 const LIST_16_MANUAL_ENTRIES = [
   { number: "Ex.001.97", manufacturer: "FOGMAKER", model: "Fogmaker", homologationStart: "12.1997", homologationEnd: "07.2018" },
   { number: "Ex.002.98", manufacturer: "LIFELINE", model: "Zero 2000", homologationStart: "12.1998", homologationEnd: "12.2017" },

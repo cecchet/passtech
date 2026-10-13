@@ -1,5 +1,5 @@
 import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, RequirementLevel, RolloverTubingTier, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
-import { logbookBodyLabel, NOT_LISTED, ROLLOVER_PADDING_STANDARDS, standardFamily, standardLabel } from "@/data/standards";
+import { equivalentStandardId, KARTING_STANDARD_IDS, logbookBodyLabel, NOT_LISTED, ROLLOVER_PADDING_STANDARDS, standardFamily, standardLabel, standardsFor } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 
 export type ItemStatus = "ok" | "rejected" | "not_required" | "recommended_only" | "needs_info" | "unrecognized";
@@ -234,9 +234,35 @@ export interface CategoryResult {
   missingExtinguisherMountFields?: { key: string; fields: ("hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs")[] }[];
 }
 
-export function findAcceptance(rule: CategoryRule, standardId?: string): StandardAcceptance | undefined {
+/**
+ * The acceptance governing this standard under this rule. Beyond the rule's own list: when a rule
+ * accepts plain uncertified material (materialOnlyAccepted), any certified item of that category
+ * more than meets the bar, so it's accepted too even if the body never names its standard (e.g.
+ * an SFI 27.1 window net where the rule just asks for a net). Karting ratings are excluded — they
+ * aren't fire-resistance specs, so they still only pass where a body lists them.
+ */
+export function findAcceptance(rule: CategoryRule, standardId: string | undefined, category: EquipmentCategory): StandardAcceptance | undefined {
   if (!standardId) return undefined;
-  return rule.acceptedStandards?.find((a) => a.standardId === standardId);
+  const listed = rule.acceptedStandards?.find((a) => a.standardId === standardId);
+  if (listed) return listed;
+  // The same certification under its other name (e.g. FIA 8865-2015 / Technical List 52).
+  const alias = equivalentStandardId(standardId);
+  const listedAlias = alias ? rule.acceptedStandards?.find((a) => a.standardId === alias) : undefined;
+  if (listedAlias) return { ...listedAlias, standardId };
+  if (
+    rule.materialOnlyAccepted &&
+    !rule.certifiedListExclusive &&
+    CATEGORY_META[category].hybrid &&
+    !KARTING_STANDARD_IDS.has(standardId) &&
+    standardsFor(category).some((s) => s.id === standardId)
+  ) {
+    return {
+      standardId,
+      impliedByMaterialOnly: true,
+      note: "not named by this body, but it accepts plain uncertified material here, which a certified item more than meets",
+    };
+  }
+  return undefined;
 }
 
 /**
@@ -315,7 +341,7 @@ export function getCertificationExpiryStatus(
   asOf: Date = new Date()
 ): CertExpiryInfo | undefined {
   if (!cert.standardId || cert.standardId === NOT_LISTED) return undefined;
-  const acceptance = findAcceptance(rule, cert.standardId);
+  const acceptance = findAcceptance(rule, cert.standardId, category);
   if (!acceptance || acceptance.noExpiration) return undefined;
 
   let cutoff = earliestUpcomingCutoff(cert, acceptance);
@@ -342,7 +368,7 @@ export function getCertificationExpiryStatus(
   const date = cutoff.toISOString().slice(0, 10);
   if (asOf > cutoff) {
     // Same condition evaluateSingleCert uses to soften a past-cutoff rejection into a warning.
-    const enforced = !(category === "seat" && !explicitDateConfigured);
+    const enforced = !((category === "seat" || acceptance.impliedByMaterialOnly) && !explicitDateConfigured);
     return { status: "expired", date, enforced };
   }
   if (cutoff.getFullYear() === asOf.getFullYear()) return { status: "expiring_soon", date, enforced: true };
@@ -365,7 +391,7 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
     };
   }
 
-  const acceptance = findAcceptance(rule, cert.standardId);
+  const acceptance = findAcceptance(rule, cert.standardId, category);
   if (!acceptance) {
     return {
       status: rule.requirement === "recommended" ? "recommended_only" : "rejected",
@@ -386,9 +412,11 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
     acceptance.validityYearsFromLabel !== undefined ||
     acceptance.expirationGraceYears !== undefined;
   // Seats specifically default to a warning rather than a rejection when unconfigured — see
-  // explicitDateConfigured above. Every other category keeps today's behavior: an unconfigured
-  // printed expiration date is enforced exactly as printed, same as it always has been.
+  // explicitDateConfigured above. So does a cert accepted only because the rule takes plain
+  // uncertified material (an expired cert is still at least that material). Every other category
+  // keeps today's behavior: an unconfigured printed expiration date is enforced exactly as printed.
   const unenforcedSeatExpiration = category === "seat" && !explicitDateConfigured;
+  const unenforcedImpliedExpiration = acceptance.impliedByMaterialOnly === true && !explicitDateConfigured;
   let tagExpirationWarning = "";
   if (cert.tagExpirationDate && !acceptance.noExpiration) {
     const tagExp = new Date(cert.tagExpirationDate);
@@ -397,6 +425,8 @@ function evaluateSingleCert(category: EquipmentCategory, rule: CategoryRule, cer
     if (asOf > cutoff) {
       if (unenforcedSeatExpiration) {
         tagExpirationWarning = ` ⚠️ ${label}'s printed expiration date (${cert.tagExpirationDate}) has passed, but most sanctioning bodies don't enforce seat expiration dates — check with tech.`;
+      } else if (unenforcedImpliedExpiration) {
+        tagExpirationWarning = ` ⚠️ ${label}'s printed expiration date (${cert.tagExpirationDate}) has passed, but this body doesn't require a certification here at all — check with tech.`;
       } else {
         const graceNote = acceptance.expirationGraceYears
           ? ` (including this body's ${acceptance.expirationGraceYears}-year grace period past that date)`

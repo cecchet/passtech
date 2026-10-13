@@ -211,8 +211,8 @@ export const STANDARDS: StandardDef[] = [
   { id: "sfi-17.1", label: "SFI 17.1", family: "sfi", categories: ["fire_suppression"] },
   { id: "sfi-17.2", label: "SFI 17.2", family: "sfi", categories: ["fire_suppression"] },
   { id: "fia-8865-2015", label: "FIA 8865-2015", family: "fia", categories: ["fire_suppression"] },
-  { id: "fia-technical-list-16", label: "FIA Technical List #16 (fire extinguishers)", family: "fia", categories: ["fire_suppression"] },
-  { id: "fia-technical-list-52", label: "FIA Technical List #52 (fire extinguishing systems)", family: "fia", categories: ["fire_suppression"] },
+  { id: "fia-technical-list-16", label: "FIA Technical List #16 (plumbed-in systems, pre-2015 FIA standard)", family: "fia", categories: ["fire_suppression"] },
+  { id: "fia-technical-list-52", label: "FIA Technical List #52 (FIA 8865-2015 plumbed-in systems)", family: "fia", categories: ["fire_suppression"] },
 ];
 
 /** Every SFI 3.3 tier — use when a body cites the spec generically without naming a minimum level. */
@@ -254,6 +254,35 @@ export const GENERIC_FUEL_CELL_STANDARDS: StandardAcceptance[] = [
   { standardId: "fia-ft3.5-1999" },
   { standardId: "fia-ft5-1999" },
 ];
+
+/**
+ * Karting gear ratings (abrasion/impact specs, not fire resistance). A rule that accepts plain
+ * fire-resistant material doesn't thereby accept these — they only count where a body lists them.
+ */
+export const KARTING_STANDARD_IDS: ReadonlySet<string> = new Set(["cik-level-2", "fia-8873-2018", "fia-8877-2022", "fia-8878-2024"]);
+
+/**
+ * Pairs of standardIds that name the same certification two ways — a standard number and the FIA
+ * Technical List that is its homologation register. A rule accepting either accepts both.
+ */
+const EQUIVALENT_STANDARD_IDS: Record<string, string> = {
+  "fia-8865-2015": "fia-technical-list-52",
+  "fia-technical-list-52": "fia-8865-2015",
+};
+
+export function equivalentStandardId(id: string): string | undefined {
+  return EQUIVALENT_STANDARD_IDS[id];
+}
+
+/** An accepted-standards list with each unlisted equivalent inserted right after its twin, for display. */
+export function withEquivalents(list: StandardAcceptance[]): StandardAcceptance[] {
+  const listed = new Set(list.map((a) => a.standardId));
+  return list.flatMap((a) => {
+    const alias = equivalentStandardId(a.standardId);
+    if (!alias || listed.has(alias)) return [a];
+    return [a, { standardId: alias, note: "same certification as the entry above, under its other name" }];
+  });
+}
 
 export function standardsFor(category: EquipmentCategory): StandardDef[] {
   return STANDARDS.filter((s) => s.categories.includes(category));

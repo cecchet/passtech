@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
-import { logbookBodyLabel, standardLabel, standardsFor } from "@/data/standards";
+import { logbookBodyLabel, standardLabel, standardsFor, withEquivalents } from "@/data/standards";
 import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, SourceDocument, StandardAcceptance } from "@/data/types";
-import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories } from "@/lib/matcher";
+import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories, findAcceptance } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
 import { CitationLine } from "@/components/CitationLine";
@@ -34,7 +34,7 @@ function acceptanceDetail(acceptance: StandardAcceptance): string {
 const ACCEPTED_COLLAPSE_THRESHOLD = 6;
 
 function AcceptedList({ rule }: { rule: CategoryRule }) {
-  const standards = rule.acceptedStandards ?? [];
+  const standards = withEquivalents(rule.acceptedStandards ?? []);
   if (standards.length === 0) return null;
 
   const items = standards.map((a, i) => {
@@ -66,11 +66,24 @@ function AcceptedList({ rule }: { rule: CategoryRule }) {
   );
 }
 
+/** Registry standards the rule doesn't list but still accepts because it takes plain uncertified material (see findAcceptance). */
+function ImpliedAcceptedList({ category, rule }: { category: EquipmentCategory; rule: CategoryRule }) {
+  if (rule.requirement === "not_addressed") return null;
+  const implied = standardsFor(category).filter((s) => findAcceptance(rule, s.id, category)?.impliedByMaterialOnly);
+  if (implied.length === 0) return null;
+
+  return (
+    <p className="mt-3 text-xs text-neutral-300">
+      <span className="font-semibold text-neutral-400">Also accepted</span> — any certified item more than meets a no-certification rule:{" "}
+      {implied.map((s) => s.label).join(", ")}
+    </p>
+  );
+}
+
 function NotAcceptedList({ category, rule }: { category: EquipmentCategory; rule: CategoryRule }) {
   if (rule.requirement === "not_addressed") return null;
 
-  const accepted = new Set((rule.acceptedStandards ?? []).map((a) => a.standardId));
-  const notAccepted = standardsFor(category).filter((s) => !accepted.has(s.id));
+  const notAccepted = standardsFor(category).filter((s) => !findAcceptance(rule, s.id, category));
   if (notAccepted.length === 0) return null;
 
   return (
@@ -187,6 +200,8 @@ function CategoryReferenceCard({ category, rule, sourceDocuments }: { category: 
       )}
 
       <AcceptedList rule={rule} />
+
+      <ImpliedAcceptedList category={category} rule={rule} />
 
       <NotAcceptedList category={category} rule={rule} />
 

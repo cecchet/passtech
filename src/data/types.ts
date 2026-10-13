@@ -90,6 +90,12 @@ export interface StandardAcceptance {
    */
   expirationGraceYears?: number;
   note?: string;
+  /**
+   * Never set in ruleset data — the matcher synthesizes an acceptance with this flag for a
+   * certification the rule doesn't list, when the rule accepts plain uncertified material anyway
+   * (see findAcceptance in matcher.ts). Such a cert's own printed expiration only warns.
+   */
+  impliedByMaterialOnly?: boolean;
 }
 
 export interface SourceDocument {
@@ -152,6 +158,13 @@ export interface CategoryRule {
   acceptedStandards?: StandardAcceptance[];
   /** For categories (gloves/shoes/undergarment/arm_restraint) that can be satisfied by plain fire-resistant/non-flammable material with no certification. */
   materialOnlyAccepted?: boolean;
+  /**
+   * With materialOnlyAccepted, a certified item normally passes even when its standard isn't
+   * listed (it more than meets a no-certification bar). Set this when the body instead names the
+   * only certification it'll take for the certified variant (e.g. PPIHC GT4: a plain protective
+   * net, or else a racing net that must be FIA 8863-2013 specifically).
+   */
+  certifiedListExclusive?: boolean;
   /** Describes the material/condition requirement, shown regardless of whether materialOnlyAccepted or a standard is chosen. */
   materialNote?: string;
   /** Helmet only: whether a full-face (integrated chin bar) helmet specifically is required, separate from the base helmet requirement above. "required" blocks an open-face helmet outright; "conditional" only applies in some cars (see fullFaceCondition) and is shown as a caveat rather than a hard block. */
