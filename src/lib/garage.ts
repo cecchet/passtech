@@ -24,7 +24,10 @@ export interface GarageProfile {
 const LEGACY_LOCALSTORAGE_KEY = "safety-gear-check:garage:v1";
 
 const DB_NAME = "passtech";
-const DB_VERSION = 2;
+/** v1: garage. v2: + workspace. v3: + techSheets. Every upgrade only ever adds the stores a
+ * browser doesn't have yet (see openDb), so a browser on any older version upgrades in place
+ * without touching the data already stored. */
+const DB_VERSION = 3;
 const STORE_NAME = "garage";
 /** The whole profiles array is stored as one record under this fixed key — same shape the app has
  * always worked with (load the full array, mutate it in React state, save the full array back),
@@ -36,12 +39,18 @@ const RECORD_KEY = "profiles";
 const WORKSPACE_STORE_NAME = "workspace";
 const WORKSPACE_RECORD_KEY = "state";
 
+/** Tech sheet drafts (see src/lib/techSheet.ts) — added in v3, one record per draft keyed by its
+ * id, unlike the single-record stores above: drafts are independent and each carries its own
+ * photos, so saving one never has to rewrite the others. */
+const TECH_SHEETS_STORE_NAME = "techSheets";
+
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = window.indexedDB.open(DB_NAME, DB_VERSION);
     req.onupgradeneeded = () => {
       if (!req.result.objectStoreNames.contains(STORE_NAME)) req.result.createObjectStore(STORE_NAME);
       if (!req.result.objectStoreNames.contains(WORKSPACE_STORE_NAME)) req.result.createObjectStore(WORKSPACE_STORE_NAME);
+      if (!req.result.objectStoreNames.contains(TECH_SHEETS_STORE_NAME)) req.result.createObjectStore(TECH_SHEETS_STORE_NAME);
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -373,4 +382,71 @@ export function setDisciplinePreference(preferences: UserPreferences, group: Dis
   if (ids === undefined) delete byDiscipline[group];
   else byDiscipline[group] = ids;
   return { ...preferences, preferredBodiesByDiscipline: byDiscipline };
+}
+
+/** Every saved tech sheet draft, newest first. Empty when nothing is saved or IndexedDB is unavailable. */
+export async function loadTechSheetDrafts<T extends { updatedAt: string }>(): Promise<T[]> {
+  try {
+    const db = await openDb();
+    const all = await new Promise<T[]>((resolve, reject) => {
+      const req = db.transaction(TECH_SHEETS_STORE_NAME, "readonly").objectStore(TECH_SHEETS_STORE_NAME).getAll();
+      req.onsuccess = () => resolve(req.result as T[]);
+      req.onerror = () => reject(req.error);
+    });
+    db.close();
+    return all.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  } catch {
+    return [];
+  }
+}
+
+/** Same ordered write-queue treatment as saveGarage() — see its comment. */
+let techSheetWriteQueue: Promise<void> = Promise.resolve();
+
+/** Returns whether the write succeeded — callers should surface a failure (storage full). */
+export function saveTechSheetDraft<T extends { id: string }>(draft: T): Promise<boolean> {
+  const outcome = techSheetWriteQueue.then(async (): Promise<boolean> => {
+    try {
+      const db = await openDb();
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction(TECH_SHEETS_STORE_NAME, "readwrite");
+        tx.objectStore(TECH_SHEETS_STORE_NAME).put(draft, draft.id);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error);
+      });
+      db.close();
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  techSheetWriteQueue = outcome.then(
+    () => undefined,
+    () => undefined
+  );
+  return outcome;
+}
+
+export function deleteTechSheetDraft(id: string): Promise<boolean> {
+  const outcome = techSheetWriteQueue.then(async (): Promise<boolean> => {
+    try {
+      const db = await openDb();
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction(TECH_SHEETS_STORE_NAME, "readwrite");
+        tx.objectStore(TECH_SHEETS_STORE_NAME).delete(id);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+      db.close();
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  techSheetWriteQueue = outcome.then(
+    () => undefined,
+    () => undefined
+  );
+  return outcome;
 }

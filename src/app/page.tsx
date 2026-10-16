@@ -8,6 +8,7 @@ import { EquipmentForm } from "@/components/EquipmentForm";
 import { DISCIPLINE_GROUPS, RulesetPicker, ClassPicker } from "@/components/RulesetPicker";
 import { BuyerMode } from "@/components/BuyerMode";
 import { ScrutineerMode } from "@/components/ScrutineerMode";
+import { TechSheetMode } from "@/components/TechSheetMode";
 import { EquipmentSummary, FilledEquipmentSummary } from "@/components/EquipmentSummary";
 import { GarageManager } from "@/components/GarageManager";
 import { ReferenceView } from "@/components/ReferenceView";
@@ -43,7 +44,7 @@ import { DisciplineIcon } from "@/components/icons/DisciplineIcons";
 import { TourId, TutorialActions, TutorialModal, hasTour } from "@/components/TutorialModal";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
-type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage" | "buyer" | "scrutineer";
+type Mode = "landing" | "reference" | "body-first" | "equipment-first" | "garage" | "buyer" | "scrutineer" | "techsheet";
 
 
 const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
@@ -642,6 +643,13 @@ export default function Home() {
               icon="/scrutineer-mode.jpg"
               onClick={() => setMode("scrutineer")}
             />
+            <LandingCard
+              number={5}
+              title="Pre-fill my tech sheet"
+              description="Fill in your car's tech inspection sheet from My gear, with photos, then submit it to the event or export it for the scrutineer."
+              icon="/tech-sheets/ara-tech-form.jpg"
+              onClick={() => setMode("techsheet")}
+            />
           </section>
         </>
       )}
@@ -1079,6 +1087,7 @@ export default function Home() {
 
       {mode === "buyer" && <BuyerMode demoItemTrigger={demoItemTrigger} tourActive={activeTour === "buyer"} />}
       {mode === "scrutineer" && <ScrutineerMode demoItemTrigger={demoItemTrigger} tourActive={activeTour === "scrutineer"} />}
+      {mode === "techsheet" && <TechSheetMode preferences={preferences} onOpenGarage={() => setMode("garage")} />}
 
       {missingReports.length > 0 && (
         <section className="mt-10 rounded-lg border border-orange-700 bg-orange-950 p-4">

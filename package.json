@@ -7,10 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "parse-fia-list": "node scripts/parse-fia-list.mjs"
+    "parse-fia-list": "node scripts/parse-fia-list.mjs",
+    "sync-tech-sheets": "node scripts/sync-tech-sheets.mjs",
+    "export-gear-catalog": "node scripts/export-gear-catalog.mjs",
+    "sync-photo-capture": "node scripts/sync-photo-capture.mjs",
+    "build-engine": "node scripts/build-engine.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",
+    "@supabase/supabase-js": "^2.117.3",
     "jspdf": "^4.2.1",
     "next": "16.3.0",
     "react": "19.2.8",
@@ -21,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.25.10",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",

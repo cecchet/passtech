@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
@@ -46,6 +47,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <ServiceWorkerRegister />
+        {/* On a laptop, photo pickers offer the phone (QR code) or the laptop camera -- shared with the
+            rollcage app (npm run sync-photo-capture copies it into public/). */}
+        <Script src="/photo-capture.js" strategy="afterInteractive" />
       </body>
     </html>
   );
