@@ -36,7 +36,7 @@ export function PhotoScan({ category, onAdd }: Props) {
 
   const handleFile = async (file: File) => {
     const imageDataUrl = await resizeImageToDataUrl(file);
-    await scanner.analyze(imageDataUrl);
+    await scanner.analyze(imageDataUrl, file);
   };
 
   return (

@@ -5,6 +5,7 @@ import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
 import { NOT_LISTED, standardsFor } from "@/data/standards";
 import { CertificationEntry, ExtinguisherUnit, mergeCertification, newCertification, newExtinguisherUnit } from "@/lib/matcher";
+import { fillSerialFromBarcode, readSerialBarcode } from "@/lib/serialBarcode";
 import { ExtinguisherVisionResult, extinguisherPatchFromVision, extinguisherVisionSummary } from "@/lib/extinguisherVision";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { fetchWithTimeout, REQUEST_TIMEOUT_LABEL } from "@/lib/fetchWithTimeout";
@@ -83,6 +84,7 @@ export function QuickItemScan({
       setStage({ type: "error", message: "Couldn't read this photo file." });
       return;
     }
+    const barcode = readSerialBarcode(file);
     const { ok, data } = await fetchWithTimeout("/api/analyze-gear-photo", { imageDataUrl: photoDataUrl });
     if (!ok) {
       const message = typeof data.error === "string" ? data.error : "Something went wrong.";
@@ -100,7 +102,7 @@ export function QuickItemScan({
       confidence: (data.categoryConfidence as "high" | "medium" | "low") ?? "medium",
       notes: (data.notes as string) ?? "",
       photoDataUrl,
-      certifications: (data.certifications as CertCandidate[]) ?? [],
+      certifications: fillSerialFromBarcode((data.certifications as CertCandidate[]) ?? [], await barcode),
     });
   };
 
@@ -135,7 +137,7 @@ export function QuickItemScan({
     } catch {
       return;
     }
-    void scanner.analyze(dataUrl);
+    void scanner.analyze(dataUrl, file);
   };
 
   const handleExtinguisherLabelFile = async (file: File) => {
@@ -382,7 +384,7 @@ export function TagOnlyScan({
     } catch {
       return;
     }
-    void scanner.analyze(dataUrl);
+    void scanner.analyze(dataUrl, file);
   };
 
   const handleExtinguisherLabelFile = async (file: File) => {

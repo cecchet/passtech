@@ -17,6 +17,7 @@ import {
 } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { REQUEST_TIMEOUT_LABEL, fetchWithTimeout } from "@/lib/fetchWithTimeout";
+import { fillSerialFromBarcode, readSerialBarcode } from "@/lib/serialBarcode";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { NOT_LISTED } from "@/data/standards";
@@ -246,6 +247,7 @@ export function AutomaticGearImport({
 
   const runAnalysis = async (photo: QueuedPhoto, dataUrl: string) => {
     setCurrent({ photo, dataUrl, target: "driver", stage: { type: "processing" } });
+    const barcode = readSerialBarcode(photo.file);
     const { ok, status, data } = await fetchWithTimeout("/api/analyze-gear-photo", { imageDataUrl: dataUrl });
     if (!ok) {
       const message = typeof data.error === "string" ? data.error : "Something went wrong.";
@@ -255,6 +257,7 @@ export function AutomaticGearImport({
       return;
     }
     const result = data as unknown as AnalyzeGearPhotoResponse;
+    if (result.certifications) result.certifications = fillSerialFromBarcode(result.certifications, await barcode);
     routeResult(photo, dataUrl, result);
   };
 
@@ -305,6 +308,7 @@ export function AutomaticGearImport({
 
   const runManualTagAnalysis = async (photo: QueuedPhoto, dataUrl: string, category: EquipmentCategory, piece: Piece | null, target: Target) => {
     setCurrent({ photo, dataUrl, target, stage: { type: "processing" } });
+    const barcode = readSerialBarcode(photo.file);
     const { ok, status, data } = await fetchWithTimeout("/api/analyze-tag", { category, imageDataUrl: dataUrl });
     if (!ok) {
       const message = typeof data.error === "string" ? data.error : "Something went wrong.";
@@ -319,7 +323,7 @@ export function AutomaticGearImport({
         type: "manual_tag_result",
         category,
         piece,
-        candidates: (data.candidates as TagCandidate[]) ?? [],
+        candidates: fillSerialFromBarcode((data.candidates as TagCandidate[]) ?? [], await barcode),
         tagNotes: (data.notes as string) ?? "",
         added: new Set(),
       },

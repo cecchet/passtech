@@ -371,7 +371,7 @@ function CertificationRow({
           onChange={(v) => onChange({ homologationNumber: v })}
         />
       )}
-      {cert.standardId && !notListed && (standardFamily(cert.standardId) === "fia" || standardFamily(cert.standardId) === "snell" || category === "hnr" || cert.serialNumber) && (
+      {cert.standardId && !notListed && (standardFamily(cert.standardId) === "fia" || standardFamily(cert.standardId) === "snell" || category === "hnr" || category === "seat" || category === "belts_harness" || cert.serialNumber) && (
         <label className="mt-2 flex flex-col gap-1 text-xs text-neutral-400">
           <span>Serial number on tag (optional)</span>
           <input

@@ -5,6 +5,7 @@ import { EquipmentCategory } from "@/data/types";
 import { NOT_LISTED } from "@/data/standards";
 import { CertificationEntry, newCertification } from "@/lib/matcher";
 import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
+import { fillSerialFromBarcode, readSerialBarcode } from "@/lib/serialBarcode";
 
 export interface TagCandidate {
   standardId: string;
@@ -27,18 +28,20 @@ export function useTagScanner(category: EquipmentCategory, onAdd: (cert: Certifi
   const [notes, setNotes] = useState<string | null>(null);
   const [added, setAdded] = useState<Set<number>>(new Set());
 
-  const analyze = async (imageDataUrl: string) => {
+  /** `original` is the full-size photo file when there is one, for reading a serial barcode (see readSerialBarcode). */
+  const analyze = async (imageDataUrl: string, original?: Blob) => {
     setStatus("loading");
     setError(null);
     setCandidates(null);
     setAdded(new Set());
+    const barcode = readSerialBarcode(original ?? imageDataUrl);
     const { ok, data } = await fetchWithTimeout("/api/analyze-tag", { category, imageDataUrl });
     if (!ok) {
       setError(typeof data.error === "string" ? data.error : "Something went wrong.");
       setStatus("error");
       return;
     }
-    setCandidates((data.candidates as TagCandidate[]) ?? []);
+    setCandidates(fillSerialFromBarcode((data.candidates as TagCandidate[]) ?? [], await barcode));
     setNotes((data.notes as string) || null);
     setStatus("idle");
   };

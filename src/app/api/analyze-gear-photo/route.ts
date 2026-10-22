@@ -190,7 +190,7 @@ const SCHEMA = {
           serialNumber: {
             type: "string" as const,
             description:
-              "The product's own serial number, if the tag prints one -- FIA-homologated gear labels usually do, next to the homologation number (e.g. \"Serial N°: 000345\" on a helmet, \"Serial No: FIA05952\" on a HANS device, \"S/N 12345\"). Copy it exactly, keeping leading zeros. Each certification its own: for an FIA label, the product serial printed on it; for a Snell sticker, the sticker's own number (e.g. \"SQ718447\"). Not the homologation number, not a size. Empty string if none is printed.",
+              "The product's own serial number, if the tag prints one -- FIA-homologated gear labels usually do, next to the homologation number (e.g. \"Serial N°: 000345\" on a helmet, \"Serial No: FIA05952\" on a HANS device, \"S/N 12345\"). Copy it exactly, keeping leading zeros and every group printed after the label (e.g. \"11 00162603\" on a seat). On seat and harness labels the Serial N° field is often only a barcode: then use the same number printed in text elsewhere on the tag -- usually boxed near the manufacturer's name and address (e.g. \"DC2304717\" next to \"For FHR use only\" on a folded Schroth harness tag); that number is a serial, never a homologation number. Each certification its own: for an FIA label, the product serial printed on it; for a Snell sticker, the sticker's own number (e.g. \"SQ718447\"). Not the homologation number, not a size. Empty string if none is printed.",
           },
           labelDate: LABEL_DATE_SCHEMA_PROPERTY,
           dateType: DATE_TYPE_SCHEMA_PROPERTY,

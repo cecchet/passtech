@@ -188,15 +188,44 @@ export function newCertification(): CertificationEntry {
  * one entry rather than add a duplicate. NOT_LISTED (unrecognized) certifications are never
  * deduped against each other -- standardId alone can't tell two different unrecognized tags
  * apart, and their free-text rawText is too unreliable an OCR read to match on instead.
+ *
+ * Serial numbers carry across: a label folded in half (FIA harness tags) shows the FIA side in one
+ * photo and the serial, by the manufacturer's address, in another -- which reads as an
+ * unrecognized certification holding nothing but that serial. Rather than adding it as its own
+ * certification, it becomes the serial of the item's one recognized certification without a
+ * serial (preferring FIA), whichever of the two photos is scanned first. A re-scan that misses the
+ * serial keeps the one already entered.
  */
 export function mergeCertification(list: CertificationEntry[], next: CertificationEntry): CertificationEntry[] {
+  if (isSerialOnly(next)) {
+    const target = serialTarget(list);
+    if (target) return list.map((c) => (c === target ? { ...c, serialNumber: next.serialNumber } : c));
+    return [...list, next];
+  }
   if (next.standardId && next.standardId !== NOT_LISTED) {
     const existingIndex = list.findIndex((c) => c.standardId === next.standardId);
     if (existingIndex !== -1) {
-      return list.map((c, i) => (i === existingIndex ? next : c));
+      return list.map((c, i) => (i === existingIndex ? { ...next, serialNumber: next.serialNumber ?? c.serialNumber } : c));
+    }
+    const serialOnly = !next.serialNumber && list.find(isSerialOnly);
+    if (serialOnly && serialTarget([...list, next]) === next) {
+      return [...list.filter((c) => c !== serialOnly), { ...next, serialNumber: serialOnly.serialNumber }];
     }
   }
   return [...list, next];
+}
+
+/** An unrecognized certification read off a label side that prints only a serial number. */
+function isSerialOnly(c: CertificationEntry): boolean {
+  return c.standardId === NOT_LISTED && !!c.serialNumber && !c.homologationNumber && !c.labelDate && !c.tagExpirationDate;
+}
+
+/** The recognized certification a lone serial belongs to: the only one without a serial, FIA first. */
+function serialTarget(list: CertificationEntry[]): CertificationEntry | undefined {
+  const open = list.filter((c) => c.standardId && c.standardId !== NOT_LISTED && !c.serialNumber);
+  const fia = open.filter((c) => standardFamily(c.standardId!) === "fia");
+  if (fia.length) return fia.length === 1 ? fia[0] : undefined;
+  return open.length === 1 ? open[0] : undefined;
 }
 
 export function newExtinguisherUnit(): ExtinguisherUnit {
