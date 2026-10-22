@@ -459,6 +459,7 @@ export function AutomaticGearImport({
       standardId: c.standardId,
       customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
       homologationNumber: c.homologationNumber || undefined,
+      serialNumber: c.serialNumber || undefined,
       labelDate: c.labelDate || undefined,
       dateType: c.dateType || undefined,
       tagExpirationDate: c.tagExpirationDate || undefined,

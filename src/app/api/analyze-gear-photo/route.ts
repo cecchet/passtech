@@ -120,6 +120,7 @@ interface CertCandidate {
   standardId: string;
   rawText: string;
   homologationNumber: string;
+  serialNumber: string;
   labelDate: string;
   dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
@@ -186,12 +187,17 @@ const SCHEMA = {
             description:
               "A separate per-product homologation/approval number printed on the tag, if any -- e.g. \"DC.001.18-O\", \"RS.001.01\". Empty string if none visible.",
           },
+          serialNumber: {
+            type: "string" as const,
+            description:
+              "The product's own serial number, if the tag prints one -- FIA-homologated gear labels usually do, next to the homologation number (e.g. \"Serial N°: 000345\", \"S/N 12345\"). Copy it exactly, keeping leading zeros. Each certification its own: for an FIA label, the product serial printed on it; for a Snell sticker, the sticker's own number (e.g. \"SQ718447\"). Not the homologation number, not a size. Empty string if none is printed.",
+          },
           labelDate: LABEL_DATE_SCHEMA_PROPERTY,
           dateType: DATE_TYPE_SCHEMA_PROPERTY,
           tagExpirationDate: { type: "string" as const, description: "An explicit expiration date printed on the tag itself, in YYYY-MM-DD format. Empty string if none." },
           confidence: { type: "string" as const, enum: ["high", "medium", "low"] },
         },
-        required: ["standardId", "rawText", "homologationNumber", "labelDate", "dateType", "tagExpirationDate", "confidence"],
+        required: ["standardId", "rawText", "homologationNumber", "serialNumber", "labelDate", "dateType", "tagExpirationDate", "confidence"],
       },
     },
     helmetType: {

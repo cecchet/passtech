@@ -175,6 +175,7 @@ function describeCert(cert: CertificationEntry): string {
   const name = cert.standardId === NOT_LISTED ? cert.customStandardLabel || "Unlisted certification" : cert.standardId ? standardLabel(cert.standardId) : "Unknown certification";
   const parts = [name];
   if (cert.homologationNumber) parts.push(`homologation ${cert.homologationNumber}`);
+  if (cert.serialNumber) parts.push(`serial ${cert.serialNumber}`);
   if (cert.labelDate) parts.push(`${cert.dateType === "recertification" ? "recertified" : "label"} ${ym(cert.labelDate)}`);
   if (cert.tagExpirationDate) parts.push(`expires ${ym(cert.tagExpirationDate)}`);
   if (cert.nextServiceDate) parts.push(`next service ${ym(cert.nextServiceDate)}`);

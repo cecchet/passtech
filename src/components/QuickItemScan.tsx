@@ -17,6 +17,7 @@ interface CertCandidate {
   standardId: string;
   rawText: string;
   homologationNumber: string;
+  serialNumber?: string;
   labelDate: string;
   dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
@@ -29,6 +30,7 @@ function certCandidateToEntry(c: CertCandidate): CertificationEntry {
     standardId: c.standardId,
     customStandardLabel: c.standardId === NOT_LISTED ? c.rawText : undefined,
     homologationNumber: c.homologationNumber || undefined,
+    serialNumber: c.serialNumber || undefined,
     labelDate: c.labelDate || undefined,
     dateType: c.dateType || undefined,
     tagExpirationDate: c.tagExpirationDate || undefined,

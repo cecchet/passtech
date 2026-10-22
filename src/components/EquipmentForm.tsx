@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant, SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
-import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardLabel, standardsFor } from "@/data/standards";
+import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardFamily, standardLabel, standardsFor } from "@/data/standards";
 import {
   CategoryResults,
   CertificationEntry,
@@ -370,6 +370,18 @@ function CertificationRow({
           value={cert.homologationNumber}
           onChange={(v) => onChange({ homologationNumber: v })}
         />
+      )}
+      {cert.standardId && !notListed && (standardFamily(cert.standardId) === "fia" || standardFamily(cert.standardId) === "snell" || cert.serialNumber) && (
+        <label className="mt-2 flex flex-col gap-1 text-xs text-neutral-400">
+          <span>Serial number on tag (optional)</span>
+          <input
+            type="text"
+            placeholder={standardFamily(cert.standardId) === "snell" ? "e.g. SQ718447 (under the sticker's barcode)" : "e.g. 000345"}
+            className={`${dateClass} placeholder:text-neutral-500`}
+            value={cert.serialNumber ?? ""}
+            onChange={(e) => onChange({ serialNumber: e.target.value || undefined })}
+          />
+        </label>
       )}
     </div>
   );

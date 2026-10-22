@@ -57,6 +57,7 @@ interface AnalyzeCandidate {
   standardId: string;
   rawText: string;
   homologationNumber: string;
+  serialNumber: string;
   labelDate: string;
   dateType: "manufacture" | "recertification" | "";
   tagExpirationDate: string;
@@ -88,6 +89,11 @@ function buildSchema(allowedIds: string[]) {
               description:
                 "The specific homologation/approval number printed on the tag for THIS product, if any -- e.g. \"DC.001.18-O\", \"RS.001.01\", \"AH.012.19-C-ABP\", \"CS.001.21\", \"FT3-4\". This is a per-product registration number (usually 2 letters, a 3-digit number, a 2-digit year, and sometimes a letter suffix), distinct from the certification standard number itself (e.g. \"FIA 8856-2018\") -- most tags with an FIA standard printed on them also carry one of these nearby. Empty string if no such number is visible or the tag only shows the standard/spec number with no separate per-product registration code.",
             },
+            serialNumber: {
+              type: "string" as const,
+              description:
+                "The product's own serial number, if the tag prints one -- FIA-homologated gear labels usually do, next to the homologation number (e.g. \"Serial N°: 000345\", \"S/N 12345\"). Copy it exactly, keeping leading zeros. Each certification its own: for an FIA label, the product serial printed on it; for a Snell sticker, the sticker's own number (e.g. \"SQ718447\"). Not the homologation number, not a size. Empty string if none is printed.",
+            },
             labelDate: LABEL_DATE_SCHEMA_PROPERTY,
             dateType: DATE_TYPE_SCHEMA_PROPERTY,
             tagExpirationDate: {
@@ -104,7 +110,7 @@ function buildSchema(allowedIds: string[]) {
               description: "Only meaningful when categoryMismatch is true: which kind of equipment this tag actually looks like it's for (e.g. 'gloves', 'shoes', 'helmet'). Empty string otherwise.",
             },
           },
-          required: ["standardId", "rawText", "homologationNumber", "labelDate", "dateType", "tagExpirationDate", "confidence", "categoryMismatch", "detectedCategory"],
+          required: ["standardId", "rawText", "homologationNumber", "serialNumber", "labelDate", "dateType", "tagExpirationDate", "confidence", "categoryMismatch", "detectedCategory"],
         },
       },
       notes: {
@@ -172,7 +178,7 @@ ${standardList}
 
 IMPORTANT — check the equipment category first: look at the tag's shape, wording, and any pictograms to judge whether it's actually a "${categoryLabel}" tag at all, as opposed to a tag for a different item (e.g. a shoe or glove tag scanned while checking a firesuit, or vice versa). If it clearly looks like the wrong kind of tag, set "categoryMismatch": true and "detectedCategory" to what it actually looks like — do this even if the text also happens to resemble one of the standard IDs above, since standard families (like SFI 3.3) can appear on multiple different products. If it's plausibly the right category (even if you can't pin down the exact standard), set "categoryMismatch": false.
 
-For each certification visible on the tag, match it to one of the IDs above if it clearly corresponds, or use "${NOT_LISTED}" if it doesn't match any of them (still fill in rawText with what you actually see). Extract any date(s) printed on the tag. ${GRID_DATE_PROMPT_HINT} Also look for a separate per-product homologation/approval number distinct from the standard number itself — see the "homologationNumber" field description for examples of the format. Be conservative — if you can't read something clearly, say so in "notes" and use "low" confidence rather than guessing.`;
+For each certification visible on the tag, match it to one of the IDs above if it clearly corresponds, or use "${NOT_LISTED}" if it doesn't match any of them (still fill in rawText with what you actually see). Extract any date(s) printed on the tag. ${GRID_DATE_PROMPT_HINT} Also look for a separate per-product homologation/approval number distinct from the standard number itself — see the "homologationNumber" field description for examples of the format -- and for the product's own serial number (the "serialNumber" field), which FIA-homologated labels print next to it. Be conservative — if you can't read something clearly, say so in "notes" and use "low" confidence rather than guessing.`;
 
   try {
     const interaction = await createGeminiInteraction({

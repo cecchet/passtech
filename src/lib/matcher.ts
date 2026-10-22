@@ -47,6 +47,8 @@ export interface CertificationEntry {
   lastServiceDate?: string;
   /** Homologation number printed on the tag (e.g. "DC.001.18-O"), for standards backed by an FIA Technical List — see src/lib/fiaHomologation.ts. Purely informational to the matcher; not used in the pass/fail eligibility check itself. */
   homologationNumber?: string;
+  /** The product's own serial number printed on the tag (FIA-homologated gear prints one next to its homologation number, e.g. "000345"). Informational only. */
+  serialNumber?: string;
 }
 
 /** Fire extinguisher only: one physical unit in the car. Rating fields are the numbers printed before each UL class, e.g. "10-B:C" → bcRating 10. */

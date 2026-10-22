@@ -40,6 +40,7 @@ export function TagCandidateList({
               {c.tagExpirationDate && `Expires: ${c.tagExpirationDate}`}
             </p>
           )}
+          {c.serialNumber && <p className="mt-1 text-neutral-500">Serial number read: {c.serialNumber}</p>}
           {c.homologationNumber && (
             <div className="mt-1 flex flex-col gap-1">
               <p className="text-neutral-500">Homologation number read: {c.homologationNumber}</p>
