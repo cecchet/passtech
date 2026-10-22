@@ -24,7 +24,6 @@ import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { PhotoScan } from "@/components/PhotoScan";
 import { HelmetPhotoScan } from "@/components/HelmetPhotoScan";
-import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 import { ExtinguisherLabelScan } from "@/components/ExtinguisherPhotoScan";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { HomologationResultBanner, FiaListLink } from "@/components/HomologationResultBanner";
@@ -187,13 +186,6 @@ function ItemPhotos({
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={async (file) => {
-              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-              onChange([...photos, dataUrl]);
-            }}
-            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-          />
         </div>
       )}
     </div>
@@ -540,13 +532,6 @@ function ExtinguisherUnitRow({
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={async (file) => {
-              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-              onChange({ photoDataUrls: [...photos, dataUrl] });
-            }}
-            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-          />
         </div>
       )}
       <div className="flex flex-wrap items-end gap-2">
@@ -771,13 +756,6 @@ function WindowBreakerUnitRow({ unit, onChange, onRemove }: { unit: WindowBreake
                 }}
               />
             </label>
-            <CameraPhotoButton
-              onFile={async (file) => {
-                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-                onChange({ photoDataUrls: [...photos, dataUrl] });
-              }}
-              className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-            />
           </>
         )}
         {!confirmRemove ? (
@@ -871,13 +849,6 @@ function TriangleUnitRow({ unit, onChange, onRemove }: { unit: TriangleUnit; onC
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={async (file) => {
-              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-              onChange({ photoDataUrls: [...photos, dataUrl] });
-            }}
-            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-          />
           </>
         )}
         <label className="flex flex-col gap-1 text-xs text-neutral-400">

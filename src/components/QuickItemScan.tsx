@@ -12,7 +12,6 @@ import { GRID_DATE_UI_HINT } from "@/lib/tagDateGrid";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { CLASSIFIABLE_CATEGORIES } from "@/components/AutomaticGearImport";
-import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 
 interface CertCandidate {
   standardId: string;
@@ -166,16 +165,16 @@ export function QuickItemScan({
       <div className="rounded-lg border border-neutral-700 p-4">
         {stage.type === "not_gear" && (
           <p className="mb-3 text-sm text-amber-400">
-            Couldn&rsquo;t confidently tell what this photo shows.{stage.notes ? ` ${stage.notes}` : ""} Try another photo, or pick the category yourself below.
+            Couldn&rsquo;t confidently tell what this photo shows.{stage.notes ? ` ${stage.notes}` : ""} Try another photo, or pick the category manually below.
           </p>
         )}
-        {stage.type === "error" && <p className="mb-3 text-sm text-amber-400">{stage.message} Try another photo, or pick the category yourself below.</p>}
+        {stage.type === "error" && <p className="mb-3 text-sm text-amber-400">{stage.message} Try another photo, or pick the category manually below.</p>}
         <div className="flex flex-wrap gap-2">
           <label
             htmlFor={inputId}
             className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           >
-            📷 Upload an overall picture of the item
+            📷 Use a picture
             <input
               id={inputId}
               type="file"
@@ -188,13 +187,13 @@ export function QuickItemScan({
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={(file) => void analyzePhoto(file)}
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-          />
         </div>
-        <button type="button" onClick={() => setStage({ type: "manual" })} className="mt-3 block text-xs text-neutral-400 underline underline-offset-2 hover:text-neutral-200">
-          Or pick the category yourself instead
+        <button
+          type="button"
+          onClick={() => setStage({ type: "manual" })}
+          className="mt-3 flex w-fit items-center gap-2 rounded-lg border border-neutral-600 px-4 py-2 text-sm font-semibold text-neutral-200 hover:bg-neutral-800"
+        >
+          ✍️ Pick the category manually
         </button>
       </div>
     );
@@ -244,7 +243,7 @@ export function QuickItemScan({
             htmlFor={tagInputId}
             className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           >
-            📷 Upload a photo of the certification tag
+            📷 Use a photo of the certification tag
             <input
               id={tagInputId}
               type="file"
@@ -257,10 +256,6 @@ export function QuickItemScan({
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={(file) => void handleTagFile(file)}
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-          />
         </div>
         <p className="mt-2 text-xs text-neutral-500">{GRID_DATE_UI_HINT}</p>
         {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
@@ -293,7 +288,7 @@ export function QuickItemScan({
             htmlFor={extinguisherInputId}
             className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           >
-            📷 Upload a photo of the label
+            📷 Use a photo of the label
             <input
               id={extinguisherInputId}
               type="file"
@@ -306,10 +301,6 @@ export function QuickItemScan({
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={(file) => void handleExtinguisherLabelFile(file)}
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-          />
         </div>
         {extScan.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the label (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
         {extScan.status === "error" && <p className="mt-2 text-sm text-red-400">{extScan.error}</p>}
@@ -437,7 +428,7 @@ export function TagOnlyScan({
             htmlFor={extinguisherInputId}
             className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
           >
-            📷 Upload a photo of the label
+            📷 Use a photo of the label
             <input
               id={extinguisherInputId}
               type="file"
@@ -450,10 +441,6 @@ export function TagOnlyScan({
               }}
             />
           </label>
-          <CameraPhotoButton
-            onFile={(file) => void handleExtinguisherLabelFile(file)}
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-          />
         </div>
         {extScan.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the label (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}
         {extScan.status === "error" && <p className="mt-2 text-sm text-red-400">{extScan.error}</p>}
@@ -477,7 +464,7 @@ export function TagOnlyScan({
           htmlFor={tagInputId}
           className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
         >
-          📷 Upload a photo of the certification tag
+          📷 Use a photo of the certification tag
           <input
             id={tagInputId}
             type="file"
@@ -490,10 +477,6 @@ export function TagOnlyScan({
             }}
           />
         </label>
-        <CameraPhotoButton
-          onFile={(file) => void handleTagFile(file)}
-          className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-950 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
-        />
       </div>
       <p className="mt-2 text-xs text-neutral-500">{GRID_DATE_UI_HINT}</p>
       {scanner.status === "loading" && <p className="mt-2 text-sm text-neutral-400">Reading the tag (can take up to {REQUEST_TIMEOUT_LABEL})…</p>}

@@ -7,7 +7,6 @@ import { CertificationEntry } from "@/lib/matcher";
 import { GRID_DATE_UI_HINT } from "@/lib/tagDateGrid";
 import { useTagScanner } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
-import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 
 interface Props {
   category: EquipmentCategory;
@@ -61,11 +60,6 @@ export function PhotoScan({ category, onAdd }: Props) {
       >
         {scanner.status === "loading" ? "Analyzing photo…" : "📷 Scan tag photo"}
       </button>
-      <CameraPhotoButton
-        onFile={handleFile}
-        disabled={scanner.status === "loading" || !online}
-        className="ml-2 rounded border border-neutral-600 px-2 py-1 text-neutral-300 hover:bg-neutral-800 aria-disabled:pointer-events-none aria-disabled:opacity-50"
-      />
       {online ? (
         <span className="ml-2 text-neutral-500">Suggests values — nothing is added until you confirm.</span>
       ) : (

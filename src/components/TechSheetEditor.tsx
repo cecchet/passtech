@@ -47,7 +47,6 @@ import {
   templateForClass,
   uploadTechSheetPhoto,
 } from "@/lib/techSheetServer";
-import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 import { CategoryCard } from "@/components/EquipmentForm";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import { statusLabel, statusStyle } from "@/components/ResultRow";
@@ -166,7 +165,7 @@ function PhotoAdder({ onAdd }: { onAdd: (dataUrl: string) => void }) {
   return (
     <div className="flex flex-wrap gap-2">
       <label htmlFor={id} className={smallButtonClass}>
-        🖼️ Add a photo
+        📷 Add a photo
         <input
           id={id}
           type="file"
@@ -180,7 +179,6 @@ function PhotoAdder({ onAdd }: { onAdd: (dataUrl: string) => void }) {
           }}
         />
       </label>
-      <CameraPhotoButton onFile={add} className={smallButtonClass} disabled={busy} />
       {busy && <span className="text-xs text-neutral-500">Resizing…</span>}
     </div>
   );

@@ -19,7 +19,6 @@ import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { REQUEST_TIMEOUT_LABEL, fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
-import { CameraPhotoButton } from "@/components/CameraPhotoButton";
 import { NOT_LISTED } from "@/data/standards";
 
 /** Every category the photo classifier (and its manual-pick fallback) can recognize — also reused by QuickItemScan's own manual category dropdown for Buyer/Scrutineer mode. */
@@ -523,12 +522,8 @@ export function AutomaticGearImport({
               onClick={() => inputRef.current?.click()}
               className="rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
             >
-              📷 Upload gear photos
+              📷 Add gear photos
             </button>
-            <CameraPhotoButton
-              onFile={(file) => handleFiles([file])}
-              className="flex w-fit cursor-pointer items-center rounded-lg border border-emerald-700 bg-emerald-950 px-3 py-1.5 text-sm text-emerald-200 hover:bg-emerald-900"
-            />
           </div>
           {builtSummary.length > 0 && (
             <div className="mt-4 rounded border border-neutral-700 p-3 text-xs">

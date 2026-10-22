@@ -164,7 +164,7 @@ export const TOURS: Record<TourId, Tour> = {
     steps: [
       {
         targetId: "tutorial-buyer-scan",
-        text: "Upload a photo of one piece of gear — a helmet for sale, say — and Automatic mode figures out what it is. If that doesn't work, pick the category yourself instead.",
+        text: "Upload a photo of one piece of gear — a helmet for sale, say — and Automatic mode figures out what it is. If that doesn't work, pick the category manually.",
       },
       {
         targetId: "tutorial-buyer-item-card",
