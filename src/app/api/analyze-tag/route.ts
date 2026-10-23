@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { corsPreflight, withCors } from "@/lib/cors";
 import { EquipmentCategory } from "@/data/types";
 import { NOT_LISTED, resolveStandardId, standardsFor } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
@@ -122,7 +123,11 @@ function buildSchema(allowedIds: string[]) {
   };
 }
 
-export async function POST(req: NextRequest) {
+// Called by PassTech itself and by the Scrutineering site's tech sheets (see lib/cors.ts).
+export const POST = (req: NextRequest) => analyze(req).then((res) => withCors(req, res));
+export const OPTIONS = corsPreflight;
+
+async function analyze(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (isRateLimited(ip)) {
     return NextResponse.json(

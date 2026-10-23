@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { corsPreflight, withCors } from "@/lib/cors";
 import { describeGeminiError } from "@/lib/geminiErrors";
 import { createGeminiInteraction, hasGeminiKeyConfigured } from "@/lib/geminiClient";
 
@@ -67,7 +68,11 @@ const SCHEMA = {
 
 const PROMPT = `This is a photo of a full racing helmet — the whole helmet from the outside, NOT a close-up of a certification tag or label (that's a separate photo; the tag is usually hidden inside the helmet under the liner and isn't visible here). Assess two things from the helmet's physical shape and visible parts: (1) whether it's full-face (integrated chin bar) or open-face (jet-style, no chin bar); (2) whether it has a visor/face shield attached, and any relevant detail about it (position, condition). Be conservative — if the photo doesn't show enough to judge confidently, say so in "notes" and use "low" confidence or "unclear" rather than guessing.`;
 
-export async function POST(req: NextRequest) {
+// Called by PassTech itself and by the Scrutineering site's tech sheets (see lib/cors.ts).
+export const POST = (req: NextRequest) => analyze(req).then((res) => withCors(req, res));
+export const OPTIONS = corsPreflight;
+
+async function analyze(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (isRateLimited(ip)) {
     return NextResponse.json(

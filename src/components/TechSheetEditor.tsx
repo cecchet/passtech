@@ -291,7 +291,12 @@ function LineCard({
                 occupant={line.occupant ?? "driver"}
                 defaultOpen={formOpen}
                 showResultRow={false}
-                onChange={(_, entry) => onChange(withLineGear(line, value, entry))}
+                onChange={(_, entry, scanned) => {
+                  const next = withLineGear(line, value, entry);
+                  // A photo scanned in the form (the whole helmet, a tag) joins the line's photos.
+                  const add = scanned && !next.photos.some((p) => p.dataUrl === scanned.dataUrl);
+                  onChange(add ? { ...next, photos: [...next.photos, { id: newPhotoId(), dataUrl: scanned.dataUrl, kind: scanned.kind }] } : next);
+                }}
               />
             </div>
           )}
@@ -465,6 +470,7 @@ export function TechSheetEditor({
   saveError,
   onChange,
   onDelete,
+  onSubmitted,
 }: {
   draft: TechSheetDraft;
   profile: GarageProfile | undefined;
@@ -478,6 +484,8 @@ export function TechSheetEditor({
    * (submit, re-fill) never drops edits made while it ran. */
   onChange: (patch: Partial<TechSheetDraft>) => void;
   onDelete: () => void;
+  /** After a successful (re-)submission: the caller closes the sheet. */
+  onSubmitted?: () => void;
 }) {
   const groups = useMemo(() => expandLines(draft.template, draft.variant), [draft.template, draft.variant]);
   const ruleset = draft.rulesetId ? getRuleset(draft.rulesetId) : undefined;
@@ -587,6 +595,7 @@ export function TechSheetEditor({
       });
       update({ submittedSheetId: id, submittedAt: new Date().toISOString() });
       setSubmittedRefresh((n) => n + 1);
+      onSubmitted?.();
     } catch (e) {
       setActionError(e instanceof Error ? e.message : String(e));
     } finally {

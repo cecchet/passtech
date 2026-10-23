@@ -247,6 +247,8 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
   const [email, setEmail] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showSignIn, setShowSignIn] = useState(false);
+  // "Submitted to …" after a sheet closes on its submission, until another one is opened.
+  const [submittedNotice, setSubmittedNotice] = useState<string | null>(null);
   const dirty = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -367,6 +369,10 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
           signedInEmail={email}
           saveError={saveError}
           onChange={(patch) => patchDraft(active.id, patch)}
+          onSubmitted={() => {
+            setSubmittedNotice(`Submitted to ${active.event?.name ?? "the event"}${typeof active.header.car_number === "string" && active.header.car_number ? ` — car #${active.header.car_number}` : ""}.`);
+            setView({ kind: "home" });
+          }}
           onDelete={async () => {
             await deleteTechSheetDraft(active.id);
             setDrafts(drafts.filter((d) => d.id !== active.id));
@@ -380,7 +386,19 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
   return (
     <section>
       {header}
-      <button type="button" onClick={() => setView({ kind: "new" })} className={`${primaryButtonClass} mb-5 w-full sm:w-auto`}>
+      {submittedNotice && (
+        <p className="mb-4 rounded-lg border border-emerald-700 bg-emerald-950 p-3 text-sm text-emerald-200">
+          {submittedNotice} Its status is under My submitted sheets below.
+        </p>
+      )}
+      <button
+        type="button"
+        onClick={() => {
+          setSubmittedNotice(null);
+          setView({ kind: "new" });
+        }}
+        className={`${primaryButtonClass} mb-5 w-full sm:w-auto`}
+      >
         + Start a new tech sheet
       </button>
 
@@ -395,7 +413,10 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
               <li key={d.id}>
                 <button
                   type="button"
-                  onClick={() => setView({ kind: "edit", id: d.id })}
+                  onClick={() => {
+                    setSubmittedNotice(null);
+                    setView({ kind: "edit", id: d.id });
+                  }}
                   className="w-full rounded-lg border border-neutral-700 p-3 text-left hover:border-neutral-400 hover:bg-neutral-900"
                 >
                   <span className="block text-sm font-semibold text-neutral-100">
@@ -426,6 +447,7 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
             <TechSheetSubmitted
               onEdit={async (sheet) => {
                 // This device's draft of it, else one rebuilt from what the event received.
+                setSubmittedNotice(null);
                 const local = drafts.find((d) => d.submittedSheetId === sheet.id);
                 if (local) {
                   setView({ kind: "edit", id: local.id });

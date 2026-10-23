@@ -11,7 +11,9 @@
     "sync-tech-sheets": "node scripts/sync-tech-sheets.mjs",
     "export-gear-catalog": "node scripts/export-gear-catalog.mjs",
     "sync-photo-capture": "node scripts/sync-photo-capture.mjs",
-    "build-engine": "node scripts/build-engine.mjs"
+    "build-engine": "node scripts/build-engine.mjs",
+    "bump-version": "node scripts/bump-version.mjs",
+    "install-hooks": "node scripts/install-hooks.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

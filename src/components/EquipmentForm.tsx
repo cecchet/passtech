@@ -1490,6 +1490,12 @@ export function EquipmentForm({
  * concern (grouping order, which category came before it) is the CALLER's job via `isNewGroup`/
  * `groupOverride`, not this component's.
  */
+/** A photo a card read for its item: the whole item, or a certification tag. */
+export interface ScannedPhoto {
+  dataUrl: string;
+  kind: "item" | "tag";
+}
+
 export function CategoryCard({
   category,
   entry,
@@ -1542,18 +1548,21 @@ export function CategoryCard({
   eligibilityBadge?: { eligible: number; fail: number; onEligibleClick: () => void; onFailClick: () => void };
   /** Buyer mode only: the earliest "expires within the current year" date found among the currently-eligible rulesets (see expiringSoonDate in matcher.ts), and whether every one of them shares it — shown right in the summary row so the caveat ("eligible now, but only for a few more months") is visible without expanding the card. `universal: false` means only some of the eligible bodies are affected, so the badge says so rather than implying a blanket expiry. */
   expiryWarning?: { date: string; universal: boolean };
-  onChange: (category: EquipmentCategory, entry: EquipmentEntry) => void;
+  /** scanned: a photo the card read (whole helmet, tag) when it doesn't show photos itself (showPhotoUpload off). */
+  onChange: (category: EquipmentCategory, entry: EquipmentEntry, scanned?: ScannedPhoto) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
   const meta = CATEGORY_META[category];
-  const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
+  const update = (patch: Partial<EquipmentEntry>, scanned?: ScannedPhoto) => onChange(category, { ...entry, category, ...patch }, scanned);
   // A photo read for this item (a tag photo, the whole helmet) joins its photos -- when they're
-  // shown, there's room, and it isn't one of them already.
-  const photoPatch = (dataUrl: string): Partial<EquipmentEntry> => {
+  // shown here, there's room, and it isn't one of them already. Without the photos shown (a tech
+  // sheet line keeps its own), it goes to the caller with the change instead.
+  const updateWithScan = (patch: Partial<EquipmentEntry>, dataUrl: string, kind: ScannedPhoto["kind"]) => {
+    if (!showPhotoUpload) return update(patch, dataUrl ? { dataUrl, kind } : undefined);
     const photos = entry.photoDataUrls ?? [];
     const unitPhotos = category === "fire_extinguisher" || category === "window_breaker" || category === "emergency_triangle";
-    if (!showPhotoUpload || unitPhotos || !dataUrl || photos.includes(dataUrl) || photos.length >= maxPhotosFor(category)) return {};
-    return { photoDataUrls: [...photos, dataUrl] };
+    const add = !unitPhotos && dataUrl && !photos.includes(dataUrl) && photos.length < maxPhotosFor(category);
+    update({ ...patch, ...(add ? { photoDataUrls: [...photos, dataUrl] } : {}) });
   };
   const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
   const Icon = CATEGORY_ICONS[category];
@@ -1736,7 +1745,7 @@ export function CategoryCard({
                 Has a visor/face shield
               </label>
               {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
-              <HelmetPhotoScan onApply={(patch, photo) => update({ ...patch, ...photoPatch(photo) })} />
+              <HelmetPhotoScan onApply={(patch, photo) => updateWithScan(patch, photo, "item")} />
             </>
           )}
 
@@ -1869,7 +1878,7 @@ export function CategoryCard({
                     category={category}
                     certifications={entry.certifications ?? []}
                     onChange={(certifications) => update({ certifications })}
-                    onAddFromScan={(certifications, photo) => update({ certifications, ...photoPatch(photo) })}
+                    onAddFromScan={(certifications, photo) => updateWithScan({ certifications }, photo, "tag")}
                     onReportMissing={onReportMissing}
                   />
                 </div>
@@ -1879,7 +1888,7 @@ export function CategoryCard({
                     category={category}
                     certifications={entry.pantsCertifications ?? []}
                     onChange={(pantsCertifications) => update({ pantsCertifications })}
-                    onAddFromScan={(pantsCertifications, photo) => update({ pantsCertifications, ...photoPatch(photo) })}
+                    onAddFromScan={(pantsCertifications, photo) => updateWithScan({ pantsCertifications }, photo, "tag")}
                     onReportMissing={onReportMissing}
                   />
                 </div>
@@ -1889,7 +1898,7 @@ export function CategoryCard({
                 category={category}
                 certifications={entry.certifications ?? []}
                 onChange={(certifications) => update({ certifications })}
-                onAddFromScan={(certifications, photo) => update({ certifications, ...photoPatch(photo) })}
+                onAddFromScan={(certifications, photo) => updateWithScan({ certifications }, photo, "tag")}
                 onReportMissing={onReportMissing}
               />
             ))}
