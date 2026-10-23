@@ -5,13 +5,14 @@ import { CATEGORY_META } from "@/data/categoryMeta";
 import { NOT_LISTED, standardLabel } from "@/data/standards";
 import { StickerView, fetchSticker, formatStickerCode, stickerCodeFrom, stickerPageUrl, stickerPhotoUrl } from "@/lib/stickers";
 
-type ScanStage = { type: "idle" } | { type: "camera" } | { type: "loading"; code: string } | { type: "error"; message: string };
+type ScanStage = { type: "idle" } | { type: "camera" } | { type: "typing" } | { type: "loading"; code: string } | { type: "error"; message: string };
 
 /**
- * Reads a tech sticker's QR code -- live from the camera, from a photo, or its code typed in --
- * and hands back what the server says about it (see lib/stickers.ts).
+ * "Has it a tech sticker?" -- No (the caller goes on to scanning the item itself), or its QR code
+ * read live from the camera, from a photo, or its code typed in; hands back what the server says
+ * about it (see lib/stickers.ts).
  */
-export function StickerScan({ onScanned }: { onScanned: (v: StickerView) => void }) {
+export function StickerScan({ onScanned, onNo }: { onScanned: (v: StickerView) => void; onNo: () => void }) {
   const [stage, setStage] = useState<ScanStage>({ type: "idle" });
   const [typed, setTyped] = useState("");
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -87,7 +88,7 @@ export function StickerScan({ onScanned }: { onScanned: (v: StickerView) => void
 
   return (
     <div className="mb-4 rounded-lg border border-neutral-700 bg-neutral-900 p-3 text-sm">
-      <p className="mb-2 font-medium text-neutral-200">Has it a tech sticker? Scan its QR code</p>
+      <p className="mb-2 font-medium text-neutral-200">Has it a tech sticker?</p>
       {stage.type === "camera" ? (
         <div className="flex flex-col gap-2">
           <video ref={videoRef} className="max-h-72 w-full rounded bg-black object-cover" muted playsInline />
@@ -104,11 +105,21 @@ export function StickerScan({ onScanned }: { onScanned: (v: StickerView) => void
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
-          <button type="button" onClick={() => setStage({ type: "camera" })} className="rounded bg-white px-3 py-1.5 font-medium text-black">
-            Scan a sticker
+          <button
+            type="button"
+            onClick={() => {
+              stopCamera();
+              onNo();
+            }}
+            className="rounded bg-white px-3 py-1.5 font-medium text-black"
+          >
+            No
+          </button>
+          <button type="button" onClick={() => setStage({ type: "camera" })} className="rounded border border-neutral-600 px-3 py-1.5 text-neutral-200 hover:bg-neutral-800">
+            Scan a QR code
           </button>
           <label className="cursor-pointer rounded border border-neutral-600 px-3 py-1.5 text-neutral-200 hover:bg-neutral-800">
-            Photo of a sticker
+            Photo of a QR code
             <input
               type="file"
               accept="image/*"
@@ -120,24 +131,30 @@ export function StickerScan({ onScanned }: { onScanned: (v: StickerView) => void
               }}
             />
           </label>
-          <form
-            className="flex items-center gap-1"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (typed.trim()) void lookUp(typed);
-            }}
-          >
-            <input
-              value={typed}
-              onChange={(e) => setTyped(e.target.value)}
-              placeholder="or its code, e.g. K7Q3-M9XD"
-              className="w-44 rounded border border-neutral-600 bg-neutral-950 px-2 py-1.5 text-neutral-100 placeholder:text-neutral-500"
-            />
-            <button type="submit" className="rounded border border-neutral-600 px-2 py-1.5 text-neutral-200 hover:bg-neutral-800">
-              Look up
-            </button>
-          </form>
+          <button type="button" onClick={() => setStage({ type: "typing" })} className="rounded border border-neutral-600 px-3 py-1.5 text-neutral-200 hover:bg-neutral-800">
+            Tech sticker code lookup
+          </button>
         </div>
+      )}
+      {stage.type === "typing" && (
+        <form
+          className="mt-2 flex items-center gap-1"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (typed.trim()) void lookUp(typed);
+          }}
+        >
+          <input
+            value={typed}
+            autoFocus
+            onChange={(e) => setTyped(e.target.value)}
+            placeholder="Code under the QR code, e.g. K7Q3-M9XD"
+            className="w-64 rounded border border-neutral-600 bg-neutral-950 px-2 py-1.5 text-neutral-100 placeholder:text-neutral-500"
+          />
+          <button type="submit" className="rounded border border-neutral-600 px-2 py-1.5 text-neutral-200 hover:bg-neutral-800">
+            Look up
+          </button>
+        </form>
       )}
       {stage.type === "loading" && <p className="mt-2 text-neutral-400">Looking up sticker {formatStickerCode(stage.code)}…</p>}
       {stage.type === "error" && <p className="mt-2 text-red-300">{stage.message}</p>}

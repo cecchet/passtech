@@ -132,10 +132,13 @@ export interface TechSheetDeclaredItem {
 export type TechSheetItemResult = "pass" | "fail" | "na";
 
 export interface TechSheetInspection {
-  items?: Record<string, { result?: TechSheetItemResult; note?: string; values?: Record<string, unknown>; photos?: TechSheetPhotoRef[] }>;
+  /** teamUpdatedAt: the team changed the line after the inspection started (its result was cleared). */
+  items?: Record<string, { result?: TechSheetItemResult; note?: string; values?: Record<string, unknown>; photos?: TechSheetPhotoRef[]; teamUpdatedAt?: string }>;
   corrections?: string;
   result?: "pass" | "fail";
   signatures?: Record<string, { name?: string; license?: string; at?: string }>;
+  /** Earlier rounds: a Failed verdict the team then re-submitted the failed lines for. */
+  history?: { result?: string; corrections?: string; at?: string; resubmittedAt?: string; signatures?: Record<string, { name?: string }> }[];
 }
 
 /** The file "Export file" writes — the Digital logbooks app imports exactly this shape. */

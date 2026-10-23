@@ -21,8 +21,10 @@ export interface TagCandidate {
 }
 
 /** Shared logic behind "scan a photo for certification tags" — used both by the upload-and-scan flow (PhotoScan) and by scanning a photo already attached to a garage item. */
-export function useTagScanner(category: EquipmentCategory, onAdd: (cert: CertificationEntry) => void) {
+export function useTagScanner(category: EquipmentCategory, onAdd: (cert: CertificationEntry, photoDataUrl: string) => void) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  // The photo read: handed back with each certification added from it, for callers that keep it as an item photo.
+  const [photo, setPhoto] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [candidates, setCandidates] = useState<TagCandidate[] | null>(null);
   const [notes, setNotes] = useState<string | null>(null);
@@ -34,6 +36,7 @@ export function useTagScanner(category: EquipmentCategory, onAdd: (cert: Certifi
     setError(null);
     setCandidates(null);
     setAdded(new Set());
+    setPhoto(imageDataUrl);
     const barcode = readSerialBarcode(original ?? imageDataUrl);
     const { ok, data } = await fetchWithTimeout("/api/analyze-tag", { category, imageDataUrl });
     if (!ok) {
@@ -56,7 +59,7 @@ export function useTagScanner(category: EquipmentCategory, onAdd: (cert: Certifi
       labelDate: c.labelDate || undefined,
       dateType: c.dateType || undefined,
       tagExpirationDate: c.tagExpirationDate || undefined,
-    });
+    }, photo);
     setAdded((prev) => new Set(prev).add(i));
   };
 

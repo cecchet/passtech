@@ -433,11 +433,14 @@ function CertificationList({
   category,
   certifications,
   onChange,
+  onAddFromScan,
   onReportMissing,
 }: {
   category: EquipmentCategory;
   certifications: CertificationEntry[];
   onChange: (certifications: CertificationEntry[]) => void;
+  /** A certification added from a tag photo: the new list, with that photo (one update, so the caller can keep the photo too). */
+  onAddFromScan?: (certifications: CertificationEntry[], photoDataUrl: string) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
   const updateCert = (index: number, patch: Partial<CertificationEntry>) => {
@@ -447,7 +450,8 @@ function CertificationList({
     onChange(certifications.filter((_, i) => i !== index));
   };
   const addCert = () => onChange([...certifications, newCertification()]);
-  const addFromScan = (cert: CertificationEntry) => onChange(mergeCertification(certifications, cert));
+  const addFromScan = (cert: CertificationEntry, photoDataUrl: string) =>
+    onAddFromScan ? onAddFromScan(mergeCertification(certifications, cert), photoDataUrl) : onChange(mergeCertification(certifications, cert));
 
   return (
     <div className="flex flex-col gap-2">
@@ -1543,6 +1547,14 @@ export function CategoryCard({
 }) {
   const meta = CATEGORY_META[category];
   const update = (patch: Partial<EquipmentEntry>) => onChange(category, { ...entry, category, ...patch });
+  // A photo read for this item (a tag photo, the whole helmet) joins its photos -- when they're
+  // shown, there's room, and it isn't one of them already.
+  const photoPatch = (dataUrl: string): Partial<EquipmentEntry> => {
+    const photos = entry.photoDataUrls ?? [];
+    const unitPhotos = category === "fire_extinguisher" || category === "window_breaker" || category === "emergency_triangle";
+    if (!showPhotoUpload || unitPhotos || !dataUrl || photos.includes(dataUrl) || photos.length >= maxPhotosFor(category)) return {};
+    return { photoDataUrls: [...photos, dataUrl] };
+  };
   const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
   const Icon = CATEGORY_ICONS[category];
   const detailsRef = useRef<HTMLDetailsElement>(null);
@@ -1724,7 +1736,7 @@ export function CategoryCard({
                 Has a visor/face shield
               </label>
               {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
-              <HelmetPhotoScan onApply={(patch) => update(patch)} />
+              <HelmetPhotoScan onApply={(patch, photo) => update({ ...patch, ...photoPatch(photo) })} />
             </>
           )}
 
@@ -1857,6 +1869,7 @@ export function CategoryCard({
                     category={category}
                     certifications={entry.certifications ?? []}
                     onChange={(certifications) => update({ certifications })}
+                    onAddFromScan={(certifications, photo) => update({ certifications, ...photoPatch(photo) })}
                     onReportMissing={onReportMissing}
                   />
                 </div>
@@ -1866,6 +1879,7 @@ export function CategoryCard({
                     category={category}
                     certifications={entry.pantsCertifications ?? []}
                     onChange={(pantsCertifications) => update({ pantsCertifications })}
+                    onAddFromScan={(pantsCertifications, photo) => update({ pantsCertifications, ...photoPatch(photo) })}
                     onReportMissing={onReportMissing}
                   />
                 </div>
@@ -1875,6 +1889,7 @@ export function CategoryCard({
                 category={category}
                 certifications={entry.certifications ?? []}
                 onChange={(certifications) => update({ certifications })}
+                onAddFromScan={(certifications, photo) => update({ certifications, ...photoPatch(photo) })}
                 onReportMissing={onReportMissing}
               />
             ))}

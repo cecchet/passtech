@@ -72,6 +72,16 @@ export interface MyTechSheet {
   inspection?: TechSheetInspection | null;
   submittedAt?: string | null;
   inspectedAt?: string | null;
+  /** A scrutineer has the sheet open right now: re-submitting waits until they're done. */
+  lockedNow?: boolean;
+}
+
+/** What the team can still do with a submitted sheet: re-submit it (all of it, or after a fail its
+ * failed lines), wait (a scrutineer has it open), or nothing (passed: final). */
+export function resubmitState(s: MyTechSheet): "open" | "failed" | "locked" | "final" {
+  if (s.status === "passed") return "final";
+  if (s.lockedNow) return "locked";
+  return s.status === "failed" ? "failed" : "open";
 }
 
 export interface TechSheetSubmission {

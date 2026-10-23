@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import {
@@ -21,6 +21,9 @@ import { fillSerialFromBarcode, readSerialBarcode } from "@/lib/serialBarcode";
 import { TagCandidate } from "@/lib/useTagScanner";
 import { TagCandidateList } from "@/components/TagCandidateList";
 import { NOT_LISTED } from "@/data/standards";
+
+/** Categories whose photos belong to each physical unit (see confirmItem) rather than to the item. */
+const MULTI_UNIT_CATEGORIES: EquipmentCategory[] = ["fire_extinguisher", "window_breaker", "emergency_triangle"];
 
 /** Every category the photo classifier (and its manual-pick fallback) can recognize — also reused by QuickItemScan's own manual category dropdown for Buyer/Scrutineer mode. */
 export const CLASSIFIABLE_CATEGORIES: EquipmentCategory[] = [
@@ -180,10 +183,17 @@ export function AutomaticGearImport({
   const filledSlotsRef = useRef<{ driver: Set<string>; codriver: Set<string> }>({ driver: new Set(), codriver: new Set() });
   const [builtSummary, setBuiltSummary] = useState<string[]>([]);
 
-  const currentEntries = (target: Target) => (target === "driver" ? entries : codriverEntries);
+  // Updates made since the last render: two in one click (a certification, then the photo it was
+  // read from) would otherwise both start from the same entry, and the second would drop the first.
+  const pendingRef = useRef<Record<Target, Partial<Record<EquipmentCategory, EquipmentEntry>>>>({ driver: {}, codriver: {} });
+  useEffect(() => {
+    pendingRef.current = { driver: {}, codriver: {} };
+  });
+  const currentEntries = (target: Target) => ({ ...(target === "driver" ? entries : codriverEntries), ...pendingRef.current[target] });
   const updateEntry = (target: Target, category: EquipmentCategory, patch: Partial<EquipmentEntry>) => {
     const existing = currentEntries(target)[category] ?? { category };
     const next = { ...existing, ...patch };
+    pendingRef.current[target][category] = next;
     if (target === "driver") onChangeEntry(category, next);
     else {
       if (!hasCodriver) onSetHasCodriver(true);
@@ -444,8 +454,9 @@ export function AutomaticGearImport({
       photoDataUrls: photos,
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
       ...(category === "firesuit" || CATEGORY_META[category].hybrid ? { mode: existing?.mode ?? "certified" } : {}),
-      ...(helmet && helmet.helmetType && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
-      ...(helmet ? { hasVisor: helmet.hasVisor, visorNote: helmet.visorNote || undefined } : {}),
+      // The style and visor come from a whole-helmet shot: a close-up of the tag inside can't show the visor.
+      ...(helmet && !isCloseupOnly && helmet.helmetType && helmet.helmetType !== "unclear" ? { helmetType: helmet.helmetType } : {}),
+      ...(helmet && !isCloseupOnly ? { hasVisor: helmet.hasVisor, visorNote: helmet.visorNote || undefined } : {}),
       ...(category === "tow_hook" ? (piece === "rear" ? { towHookRear: true } : { towHookFront: true }) : {}),
       ...(SIMPLE_PRESENCE_CATEGORIES.includes(category) ? { skipped: false } : {}),
     });
@@ -617,8 +628,10 @@ export function AutomaticGearImport({
                     added={current.stage.added}
                     category={current.stage.category}
                     onAdd={(c, i) => {
-                      const { category, piece } = current.stage as Extract<Stage, { type: "manual_tag_result" }>;
+                      const { category, piece, added } = current.stage as Extract<Stage, { type: "manual_tag_result" }>;
                       addTagCandidate(category, piece, current.target, c);
+                      // The first certification added from this tag photo brings the photo along to the item.
+                      if (added.size === 0 && !MULTI_UNIT_CATEGORIES.includes(category)) confirmItem(category, piece, current.target, current.dataUrl, true, undefined, undefined, "merge");
                       setCurrent((cur) =>
                         cur && cur.stage.type === "manual_tag_result" ? { ...cur, stage: { ...cur.stage, added: new Set(cur.stage.added).add(i) } } : cur
                       );
@@ -719,8 +732,14 @@ export function AutomaticGearImport({
                   }}
                   onAddCert={(category, piece, target, c, i) => {
                     addTagCandidate(category, piece, target, c);
+                    // The photo the tag was read from goes with the item too, if it isn't already.
+                    const st = current.stage;
+                    const attach = st.type === "result" && !st.itemConfirmed && !st.photoLimitReached && !MULTI_UNIT_CATEGORIES.includes(category);
+                    const attached = attach && confirmItem(category, piece, target, current.dataUrl, st.isCloseupOnly, st.helmet, st.extinguisher, "merge");
                     setCurrent((cur) =>
-                      cur && cur.stage.type === "result" ? { ...cur, stage: { ...cur.stage, addedCerts: new Set(cur.stage.addedCerts).add(i) } } : cur
+                      cur && cur.stage.type === "result"
+                        ? { ...cur, stage: { ...cur.stage, addedCerts: new Set(cur.stage.addedCerts).add(i), ...(attached ? { itemConfirmed: true } : {}) } }
+                        : cur
                     );
                   }}
                   onNext={skip}

@@ -10,7 +10,8 @@ import { TagCandidateList } from "@/components/TagCandidateList";
 
 interface Props {
   category: EquipmentCategory;
-  onAdd: (cert: CertificationEntry) => void;
+  /** photoDataUrl: the tag photo the certification was read from. */
+  onAdd: (cert: CertificationEntry, photoDataUrl: string) => void;
 }
 
 export function PhotoScan({ category, onAdd }: Props) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { EquipmentEntry } from "@/lib/matcher";
 import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
@@ -16,39 +16,42 @@ interface HelmetAnalysis {
 /**
  * Separate from PhotoScan (tag scanning) on purpose — the certification tag is usually hidden
  * inside the helmet under the liner, so a single photo can't show both the tag and the helmet's
- * overall shape/visor. This asks for a photo of the whole helmet from outside instead.
+ * overall shape/visor. This asks for a photo of the whole helmet from outside instead. What it
+ * reads is filled in right away (the style and visor stay editable above), along with the photo.
  */
-export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<EquipmentEntry>) => void }) {
+export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<EquipmentEntry>, photoDataUrl: string) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<HelmetAnalysis | null>(null);
-  const [applied, setApplied] = useState(false);
+  // The latest onApply: the analysis takes a few seconds, and the entry may change meanwhile.
+  const onApplyRef = useRef(onApply);
+  useEffect(() => {
+    onApplyRef.current = onApply;
+  }, [onApply]);
 
   const handleFile = async (file: File) => {
     setStatus("loading");
     setError(null);
     setResult(null);
-    setApplied(false);
-    const imageDataUrl = await resizeImageToDataUrl(file);
+    const imageDataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
     const { ok, data } = await fetchWithTimeout("/api/analyze-helmet", { imageDataUrl });
     if (!ok) {
       setError(typeof data.error === "string" ? data.error : "Something went wrong.");
       setStatus("error");
       return;
     }
-    setResult(data as unknown as HelmetAnalysis);
+    const r = data as unknown as HelmetAnalysis;
+    setResult(r);
     setStatus("idle");
-  };
-
-  const apply = () => {
-    if (!result) return;
-    onApply({
-      ...(result.helmetType !== "unclear" ? { helmetType: result.helmetType } : {}),
-      hasVisor: result.hasVisor,
-      visorNote: result.visorNote || undefined,
-    });
-    setApplied(true);
+    onApplyRef.current(
+      {
+        ...(r.helmetType !== "unclear" ? { helmetType: r.helmetType } : {}),
+        hasVisor: r.hasVisor,
+        visorNote: r.visorNote || undefined,
+      },
+      imageDataUrl
+    );
   };
 
   return (
@@ -83,7 +86,7 @@ export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<Equipmen
         <div className="mt-2 rounded border border-neutral-600 p-2">
           <p className="text-neutral-200">
             {result.helmetType === "unclear"
-              ? "Style unclear from photo"
+              ? "Style unclear from photo — pick it above"
               : result.helmetType === "full_face"
                 ? "Full face (integrated chin bar)"
                 : "Open face (no chin bar)"}
@@ -94,14 +97,7 @@ export function HelmetPhotoScan({ onApply }: { onApply: (patch: Partial<Equipmen
             {result.visorNote ? ` — ${result.visorNote}` : ""}
           </p>
           {result.notes && <p className="mt-1 text-neutral-500">{result.notes}</p>}
-          <button
-            type="button"
-            disabled={applied}
-            onClick={apply}
-            className="mt-1 rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
-          >
-            {applied ? "Applied" : "Use this"}
-          </button>
+          <p className="mt-1 text-emerald-300">Filled in above, with the photo — correct it there if needed.</p>
         </div>
       )}
     </div>

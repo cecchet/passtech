@@ -41,6 +41,9 @@ import {
   eventTemplates,
   fetchTechSheetEvents,
   lookupEventEntry,
+  fetchMyTechSheets,
+  MyTechSheet,
+  resubmitState,
   submitTechSheet,
   TechSheetEventTemplate,
   templateChoiceLabel,
@@ -490,6 +493,23 @@ export function TechSheetEditor({
   const [submittedRefresh, setSubmittedRefresh] = useState(0);
   const [confirmRefill, setConfirmRefill] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  // The sheet as the event has it (once submitted): whether it can still be re-submitted, and
+  // after a Failed verdict which lines failed.
+  const [serverSheet, setServerSheet] = useState<MyTechSheet | null>(null);
+  useEffect(() => {
+    if (!draft.submittedSheetId || !signedInEmail) return;
+    let live = true;
+    fetchMyTechSheets()
+      .then((list) => {
+        if (live) setServerSheet(list.find((s) => s.id === draft.submittedSheetId) ?? null);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [draft.submittedSheetId, signedInEmail, submittedRefresh]);
+  const serverState = serverSheet ? resubmitState(serverSheet) : null;
+  const failedResult = (key: string) => (serverSheet?.status === "failed" ? serverSheet.inspection?.items?.[key] : undefined);
 
   const missing = missingRequiredHeader(draft);
   const update = (patch: Partial<TechSheetDraft>) => onChange(patch);
@@ -909,6 +929,13 @@ export function TechSheetEditor({
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-amber-400">{group.title}</h3>
           <ul className="space-y-2">
             {group.lines.map((line) => (
+              <div key={line.key}>
+              {failedResult(line.key)?.result === "fail" && (
+                <p className="mb-1 rounded border border-red-700 bg-red-950/60 px-2 py-1 text-xs text-red-200">
+                  <span className="font-semibold">Failed at tech</span>
+                  {failedResult(line.key)?.note ? `: ${failedResult(line.key)?.note}` : ""} — fix it below, then re-submit.
+                </p>
+              )}
               <LineCard
                 key={line.key}
                 line={line}
@@ -921,6 +948,7 @@ export function TechSheetEditor({
                 onToggle={() => setOpenLines((o) => ({ ...o, [line.key]: !isOpen(line.key) }))}
                 onChange={(next) => setLine(line.key, next)}
               />
+              </div>
             ))}
           </ul>
         </section>
@@ -934,9 +962,9 @@ export function TechSheetEditor({
           <button type="button" onClick={handleExport} disabled={!!busy} className={actionButtonClass}>
             ⬇️ Export file
           </button>
-          {draft.event && (
-            <button type="button" onClick={handleSubmit} disabled={!!busy} className={primaryButtonClass}>
-              {draft.submittedSheetId ? "Re-submit to the event" : "Submit to the event"}
+          {draft.event && serverState !== "final" && (
+            <button type="button" onClick={handleSubmit} disabled={!!busy || serverState === "locked"} className={primaryButtonClass}>
+              {serverState === "failed" ? "Re-submit the failed lines" : draft.submittedSheetId ? "Re-submit to the event" : "Submit to the event"}
             </button>
           )}
         </div>
@@ -952,7 +980,14 @@ export function TechSheetEditor({
       {draft.submittedSheetId && (
         <div className="mt-4 rounded-lg border border-emerald-700 bg-emerald-950 p-3 text-sm text-emerald-200">
           Submitted to {draft.event?.name}
-          {draft.submittedAt ? ` on ${new Date(draft.submittedAt).toLocaleString()}` : ""}. You can change it and re-submit until the inspection starts.
+          {draft.submittedAt ? ` on ${new Date(draft.submittedAt).toLocaleString()}` : ""}.{" "}
+          {serverState === "final"
+            ? "It passed tech: the sheet is final."
+            : serverState === "failed"
+              ? "It failed tech: fix the lines marked Failed (new gear, details, photos) and re-submit — only those lines go back to tech, to be inspected again."
+              : serverState === "locked"
+                ? "A scrutineer has it open right now — you can re-submit changes once they're done."
+                : "You can change it and re-submit until tech gives its verdict."}
         </div>
       )}
       {draft.event && signedInEmail && <TechSheetSubmitted refreshKey={submittedRefresh} />}

@@ -46,6 +46,8 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   // A scanned tech sticker: a gear one fills the item in (its certifications, judged against the
   // ruleset picked here); a car or logbook one is just shown.
   const [sticker, setSticker] = useState<StickerView | null>(null);
+  // "Has it a tech sticker?" answered No: on to scanning the item itself.
+  const [noSticker, setNoSticker] = useState(false);
 
   // Tutorial only: fills in a demo item (a Snell SA2020 helmet) so the later tour steps — the
   // verdict banner, the "Scan next item" button — have something real to point at. Done
@@ -111,10 +113,12 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   // had to hunt through for the (small) "Scan tag photo" control.
   const scanAnother = () => {
     setSticker(null);
+    setNoSticker(false);
     setRescanning(true);
   };
   const scanDifferentItem = () => {
     setSticker(null);
+    setNoSticker(false);
     setCategory(null);
     setEntry(emptyEntry("helmet"));
     setRescanning(false);
@@ -155,7 +159,8 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
 
       {!category ? (
         <div id="tutorial-scrutineer-scan">
-          {!sticker && <StickerScan onScanned={onSticker} />}
+          {!sticker && !noSticker && <StickerScan onScanned={onSticker} onNo={() => setNoSticker(true)} />}
+          {!sticker && noSticker && (
           <QuickItemScan
             onDone={(cat, photoDataUrl, certifications, extinguisherUnit) => {
               setCategory(cat);
@@ -168,20 +173,25 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
               resetCardOpenState();
             }}
           />
+          )}
         </div>
       ) : rescanning ? (
-        <TagOnlyScan
-          category={category}
-          onDone={(certifications, extinguisherUnit) => {
-            setEntry({
-              category,
-              ...(certifications.length ? { certifications, ...(CATEGORY_META[category].hybrid ? { mode: "certified" as const } : {}) } : {}),
-              ...(extinguisherUnit ? { extinguisherUnits: [extinguisherUnit] } : {}),
-            });
-            setRescanning(false);
-            resetCardOpenState();
-          }}
-        />
+        !noSticker ? (
+          <StickerScan onScanned={onSticker} onNo={() => setNoSticker(true)} />
+        ) : (
+          <TagOnlyScan
+            category={category}
+            onDone={(certifications, extinguisherUnit) => {
+              setEntry({
+                category,
+                ...(certifications.length ? { certifications, ...(CATEGORY_META[category].hybrid ? { mode: "certified" as const } : {}) } : {}),
+                ...(extinguisherUnit ? { extinguisherUnits: [extinguisherUnit] } : {}),
+              });
+              setRescanning(false);
+              resetCardOpenState();
+            }}
+          />
+        )
       ) : (
         <>
           <div id="tutorial-scrutineer-item-card">

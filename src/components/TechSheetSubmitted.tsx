@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { expandLines } from "@/lib/techSheet";
-import { fetchMyTechSheets, MyTechSheet, TechSheetStatus } from "@/lib/techSheetServer";
+import { fetchMyTechSheets, MyTechSheet, resubmitState, TechSheetStatus } from "@/lib/techSheetServer";
 
 export const SHEET_STATUS_STYLE: Record<TechSheetStatus, string> = {
   submitted: "bg-neutral-900 text-neutral-300 border-neutral-600",
@@ -25,6 +25,13 @@ const RESULT_STYLE = {
 } as const;
 
 const RESULT_LABEL = { pass: "Pass", fail: "Fail", na: "N/A" } as const;
+
+const RESUBMIT_HINT = {
+  open: "You can edit the sheet and re-submit it until tech gives its verdict.",
+  locked: "A scrutineer has your sheet open right now — re-submit once they're done.",
+  failed: "Fix what failed (new gear, details, photos) and re-submit: the failed lines go back to tech to be inspected again.",
+  final: "Passed — the sheet is final.",
+} as const;
 
 function SheetCard({ sheet }: { sheet: MyTechSheet }) {
   const [open, setOpen] = useState(sheet.status === "failed");
@@ -49,6 +56,13 @@ function SheetCard({ sheet }: { sheet: MyTechSheet }) {
         </span>
       </div>
 
+      <p className="mt-1 text-xs text-neutral-400">{RESUBMIT_HINT[resubmitState(sheet)]}</p>
+      {(sheet.inspection?.history ?? []).map((h, i) => (
+        <p key={i} className="mt-1 text-xs text-neutral-500">
+          Failed {h.at ? new Date(h.at).toLocaleString() : ""}
+          {h.corrections ? ` — ${h.corrections}` : ""}; re-submitted {h.resubmittedAt ? new Date(h.resubmittedAt).toLocaleString() : ""}.
+        </p>
+      ))}
       {sheet.inspection?.corrections && (
         <div className="mt-2 rounded border border-red-800 bg-red-950/60 p-2 text-sm text-red-200">
           <span className="font-semibold">Corrections required: </span>
@@ -81,7 +95,7 @@ function SheetCard({ sheet }: { sheet: MyTechSheet }) {
                       <li key={line.key} className="flex flex-wrap items-baseline justify-between gap-x-3 text-sm">
                         <span className="text-neutral-200">{line.label}</span>
                         <span className={`text-xs font-semibold ${r.result ? RESULT_STYLE[r.result] : "text-neutral-500"}`}>
-                          {r.result ? RESULT_LABEL[r.result] : "—"}
+                          {r.result ? RESULT_LABEL[r.result] : r.teamUpdatedAt ? "Re-submitted" : "—"}
                         </span>
                         {r.note && <span className="w-full text-xs text-neutral-400">{r.note}</span>}
                       </li>
