@@ -450,6 +450,63 @@ export async function createDraft(opts: {
   };
 }
 
+/** A draft rebuilt from a sheet the team submitted (on a device that doesn't have its draft): its
+ * header, lines and photos as the event received them, ready to edit and re-submit. */
+export async function draftFromSubmitted(
+  sheet: {
+    id: string;
+    event: string;
+    eventName?: string | null;
+    variant?: string | null;
+    header?: Record<string, unknown> | null;
+    template?: TechSheetTemplate | null;
+    competitor?: { items?: Record<string, TechSheetDeclaredItem>; pictures?: TechSheetPictures } | null;
+    submittedAt?: string | null;
+  },
+  download: (sha256: string) => Promise<string | null>
+): Promise<TechSheetDraft> {
+  if (!sheet.template) throw new Error("This sheet has no template to edit.");
+  const photo = async (sha256: string, kind: TechSheetPhotoKind): Promise<TechSheetDraftPhoto | null> => {
+    const dataUrl = await download(sha256);
+    return dataUrl ? { id: newPhotoId(), dataUrl, kind } : null;
+  };
+  const lines: Record<string, TechSheetDraftLine> = {};
+  for (const [key, item] of Object.entries(sheet.competitor?.items ?? {})) {
+    const photos = (await Promise.all((item.photos ?? []).map((p) => photo(p.sha256, p.kind)))).filter((p): p is TechSheetDraftPhoto => !!p);
+    lines[key] = {
+      declared: item.declared ?? "",
+      ...(item.done ? { done: true } : {}),
+      ...(item.na ? { na: true } : {}),
+      values: item.values ?? {},
+      photos,
+      ...(item.gear ? { gear: item.gear } : {}),
+    };
+  }
+  const pics = sheet.competitor?.pictures ?? {};
+  const one = async (p?: { sha256: string }) => (p ? (await photo(p.sha256, "item")) ?? undefined : undefined);
+  const car = (await Promise.all((pics.car ?? []).map((p) => photo(p.sha256, "item")))).filter((p): p is TechSheetDraftPhoto => !!p);
+  const pictures = { ...(car.length ? { car } : {}), driver: await one(pics.driver), codriver: await one(pics.codriver) };
+  const header = Object.fromEntries(
+    Object.entries(sheet.header ?? {}).filter((e): e is [string, string | string[]] => typeof e[1] === "string" || Array.isArray(e[1]))
+  );
+  const variant = sheet.variant ?? null;
+  const now = new Date().toISOString();
+  return {
+    id: newDraftId(),
+    createdAt: now,
+    updatedAt: now,
+    template: sheet.template,
+    event: { id: sheet.event, name: sheet.eventName ?? "Event" },
+    variant,
+    rulesetId: defaultRulesetFor(sheet.template, variant),
+    header,
+    lines,
+    pictures,
+    submittedSheetId: sheet.id,
+    ...(sheet.submittedAt ? { submittedAt: sheet.submittedAt } : {}),
+  };
+}
+
 /** Every line key a template can have (any variant, with or without a co-driver), with the gear
  * category the line checks ("" for a check line). */
 function lineKinds(template: TechSheetTemplate): Map<string, string> {

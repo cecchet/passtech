@@ -155,6 +155,18 @@ export async function fetchMyTechSheets(): Promise<MyTechSheet[]> {
   return Array.isArray(data) ? (data as MyTechSheet[]) : [];
 }
 
+/** One of the signed-in team's own submitted photos, as a data URL (null when it can't be read). */
+export async function downloadTechSheetPhoto(sha256: string): Promise<string | null> {
+  const { data, error } = await getSupabase().storage.from(TECH_SHEET_PHOTO_BUCKET).download(sha256);
+  if (error || !data) return null;
+  return await new Promise<string | null>((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(data.type === "image/jpeg" ? data : new Blob([data], { type: "image/jpeg" }));
+  });
+}
+
 /** Uploads one photo under its SHA-256. An object that's already there (the same photo sent
  * before, by this sheet or another) is fine — the name is the content. */
 export async function uploadTechSheetPhoto(sha256: string, dataUrl: string): Promise<void> {

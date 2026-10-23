@@ -33,7 +33,10 @@ const RESUBMIT_HINT = {
   final: "Passed — the sheet is final.",
 } as const;
 
-function SheetCard({ sheet }: { sheet: MyTechSheet }) {
+function SheetCard({ sheet, onEdit }: { sheet: MyTechSheet; onEdit?: (sheet: MyTechSheet) => Promise<void> }) {
+  const [opening, setOpening] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
+  const state = resubmitState(sheet);
   const [open, setOpen] = useState(sheet.status === "failed");
   const inspected = !!sheet.inspection?.items && Object.keys(sheet.inspection.items).length > 0;
   const groups = sheet.template ? expandLines(sheet.template, sheet.variant ?? null) : [];
@@ -56,7 +59,28 @@ function SheetCard({ sheet }: { sheet: MyTechSheet }) {
         </span>
       </div>
 
-      <p className="mt-1 text-xs text-neutral-400">{RESUBMIT_HINT[resubmitState(sheet)]}</p>
+      <p className="mt-1 text-xs text-neutral-400">{RESUBMIT_HINT[state]}</p>
+      {onEdit && (state === "open" || state === "failed") && (
+        <button
+          type="button"
+          disabled={opening}
+          onClick={async () => {
+            setOpening(true);
+            setEditError(null);
+            try {
+              await onEdit(sheet);
+            } catch (e) {
+              setEditError(e instanceof Error ? e.message : String(e));
+            } finally {
+              setOpening(false);
+            }
+          }}
+          className="mt-2 rounded border border-amber-600 bg-amber-950 px-3 py-1 text-xs font-semibold text-amber-200 hover:bg-amber-900 disabled:opacity-50"
+        >
+          {opening ? "Opening… (fetching its photos)" : state === "failed" ? "Fix what failed and re-submit" : "Edit and re-submit"}
+        </button>
+      )}
+      {editError && <p className="mt-1 text-xs text-red-400">{editError}</p>}
       {(sheet.inspection?.history ?? []).map((h, i) => (
         <p key={i} className="mt-1 text-xs text-neutral-500">
           Failed {h.at ? new Date(h.at).toLocaleString() : ""}
@@ -112,7 +136,8 @@ function SheetCard({ sheet }: { sheet: MyTechSheet }) {
 }
 
 /** The signed-in competitor's submitted sheets, with the scrutineer's results once inspected. */
-export function TechSheetSubmitted({ refreshKey }: { refreshKey?: number }) {
+/** onEdit: open the sheet's draft to change and re-submit it (offered until the verdict, and after a fail). */
+export function TechSheetSubmitted({ refreshKey, onEdit }: { refreshKey?: number; onEdit?: (sheet: MyTechSheet) => Promise<void> }) {
   const [sheets, setSheets] = useState<MyTechSheet[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -147,7 +172,7 @@ export function TechSheetSubmitted({ refreshKey }: { refreshKey?: number }) {
       {sheets && sheets.length > 0 && (
         <ul className="space-y-2">
           {sheets.map((s) => (
-            <SheetCard key={s.id} sheet={s} />
+            <SheetCard key={s.id} sheet={s} onEdit={onEdit} />
           ))}
         </ul>
       )}

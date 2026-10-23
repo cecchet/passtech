@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { getRuleset } from "@/data";
 import { TechSheetTemplate } from "@/data/techSheetTypes";
 import { deleteTechSheetDraft, GarageProfile, loadGarage, loadTechSheetDrafts, saveTechSheetDraft, UserPreferences } from "@/lib/garage";
-import { createDraft, defaultRulesetFor, TechSheetDraft } from "@/lib/techSheet";
-import { eventTemplates, fetchPublicTechSheets, fetchTechSheetEvents, getSession, onAuthChange, PublicTechSheet, signOut, TechSheetEvent, templateChoiceLabel, templateForClass } from "@/lib/techSheetServer";
+import { createDraft, defaultRulesetFor, draftFromSubmitted, TechSheetDraft } from "@/lib/techSheet";
+import { downloadTechSheetPhoto, eventTemplates, fetchPublicTechSheets, fetchTechSheetEvents, getSession, onAuthChange, PublicTechSheet, signOut, TechSheetEvent, templateChoiceLabel, templateForClass } from "@/lib/techSheetServer";
 import { TechSheetEditor } from "@/components/TechSheetEditor";
 import { TechSheetSignIn } from "@/components/TechSheetSignIn";
 import { TechSheetSubmitted } from "@/components/TechSheetSubmitted";
@@ -423,7 +423,21 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
                 Sign out
               </button>
             </p>
-            <TechSheetSubmitted />
+            <TechSheetSubmitted
+              onEdit={async (sheet) => {
+                // This device's draft of it, else one rebuilt from what the event received.
+                const local = drafts.find((d) => d.submittedSheetId === sheet.id);
+                if (local) {
+                  setView({ kind: "edit", id: local.id });
+                  return;
+                }
+                const draft = await draftFromSubmitted(sheet, downloadTechSheetPhoto);
+                setDrafts([draft, ...drafts]);
+                const ok = await saveTechSheetDraft(draft);
+                setSaveError(ok ? null : "Couldn't save — browser storage is full. Remove some photos or old drafts.");
+                setView({ kind: "edit", id: draft.id });
+              }}
+            />
           </>
         ) : showSignIn ? (
           <TechSheetSignIn intro="Sign in to see the sheets you submitted and the scrutineer's results." onSignedIn={() => setShowSignIn(false)} />
