@@ -1,0 +1,102 @@
+import { getSupabase } from "@/lib/techSheetServer";
+import { TECH_SHEET_PHOTO_BUCKET } from "@/lib/serverConfig";
+import { EquipmentCategory } from "@/data/types";
+import { CertificationEntry, EquipmentEntry } from "@/lib/matcher";
+
+/**
+ * Tech stickers: QR codes scrutineers issue from the Scrutineering site (the logbook app's
+ * stickers.js and its sticker_view() server function). A code holds <site>/?s=<8 characters>.
+ *   gear    -- a helmet, HANS or seat: its photos and the certifications read off its tag when it
+ *              passed tech. The sticker has no expiry of its own: PassTech judges those
+ *              certifications against the ruleset picked here.
+ *   car     -- a car that passed tech at an event: that tech sheet's results.
+ *   logbook -- a car's digital logbook.
+ */
+export interface StickerView {
+  code: string;
+  kind: "gear" | "car" | "logbook";
+  status: "valid" | "void";
+  voidedAt?: string | null;
+  voidReason?: string | null;
+  replacedBy?: string | null;
+  issuedAt: string;
+  inspector?: { name?: string | null; license?: string | null } | null;
+  body?: string | null;
+  bodyName?: string | null;
+  event?: { name?: string; location?: string | null; startsOn?: string | null; endsOn?: string | null } | null;
+  snapshot: {
+    category?: EquipmentCategory;
+    label?: string;
+    occupant?: "driver" | "codriver" | null;
+    carNumber?: string;
+    class?: string;
+    make?: string;
+    model?: string;
+    year?: string;
+    driver?: string;
+    codriver?: string;
+    digitalNumber?: string;
+    gear?: Partial<EquipmentEntry>;
+    photos?: { sha256: string; kind: "item" | "tag" | "car" }[];
+  };
+  sheet?: {
+    status: string;
+    variant?: string | null;
+    template?: { sections?: { id: string; title: string; items?: { id: string; label: string; perOccupant?: boolean }[] }[] } | null;
+    results?: Record<string, string>;
+    signatures?: Record<string, { name?: string; license?: string; at?: string }>;
+  };
+  logbook?: { digitalNumber?: string; status?: string; publicToken?: string | null } | null;
+}
+
+/** The sticker code in a scanned QR text (a ?s= link) or typed by hand ("K7Q3-M9XD"), or null. */
+export function stickerCodeFrom(text: string): string | null {
+  const t = text.trim();
+  try {
+    const u = new URL(t);
+    const s = u.searchParams.get("s") ?? u.searchParams.get("S");
+    if (s) return normalize(s);
+  } catch {
+    // Not a link: maybe the code itself.
+  }
+  return normalize(t);
+}
+
+function normalize(s: string): string | null {
+  const c = s.toUpperCase().replace(/[^0-9A-Z]/g, "");
+  return /^[2-9A-Z]{8}$/.test(c) ? c : null;
+}
+
+export const formatStickerCode = (c: string) => `${c.slice(0, 4)}-${c.slice(4)}`;
+
+export async function fetchSticker(code: string): Promise<StickerView | null> {
+  const { data, error } = await getSupabase().rpc("sticker_view", { p_code: code });
+  if (error) throw new Error(error.message);
+  return (data as StickerView | null) ?? null;
+}
+
+const photoUrls = new Map<string, Promise<string | null>>();
+/** A sticker's photo (readable by anyone while the sticker is valid), as an object URL. */
+export function stickerPhotoUrl(sha256: string): Promise<string | null> {
+  let p = photoUrls.get(sha256);
+  if (!p) {
+    p = getSupabase()
+      .storage.from(TECH_SHEET_PHOTO_BUCKET)
+      .download(sha256)
+      .then(({ data, error }) => (error || !data ? null : URL.createObjectURL(data)));
+    photoUrls.set(sha256, p);
+  }
+  return p;
+}
+
+/** A gear sticker's item, as an entry PassTech can judge against a ruleset. */
+export function stickerEntry(v: StickerView): { category: EquipmentCategory; entry: EquipmentEntry } | null {
+  const cat = v.snapshot.category;
+  if (v.kind !== "gear" || !cat) return null;
+  const g = v.snapshot.gear ?? {};
+  const certifications = (g.certifications ?? []).map((c: CertificationEntry, i: number) => ({ ...c, key: c.key || `sticker-${i}` }));
+  return { category: cat, entry: { ...g, category: cat, certifications, photoDataUrls: undefined } as EquipmentEntry };
+}
+
+/** The Scrutineering site's page for a sticker (what the QR code itself opens). */
+export const stickerPageUrl = (code: string) => `https://scrutineering.frogracing.us/?s=${code}`;

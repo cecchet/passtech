@@ -9,6 +9,8 @@ import { QuickItemScan, TagOnlyScan } from "@/components/QuickItemScan";
 import { RulesetPicker, ClassPicker } from "@/components/RulesetPicker";
 import { ResultRow, statusStyle } from "@/components/ResultRow";
 import { downloadScrutineerReport } from "@/lib/pdfReport";
+import { StickerCard, StickerScan } from "@/components/StickerScan";
+import { StickerView, stickerEntry } from "@/lib/stickers";
 
 const reportButtonClass = "flex items-center gap-2 rounded border border-neutral-600 px-5 py-2.5 text-sm font-semibold text-neutral-300 hover:bg-neutral-800";
 
@@ -41,6 +43,9 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   // them back open or shut on every subsequent render.
   const [cardOpen, setCardOpen] = useState(true);
   const [hadVerdict, setHadVerdict] = useState(false);
+  // A scanned tech sticker: a gear one fills the item in (its certifications, judged against the
+  // ruleset picked here); a car or logbook one is just shown.
+  const [sticker, setSticker] = useState<StickerView | null>(null);
 
   // Tutorial only: fills in a demo item (a Snell SA2020 helmet) so the later tour steps — the
   // verdict banner, the "Scan next item" button — have something real to point at. Done
@@ -104,11 +109,25 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   // leave its own tag-scanner state (the previous item's "Added" candidates) on screen even though
   // the entry itself had been cleared, and it buried the next scan behind a full card the scrutineer
   // had to hunt through for the (small) "Scan tag photo" control.
-  const scanAnother = () => setRescanning(true);
+  const scanAnother = () => {
+    setSticker(null);
+    setRescanning(true);
+  };
   const scanDifferentItem = () => {
+    setSticker(null);
     setCategory(null);
     setEntry(emptyEntry("helmet"));
     setRescanning(false);
+  };
+  const onSticker = (v: StickerView) => {
+    setSticker(v);
+    const item = stickerEntry(v);
+    if (!item) return;
+    setCategory(item.category);
+    setEntry(item.entry);
+    setRescanning(false);
+    setCardOpen(true);
+    setHadVerdict(false);
   };
   // Fresh item, fresh card — reopen it and forget the previous item's verdict transition, whether
   // that item's category stayed the same (scanAnother) or not (scanDifferentItem).
@@ -132,8 +151,11 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
       <RulesetPicker value={rulesetId} onChange={(id) => { setRulesetId(id); setClassId(undefined); }} />
       {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
+      {sticker && <StickerCard sticker={sticker} onClear={scanDifferentItem} />}
+
       {!category ? (
         <div id="tutorial-scrutineer-scan">
+          {!sticker && <StickerScan onScanned={onSticker} />}
           <QuickItemScan
             onDone={(cat, photoDataUrl, certifications, extinguisherUnit) => {
               setCategory(cat);
