@@ -11,6 +11,7 @@ import {
   StickerApplication,
   StickerBody,
   StickerView,
+  applicationIsFor,
   fetchMyStickerApplications,
   fetchSticker,
   fetchStickerBodies,
@@ -168,9 +169,12 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
 
   const kindOf = (i: number) => kinds[i] ?? "tag";
   const ready = photos.some((_, i) => kindOf(i) === "item") && photos.some((_, i) => kindOf(i) === "tag");
+  // One pending application per item, body and season: the next one waits until it's processed.
+  const pending = mine.find((a) => a.status === "pending" && a.body === body && a.season === season && applicationIsFor(a, entry));
   const submit = async () => {
     setError(null);
     if (!body) return setError("Pick the sanctioning body.");
+    if (pending) return;
     if (!ready) return setError("The sticker needs a photo of the whole item and one of its tag or label: add them to this item first, then mark which is which.");
     try {
       const refs: { sha256: string; kind: "item" | "tag" }[] = [];
@@ -244,10 +248,16 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
         </div>
       )}
       {error && <p className="text-red-300">{error}</p>}
+      {pending && (
+        <p className="text-amber-300">
+          This {label} already has an application pending with {pending.bodyName ?? pending.body} for {pending.season}: wait until it&apos;s processed, or withdraw it to
+          send a new one.
+        </p>
+      )}
       <div className="flex items-center gap-2">
         <button
           type="button"
-          disabled={!!busy || signedIn === null}
+          disabled={!!busy || signedIn === null || !!pending}
           onClick={submit}
           className="rounded border border-emerald-700 bg-emerald-950 px-3 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
         >

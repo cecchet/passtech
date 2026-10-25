@@ -137,6 +137,33 @@ export interface StickerApplication {
   status: "pending" | "issued" | "declined" | "withdrawn";
   stickerCode?: string | null;
   note?: string | null;
+  /** The gear as sent (no photos). */
+  gear?: Partial<EquipmentEntry>;
+}
+
+/** Whether an application was for this item: the same details, or a certification serial number in
+ * common (the server refuses a second pending one for the same item, body and season). */
+export function applicationIsFor(a: StickerApplication, entry: EquipmentEntry): boolean {
+  const serials = (g?: Partial<EquipmentEntry>) => (g?.certifications ?? []).map((c) => c.serialNumber).filter((s): s is string => !!s);
+  const mine = serials(entry);
+  if (serials(a.gear).some((s) => mine.includes(s))) return true;
+  const plain = (g?: Partial<EquipmentEntry>) => {
+    const copy: Partial<EquipmentEntry> = { ...(g ?? {}) };
+    delete copy.photoDataUrls;
+    delete copy.stickerCode;
+    return stableJson(copy);
+  };
+  return plain(a.gear) === plain(entry);
+}
+
+/** JSON with every object's keys in order (the server's jsonb keeps its own order). */
+function stableJson(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(stableJson).join(",")}]`;
+  if (v && typeof v === "object") {
+    const o = v as Record<string, unknown>;
+    return `{${Object.keys(o).filter((k) => o[k] !== undefined).sort().map((k) => `${JSON.stringify(k)}:${stableJson(o[k])}`).join(",")}}`;
+  }
+  return JSON.stringify(v);
 }
 
 /** The sanctioning bodies a sticker can be applied for. */
