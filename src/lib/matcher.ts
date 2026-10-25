@@ -172,6 +172,9 @@ export interface EquipmentEntry {
   towHookFront?: boolean;
   /** Tow hook only: whether a rear tow hook/point is present. */
   towHookRear?: boolean;
+  /** Helmet, HANS, seat, extinguisher, suppression: the tech sticker on the item (its 8-character
+   * code, read off its QR code) -- a season sticker from a sanctioning body (see lib/stickers.ts). */
+  stickerCode?: string;
   /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3 for most categories, up to 5 for rollover_protection (see EquipmentForm's MAX_ITEM_PHOTOS_BY_CATEGORY). Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
   photoDataUrls?: string[];
 }

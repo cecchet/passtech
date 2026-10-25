@@ -31,6 +31,8 @@ import { ResultRow, statusLabel, statusStyle } from "@/components/ResultRow";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
+import { GearSticker } from "@/components/GearSticker";
+import { STICKER_GEAR } from "@/lib/stickers";
 import { CategoryResult } from "@/lib/matcher";
 
 interface Props {
@@ -87,6 +89,8 @@ interface Props {
   showMediaLinks?: boolean;
   /** The current ruleset's source documents, forwarded to each category's result citation so it can link out even though CategoryRule.citation almost never sets its own url. Only meaningful together with `results`. */
   sourceDocuments?: SourceDocument[];
+  /** My gear only: each sticker-able item's tech sticker (link one, apply for an annual one). */
+  stickers?: boolean;
 }
 
 function ItemPhotoThumb({
@@ -1385,6 +1389,7 @@ export function EquipmentForm({
   hideEmpty,
   showMediaLinks,
   sourceDocuments,
+  stickers,
 }: Props) {
   const groupOf = (c: EquipmentCategory): CategoryGroup =>
     occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
@@ -1442,6 +1447,7 @@ export function EquipmentForm({
         sourceDocuments={sourceDocuments}
         onChange={onChange}
         onReportMissing={onReportMissing}
+        stickerMode={stickers ? "garage" : undefined}
       />
     );
   };
@@ -1514,6 +1520,7 @@ export function CategoryCard({
   eligibilityBadge,
   expiryWarning,
   onChange,
+  stickerMode,
   onReportMissing,
 }: {
   category: EquipmentCategory;
@@ -1548,8 +1555,11 @@ export function CategoryCard({
   eligibilityBadge?: { eligible: number; fail: number; onEligibleClick: () => void; onFailClick: () => void };
   /** Buyer mode only: the earliest "expires within the current year" date found among the currently-eligible rulesets (see expiringSoonDate in matcher.ts), and whether every one of them shares it — shown right in the summary row so the caveat ("eligible now, but only for a few more months") is visible without expanding the card. `universal: false` means only some of the eligible bodies are affected, so the badge says so rather than implying a blanket expiry. */
   expiryWarning?: { date: string; universal: boolean };
-  /** scanned: a photo the card read (whole helmet, tag) when it doesn't show photos itself (showPhotoUpload off). */
-  onChange: (category: EquipmentCategory, entry: EquipmentEntry, scanned?: ScannedPhoto) => void;
+  /** scanned: photos the card read (whole helmet, tag, a sticker's) when it doesn't show photos itself (showPhotoUpload off). */
+  onChange: (category: EquipmentCategory, entry: EquipmentEntry, scanned?: ScannedPhoto | ScannedPhoto[]) => void;
+  /** The item's tech sticker (helmet, HANS, seat, extinguisher, suppression): "garage" (My gear:
+   * link one, apply for one) or "sheet" (a tech sheet line: link one, its photos to the line). */
+  stickerMode?: "garage" | "sheet";
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
 }) {
   const meta = CATEGORY_META[category];
@@ -1867,6 +1877,16 @@ export function CategoryCard({
                 Two piece — separate jacket + pants (SFI only, not required to match)
               </option>
             </select>
+          )}
+
+          {stickerMode && STICKER_GEAR.includes(category) && (
+            <GearSticker
+              category={category}
+              entry={entry}
+              allowApply={stickerMode === "garage"}
+              scanPhotos={stickerMode === "sheet"}
+              onChange={(patch, photos) => onChange(category, { ...entry, category, ...patch }, photos)}
+            />
           )}
 
           {showCertList &&

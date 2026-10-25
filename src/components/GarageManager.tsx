@@ -764,6 +764,7 @@ export function GarageManager({
             activeGroups={ALL_GROUPS}
             orderResetKey={selected.id}
             showPhotoUpload
+            stickers
             perOccupantAsDriverGroup={!!selected.hasCodriver}
           />
 
@@ -776,6 +777,7 @@ export function GarageManager({
                 activeGroups={ALL_GROUPS}
                 orderResetKey={selected.id}
                 showPhotoUpload
+                stickers
                 occupant="codriver"
               />
             </div>

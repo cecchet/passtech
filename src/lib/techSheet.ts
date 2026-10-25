@@ -187,8 +187,15 @@ function describeCerts(certs: CertificationEntry[] | undefined): string {
   return (certs ?? []).map(describeCert).join("; ");
 }
 
-/** A short, human summary of one gear entry — what the team declares on the sheet. */
+/** A short, human summary of one gear entry — what the team declares on the sheet — with its tech
+ * sticker when it has one. */
 export function summarizeEntry(category: EquipmentCategory, entry: EquipmentEntry): string {
+  const text = summarizeGear(category, entry);
+  const sticker = entry.stickerCode ? `tech sticker ${entry.stickerCode.slice(0, 4)}-${entry.stickerCode.slice(4)}` : "";
+  return [text, sticker].filter(Boolean).join(", ");
+}
+
+function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): string {
   const meta = CATEGORY_META[category];
   switch (category) {
     case "fire_extinguisher": {

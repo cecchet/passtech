@@ -6,16 +6,22 @@ import { CertificationEntry, EquipmentEntry } from "@/lib/matcher";
 /**
  * Tech stickers: QR codes scrutineers issue from the Scrutineering site (the logbook app's
  * stickers.js and its sticker_view() server function). A code holds <site>/?s=<8 characters>.
- *   gear    -- a helmet, HANS or seat: its photos and the certifications read off its tag when it
- *              passed tech. The sticker has no expiry of its own: PassTech judges those
- *              certifications against the ruleset picked here.
- *   car     -- a car that passed tech at an event: that tech sheet's results.
+ *   gear    -- a helmet, HANS, seat, fire extinguisher or suppression system: its photos and the
+ *              certifications read off its tag. Good for its body's events for a season (a
+ *              calendar year); whether the certification itself is accepted is PassTech's call
+ *              against the ruleset picked here.
+ *   car     -- a car that passed tech at an event (that event only): that tech sheet's results.
  *   logbook -- a car's digital logbook.
  */
+/** The gear a sticker can go on (the server's sticker_gear()). */
+export const STICKER_GEAR: EquipmentCategory[] = ["helmet", "hnr", "seat", "fire_extinguisher", "fire_suppression"];
+
 export interface StickerView {
   code: string;
   kind: "gear" | "car" | "logbook";
-  status: "valid" | "void";
+  status: "valid" | "void" | "expired";
+  /** Gear stickers: the season (calendar year) it's good for. */
+  season?: number | null;
   voidedAt?: string | null;
   voidReason?: string | null;
   replacedBy?: string | null;
@@ -100,3 +106,66 @@ export function stickerEntry(v: StickerView): { category: EquipmentCategory; ent
 
 /** The Scrutineering site's page for a sticker (what the QR code itself opens). */
 export const stickerPageUrl = (code: string) => `https://scrutineering.frogracing.us/?s=${code}`;
+
+/** What's wrong with using this sticker for an item of `category`, or null when it's this item's kind. */
+export function stickerMismatch(v: StickerView, category: EquipmentCategory): string | null {
+  const name = `Sticker ${formatStickerCode(v.code)}`;
+  if (v.kind !== "gear") return `${name} is a ${v.kind === "car" ? "car's tech pass" : "logbook"} sticker, not a gear sticker.`;
+  if (v.snapshot.category !== category) return `${name} is for another kind of gear (${v.snapshot.label || v.snapshot.category}).`;
+  return null;
+}
+
+/** "ARA 2026 season · valid" */
+export const stickerStatusLine = (v: StickerView) =>
+  [v.kind === "gear" && v.season ? `${v.bodyName || (v.body ?? "").toUpperCase()} ${v.season} season` : v.bodyName, v.status].filter(Boolean).join(" · ");
+
+// ---- Applying for an annual sticker ----------------------------------------------------------
+
+export interface StickerBody {
+  id: string;
+  name: string;
+}
+
+export interface StickerApplication {
+  id: string;
+  body: string;
+  bodyName?: string;
+  season: number;
+  category: EquipmentCategory;
+  owner?: string | null;
+  submittedAt: string;
+  status: "pending" | "issued" | "declined" | "withdrawn";
+  stickerCode?: string | null;
+  note?: string | null;
+}
+
+/** The sanctioning bodies a sticker can be applied for. */
+export async function fetchStickerBodies(): Promise<StickerBody[]> {
+  const { data, error } = await getSupabase().rpc("sticker_bodies");
+  if (error) throw new Error(error.message);
+  return (data as StickerBody[]) ?? [];
+}
+
+export async function fetchMyStickerApplications(): Promise<StickerApplication[]> {
+  const { data, error } = await getSupabase().rpc("my_sticker_applications");
+  if (error) throw new Error(error.message);
+  return (data as StickerApplication[]) ?? [];
+}
+
+export async function submitStickerApplication(p: {
+  body: string;
+  season: number;
+  category: EquipmentCategory;
+  owner?: string;
+  gear: EquipmentEntry;
+  photos: { sha256: string; kind: "item" | "tag" }[];
+}): Promise<string> {
+  const { data, error } = await getSupabase().rpc("submit_sticker_application", { p });
+  if (error) throw new Error(error.message);
+  return data as string;
+}
+
+export async function withdrawStickerApplication(id: string): Promise<void> {
+  const { error } = await getSupabase().rpc("withdraw_sticker_application", { p_id: id });
+  if (error) throw new Error(error.message);
+}

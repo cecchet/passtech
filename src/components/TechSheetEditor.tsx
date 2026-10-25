@@ -291,11 +291,12 @@ function LineCard({
                 occupant={line.occupant ?? "driver"}
                 defaultOpen={formOpen}
                 showResultRow={false}
+                stickerMode="sheet"
                 onChange={(_, entry, scanned) => {
                   const next = withLineGear(line, value, entry);
-                  // A photo scanned in the form (the whole helmet, a tag) joins the line's photos.
-                  const add = scanned && !next.photos.some((p) => p.dataUrl === scanned.dataUrl);
-                  onChange(add ? { ...next, photos: [...next.photos, { id: newPhotoId(), dataUrl: scanned.dataUrl, kind: scanned.kind }] } : next);
+                  // Photos scanned in the form (the whole helmet, a tag, a sticker's) join the line's.
+                  const added = (Array.isArray(scanned) ? scanned : scanned ? [scanned] : []).filter((s) => !next.photos.some((p) => p.dataUrl === s.dataUrl));
+                  onChange(added.length ? { ...next, photos: [...next.photos, ...added.map((s) => ({ id: newPhotoId(), dataUrl: s.dataUrl, kind: s.kind }))] } : next);
                 }}
               />
             </div>

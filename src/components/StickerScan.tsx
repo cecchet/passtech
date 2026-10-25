@@ -12,7 +12,19 @@ type ScanStage = { type: "idle" } | { type: "camera" } | { type: "typing" } | { 
  * read live from the camera, from a photo, or its code typed in; hands back what the server says
  * about it (see lib/stickers.ts).
  */
-export function StickerScan({ onScanned, onNo }: { onScanned: (v: StickerView) => void; onNo: () => void }) {
+export function StickerScan({
+  onScanned,
+  onNo,
+  title = "Has it a tech sticker?",
+  bare,
+}: {
+  onScanned: (v: StickerView) => void;
+  /** The "No" answer; without it there's no No button (scanning on demand: My gear, a tech sheet line). */
+  onNo?: () => void;
+  title?: string;
+  /** No box around it (inside another card). */
+  bare?: boolean;
+}) {
   const [stage, setStage] = useState<ScanStage>({ type: "idle" });
   const [typed, setTyped] = useState("");
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -87,8 +99,8 @@ export function StickerScan({ onScanned, onNo }: { onScanned: (v: StickerView) =
   };
 
   return (
-    <div className="mb-4 rounded-lg border border-neutral-700 bg-neutral-900 p-3 text-sm">
-      <p className="mb-2 font-medium text-neutral-200">Has it a tech sticker?</p>
+    <div className={bare ? "text-sm" : "mb-4 rounded-lg border border-neutral-700 bg-neutral-900 p-3 text-sm"}>
+      {title && <p className="mb-2 font-medium text-neutral-200">{title}</p>}
       {stage.type === "camera" ? (
         <div className="flex flex-col gap-2">
           <video ref={videoRef} className="max-h-72 w-full rounded bg-black object-cover" muted playsInline />
@@ -105,16 +117,18 @@ export function StickerScan({ onScanned, onNo }: { onScanned: (v: StickerView) =
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              stopCamera();
-              onNo();
-            }}
-            className="rounded bg-white px-3 py-1.5 font-medium text-black"
-          >
-            No
-          </button>
+          {onNo && (
+            <button
+              type="button"
+              onClick={() => {
+                stopCamera();
+                onNo();
+              }}
+              className="rounded bg-white px-3 py-1.5 font-medium text-black"
+            >
+              No
+            </button>
+          )}
           <button type="button" onClick={() => setStage({ type: "camera" })} className="rounded border border-neutral-600 px-3 py-1.5 text-neutral-200 hover:bg-neutral-800">
             Scan a QR code
           </button>
@@ -195,8 +209,10 @@ export function StickerCard({ sticker, onClear }: { sticker: StickerView; onClea
     <div className={`mb-4 rounded-lg border p-3 text-sm ${valid ? "border-emerald-700 bg-emerald-950/40" : "border-red-700 bg-red-950/60"}`}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className={`font-semibold ${valid ? "text-emerald-300" : "text-red-300"}`}>
-          {valid ? "VALID" : "VOID"} sticker {formatStickerCode(sticker.code)}
-          {!valid && (
+          {valid ? "VALID" : sticker.status === "expired" ? "EXPIRED" : "VOID"} sticker {formatStickerCode(sticker.code)}
+          {sticker.kind === "gear" && sticker.season ? ` — ${sticker.bodyName || (sticker.body ?? "").toUpperCase()} ${sticker.season} season` : ""}
+          {sticker.status === "expired" && <span className="font-normal"> — its season is over</span>}
+          {sticker.status === "void" && (
             <span className="font-normal">
               {" "}
               — {sticker.voidReason === "replaced" && sticker.replacedBy ? `replaced by sticker ${formatStickerCode(sticker.replacedBy)}` : sticker.voidReason || "voided"}: don&rsquo;t accept it
