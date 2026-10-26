@@ -210,7 +210,9 @@ export function StickerCard({ sticker, onClear }: { sticker: StickerView; onClea
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className={`font-semibold ${valid ? "text-emerald-300" : "text-red-300"}`}>
           {valid ? "VALID" : sticker.status === "expired" ? "EXPIRED" : "VOID"} sticker {formatStickerCode(sticker.code)}
-          {sticker.kind === "gear" && sticker.season ? ` — ${sticker.bodyName || (sticker.body ?? "").toUpperCase()} ${sticker.season} season` : ""}
+          {sticker.kind === "gear" && sticker.season
+            ? ` — ${[sticker.bodyName || (sticker.body ?? "").toUpperCase(), sticker.disciplineName].filter(Boolean).join(" ")} ${sticker.season} season`
+            : ""}
           {sticker.status === "expired" && <span className="font-normal"> — its season is over</span>}
           {sticker.status === "void" && (
             <span className="font-normal">

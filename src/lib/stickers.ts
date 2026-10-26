@@ -22,6 +22,9 @@ export interface StickerView {
   status: "valid" | "void" | "expired";
   /** Gear stickers: the season (calendar year) it's good for. */
   season?: number | null;
+  /** The body's discipline it's for (e.g. SCCNH Autocross), when the body has them. */
+  discipline?: string | null;
+  disciplineName?: string | null;
   voidedAt?: string | null;
   voidReason?: string | null;
   replacedBy?: string | null;
@@ -117,19 +120,23 @@ export function stickerMismatch(v: StickerView, category: EquipmentCategory): st
 
 /** "ARA 2026 season · valid" */
 export const stickerStatusLine = (v: StickerView) =>
-  [v.kind === "gear" && v.season ? `${v.bodyName || (v.body ?? "").toUpperCase()} ${v.season} season` : v.bodyName, v.status].filter(Boolean).join(" · ");
+  [v.kind === "gear" && v.season ? `${[v.bodyName || (v.body ?? "").toUpperCase(), v.disciplineName].filter(Boolean).join(" ")} ${v.season} season` : v.bodyName, v.status].filter(Boolean).join(" · ");
 
 // ---- Applying for an annual sticker ----------------------------------------------------------
 
 export interface StickerBody {
   id: string;
   name: string;
+  /** Its disciplines (none: the body works as one) -- an application names one. */
+  disciplines?: { id: string; name: string }[];
 }
 
 export interface StickerApplication {
   id: string;
   body: string;
   bodyName?: string;
+  discipline?: string | null;
+  disciplineName?: string | null;
   season: number;
   category: EquipmentCategory;
   owner?: string | null;
@@ -181,6 +188,7 @@ export async function fetchMyStickerApplications(): Promise<StickerApplication[]
 
 export async function submitStickerApplication(p: {
   body: string;
+  discipline?: string;
   season: number;
   category: EquipmentCategory;
   owner?: string;

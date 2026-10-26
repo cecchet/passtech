@@ -142,6 +142,8 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [bodies, setBodies] = useState<StickerBody[]>([]);
   const [body, setBody] = useState("");
+  // The body's discipline (e.g. SCCNH Autocross), when it has them.
+  const [discipline, setDiscipline] = useState("");
   const [season, setSeason] = useState(new Date().getFullYear());
   const [owner, setOwner] = useState("");
   const photos = itemPhotos(category, entry);
@@ -169,11 +171,15 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
 
   const kindOf = (i: number) => kinds[i] ?? "tag";
   const ready = photos.some((_, i) => kindOf(i) === "item") && photos.some((_, i) => kindOf(i) === "tag");
-  // One pending application per item, body and season: the next one waits until it's processed.
-  const pending = mine.find((a) => a.status === "pending" && a.body === body && a.season === season && applicationIsFor(a, entry));
+  const disciplines = bodies.find((b) => b.id === body)?.disciplines ?? [];
+  // One pending application per item, body, discipline and season: the next one waits until it's processed.
+  const pending = mine.find(
+    (a) => a.status === "pending" && a.body === body && (a.discipline ?? "") === discipline && a.season === season && applicationIsFor(a, entry)
+  );
   const submit = async () => {
     setError(null);
     if (!body) return setError("Pick the sanctioning body.");
+    if (disciplines.length && !discipline) return setError("Pick the discipline: its stickers are good for its events.");
     if (pending) return;
     if (!ready) return setError("The sticker needs a photo of the whole item and one of its tag or label: add them to this item first, then mark which is which.");
     try {
@@ -186,7 +192,15 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
         refs.push({ sha256, kind: kindOf(i) });
       }
       setBusy("Sending…");
-      await submitStickerApplication({ body, season, category, owner: owner.trim() || undefined, gear: stripEntryPhotos(entry), photos: refs });
+      await submitStickerApplication({
+        body,
+        discipline: discipline || undefined,
+        season,
+        category,
+        owner: owner.trim() || undefined,
+        gear: stripEntryPhotos(entry),
+        photos: refs,
+      });
       await loadMine();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -204,7 +218,15 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
         you pick the sticker up -- they check it against the photos.
       </p>
       <div className="flex flex-wrap gap-2">
-        <select value={body} onChange={(e) => setBody(e.target.value)} className="rounded border border-neutral-500 bg-neutral-900 p-1 text-neutral-100">
+        <select
+          value={body}
+          onChange={(e) => {
+            setBody(e.target.value);
+            const ds = bodies.find((b) => b.id === e.target.value)?.disciplines ?? [];
+            setDiscipline(ds.length === 1 ? ds[0].id : "");
+          }}
+          className="rounded border border-neutral-500 bg-neutral-900 p-1 text-neutral-100"
+        >
           <option value="">Sanctioning body…</option>
           {bodies.map((b) => (
             <option key={b.id} value={b.id}>
@@ -212,6 +234,16 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
             </option>
           ))}
         </select>
+        {disciplines.length > 0 && (
+          <select value={discipline} onChange={(e) => setDiscipline(e.target.value)} className="rounded border border-neutral-500 bg-neutral-900 p-1 text-neutral-100">
+            <option value="">Discipline…</option>
+            {disciplines.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name}
+              </option>
+            ))}
+          </select>
+        )}
         <input
           type="number"
           value={season}
@@ -250,7 +282,7 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
       {error && <p className="text-red-300">{error}</p>}
       {pending && (
         <p className="text-amber-300">
-          This {label} already has an application pending with {pending.bodyName ?? pending.body} for {pending.season}: wait until it&apos;s processed, or withdraw it to
+          This {label} already has an application pending with {pending.bodyName ?? pending.body}{pending.disciplineName ? ` ${pending.disciplineName}` : ""} for {pending.season}: wait until it&apos;s processed, or withdraw it to
           send a new one.
         </p>
       )}
@@ -270,7 +302,7 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
           {mine.map((a) => (
             <li key={a.id} className="flex flex-wrap items-center gap-2 text-neutral-300">
               <span>
-                {a.bodyName ?? a.body} {a.season} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
+                {a.bodyName ?? a.body}{a.disciplineName ? ` ${a.disciplineName}` : ""} {a.season} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
                 <span className={a.status === "issued" ? "text-emerald-300" : a.status === "declined" ? "text-red-300" : ""}>{a.status}</span>
                 {a.stickerCode ? ` · sticker ${formatStickerCode(a.stickerCode)}` : ""}
                 {a.note ? ` — ${a.note}` : ""}
