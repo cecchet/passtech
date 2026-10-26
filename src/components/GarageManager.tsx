@@ -1,25 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CategoryGroup, EquipmentCategory } from "@/data/types";
+import { useEffect, useMemo, useState } from "react";
+import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { AutomaticGearImport } from "@/components/AutomaticGearImport";
 import { SanctioningBodyPreferences } from "@/components/SanctioningBodyPreferences";
+import { GearItems, GearSetItems } from "@/components/GearItems";
 import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
 import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
 import { downscaleDataUrl, resizeImageToDataUrl } from "@/lib/imageResize";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import {
   GarageProfile,
+  GearItem,
+  MyGear,
   UserPreferences,
+  absorb,
   countFilledCategories,
   exportGarageToJson,
   freshGarageId,
   garageExportFilename,
-  loadGarage,
+  loadMyGear,
   newGarageProfile,
   parseGarageImport,
-  saveGarage,
+  pruneEmptyItems,
+  resolveProfile,
+  saveMyGear,
+  unlinkItem,
 } from "@/lib/garage";
 
 const ALL_GROUPS = new Set<CategoryGroup>(["driver", "car", "rollcage"]);
@@ -169,7 +176,18 @@ export function GarageManager({
   preferences: UserPreferences;
   onPreferencesChange: (next: UserPreferences) => void;
 }) {
-  const [profiles, setProfiles] = useState<GarageProfile[]>([]);
+  /** The gear sets as stored (their pieces of gear linked by id) and the pieces of gear. */
+  const [gear, setGear] = useState<MyGear>({ profiles: [], items: [] });
+  const profiles = gear.profiles;
+  const items = gear.items;
+  const setProfiles = (fn: (prev: GarageProfile[]) => GarageProfile[]) => setGear((g) => ({ ...g, profiles: fn(g.profiles) }));
+  /** Every gear set with its pieces of gear filled in -- what's shown, checked and exported. */
+  const resolved = useMemo(() => {
+    const byId = new Map(items.map((i) => [i.id, i]));
+    return profiles.map((p) => resolveProfile(p, byId));
+  }, [profiles, items]);
+  /** Whether the "Add a piece of gear" picker is showing. */
+  const [pickingItem, setPickingItem] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [importStatus, setImportStatus] = useState<string | null>(null);
@@ -183,7 +201,7 @@ export function GarageManager({
   /** Which saved profile's action menu (Edit/pass-tech/race-check/export/delete) is currently expanded in the list, if any — collapsed by default so the list just shows a photo preview + name per gear set. Seeded from initialActionMenuId so returning from body-first/equipment-first reopens the same gear set. */
   const [actionMenuId, setActionMenuId] = useState<string | null>(initialActionMenuId ?? null);
   /** A snapshot of the profile as it was right when "Edit this gear set" was clicked — edits still write straight through live (same as everywhere else in this app), but Cancel restores this snapshot over whatever was changed, so it actually discards the edit session instead of just closing the view on top of already-committed changes. Unset for a brand-new profile (that flow's own Cancel just deletes the profile outright — see cancelNewProfile). */
-  const [editSnapshot, setEditSnapshot] = useState<GarageProfile | null>(null);
+  const [editSnapshot, setEditSnapshot] = useState<{ profile: GarageProfile | null; items: GearItem[] } | null>(null);
   /** True once the user has clicked Cancel on an edit session that actually has unsaved changes — arms the "discard changes?" two-step confirmation instead of cancelling immediately. */
   const [confirmingCancel, setConfirmingCancel] = useState(false);
 
@@ -191,9 +209,9 @@ export function GarageManager({
   // the .then() callback, not synchronously in the effect body.
   useEffect(() => {
     let cancelled = false;
-    loadGarage().then((loaded) => {
+    loadMyGear().then((loaded) => {
       if (cancelled) return;
-      setProfiles(loaded);
+      setGear(loaded);
       setHydrated(true);
     });
     return () => {
@@ -214,13 +232,13 @@ export function GarageManager({
   useEffect(() => {
     if (!hydrated) return;
     let cancelled = false;
-    saveGarage(profiles).then((ok) => {
+    saveMyGear(gear).then((ok) => {
       if (!cancelled) setStorageError(!ok);
     });
     return () => {
       cancelled = true;
     };
-  }, [profiles, hydrated]);
+  }, [gear, hydrated]);
 
   // Reports "a gear set is open" up to the page so it can disable the global Back to main menu
   // button — covers the mode-choice screen, Automatic mode, and now editing an existing gear set
@@ -233,20 +251,60 @@ export function GarageManager({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId]);
 
-  const selected = profiles.find((p) => p.id === selectedId) ?? null;
+  /** The open gear set, resolved (its pieces of gear filled in). */
+  const selected = resolved.find((p) => p.id === selectedId) ?? null;
+  const selectedStored = profiles.find((p) => p.id === selectedId) ?? null;
 
-  // Whether the profile has actually changed since editing started — drives both the Cancel
-  // confirmation and the Update button's highlight. Only meaningful while editing an existing
-  // profile (editSnapshot is unset for a brand-new one; see startEditing).
-  const hasUnsavedEdits = editSnapshot !== null && selected !== null && JSON.stringify(selected) !== JSON.stringify(editSnapshot);
+  // Whether the profile (or a piece of its gear) has actually changed since editing started —
+  // drives both the Cancel confirmation and the Update button's highlight. Only meaningful while
+  // editing an existing profile (editSnapshot.profile is unset for a brand-new one; see startEditing).
+  const hasUnsavedEdits =
+    editSnapshot?.profile != null && selected !== null && JSON.stringify(selected) !== JSON.stringify(resolveProfile(editSnapshot.profile, editSnapshot.items));
 
+  /** Name, car photo/note, codriver toggle: the set's own fields. */
   const updateSelected = (patch: Partial<GarageProfile>) => {
     if (!selected) return;
     setProfiles((prev) => prev.map((p) => (p.id === selected.id ? { ...p, ...patch, updatedAt: new Date().toISOString() } : p)));
   };
 
+  /** Its gear (entries / codriverEntries, resolved): pieces of gear go to their items — the linked
+   * one, updated wherever else it's used, or a new one in My Gear (see absorb). */
+  // A function of the set as it is when the update runs, so several changes in one go (Automatic
+  // mode confirming a few items) each build on the last.
+  const updateSelectedGear = (patch: (current: GarageProfile) => Partial<GarageProfile>) => {
+    if (!selectedId) return;
+    setGear((g) => {
+      const stored = g.profiles.find((p) => p.id === selectedId);
+      if (!stored) return g;
+      const current = resolveProfile(stored, g.items);
+      const out = absorb([{ ...current, ...patch(current), updatedAt: new Date().toISOString() }], g.items);
+      return { items: out.items, profiles: g.profiles.map((p) => (p.id === selectedId ? out.profiles[0] : p)) };
+    });
+  };
+  const setSelectedEntry = (category: EquipmentCategory, entry: EquipmentEntry) =>
+    updateSelectedGear((current) => ({ entries: { ...current.entries, [category]: entry } }));
+  const setSelectedCodriverEntry = (category: EquipmentCategory, entry: EquipmentEntry) =>
+    updateSelectedGear((current) => ({ codriverEntries: { ...(current.codriverEntries ?? {}), [category]: entry } }));
+
+  /** Puts a piece of gear from My Gear in a set's seat (or, itemId undefined, takes it out). */
+  const linkItem = (profileId: string, occupant: Occupant, category: EquipmentCategory, itemId: string | undefined) => {
+    const key = occupant === "driver" ? "itemIds" : "codriverItemIds";
+    setProfiles((prev) =>
+      prev.map((p) => {
+        if (p.id !== profileId) return p;
+        const ids = { ...(p[key] ?? {}) };
+        if (itemId) ids[category] = itemId;
+        else delete ids[category];
+        const entries = occupant === "driver" ? { ...p.entries } : { ...(p.codriverEntries ?? {}) };
+        delete entries[category];
+        return { ...p, [key]: ids, ...(occupant === "driver" ? { entries } : { codriverEntries: entries }), updatedAt: new Date().toISOString() };
+      })
+    );
+  };
+
   const createProfile = () => {
     const profile = newGarageProfile("Untitled gear set");
+    setEditSnapshot({ profile: null, items });
     setProfiles((prev) => [...prev, profile]);
     setSelectedId(profile.id);
     setModeChoiceId(profile.id);
@@ -265,7 +323,10 @@ export function GarageManager({
   // written straight into the profile as they're confirmed (same as the rest of manual editing
   // does), so the only way to make them not count is to remove the profile that holds them.
   const cancelNewProfile = (id: string) => {
-    setProfiles((prev) => prev.filter((p) => p.id !== id));
+    // Its gear went into My Gear as it was entered: the items as they were before it go back too.
+    const before = editSnapshot?.items;
+    setGear((g) => ({ items: before ?? g.items, profiles: g.profiles.filter((p) => p.id !== id) }));
+    setEditSnapshot(null);
     setModeChoiceId(null);
     setAutoImportFocusedId(null);
     setSelectedId(null);
@@ -275,13 +336,17 @@ export function GarageManager({
   // written into the profile, so this just leaves the focused Automatic-mode view and returns to
   // the list.
   const saveNewProfile = () => {
+    setGear((g) => pruneEmptyItems(g));
+    setEditSnapshot(null);
     setAutoImportFocusedId(null);
     setSelectedId(null);
   };
 
   const startEditing = (p: GarageProfile) => {
+    const stored = profiles.find((x) => x.id === p.id);
+    if (!stored) return;
     setActionMenuId(null);
-    setEditSnapshot(structuredClone(p));
+    setEditSnapshot({ profile: structuredClone(stored), items: structuredClone(items) });
     setConfirmingCancel(false);
     setSelectedId(p.id);
   };
@@ -291,8 +356,9 @@ export function GarageManager({
   // live, same as everywhere else in this app, so this is what makes Cancel actually mean "undo
   // this editing session" rather than just closing the view on top of already-committed changes).
   const cancelEdit = () => {
-    if (editSnapshot) {
-      setProfiles((prev) => prev.map((p) => (p.id === editSnapshot.id ? editSnapshot : p)));
+    const snap = editSnapshot?.profile;
+    if (snap && editSnapshot) {
+      setGear((g) => ({ items: editSnapshot.items, profiles: g.profiles.map((p) => (p.id === snap.id ? snap : p)) }));
     }
     setEditSnapshot(null);
     setConfirmingCancel(false);
@@ -317,6 +383,7 @@ export function GarageManager({
   // Update this gear / just navigating away from an existing gear set's editor — everything is
   // already live-saved, so this only needs to clear the editing UI state.
   const finishEditing = () => {
+    setGear((g) => pruneEmptyItems(g));
     setEditSnapshot(null);
     setConfirmingCancel(false);
     // Reopens the gear set's action menu in the list, same as the reopen behavior returning from
@@ -338,7 +405,9 @@ export function GarageManager({
     setConfirmDeleteId(null);
   };
 
-  const handleExportProfile = async (profile: GarageProfile, includeHighRes: boolean) => {
+  /** Exports the resolved set (self-contained: its gear in it), without its links to this browser's items. */
+  const handleExportProfile = async (resolvedProfile: GarageProfile, includeHighRes: boolean) => {
+    const profile = { ...resolvedProfile, itemIds: undefined, codriverItemIds: undefined };
     const exportProfile = includeHighRes ? profile : await shrinkProfilePhotos(profile);
     downloadJson(exportGarageToJson([exportProfile]), garageExportFilename(profile.name));
   };
@@ -353,8 +422,13 @@ export function GarageManager({
       }
       // Always import as new entries with fresh ids — never overwrite an existing gear set, even
       // one that happens to share an id (e.g. re-importing a file you already have saved).
-      const asNew = imported.map((p) => ({ ...p, id: freshGarageId() }));
-      setProfiles((prev) => [...prev, ...asNew]);
+      // Its gear joins My Gear, reusing an identical item already there (re-importing your own
+      // export doesn't double every helmet).
+      const asNew = imported.map((p) => ({ ...p, id: freshGarageId(), itemIds: undefined, codriverItemIds: undefined }));
+      setGear((g) => {
+        const out = absorb(asNew, g.items, { dedupe: true });
+        return { items: out.items, profiles: [...g.profiles, ...out.profiles] };
+      });
       setImportStatus(`Imported ${imported.length} gear set${imported.length === 1 ? "" : "s"}.`);
     } catch (e) {
       setImportStatus(e instanceof Error ? e.message : "That file couldn't be imported.");
@@ -372,7 +446,7 @@ export function GarageManager({
         setImportStatus("No gear found in that file.");
         return;
       }
-      updateSelected({ hasCodriver: true, codriverEntries: { ...imported[0].entries } });
+      updateSelectedGear(() => ({ hasCodriver: true, codriverEntries: { ...imported[0].entries }, codriverItemIds: undefined }));
       setImportStatus(`Imported "${imported[0].name}" as codriver gear — replaces any codriver gear already entered here.`);
     } catch (e) {
       setImportStatus(e instanceof Error ? e.message : "That file couldn't be imported.");
@@ -406,6 +480,15 @@ export function GarageManager({
           <div id="tutorial-garage-add" className="mb-4 flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
+              onClick={() => setPickingItem(true)}
+              className="flex flex-1 items-center gap-3 rounded-lg border border-emerald-700 bg-emerald-950 p-4 text-left text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/frog-helmet.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+              Add a piece of gear
+            </button>
+            <button
+              type="button"
               onClick={createProfile}
               className="flex flex-1 items-center gap-3 rounded-lg border border-emerald-700 bg-emerald-950 p-4 text-left text-sm font-semibold text-emerald-200 hover:bg-emerald-900"
             >
@@ -429,12 +512,24 @@ export function GarageManager({
               />
             </label>
           </div>
+          <GearItems
+            items={items}
+            profiles={profiles}
+            preferences={preferences}
+            picking={pickingItem}
+            setPicking={setPickingItem}
+            onAdd={(item) => setGear((g) => ({ ...g, items: [...g.items, item] }))}
+            onChange={(item) => setGear((g) => ({ ...g, items: g.items.map((i) => (i.id === item.id ? item : i)) }))}
+            onDelete={(id) => setGear((g) => ({ items: g.items.filter((i) => i.id !== id), profiles: unlinkItem(g.profiles, id) }))}
+            onLink={linkItem}
+            onClose={() => setGear((g) => pruneEmptyItems(g))}
+          />
           <SanctioningBodyPreferences preferences={preferences} onChange={onPreferencesChange} />
           {profiles.length > 0 && (
             <div id="tutorial-garage-list">
               <h2 className="mb-2 text-sm font-semibold text-neutral-300">Available Gear Sets</h2>
               <div className="flex flex-col gap-2">
-                {profiles.map((p) => {
+                {resolved.map((p) => {
                   const photos = collectProfilePhotos(p);
                   const isOpen = actionMenuId === p.id;
                   const expiryWarnings = computeGearExpiryWarnings(p, preferences);
@@ -537,7 +632,7 @@ export function GarageManager({
                                   : "rounded border border-red-800 px-2 py-1 text-xs text-red-300 hover:bg-red-950"
                               }
                             >
-                              🗑️ {confirmDeleteId === p.id ? "Confirm delete?" : "Delete this gear set"}
+                              🗑️ {confirmDeleteId === p.id ? "Confirm delete? (its gear stays in My Gear)" : "Delete this gear set"}
                             </button>
                             {confirmDeleteId === p.id && (
                               <button type="button" onClick={() => setConfirmDeleteId(null)} className={buttonClass}>
@@ -635,9 +730,9 @@ export function GarageManager({
           </label>
           <AutomaticGearImport
             entries={selected.entries}
-            onChangeEntry={(category, entry) => updateSelected({ entries: { ...selected.entries, [category]: entry } })}
+            onChangeEntry={setSelectedEntry}
             codriverEntries={selected.codriverEntries ?? {}}
-            onChangeCodriverEntry={(category, entry) => updateSelected({ codriverEntries: { ...(selected.codriverEntries ?? {}), [category]: entry } })}
+            onChangeCodriverEntry={setSelectedCodriverEntry}
             hasCodriver={!!selected.hasCodriver}
             onSetHasCodriver={(v) => updateSelected({ hasCodriver: v })}
             onDone={saveNewProfile}
@@ -749,18 +844,26 @@ export function GarageManager({
             <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-emerald-400">Automatic mode</h3>
             <AutomaticGearImport
               entries={selected.entries}
-              onChangeEntry={(category, entry) => updateSelected({ entries: { ...selected.entries, [category]: entry } })}
+              onChangeEntry={setSelectedEntry}
               codriverEntries={selected.codriverEntries ?? {}}
-              onChangeCodriverEntry={(category, entry) => updateSelected({ codriverEntries: { ...(selected.codriverEntries ?? {}), [category]: entry } })}
+              onChangeCodriverEntry={setSelectedCodriverEntry}
               hasCodriver={!!selected.hasCodriver}
               onSetHasCodriver={(v) => updateSelected({ hasCodriver: v })}
               onDone={() => {}}
             />
           </div>
 
+          {selectedStored && (
+            <GearSetItems
+              profile={selectedStored}
+              items={items}
+              onSet={(occupant, category, itemId) => linkItem(selectedStored.id, occupant, category, itemId)}
+            />
+          )}
+
           <EquipmentForm
             entries={selected.entries}
-            onChange={(category, entry) => updateSelected({ entries: { ...selected.entries, [category]: entry } })}
+            onChange={setSelectedEntry}
             activeGroups={ALL_GROUPS}
             orderResetKey={selected.id}
             showPhotoUpload
@@ -773,7 +876,7 @@ export function GarageManager({
               <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-teal-400">Codriver Safety Gear</h3>
               <EquipmentForm
                 entries={selected.codriverEntries ?? {}}
-                onChange={(category, entry) => updateSelected({ codriverEntries: { ...(selected.codriverEntries ?? {}), [category]: entry } })}
+                onChange={setSelectedCodriverEntry}
                 activeGroups={ALL_GROUPS}
                 orderResetKey={selected.id}
                 showPhotoUpload

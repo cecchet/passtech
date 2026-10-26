@@ -1310,7 +1310,7 @@ interface CertBadge {
  * apply once a rule has actually been evaluated against (`result` present, i.e. body-first mode);
  * garage editing with no ruleset selected shows the same labels in neutral gray.
  */
-function summarizeEntryCerts(category: EquipmentCategory, entry: EquipmentEntry, result: CategoryResult | undefined): CertBadge[] {
+export function summarizeEntryCerts(category: EquipmentCategory, entry: EquipmentEntry, result: CategoryResult | undefined): CertBadge[] {
   const meta = CATEGORY_META[category];
   if (meta.hybrid && entry.mode === "material_only") {
     const label = meta.materialOnlyLabel ?? "Material only";

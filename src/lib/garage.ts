@@ -1,5 +1,9 @@
 import { DisciplineGroup, EquipmentCategory, Ruleset } from "@/data/types";
-import { EquipmentEntry } from "@/lib/matcher";
+import { PER_OCCUPANT_CATEGORIES } from "@/data/categoryMeta";
+import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
+
+type Entries = Partial<Record<EquipmentCategory, EquipmentEntry>>;
+type ItemIds = Partial<Record<EquipmentCategory, string>>;
 
 /** A saved, named set of gear the driver owns — independent of any sanctioning body. Loaded into the checker's entries when the driver wants to check it against a specific body. */
 export interface GarageProfile {
@@ -7,7 +11,15 @@ export interface GarageProfile {
   name: string;
   createdAt: string;
   updatedAt: string;
+  /** As stored: only the categories that aren't pieces of gear of their own (see GearItem) -- the
+   * car's fuel cell, kill switch, cage... As loadGarage() returns it (resolved): every category,
+   * the linked items' entries included. */
   entries: Partial<Record<EquipmentCategory, EquipmentEntry>>;
+  /** The pieces of gear this set is made of, by category (see GearItem): their entries live on the
+   * items, shared by every set that uses them. */
+  itemIds?: ItemIds;
+  /** Rally only: the codriver's pieces of gear, same as itemIds. */
+  codriverItemIds?: ItemIds;
   /** Rally only: whether this gear set includes a codriver's own gear (see codriverEntries). */
   hasCodriver?: boolean;
   /** Rally only: the codriver's own gear — same shape as entries, populated when hasCodriver is true. */
@@ -57,20 +69,28 @@ function openDb(): Promise<IDBDatabase> {
   });
 }
 
-function getProfilesRecord(db: IDBDatabase): Promise<GarageProfile[] | undefined> {
+/** The pieces of gear (GearItem[]), next to the profiles in the same store -- added without a
+ * version bump: a browser that has profiles but no items record yet moves its gear sets' gear into
+ * items the first time it loads (see loadMyGear). */
+const ITEMS_RECORD_KEY = "items";
+
+function getRecord<T>(db: IDBDatabase, key: string): Promise<T | undefined> {
   return new Promise((resolve, reject) => {
-    const req = db.transaction(STORE_NAME, "readonly").objectStore(STORE_NAME).get(RECORD_KEY);
+    const req = db.transaction(STORE_NAME, "readonly").objectStore(STORE_NAME).get(key);
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
 }
 
-function putProfilesRecord(db: IDBDatabase, profiles: GarageProfile[]): Promise<void> {
+/** Profiles and items in one transaction, so a set never points at an item that wasn't saved. */
+function putMyGearRecords(db: IDBDatabase, gear: MyGear): Promise<void> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, "readwrite");
-    tx.objectStore(STORE_NAME).put(profiles, RECORD_KEY);
+    tx.objectStore(STORE_NAME).put(gear.profiles, RECORD_KEY);
+    tx.objectStore(STORE_NAME).put(gear.items, ITEMS_RECORD_KEY);
     tx.oncomplete = () => resolve();
     tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
   });
 }
 
@@ -102,29 +122,180 @@ export function newGarageProfile(name: string): GarageProfile {
 }
 
 /**
- * Reads all saved profiles from IndexedDB. Returns an empty array if nothing is saved yet, or the
- * stored data is corrupt/unavailable (e.g. a browser with IndexedDB disabled).
+ * One piece of gear the driver owns -- a helmet, a HANS, a seat -- on its own in My Gear, whether or
+ * not a gear set uses it. Gear sets link items by id (GarageProfile.itemIds), so the same helmet in
+ * two sets is one item: editing it, or its tech sticker, shows in both.
+ */
+export interface GearItem {
+  id: string;
+  category: EquipmentCategory;
+  /** The driver's own name for it ("White Bell HP7"), to tell two helmets apart. */
+  name?: string;
+  entry: EquipmentEntry;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** The categories that are pieces of gear of their own: the driver's personal gear, seat, harness
+ * and window net (per occupant), and the fire extinguisher and suppression system (they get tech
+ * stickers). The rest (fuel cell, kill switch, cage...) belongs to the car, so stays in its set. */
+export const GEAR_ITEM_CATEGORIES: EquipmentCategory[] = [...PER_OCCUPANT_CATEGORIES, "fire_extinguisher", "fire_suppression"];
+export const isGearItemCategory = (c: EquipmentCategory) => GEAR_ITEM_CATEGORIES.includes(c);
+
+export function newGearItem(category: EquipmentCategory, entry: EquipmentEntry = { category }): GearItem {
+  const now = new Date().toISOString();
+  return { id: newId(), category, entry, createdAt: now, updatedAt: now };
+}
+
+export interface MyGear {
+  /** As stored (see GarageProfile.entries). */
+  profiles: GarageProfile[];
+  items: GearItem[];
+}
+
+/** JSON with every object's keys in order, to compare two entries (or a server's jsonb) by content. */
+export function stableJson(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(stableJson).join(",")}]`;
+  if (v && typeof v === "object") {
+    const o = v as Record<string, unknown>;
+    return `{${Object.keys(o).filter((k) => o[k] !== undefined).sort().map((k) => `${JSON.stringify(k)}:${stableJson(o[k])}`).join(",")}}`;
+  }
+  return JSON.stringify(v);
+}
+
+/** A stored gear set with its items' entries filled in -- what every checker, tech sheet and export reads. */
+export function resolveProfile(p: GarageProfile, items: GearItem[] | Map<string, GearItem>): GarageProfile {
+  const byId = items instanceof Map ? items : new Map(items.map((i) => [i.id, i]));
+  const fill = (entries: Entries | undefined, ids: ItemIds | undefined): Entries => {
+    const out: Entries = { ...(entries ?? {}) };
+    for (const [c, id] of Object.entries(ids ?? {}) as [EquipmentCategory, string][]) {
+      const item = byId.get(id);
+      if (item) out[c] = item.entry;
+    }
+    return out;
+  };
+  return {
+    ...p,
+    entries: fill(p.entries, p.itemIds),
+    codriverEntries: p.codriverEntries || p.codriverItemIds ? fill(p.codriverEntries, p.codriverItemIds) : undefined,
+  };
+}
+
+/**
+ * The other way: resolved gear sets back to stored ones plus their items. Each piece of gear's
+ * entry goes to the item the set links for it -- updating the item when it differs from the item
+ * as it was before this call (so another set's stale copy of a shared item can't undo the edit) --
+ * or to a new item when nothing's linked yet. An entry that's emptied stays linked, so clearing a
+ * field mid-edit doesn't split the item in two (pruneEmptyItems drops empty items later).
+ *   dedupe: a new piece of gear identical to an item of the same category already in My Gear uses
+ *   that item instead (moving to items, importing a file, saving from the checker) -- never while
+ *   editing, where a half-typed entry could match some other item.
+ */
+export function absorb(resolved: GarageProfile[], items: GearItem[], opts: { dedupe?: boolean } = {}): MyGear {
+  const before = new Map(items.map((i) => [i.id, i]));
+  const after = new Map(before);
+  const now = new Date().toISOString();
+  const take = (category: EquipmentCategory, entry: EquipmentEntry, id: string | undefined): string | undefined => {
+    const orig = id ? before.get(id) : undefined;
+    if (orig && orig.category === category) {
+      if (stableJson(orig.entry) !== stableJson(entry)) after.set(orig.id, { ...after.get(orig.id)!, entry, updatedAt: now });
+      return orig.id;
+    }
+    if (isEntryEmpty(category, entry)) return undefined;
+    if (opts.dedupe) {
+      const json = stableJson(entry);
+      for (const it of after.values()) if (it.category === category && stableJson(it.entry) === json) return it.id;
+    }
+    const item = newGearItem(category, entry);
+    after.set(item.id, item);
+    return item.id;
+  };
+  const split = (entries: Entries | undefined, ids: ItemIds | undefined) => {
+    const rest: Entries = {};
+    const outIds: ItemIds = {};
+    for (const [c, e] of Object.entries(entries ?? {}) as [EquipmentCategory, EquipmentEntry | undefined][]) {
+      if (!e) continue;
+      if (!isGearItemCategory(c)) {
+        rest[c] = e;
+        continue;
+      }
+      const id = take(c, e, ids?.[c]);
+      if (id) outIds[c] = id;
+    }
+    return { rest, ids: outIds };
+  };
+  const profiles = resolved.map((p) => {
+    const driver = split(p.entries, p.itemIds);
+    const out: GarageProfile = { ...p, entries: driver.rest, itemIds: driver.ids };
+    if (p.codriverEntries) {
+      const codriver = split(p.codriverEntries, p.codriverItemIds);
+      out.codriverEntries = codriver.rest;
+      out.codriverItemIds = codriver.ids;
+    } else {
+      delete out.codriverItemIds;
+    }
+    return out;
+  });
+  return { profiles, items: [...after.values()] };
+}
+
+/** Drops the items with nothing entered (a piece of gear started and left empty, or emptied in a
+ * set's editor), and every set's link to them. */
+export function pruneEmptyItems(gear: MyGear): MyGear {
+  const empty = new Set(gear.items.filter((i) => isEntryEmpty(i.category, i.entry)).map((i) => i.id));
+  if (empty.size === 0) return gear;
+  const keep = (ids: ItemIds | undefined) =>
+    ids && (Object.fromEntries(Object.entries(ids).filter(([, id]) => !empty.has(id as string))) as ItemIds);
+  return {
+    items: gear.items.filter((i) => !empty.has(i.id)),
+    profiles: gear.profiles.map((p) => ({ ...p, itemIds: keep(p.itemIds), codriverItemIds: keep(p.codriverItemIds) })),
+  };
+}
+
+/** Takes an item out of every set that uses it (the item itself stays in My Gear). */
+export function unlinkItem(profiles: GarageProfile[], itemId: string): GarageProfile[] {
+  const drop = (ids: ItemIds | undefined) => ids && (Object.fromEntries(Object.entries(ids).filter(([, id]) => id !== itemId)) as ItemIds);
+  return profiles.map((p) =>
+    Object.values(p.itemIds ?? {}).includes(itemId) || Object.values(p.codriverItemIds ?? {}).includes(itemId)
+      ? { ...p, itemIds: drop(p.itemIds), codriverItemIds: drop(p.codriverItemIds), updatedAt: new Date().toISOString() }
+      : p
+  );
+}
+
+/**
+ * Reads My Gear from IndexedDB: the gear sets as stored, and the pieces of gear. Empty if nothing is
+ * saved yet, or the stored data is corrupt/unavailable (e.g. a browser with IndexedDB disabled).
  *
- * The first time this finds no IndexedDB record, it checks the old localStorage-based store for a
+ * The first time this finds no profiles record, it checks the old localStorage-based store for a
  * returning user's data, migrates it into IndexedDB, and — only once that write actually succeeds
  * — clears the old localStorage key so the space is freed. If the IndexedDB write fails, the
- * localStorage copy is left in place rather than risk losing it.
+ * localStorage copy is left in place rather than risk losing it. The first time it finds no items
+ * record, it moves each set's gear into items (the same helmet in two sets becoming one item).
  */
-export async function loadGarage(): Promise<GarageProfile[]> {
+export async function loadMyGear(): Promise<MyGear> {
+  let profiles: GarageProfile[] | undefined;
+  let items: GearItem[] | undefined;
   try {
     const db = await openDb();
-    const existing = await getProfilesRecord(db);
+    profiles = await getRecord<GarageProfile[]>(db, RECORD_KEY);
+    items = await getRecord<GearItem[]>(db, ITEMS_RECORD_KEY);
     db.close();
-    if (existing) return existing;
   } catch {
-    return [];
+    return { profiles: [], items: [] };
   }
+  const legacy = profiles ? null : readLegacyLocalStorage();
+  if (items && profiles) return pruneEmptyItems({ profiles, items });
 
-  const legacy = readLegacyLocalStorage();
-  if (legacy.length > 0 && (await saveGarage(legacy))) {
-    window.localStorage.removeItem(LEGACY_LOCALSTORAGE_KEY);
-  }
-  return legacy;
+  const moved = absorb(profiles ?? legacy ?? [], items ?? [], { dedupe: true });
+  if ((await saveMyGear(moved)) && legacy?.length) window.localStorage.removeItem(LEGACY_LOCALSTORAGE_KEY);
+  return moved;
+}
+
+/** Every gear set, resolved (its pieces of gear filled in) — for the checker and tech sheets. */
+export async function loadGarage(): Promise<GarageProfile[]> {
+  const { profiles, items } = await loadMyGear();
+  const byId = new Map(items.map((i) => [i.id, i]));
+  return profiles.map((p) => resolveProfile(p, byId));
 }
 
 /** Chains every saveGarage() write onto the previous one so they land in IndexedDB in the same
@@ -142,11 +313,11 @@ let writeQueue: Promise<void> = Promise.resolve();
  * until the next reload silently reverts it. Callers should surface a failure to the user
  * immediately, before they navigate away or close the tab.
  */
-export function saveGarage(profiles: GarageProfile[]): Promise<boolean> {
+export function saveMyGear(gear: MyGear): Promise<boolean> {
   const outcome = writeQueue.then(async (): Promise<boolean> => {
     try {
       const db = await openDb();
-      await putProfilesRecord(db, profiles);
+      await putMyGearRecords(db, gear);
       db.close();
       return true;
     } catch {
@@ -158,6 +329,13 @@ export function saveGarage(profiles: GarageProfile[]): Promise<boolean> {
     () => undefined
   );
   return outcome;
+}
+
+/** Saves resolved gear sets (as loadGarage() gives them, edited): their gear goes to their items —
+ * see absorb. Items no set uses stay in My Gear. Same return value as saveMyGear. */
+export async function saveGarage(profiles: GarageProfile[]): Promise<boolean> {
+  const { items } = await loadMyGear();
+  return saveMyGear(absorb(profiles, items, { dedupe: true }));
 }
 
 /** How many categories in a profile actually have data — shown in the profile list so an empty/skeleton profile is visually distinguishable from one that's actually filled in. */

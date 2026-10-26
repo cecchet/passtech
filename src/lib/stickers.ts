@@ -2,6 +2,7 @@ import { getSupabase } from "@/lib/techSheetServer";
 import { TECH_SHEET_PHOTO_BUCKET } from "@/lib/serverConfig";
 import { EquipmentCategory } from "@/data/types";
 import { CertificationEntry, EquipmentEntry } from "@/lib/matcher";
+import { stableJson } from "@/lib/garage";
 
 /**
  * Tech stickers: QR codes scrutineers issue from the Scrutineering site (the logbook app's
@@ -161,16 +162,6 @@ export function applicationIsFor(a: StickerApplication, entry: EquipmentEntry): 
     return stableJson(copy);
   };
   return plain(a.gear) === plain(entry);
-}
-
-/** JSON with every object's keys in order (the server's jsonb keeps its own order). */
-function stableJson(v: unknown): string {
-  if (Array.isArray(v)) return `[${v.map(stableJson).join(",")}]`;
-  if (v && typeof v === "object") {
-    const o = v as Record<string, unknown>;
-    return `{${Object.keys(o).filter((k) => o[k] !== undefined).sort().map((k) => `${JSON.stringify(k)}:${stableJson(o[k])}`).join(",")}}`;
-  }
-  return JSON.stringify(v);
 }
 
 /** The sanctioning bodies a sticker can be applied for. */
