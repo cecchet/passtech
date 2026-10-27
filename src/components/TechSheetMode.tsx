@@ -216,7 +216,7 @@ function NewSheetSetup({
                 first and come back.
               </>
             ) : (
-              <>, or add your gear first in &quot;Check my gear&quot;.</>
+              <>, or add your gear first in &quot;My gear&quot;.</>
             )}
           </p>
         ) : (

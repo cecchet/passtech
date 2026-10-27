@@ -8,14 +8,14 @@ import { StickerView, fetchSticker, formatStickerCode, stickerCodeFrom, stickerP
 type ScanStage = { type: "idle" } | { type: "camera" } | { type: "typing" } | { type: "loading"; code: string } | { type: "error"; message: string };
 
 /**
- * "Has it a tech sticker?" -- No (the caller goes on to scanning the item itself), or its QR code
+ * "Does it have a tech sticker?" -- No (the caller goes on to scanning the item itself), or its QR code
  * read live from the camera, from a photo, or its code typed in; hands back what the server says
  * about it (see lib/stickers.ts).
  */
 export function StickerScan({
   onScanned,
   onNo,
-  title = "Has it a tech sticker?",
+  title = "Does it have a tech sticker?",
   bare,
 }: {
   onScanned: (v: StickerView) => void;

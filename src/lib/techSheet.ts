@@ -262,14 +262,17 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
   return text;
 }
 
-/** Every photo stored on a gear entry: its own item photos plus each unit's. */
-export function entryPhotos(entry: EquipmentEntry): string[] {
-  return [
-    ...(entry.photoDataUrls ?? []),
-    ...(entry.extinguisherUnits ?? []).flatMap((u) => u.photoDataUrls ?? []),
-    ...(entry.windowBreakerUnits ?? []).flatMap((u) => u.photoDataUrls ?? []),
-    ...(entry.triangleUnits ?? []).flatMap((u) => u.photoDataUrls ?? []),
+/** Every photo stored on a gear entry with its likely role: in the item's own photos and in each
+ * unit's, the first shows the whole item and the others its tag or label (the order PassTech asks
+ * for them in; the scrutineer can still change it on the sheet). */
+function entryPhotoKinds(entry: EquipmentEntry): { url: string; kind: TechSheetPhotoKind }[] {
+  const groups = [
+    entry.photoDataUrls ?? [],
+    ...(entry.extinguisherUnits ?? []).map((u) => u.photoDataUrls ?? []),
+    ...(entry.windowBreakerUnits ?? []).map((u) => u.photoDataUrls ?? []),
+    ...(entry.triangleUnits ?? []).map((u) => u.photoDataUrls ?? []),
   ];
+  return groups.flatMap((urls) => urls.map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const) })));
 }
 
 /** The entry without its photos (its own and each unit's) — the sheet keeps those as line photos. */
@@ -371,9 +374,9 @@ export async function prefillLine(profile: GarageProfile | undefined, line: Tech
   if (options.length) values.__options = options;
   const photos: TechSheetDraftPhoto[] = [];
   for (const g of gear) {
-    for (const url of entryPhotos(g.entry)) {
+    for (const { url, kind } of entryPhotoKinds(g.entry)) {
       try {
-        photos.push({ id: newPhotoId(), dataUrl: await asJpeg(url), kind: "item", fromGear: true });
+        photos.push({ id: newPhotoId(), dataUrl: await asJpeg(url), kind, fromGear: true });
       } catch {
         // an unreadable stored photo is just skipped
       }
@@ -634,7 +637,7 @@ export interface LineCheck {
 }
 
 /** PassTech's own check of each occupant's gear against a ruleset — the same evaluateRuleset the
- * "Check my gear" flow uses, run once per occupant. */
+ * "My gear" check uses, run once per occupant. */
 export function evaluateProfile(ruleset: Ruleset | undefined, profile: GarageProfile | undefined) {
   if (!ruleset || !profile) return undefined;
   return {
@@ -665,7 +668,7 @@ export function sheetEntries(draft: TechSheetDraft, profile: GarageProfile | und
 
 /** A line's PassTech check. Gear entered on the sheet is judged as entered — with the occupant's
  * other gear from the sheet, for the rules that look across items (a balaclava with an HNR, an
- * undergarment under the firesuit) — else the gear set's own check, as "Check my gear" has it. */
+ * undergarment under the firesuit) — else the gear set's own check, as "My gear" has it. */
 export function lineChecks(
   results: ReturnType<typeof evaluateProfile>,
   profile: GarageProfile | undefined,
@@ -744,9 +747,9 @@ export async function buildDeclaration(
       const gear = hasSheetGear(filled) ? filled.gear : undefined;
       if (gear) item.gear = stripEntryPhotos(gear);
       const photos: { dataUrl: string; kind: TechSheetPhotoKind }[] = [...filled.photos];
-      for (const url of gear ? entryPhotos(gear) : []) {
+      for (const { url, kind } of gear ? entryPhotoKinds(gear) : []) {
         try {
-          photos.push({ dataUrl: await asJpeg(url), kind: "item" });
+          photos.push({ dataUrl: await asJpeg(url), kind });
         } catch {
           // an unreadable photo is just skipped
         }

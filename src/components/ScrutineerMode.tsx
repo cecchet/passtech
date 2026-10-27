@@ -46,7 +46,7 @@ export function ScrutineerMode({ demoItemTrigger, tourActive }: { demoItemTrigge
   // A scanned tech sticker: a gear one fills the item in (its certifications, judged against the
   // ruleset picked here); a car or logbook one is just shown.
   const [sticker, setSticker] = useState<StickerView | null>(null);
-  // "Has it a tech sticker?" answered No: on to scanning the item itself.
+  // "Does it have a tech sticker?" answered No: on to scanning the item itself.
   const [noSticker, setNoSticker] = useState(false);
 
   // Tutorial only: fills in a demo item (a Snell SA2020 helmet) so the later tour steps — the

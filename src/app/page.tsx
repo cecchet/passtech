@@ -624,8 +624,8 @@ export default function Home() {
             />
             <LandingCard
               number={2}
-              title="Check my gear"
-              description="Enter your safety gear, then check it against a specific sanctioning body's rules or see everywhere it's eligible to race."
+              title="My gear"
+              description="Keep your helmet and other safety gear, alone or in gear sets, apply for tech stickers, and check it against a sanctioning body's rules or see everywhere it's eligible to race."
               icon="/frog-mygear.jpg"
               onClick={() => setMode("garage")}
             />

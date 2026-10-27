@@ -147,7 +147,9 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
   const [season, setSeason] = useState(new Date().getFullYear());
   const [owner, setOwner] = useState("");
   const photos = itemPhotos(category, entry);
-  const [kinds, setKinds] = useState<("item" | "tag")[]>(() => photos.map((_, i) => (i === 0 ? "item" : "tag")));
+  // Each photo's role, keyed by the photo itself so adding or removing one never shifts the others;
+  // a photo not marked yet is the whole item when it's the first, its tag otherwise.
+  const [kinds, setKinds] = useState<Record<string, "item" | "tag">>({});
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mine, setMine] = useState<StickerApplication[]>([]);
@@ -169,7 +171,7 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedIn]);
 
-  const kindOf = (i: number) => kinds[i] ?? "tag";
+  const kindOf = (i: number) => kinds[photos[i]] ?? (i === 0 ? "item" : "tag");
   const ready = photos.some((_, i) => kindOf(i) === "item") && photos.some((_, i) => kindOf(i) === "tag");
   const disciplines = bodies.find((b) => b.id === body)?.disciplines ?? [];
   // One pending application per item, body, discipline and season: the next one waits until it's processed.
@@ -269,7 +271,7 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
               <img src={p} alt="" className={`h-16 w-16 rounded object-cover ${kindOf(i) === "tag" ? "ring-2 ring-sky-500" : ""}`} />
               <select
                 value={kindOf(i)}
-                onChange={(e) => setKinds(photos.map((_, j) => (j === i ? (e.target.value as "item" | "tag") : kindOf(j))))}
+                onChange={(e) => setKinds((k) => ({ ...k, [p]: e.target.value as "item" | "tag" }))}
                 className="rounded border border-neutral-600 bg-neutral-900 p-0.5 text-neutral-200"
               >
                 <option value="item">Whole item</option>
