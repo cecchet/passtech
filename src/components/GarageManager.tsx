@@ -5,7 +5,7 @@ import { CategoryGroup, EquipmentCategory, Occupant } from "@/data/types";
 import { EquipmentForm } from "@/components/EquipmentForm";
 import { AutomaticGearImport } from "@/components/AutomaticGearImport";
 import { SanctioningBodyPreferences } from "@/components/SanctioningBodyPreferences";
-import { GearItems, GearSetItems } from "@/components/GearItems";
+import { GearItems, myGearSlot } from "@/components/GearItems";
 import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
 import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
 import { downscaleDataUrl, resizeImageToDataUrl } from "@/lib/imageResize";
@@ -302,6 +302,12 @@ export function GarageManager({
     );
   };
 
+  /** The selected set's cards, per seat: pick a piece of gear already in My Gear (see myGearSlot). */
+  const pickFromMyGear = (occupant: Occupant) => (category: EquipmentCategory) =>
+    selectedStored
+      ? myGearSlot({ profile: selectedStored, items, profiles, occupant, category, onSet: (itemId) => linkItem(selectedStored.id, occupant, category, itemId) })
+      : undefined;
+
   const createProfile = () => {
     const profile = newGarageProfile("Untitled gear set");
     setEditSnapshot({ profile: null, items });
@@ -356,6 +362,8 @@ export function GarageManager({
   // live, same as everywhere else in this app, so this is what makes Cancel actually mean "undo
   // this editing session" rather than just closing the view on top of already-committed changes).
   const cancelEdit = () => {
+    // A brand-new set (Manual mode) has no snapshot to go back to: Cancel discards it.
+    if (editSnapshot && !editSnapshot.profile && selectedId) return cancelNewProfile(selectedId);
     const snap = editSnapshot?.profile;
     if (snap && editSnapshot) {
       setGear((g) => ({ items: editSnapshot.items, profiles: g.profiles.map((p) => (p.id === snap.id ? snap : p)) }));
@@ -701,7 +709,9 @@ export function GarageManager({
               className="flex flex-1 flex-col items-start gap-1 rounded-lg border border-neutral-600 p-4 text-left hover:bg-neutral-800"
             >
               <span className="text-sm font-semibold text-neutral-200">✏️ Manual mode</span>
-              <span className="text-xs text-neutral-400">Enter your certifications and details yourself, category by category.</span>
+              <span className="text-xs text-neutral-400">
+                {items.length > 0 ? "Pick gear already in My Gear, or enter" : "Enter"} your certifications and details yourself, category by category.
+              </span>
             </button>
           </div>
         </div>
@@ -853,14 +863,6 @@ export function GarageManager({
             />
           </div>
 
-          {selectedStored && (
-            <GearSetItems
-              profile={selectedStored}
-              items={items}
-              onSet={(occupant, category, itemId) => linkItem(selectedStored.id, occupant, category, itemId)}
-            />
-          )}
-
           <EquipmentForm
             entries={selected.entries}
             onChange={setSelectedEntry}
@@ -869,6 +871,7 @@ export function GarageManager({
             showPhotoUpload
             stickers
             perOccupantAsDriverGroup={!!selected.hasCodriver}
+            myGear={pickFromMyGear("driver")}
           />
 
           {selected.hasCodriver && (
@@ -882,6 +885,7 @@ export function GarageManager({
                 showPhotoUpload
                 stickers
                 occupant="codriver"
+                myGear={pickFromMyGear("codriver")}
               />
             </div>
           )}

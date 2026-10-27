@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { ReactNode, useEffect, useId, useRef, useState } from "react";
 import { CategoryGroup, EquipmentCategory, Occupant, SourceDocument } from "@/data/types";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import { NOT_LISTED, ROLLOVER_LOGBOOK_BODIES, ROLLOVER_PADDING_STANDARDS, standardFamily, standardLabel, standardsFor } from "@/data/standards";
@@ -91,6 +91,14 @@ interface Props {
   sourceDocuments?: SourceDocument[];
   /** My gear only: each sticker-able item's tech sticker (link one, apply for an annual one). */
   stickers?: boolean;
+  /** A gear set's editor only: per category, picking a piece of gear already in My Gear (see CategoryCard's myGear). */
+  myGear?: (category: EquipmentCategory) => MyGearSlot | undefined;
+}
+
+/** A card's link to My Gear: `badge` in its collapsed summary, `picker` at the top of the open card. */
+export interface MyGearSlot {
+  badge?: ReactNode;
+  picker: ReactNode;
 }
 
 function ItemPhotoThumb({
@@ -1390,6 +1398,7 @@ export function EquipmentForm({
   showMediaLinks,
   sourceDocuments,
   stickers,
+  myGear,
 }: Props) {
   const groupOf = (c: EquipmentCategory): CategoryGroup =>
     occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
@@ -1448,6 +1457,7 @@ export function EquipmentForm({
         onChange={onChange}
         onReportMissing={onReportMissing}
         stickerMode={stickers ? "garage" : undefined}
+        myGear={myGear?.(category)}
       />
     );
   };
@@ -1522,6 +1532,7 @@ export function CategoryCard({
   onChange,
   stickerMode,
   onReportMissing,
+  myGear,
 }: {
   category: EquipmentCategory;
   entry: EquipmentEntry;
@@ -1561,6 +1572,7 @@ export function CategoryCard({
    * link one, apply for one) or "sheet" (a tech sheet line: link one, its photos to the line). */
   stickerMode?: "garage" | "sheet";
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
+  myGear?: MyGearSlot;
 }) {
   const meta = CATEGORY_META[category];
   const update = (patch: Partial<EquipmentEntry>, scanned?: ScannedPhoto) => onChange(category, { ...entry, category, ...patch }, scanned);
@@ -1651,7 +1663,8 @@ export function CategoryCard({
               className="h-8 w-8 shrink-0 rounded object-cover"
             />
           )}
-        {isEmpty && <NoDataBadge />}
+        {myGear?.badge}
+        {isEmpty && !myGear?.badge && <NoDataBadge />}
         {expiryWarning && (
           <span className="flex shrink-0 items-center gap-1 rounded-full border border-amber-700 bg-amber-950/40 px-2 py-0.5 text-xs font-medium text-amber-300">
             ⚠️ Expires {expiryWarning.date}
@@ -1678,6 +1691,7 @@ export function CategoryCard({
           </span>
         )}
       </summary>
+      {myGear?.picker}
       <p className="mb-2 mt-2 text-xs text-neutral-400">{meta.hint}</p>
       {category === "hnr" && (
         <p className="mb-2 text-xs text-amber-400">

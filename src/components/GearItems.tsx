@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { EquipmentCategory, Occupant } from "@/data/types";
 import { CATEGORY_META } from "@/data/categoryMeta";
-import { CategoryCard, summarizeEntryCerts } from "@/components/EquipmentForm";
+import { CategoryCard, MyGearSlot, summarizeEntryCerts } from "@/components/EquipmentForm";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
@@ -330,83 +330,99 @@ export function GearItems({
 }
 
 /**
- * A gear set's pieces of gear from My Gear: the ones it uses (✕ takes one out of the set, not out of
- * My Gear), and a pick of the others to add -- per seat when it has codriver gear. The set's form
- * below edits them in place: a change there shows everywhere the item is used.
+ * A gear set editor's card (Helmet, HANS...), for one seat: the piece of gear from My Gear it uses,
+ * to swap or take out -- or, with none yet, the ones of that kind already in My Gear to pick from.
+ * Undefined when My Gear has none of that kind other than the one in use (nothing to pick).
  */
-export function GearSetItems({
+export function myGearSlot({
   profile,
   items,
+  profiles,
+  occupant,
+  category,
   onSet,
 }: {
   /** As stored. */
   profile: GarageProfile;
   items: GearItem[];
-  onSet: (occupant: Occupant, category: EquipmentCategory, itemId: string | undefined) => void;
-}) {
-  const usable = items.filter((i) => !isEntryEmpty(i.category, i.entry));
-  const seat = (occupant: Occupant) => {
-    const ids = (occupant === "driver" ? profile.itemIds : profile.codriverItemIds) ?? {};
-    const linked = GEAR_ITEM_CATEGORIES.flatMap((c) => {
-      const item = ids[c] ? items.find((i) => i.id === ids[c]) : undefined;
-      return item ? [item] : [];
-    });
-    const others = usable.filter((i) => ids[i.category] !== i.id);
-    return (
-      <div key={occupant} className="flex flex-col gap-2">
-        {profile.hasCodriver && <p className="text-xs font-semibold text-neutral-400">{occupant === "driver" ? "Driver" : "Codriver"}</p>}
-        <div className="flex flex-wrap gap-1.5">
-          {linked.length === 0 && <span className="text-xs text-neutral-500">None yet.</span>}
-          {linked.map((item) => (
-            <span key={item.id} className="flex items-center gap-1 rounded-full border border-neutral-600 py-0.5 pl-2 pr-1 text-xs text-neutral-200">
-              {CATEGORY_META[item.category].label}: {gearItemLabel(item)}
-              <button
-                type="button"
-                onClick={() => onSet(occupant, item.category, undefined)}
-                title="Take it out of this gear set (it stays in My Gear)"
-                className="rounded-full px-1 text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"
-              >
-                ✕
-              </button>
-            </span>
-          ))}
-        </div>
-        {others.length > 0 && (
-          <select
-            value=""
-            onChange={(e) => {
-              const item = items.find((i) => i.id === e.target.value);
-              if (item) onSet(occupant, item.category, item.id);
-            }}
-            className="self-start rounded border border-neutral-600 bg-neutral-900 p-1 text-xs text-neutral-200"
-          >
-            <option value="">Add a piece of gear from My Gear…</option>
-            {GEAR_ITEM_CATEGORIES.map((c) => {
-              const list = others.filter((i) => i.category === c);
-              const current = ids[c] ? items.find((i) => i.id === ids[c]) : undefined;
-              return list.length ? (
-                <optgroup key={c} label={CATEGORY_META[c].label + (current ? ` (replaces ${gearItemLabel(current)})` : "")}>
-                  {list.map((i) => (
-                    <option key={i.id} value={i.id}>
-                      {gearItemLabel(i)}
-                    </option>
-                  ))}
-                </optgroup>
-              ) : null;
-            })}
-          </select>
-        )}
-      </div>
-    );
+  /** Stored gear sets, to tell where else an item is used. */
+  profiles: GarageProfile[];
+  occupant: Occupant;
+  category: EquipmentCategory;
+  onSet: (itemId: string | undefined) => void;
+}): MyGearSlot | undefined {
+  if (!GEAR_ITEM_CATEGORIES.includes(category)) return undefined;
+  const linkedId = ((occupant === "driver" ? profile.itemIds : profile.codriverItemIds) ?? {})[category];
+  const linked = linkedId ? items.find((i) => i.id === linkedId) : undefined;
+  const others = items.filter((i) => i.category === category && i.id !== linkedId && !isEntryEmpty(i.category, i.entry));
+  if (!linked && others.length === 0) return undefined;
+  const elsewhere = linked
+    ? usedIn(linked, profiles)
+        .filter((u) => u.profile.id !== profile.id || u.occupant !== occupant)
+        .map((u) => u.profile.name + (u.occupant === "codriver" ? " (codriver)" : ""))
+    : [];
+  const thumb = (item: GearItem) => {
+    const src = firstPhoto(item);
+    // eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset
+    return src ? <img src={src} alt="" className="h-8 w-8 shrink-0 rounded object-cover" /> : null;
   };
-  return (
-    <div className="mb-4 rounded-lg border border-neutral-700 p-3">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">From My Gear</h3>
-      <div className="flex flex-col gap-3">
-        {seat("driver")}
-        {profile.hasCodriver && seat("codriver")}
-      </div>
-      <p className="mt-2 text-xs text-neutral-500">Gear you enter below joins My Gear too. Editing a piece of gear changes it in every gear set that uses it.</p>
+  const choices = (
+    <div className="flex flex-wrap gap-2">
+      {others.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          onClick={() => onSet(item.id)}
+          className="flex items-center gap-2 rounded-lg border border-emerald-800 bg-emerald-950/40 px-2 py-1 text-left text-xs text-emerald-100 hover:bg-emerald-900"
+        >
+          {thumb(item)}
+          <span>
+            {gearItemLabel(item)}
+            {item.name?.trim() && (
+              <span className="block text-neutral-400">
+                {summarizeEntryCerts(item.category, item.entry, undefined)
+                  .map((b) => b.label)
+                  .join(", ")}
+              </span>
+            )}
+          </span>
+        </button>
+      ))}
     </div>
   );
+  if (!linked) {
+    return {
+      badge: <span className="shrink-0 rounded-full border border-emerald-800 px-2 py-0.5 text-xs text-emerald-300">{others.length} in My Gear</span>,
+      picker: (
+        <div className="mt-2 rounded-lg border border-emerald-900 p-2">
+          <p className="mb-1.5 text-xs text-neutral-300">Use one from My Gear:</p>
+          {choices}
+          <p className="mt-1.5 text-xs text-neutral-500">Or enter a new one below &mdash; it joins My Gear too.</p>
+        </div>
+      ),
+    };
+  }
+  return {
+    picker: (
+      <div className="mt-2 rounded-lg border border-neutral-700 p-2 text-xs text-neutral-300">
+        <div className="flex flex-wrap items-center gap-2">
+          {thumb(linked)}
+          <span className="flex-1">
+            From My Gear: <strong className="text-neutral-100">{gearItemLabel(linked)}</strong>
+            {elsewhere.length > 0 && <span className="text-neutral-500"> &middot; also in {elsewhere.join(", ")}</span>}
+          </span>
+          <button type="button" onClick={() => onSet(undefined)} title="Take it out of this gear set (it stays in My Gear)" className={buttonClass}>
+            Take out
+          </button>
+        </div>
+        {others.length > 0 && (
+          <div className="mt-2">
+            <p className="mb-1.5 text-neutral-400">Or swap it for:</p>
+            {choices}
+          </div>
+        )}
+        <p className="mt-1.5 text-neutral-500">Editing it below changes it everywhere it&rsquo;s used.</p>
+      </div>
+    ),
+  };
 }
