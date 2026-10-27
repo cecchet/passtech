@@ -11,7 +11,7 @@ import {
   TechSheetTemplate,
 } from "@/data/techSheetTypes";
 import { GarageProfile } from "@/lib/garage";
-import { bodyStyleLabel, CategoryResult, CertificationEntry, EquipmentEntry, evaluateRuleset, isEntryEmpty } from "@/lib/matcher";
+import { bodyStyleLabel, CategoryResult, CertificationEntry, EquipmentEntry, evaluateRuleset, helmetStyle, isEntryEmpty } from "@/lib/matcher";
 import { downscaleDataUrl } from "@/lib/imageResize";
 
 export type Occupant = "driver" | "codriver";
@@ -257,7 +257,10 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
   } else {
     text = describeCerts(entry.certifications);
   }
-  if (category === "helmet" && entry.helmetType) text += `${text ? ", " : ""}${entry.helmetType === "full_face" ? "full face" : "open face"}`;
+  if (category === "helmet" && !isEntryEmpty(category, entry)) {
+    const style = helmetStyle(entry);
+    text += `${text ? ", " : ""}${style.type === "full_face" ? "full face" : "open face"}${style.visor ? " with shield" : ""}`;
+  }
   if (category === "seat" && entry.seatMounting) text += `${text ? ", " : ""}${entry.seatMounting === "fixed" ? "fixed mount" : "on rails"}`;
   return text;
 }

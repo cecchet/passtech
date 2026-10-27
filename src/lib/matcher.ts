@@ -1098,6 +1098,11 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
  * anymore, so a blank entry and one the user filled in and then fully cleared out both read as
  * "no data" the same way.
  */
+/** A helmet's style: open face without a face shield unless set otherwise (the picker's default). */
+export function helmetStyle(entry: EquipmentEntry): { type: "open_face" | "full_face"; visor: boolean } {
+  return { type: entry.helmetType ?? "open_face", visor: entry.hasVisor ?? false };
+}
+
 export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry | undefined): boolean {
   if (!entry) return true;
   if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).length === 0;
@@ -1263,22 +1268,11 @@ export function evaluateCategory(
   if (category === "helmet" && rule.fullFaceRequirement) {
     const faceNote = rule.fullFaceCondition ? ` ${rule.fullFaceCondition}` : "";
 
-    if (rule.fullFaceRequirement === "required" && entry.helmetType === "open_face") {
+    if (rule.fullFaceRequirement === "required" && helmetStyle(entry).type === "open_face") {
       return {
         ...base,
         status: "rejected",
         reason: `Open-face helmets aren't permitted — this discipline requires a full-face (integrated chin bar) helmet.${faceNote}`,
-        certBreakdown: result.certBreakdown,
-        resolvedStandardIds: result.validStandardIds,
-      };
-    }
-
-    if (rule.fullFaceRequirement === "required" && !entry.helmetType) {
-      const status: ItemStatus = STATUS_RANK[result.status] >= STATUS_RANK.needs_info ? result.status : "needs_info";
-      return {
-        ...base,
-        status,
-        reason: `${result.reason}${conditionNote} Also specify whether your helmet is full-face or open-face — this discipline requires full-face.${faceNote}`,
         certBreakdown: result.certBreakdown,
         resolvedStandardIds: result.validStandardIds,
       };

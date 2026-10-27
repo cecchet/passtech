@@ -11,6 +11,7 @@ import {
   ExtinguisherUnit,
   TriangleUnit,
   WindowBreakerUnit,
+  helmetStyle,
   isEntryEmpty,
   mergeCertification,
   newCertification,
@@ -212,6 +213,40 @@ const CODRIVER_COLOR = { text: "text-teal-400", border: "border-teal-800" };
 const selectClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
 const optionClass = "bg-neutral-900 text-neutral-100";
 const dateClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5 text-sm text-neutral-100";
+
+/** A helmet's style, in the order offered: open face first (the default, see helmetStyle in
+ * lib/matcher.ts), then full face -- each without and with a face shield. */
+const HELMET_STYLES: { type: NonNullable<EquipmentEntry["helmetType"]>; visor: boolean; label: string; icon: string }[] = [
+  { type: "open_face", visor: false, label: "Open face", icon: "/helmet-open-face.webp" },
+  { type: "open_face", visor: true, label: "Open face with shield", icon: "/helmet-open-face-visor.webp" },
+  { type: "full_face", visor: false, label: "Full face", icon: "/helmet-full-face.webp" },
+  { type: "full_face", visor: true, label: "Full face with shield", icon: "/helmet-full-face-visor.webp" },
+];
+
+function HelmetStylePicker({ entry, onPick }: { entry: EquipmentEntry; onPick: (type: NonNullable<EquipmentEntry["helmetType"]>, visor: boolean) => void }) {
+  const style = helmetStyle(entry);
+  return (
+    <div role="radiogroup" aria-label="Helmet style" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {HELMET_STYLES.map((s) => {
+        const on = s.type === style.type && s.visor === style.visor;
+        return (
+          <button
+            key={s.icon}
+            type="button"
+            role="radio"
+            aria-checked={on}
+            onClick={() => onPick(s.type, s.visor)}
+            className={`flex flex-col items-center gap-1 rounded border p-2 text-xs ${on ? "border-amber-600 bg-neutral-800 text-amber-300" : "border-neutral-700 text-neutral-400 hover:bg-neutral-800"}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+            <img src={s.icon} alt="" className="h-14 w-auto" />
+            {s.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 // The native date input's own calendar popup only moves the year one month-page at a time, which
 // is painful for a source (like an SFI grid/punch-hole tag) that's easy to misread by a few years
@@ -1741,33 +1776,8 @@ export function CategoryCard({
           )}
 
           {category === "helmet" && (
-            <select
-              className={selectClass}
-              value={entry.helmetType ?? ""}
-              onChange={(e) => update({ helmetType: (e.target.value || undefined) as EquipmentEntry["helmetType"] })}
-            >
-              <option className={optionClass} value="">
-                Helmet style — select…
-              </option>
-              <option className={optionClass} value="full_face">
-                Full face (integrated chin bar)
-              </option>
-              <option className={optionClass} value="open_face">
-                Open face (no chin bar)
-              </option>
-            </select>
-          )}
-
-          {category === "helmet" && (
             <>
-              <label className="flex cursor-pointer items-center gap-2 text-xs text-neutral-300">
-                <input
-                  type="checkbox"
-                  checked={entry.hasVisor ?? false}
-                  onChange={(e) => update({ hasVisor: e.target.checked, ...(e.target.checked ? {} : { visorNote: undefined }) })}
-                />
-                Has a visor/face shield
-              </label>
+              <HelmetStylePicker entry={entry} onPick={(helmetType, hasVisor) => update({ helmetType, hasVisor, ...(hasVisor ? {} : { visorNote: undefined }) })} />
               {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
               <HelmetPhotoScan onApply={(patch, photo) => updateWithScan(patch, photo, "item")} />
             </>
