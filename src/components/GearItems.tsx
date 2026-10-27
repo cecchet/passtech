@@ -23,6 +23,11 @@ export function gearItemLabel(item: GearItem): string {
   return certs.length ? certs.join(", ") : CATEGORY_META[item.category].label;
 }
 
+/** A category's name mid-sentence: "helmet", "head & neck restraint (HANS/HNR)". */
+function categoryNoun(category: EquipmentCategory): string {
+  return CATEGORY_META[category].label.replace(/\b[A-Z][a-z]+/g, (w) => w.toLowerCase());
+}
+
 /** The sets using an item, and in which seat. */
 function usedIn(item: GearItem, profiles: GarageProfile[]): { profile: GarageProfile; occupant: Occupant }[] {
   return profiles.flatMap((p) => [
@@ -263,8 +268,8 @@ export function GearItems({
                                       return (
                                         <option key={`${p.id}|${o}`} value={`${p.id}|${o}`} disabled={current === item.id}>
                                           {p.name}
-                                          {o === "codriver" ? " — codriver" : ""}
-                                          {current === item.id ? " (already)" : replaced ? ` (replaces ${gearItemLabel(replaced)})` : ""}
+                                          {p.hasCodriver ? ` — ${o}` : ""}
+                                          {current === item.id ? " (already)" : replaced ? ` (replaces current ${categoryNoun(item.category)})` : ""}
                                         </option>
                                       );
                                     })

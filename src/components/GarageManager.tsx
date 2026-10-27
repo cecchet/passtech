@@ -403,12 +403,20 @@ export function GarageManager({
   // Two-step delete (click once to arm, again to confirm) instead of window.confirm — browser
   // confirm() dialogs are unreliable when this app is running as an installed PWA in standalone
   // mode on some platforms, where they can be silently suppressed, making delete look broken.
-  const deleteProfile = (id: string) => {
+  // withGear also removes the set's pieces of gear from My Gear, except those another set still uses.
+  const deleteProfile = (id: string, withGear = false) => {
     if (confirmDeleteId !== id) {
       setConfirmDeleteId(id);
       return;
     }
-    setProfiles((prev) => prev.filter((p) => p.id !== id));
+    setGear((g) => {
+      const profiles = g.profiles.filter((p) => p.id !== id);
+      if (!withGear) return { ...g, profiles };
+      const ids = (p: GarageProfile | undefined) => [...Object.values(p?.itemIds ?? {}), ...Object.values(p?.codriverItemIds ?? {})];
+      const stillUsed = new Set(profiles.flatMap(ids));
+      const gone = new Set(ids(g.profiles.find((p) => p.id === id)).filter((i) => i && !stillUsed.has(i)));
+      return { ...g, profiles, items: g.items.filter((i) => !gone.has(i.id)) };
+    });
     if (selectedId === id) setSelectedId(null);
     setConfirmDeleteId(null);
   };
@@ -640,8 +648,17 @@ export function GarageManager({
                                   : "rounded border border-red-800 px-2 py-1 text-xs text-red-300 hover:bg-red-950"
                               }
                             >
-                              🗑️ {confirmDeleteId === p.id ? "Confirm delete? (its gear stays in My Gear)" : "Delete this gear set"}
+                              🗑️ {confirmDeleteId === p.id ? "Delete the set only (its gear stays in My Gear)" : "Delete this gear set"}
                             </button>
+                            {confirmDeleteId === p.id && (
+                              <button
+                                type="button"
+                                onClick={() => deleteProfile(p.id, true)}
+                                className="rounded border border-red-500 bg-red-900 px-2 py-1 text-xs font-semibold text-red-100 hover:bg-red-800"
+                              >
+                                🗑️ Delete the set and its gear (gear another set uses is kept)
+                              </button>
+                            )}
                             {confirmDeleteId === p.id && (
                               <button type="button" onClick={() => setConfirmDeleteId(null)} className={buttonClass}>
                                 Cancel

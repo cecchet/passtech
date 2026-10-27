@@ -140,6 +140,8 @@ type Stage =
       category: EquipmentCategory;
       piece: Piece | null;
       confidence: "high" | "medium" | "low";
+      /** The user corrected the detected category. */
+      picked?: boolean;
       notes: string;
       itemConfirmed: boolean;
       conflict: { existingLabel: string } | null;
@@ -649,6 +651,26 @@ export function AutomaticGearImport({
                   target={current.target}
                   onChangeTarget={(t) => setCurrent((c) => (c ? { ...c, target: t } : c))}
                   onSetPiece={(piece) => setCurrent((c) => (c && c.stage.type === "result" ? { ...c, stage: { ...c.stage, piece } } : c))}
+                  onChangeCategory={(category) => {
+                    // Misidentified: the same photo (and any tag read off it) goes to the right category instead.
+                    setCurrent((c) =>
+                      c && c.stage.type === "result"
+                        ? {
+                            ...c,
+                            stage: {
+                              ...c.stage,
+                              category,
+                              piece: category === "firesuit" ? "one_piece" : null,
+                              picked: true,
+                              conflict: null,
+                              helmet: category === "helmet" ? c.stage.helmet : undefined,
+                              extinguisher: category === "fire_extinguisher" ? null : undefined,
+                            },
+                          }
+                        : c
+                    );
+                    if (category === "fire_extinguisher") void runExtinguisherAnalysis(current.photo, current.dataUrl);
+                  }}
                   onRequestConflictCheck={(category, piece, target) => {
                     if (isSlotFilled(target, category, piece)) {
                       setCurrent((c) =>
@@ -758,6 +780,7 @@ function ResultCard({
   target,
   onChangeTarget,
   onSetPiece,
+  onChangeCategory,
   onRequestConflictCheck,
   onResolveConflictSameItem,
   onResolveConflictNewUnit,
@@ -769,6 +792,7 @@ function ResultCard({
   target: Target;
   onChangeTarget: (t: Target) => void;
   onSetPiece: (piece: Piece) => void;
+  onChangeCategory: (category: EquipmentCategory) => void;
   onRequestConflictCheck: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictSameItem: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
   onResolveConflictNewUnit: (category: EquipmentCategory, piece: Piece | null, target: Target) => void;
@@ -776,7 +800,7 @@ function ResultCard({
   onAddCert: (category: EquipmentCategory, piece: Piece | null, target: Target, c: TagCandidate, i: number) => void;
   onNext: () => void;
 }) {
-  const { category, piece, confidence, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached, extinguisher } = stage;
+  const { category, piece, confidence, picked, notes, helmet, certifications, certNotes, addedCerts, itemConfirmed, conflict, photoLimitReached, extinguisher } = stage;
   const perOccupant = isPerOccupantCategory(category);
   const isExtinguisher = category === "fire_extinguisher";
   // Fire extinguishers, window breakers/seatbelt cutters, and emergency triangles all support
@@ -800,10 +824,28 @@ function ResultCard({
     <div>
       {targetToggle(target, onChangeTarget, category)}
       <p className="text-neutral-200">
-        I detected: <b>{CATEGORY_META[category].label}</b>
+        {picked ? "You picked" : "I detected"}: <b>{CATEGORY_META[category].label}</b>
         {piece && (category === "firesuit" || category === "tow_hook") ? ` — ${pieceLabel(piece)}` : ""}
-        <span className="ml-1 text-neutral-500">({confidence} confidence)</span>
+        {!picked && <span className="ml-1 text-neutral-500">({confidence} confidence)</span>}
       </p>
+      {/* Until something from this photo is added, a wrong guess can be corrected so the photo and
+          its tag go to the right item. */}
+      {!itemConfirmed && addedCerts.size === 0 && (
+        <label className="mt-1 flex items-center gap-2 text-xs text-neutral-500">
+          {picked ? "Change it:" : "Not right? It's a"}
+          <select
+            value={category}
+            onChange={(e) => onChangeCategory(e.target.value as EquipmentCategory)}
+            className="rounded border border-neutral-600 bg-neutral-900 p-0.5 text-neutral-200"
+          >
+            {CLASSIFIABLE_CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {CATEGORY_META[c].label}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       {helmet && helmet.helmetType && (
         <p className="text-neutral-400">
           {helmet.helmetType === "unclear" ? "Style unclear from photo" : helmet.helmetType === "full_face" ? "Full face (integrated chin bar)" : "Open face (no chin bar)"}
