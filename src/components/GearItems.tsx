@@ -7,7 +7,17 @@ import { CategoryCard, MyGearSlot, summarizeEntryCerts } from "@/components/Equi
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
-import { GEAR_ITEM_CATEGORIES, GarageProfile, GearItem, UserPreferences, newGarageProfile, newGearItem } from "@/lib/garage";
+import {
+  GEAR_ITEM_CATEGORIES,
+  GarageProfile,
+  GearItem,
+  UserPreferences,
+  exportGearItemsToJson,
+  gearItemExportFilename,
+  newGarageProfile,
+  newGearItem,
+} from "@/lib/garage";
+import { ExportButton, downloadJson, shrinkEntryPhotos } from "@/components/ExportButton";
 import { isEntryEmpty } from "@/lib/matcher";
 import { StickerView, fetchSticker, formatStickerCode, stickerStatusLine } from "@/lib/stickers";
 
@@ -26,6 +36,12 @@ export function gearItemLabel(item: GearItem): string {
 /** A category's name mid-sentence: "helmet", "head & neck restraint (HANS/HNR)". */
 function categoryNoun(category: EquipmentCategory): string {
   return CATEGORY_META[category].label.replace(/\b[A-Z][a-z]+/g, (w) => w.toLowerCase());
+}
+
+/** One piece of gear to a file (import it from My Gear's "Import from a file"). */
+async function exportItem(item: GearItem, includeHighRes: boolean) {
+  const out = includeHighRes ? item : { ...item, entry: await shrinkEntryPhotos(item.entry) };
+  downloadJson(exportGearItemsToJson([out]), gearItemExportFilename(gearItemLabel(item)));
 }
 
 /** The sets using an item, and in which seat. */
@@ -275,6 +291,9 @@ export function GearItems({
                                     })
                                 )}
                               </select>
+                            )}
+                            {newId !== item.id && confirmDeleteId !== item.id && !isEntryEmpty(item.category, item.entry) && (
+                              <ExportButton label={`Export this ${label}`} onExport={(highRes) => exportItem(item, highRes)} />
                             )}
                             {confirmDeleteId === item.id ? (
                               <>

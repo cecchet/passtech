@@ -347,6 +347,46 @@ export function exportGarageToJson(profiles: GarageProfile[]): string {
   return JSON.stringify({ passtechGarageExport: 1, exportedAt: new Date().toISOString(), profiles }, null, 2);
 }
 
+/** Pieces of gear on their own (no gear set): the same kind of file, its items listed. */
+export function exportGearItemsToJson(items: GearItem[]): string {
+  return JSON.stringify({ passtechGarageExport: 1, exportedAt: new Date().toISOString(), profiles: [], items }, null, 2);
+}
+
+/** The pieces of gear in an exported file (a piece exported on its own), else none. */
+export function parseGearItemsImport(json: string): GearItem[] {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(json);
+  } catch {
+    return [];
+  }
+  const items = (parsed as { items?: unknown })?.items;
+  if (!Array.isArray(items)) return [];
+  return items.filter(
+    (i): i is GearItem => i && typeof i === "object" && typeof i.category === "string" && isGearItemCategory(i.category) && !!i.entry && typeof i.entry === "object"
+  );
+}
+
+/** Imported pieces of gear into My Gear: new ids, and none twice -- one identical to an item
+ * already there (re-importing your own export) isn't added again. */
+export function addImportedItems(items: GearItem[], imported: GearItem[]): { items: GearItem[]; added: number } {
+  const out = [...items];
+  let added = 0;
+  for (const i of imported) {
+    const entry = { ...i.entry, category: i.category };
+    const json = stableJson(entry);
+    if (out.some((x) => x.category === i.category && stableJson(x.entry) === json)) continue;
+    out.push({ ...newGearItem(i.category, entry), name: i.name });
+    added++;
+  }
+  return { items: out, added };
+}
+
+/** A piece of gear's export filename, from its name. */
+export function gearItemExportFilename(label: string): string {
+  return `passtech-gear-item-${slugify(label)}-${new Date().toISOString().slice(0, 10)}.json`;
+}
+
 function slugify(name: string): string {
   const slug = name
     .trim()
@@ -372,6 +412,7 @@ export function parseGarageImport(json: string): GarageProfile[] {
   }
   const profiles = (parsed as { profiles?: unknown })?.profiles;
   if (!Array.isArray(profiles)) throw new Error("That file doesn't look like a PassTech My Gear export.");
+  // (A piece of gear exported on its own: its items, no gear set -- see parseGearItemsImport.)
   return profiles.filter(
     (p): p is GarageProfile => p && typeof p === "object" && typeof p.id === "string" && typeof p.name === "string" && typeof p.entries === "object"
   );

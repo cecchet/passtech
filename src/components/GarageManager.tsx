@@ -8,14 +8,16 @@ import { SanctioningBodyPreferences } from "@/components/SanctioningBodyPreferen
 import { GearItems, myGearSlot } from "@/components/GearItems";
 import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
 import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
-import { downscaleDataUrl, resizeImageToDataUrl } from "@/lib/imageResize";
+import { resizeImageToDataUrl } from "@/lib/imageResize";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
+import { ExportButton, downloadJson, shrinkEntryPhotos, shrinkPhoto } from "@/components/ExportButton";
 import {
   GarageProfile,
   GearItem,
   MyGear,
   UserPreferences,
   absorb,
+  addImportedItems,
   countFilledCategories,
   exportGarageToJson,
   freshGarageId,
@@ -23,6 +25,7 @@ import {
   loadMyGear,
   newGarageProfile,
   parseGarageImport,
+  parseGearItemsImport,
   pruneEmptyItems,
   resolveProfile,
   saveMyGear,
@@ -33,87 +36,24 @@ const ALL_GROUPS = new Set<CategoryGroup>(["driver", "car", "rollcage"]);
 
 const buttonClass = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800";
 
-function downloadJson(json: string, filename: string) {
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-
-/**
- * Sharing a file via `navigator.share()` turned out not to be reliable enough to keep: on real
- * devices it silently rejected the file (tried both "application/json" and a "text/plain" retry —
- * see git history) and fell back to a plain download anyway, so the "Share / Email" option was
- * just a confusing extra click that landed on the same download every time. Exporting a gear set
- * is just a download now — on most phones, the browser's own download-complete notification
- * already offers a native Share action from there, which reaches the same Mail/Messages/Drive
- * picker without PassTech needing to drive it (and without the reliability problems of doing so).
- */
-function ExportButton({ label, onExport }: { label: string; onExport: (includeHighRes: boolean) => void }) {
-  const [open, setOpen] = useState(false);
-
-  if (!open) {
-    return (
-      <button type="button" onClick={() => setOpen(true)} className={buttonClass}>
-        📄 {label}
-      </button>
-    );
-  }
-
-  const choose = (includeHighRes: boolean) => {
-    onExport(includeHighRes);
-    setOpen(false);
-  };
-
-  return (
-    <div className="flex flex-wrap items-center gap-2 rounded border border-neutral-700 bg-neutral-900 p-2">
-      <span className="text-xs text-neutral-300">Include high-resolution photos in the export?</span>
-      <button
-        type="button"
-        onClick={() => choose(true)}
-        className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-xs text-emerald-200 hover:bg-emerald-900"
-      >
-        Yes, include them
-      </button>
-      <button type="button" onClick={() => choose(false)} className={buttonClass}>
-        No, keep it small
-      </button>
-      <button type="button" onClick={() => setOpen(false)} className="text-xs text-neutral-500 hover:text-neutral-300">
-        Cancel
-      </button>
-    </div>
-  );
-}
-
-const LIGHTWEIGHT_EXPORT_MAX_DIM = 480;
-const LIGHTWEIGHT_EXPORT_QUALITY = 0.6;
-
-/** Re-encodes every photo in a profile (car photo + every entry's, driver and codriver) at a
- * smaller size — used when exporting without "include high-resolution photos", to keep the export
- * file small. Only affects the exported copy; what's actually stored in IndexedDB is untouched. */
+/** Every photo in a profile (car photo + every entry's, driver and codriver) at a smaller size —
+ * used when exporting without "include high-resolution photos", to keep the export file small.
+ * Only affects the exported copy; what's actually stored in IndexedDB is untouched. */
 async function shrinkProfilePhotos(p: GarageProfile): Promise<GarageProfile> {
-  const shrink = (url: string) => downscaleDataUrl(url, LIGHTWEIGHT_EXPORT_MAX_DIM, LIGHTWEIGHT_EXPORT_QUALITY);
-
   const shrinkEntries = async (
     entries: Partial<Record<EquipmentCategory, EquipmentEntry>>
   ): Promise<Partial<Record<EquipmentCategory, EquipmentEntry>>> => {
     const out: Partial<Record<EquipmentCategory, EquipmentEntry>> = {};
     for (const category of Object.keys(entries) as EquipmentCategory[]) {
       const entry = entries[category];
-      if (!entry) continue;
-      out[category] = entry.photoDataUrls?.length ? { ...entry, photoDataUrls: await Promise.all(entry.photoDataUrls.map(shrink)) } : entry;
+      if (entry) out[category] = await shrinkEntryPhotos(entry);
     }
     return out;
   };
 
   return {
     ...p,
-    carPhotoDataUrl: p.carPhotoDataUrl ? await shrink(p.carPhotoDataUrl) : p.carPhotoDataUrl,
+    carPhotoDataUrl: p.carPhotoDataUrl ? await shrinkPhoto(p.carPhotoDataUrl) : p.carPhotoDataUrl,
     entries: await shrinkEntries(p.entries),
     codriverEntries: p.codriverEntries ? await shrinkEntries(p.codriverEntries) : p.codriverEntries,
   };
@@ -432,8 +372,20 @@ export function GarageManager({
     try {
       const text = await file.text();
       const imported = parseGarageImport(text);
+      // A piece of gear exported on its own: it joins My Gear.
+      const importedItems = parseGearItemsImport(text);
+      if (imported.length === 0 && importedItems.length === 0) {
+        setImportStatus("No gear sets or gear found in that file.");
+        return;
+      }
       if (imported.length === 0) {
-        setImportStatus("No profiles found in that file.");
+        const out = addImportedItems(items, importedItems);
+        setGear((g) => ({ ...g, items: addImportedItems(g.items, importedItems).items }));
+        setImportStatus(
+          out.added
+            ? `Imported ${out.added} piece${out.added === 1 ? "" : "s"} of gear into My Gear.`
+            : "That gear is already in My Gear."
+        );
         return;
       }
       // Always import as new entries with fresh ids — never overwrite an existing gear set, even
@@ -515,7 +467,7 @@ export function GarageManager({
             <label className="flex flex-1 cursor-pointer items-center gap-3 rounded-lg border border-neutral-600 p-4 text-left text-sm font-semibold text-neutral-200 hover:bg-neutral-800">
               {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
               <img src="/file-import.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
-              Import gear set from file
+              Import from a file
               <input
                 type="file"
                 accept="application/json"

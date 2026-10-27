@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
-import { CATEGORY_META } from "@/data/categoryMeta";
+import { CATEGORY_META, maxPhotosFor } from "@/data/categoryMeta";
 import { EquipmentEntry } from "@/lib/matcher";
 import { dataUrlToBytes, sha256Hex, stripEntryPhotos } from "@/lib/techSheet";
 import { downscaleDataUrl } from "@/lib/imageResize";
@@ -42,6 +42,27 @@ function detailsFrom(v: StickerView): Partial<EquipmentEntry> {
   delete rest.category;
   delete rest.photoDataUrls;
   return rest;
+}
+
+/** The item's photos with the sticker's added -- the whole item first, then its tag (the order the
+ * sticker application reads them in), none twice, up to the category's limit. An extinguisher's go on
+ * its first unit. Returns the patch for the entry. */
+async function withStickerPhotos(category: EquipmentCategory, entry: EquipmentEntry, photos: ScannedPhoto[]): Promise<Partial<EquipmentEntry>> {
+  const unitWise = category === "fire_extinguisher";
+  const units = entry.extinguisherUnits ?? [];
+  if (unitWise && units.length === 0) return {};
+  const current = (unitWise ? units[0].photoDataUrls : entry.photoDataUrls) ?? [];
+  const seen = new Set(await Promise.all(current.map((u) => sha256Hex(dataUrlToBytes(u)))));
+  const next = [...current];
+  for (const p of [...photos.filter((x) => x.kind !== "tag"), ...photos.filter((x) => x.kind === "tag")]) {
+    if (next.length >= maxPhotosFor(category)) break;
+    const sha = await sha256Hex(dataUrlToBytes(p.dataUrl));
+    if (seen.has(sha)) continue;
+    seen.add(sha);
+    next.push(p.dataUrl);
+  }
+  if (next.length === current.length) return {};
+  return unitWise ? { extinguisherUnits: units.map((u, i) => (i === 0 ? { ...u, photoDataUrls: next } : u)) } : { photoDataUrls: next };
 }
 
 /**
@@ -89,14 +110,18 @@ export function GearSticker({
     setMessage(null);
     setView(v);
     let photos: ScannedPhoto[] | undefined;
-    if (scanPhotos) {
+    if (scanPhotos || useDetails) {
       photos = [];
       for (const p of v.snapshot.photos ?? []) {
         const dataUrl = await downloadTechSheetPhoto(p.sha256);
         if (dataUrl) photos.push({ dataUrl, kind: p.kind === "tag" ? "tag" : "item" });
       }
     }
-    onChange({ ...(useDetails ? detailsFrom(v) : {}), stickerCode: v.code }, photos);
+    const patch: Partial<EquipmentEntry> = { ...(useDetails ? detailsFrom(v) : {}), stickerCode: v.code };
+    // Using its details in My gear: the sticker's photos come onto the item too (a tech sheet line
+    // keeps them as the line's own -- scanPhotos).
+    if (useDetails && !scanPhotos && photos?.length) Object.assign(patch, await withStickerPhotos(category, { ...entry, ...patch }, photos));
+    onChange(patch, scanPhotos ? photos : undefined);
   };
 
   return (
@@ -110,7 +135,7 @@ export function GearSticker({
               {view ? ` · ${stickerStatusLine(view)}` : ""}
             </span>
             {view && hasDetails && (
-              <button type="button" className={smallButton} onClick={() => link(view, true)} title="Replace this item's details with the sticker's">
+              <button type="button" className={smallButton} onClick={() => link(view, true)} title="Replace this item's details with the sticker's, and add its photos">
                 Use its details
               </button>
             )}
