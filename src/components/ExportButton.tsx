@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EquipmentEntry } from "@/lib/matcher";
+import { ENTRY_PHOTO_KEYS, EquipmentEntry } from "@/lib/matcher";
 import { downscaleDataUrl } from "@/lib/imageResize";
 
 const buttonClass = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800";
@@ -77,7 +77,8 @@ export const shrinkPhoto = (url: string) => downscaleDataUrl(url, LIGHTWEIGHT_EX
 export async function shrinkEntryPhotos(entry: EquipmentEntry): Promise<EquipmentEntry> {
   const shrinkAll = async <T extends { photoDataUrls?: string[] }>(x: T): Promise<T> =>
     x.photoDataUrls?.length ? { ...x, photoDataUrls: await Promise.all(x.photoDataUrls.map(shrinkPhoto)) } : x;
-  const out = await shrinkAll(entry);
+  const out = { ...entry };
+  for (const k of ENTRY_PHOTO_KEYS) if (out[k]?.length) out[k] = await Promise.all(out[k]!.map(shrinkPhoto));
   if (out.extinguisherUnits) out.extinguisherUnits = await Promise.all(out.extinguisherUnits.map(shrinkAll));
   if (out.windowBreakerUnits) out.windowBreakerUnits = await Promise.all(out.windowBreakerUnits.map(shrinkAll));
   if (out.triangleUnits) out.triangleUnits = await Promise.all(out.triangleUnits.map(shrinkAll));

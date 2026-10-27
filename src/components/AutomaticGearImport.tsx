@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, isPerOccupantCategory, maxPhotosFor } from "@/data/categoryMeta";
 import {
+  EntryPhotoKey,
   EquipmentEntry,
   ExtinguisherUnit,
   TriangleUnit,
@@ -442,18 +443,16 @@ export function AutomaticGearImport({
       return photoAdded;
     }
 
-    const photos = [...(existing?.photoDataUrls ?? [])];
+    // A tag close-up goes with the item's tag pictures, a wider shot with its own pictures (the
+    // pants' for a two-piece suit's pants).
+    const pants = category === "firesuit" && piece === "pants";
+    const key: EntryPhotoKey = isCloseupOnly ? (pants ? "pantsTagPhotoDataUrls" : "tagPhotoDataUrls") : pants ? "pantsPhotoDataUrls" : "photoDataUrls";
+    const photos = [...(existing?.[key] ?? [])];
     const photoAdded = photos.length < maxPhotosFor(category);
-    // A wide/overview shot always leads the list (index 0), even when confirmed after a tag
-    // close-up — that first photo is what the "Available Gear Sets" list preview shows, so it
-    // shouldn't lose that spot to a close-up that just happened to get confirmed first.
-    if (photoAdded) {
-      if (isCloseupOnly) photos.push(dataUrl);
-      else photos.unshift(dataUrl);
-    }
+    if (photoAdded) photos.push(dataUrl);
 
     updateEntry(target, category, {
-      photoDataUrls: photos,
+      [key]: photos,
       ...(category === "firesuit" ? { pieceType: (piece === "jacket" || piece === "pants" ? "two_piece" : "one_piece") as EquipmentEntry["pieceType"] } : {}),
       ...(category === "firesuit" || CATEGORY_META[category].hybrid ? { mode: existing?.mode ?? "certified" } : {}),
       // The style and visor come from a whole-helmet shot: a close-up of the tag inside can't show the visor.
@@ -907,7 +906,9 @@ function ResultCard({
             onClick={() => onRequestConflictCheck(category, piece, target)}
             className="rounded border border-emerald-700 bg-emerald-950 px-2 py-1 text-emerald-200 hover:bg-emerald-900 disabled:opacity-50"
           >
-            {itemConfirmed ? "Added as item photo" : needsSideChoice ? "Pick front or rear first" : "Use this as the item photo"}
+            {itemConfirmed
+              ? stage.isCloseupOnly ? "Added to its tag pictures" : "Added as item photo"
+              : needsSideChoice ? "Pick front or rear first" : stage.isCloseupOnly ? "Add to its tag pictures" : "Use this as the item photo"}
           </button>
         </div>
       ) : (

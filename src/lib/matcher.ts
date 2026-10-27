@@ -101,11 +101,12 @@ export interface EquipmentEntry {
   category: EquipmentCategory;
   /** For hybrid categories (firesuit/gloves/shoes/undergarment/arm_restraint/belts_harness/fuel_cell): whether the user is entering plain material/stock equipment or certification(s). */
   mode?: "material_only" | "certified";
-  /** Firesuit only: FIA suits are always one-piece; SFI suits can be a separate jacket + pants (not required to match). */
+  /** Firesuit and undergarment (TWO_PIECE_CATEGORIES): one piece, or two -- a jacket (or shirt) and
+   * pants. FIA suits are always one-piece; SFI suits can be a separate jacket + pants (not required to match). */
   pieceType?: "one_piece" | "two_piece";
-  /** One or more certifications printed on this item (or, for a two-piece firesuit, on the jacket). Item/piece passes if ANY currently-valid certification exists. */
+  /** One or more certifications printed on this item (or, for two pieces, on the jacket / shirt). Item/piece passes if ANY currently-valid certification exists. */
   certifications?: CertificationEntry[];
-  /** Two-piece firesuit only: certifications printed on the pants, evaluated independently of the jacket. */
+  /** Two pieces only: certifications printed on the pants, evaluated independently of the jacket / shirt. */
   pantsCertifications?: CertificationEntry[];
   /** Helmet only: whether it has an integrated chin bar (full-face) or not (open-face). */
   helmetType?: "open_face" | "full_face";
@@ -177,7 +178,24 @@ export interface EquipmentEntry {
   stickerCode?: string;
   /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3 for most categories, up to 5 for rollover_protection (see EquipmentForm's MAX_ITEM_PHOTOS_BY_CATEGORY). Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
   photoDataUrls?: string[];
+  /** Garage only: photos of its certification tags or labels (the tag reader reads these), kept
+   * apart from the item's own photos. For two pieces, the jacket's / shirt's. */
+  tagPhotoDataUrls?: string[];
+  /** Two pieces only: the pants' own photos, and their tags'. */
+  pantsPhotoDataUrls?: string[];
+  pantsTagPhotoDataUrls?: string[];
 }
+
+/** Every list of photos an entry keeps itself (units keep theirs): the item's, its tags', and the pants' two. */
+export const ENTRY_PHOTO_KEYS = ["photoDataUrls", "tagPhotoDataUrls", "pantsPhotoDataUrls", "pantsTagPhotoDataUrls"] as const;
+export type EntryPhotoKey = (typeof ENTRY_PHOTO_KEYS)[number];
+
+/** Categories that can be one piece or two (a jacket or shirt, and pants), each piece judged on its own. */
+export const TWO_PIECE_CATEGORIES: EquipmentCategory[] = ["firesuit", "undergarment"];
+export const isTwoPiece = (category: EquipmentCategory, entry: EquipmentEntry | undefined) =>
+  TWO_PIECE_CATEGORIES.includes(category) && entry?.pieceType === "two_piece";
+/** The two pieces' names: Jacket / Pants, or Shirt / Pants. */
+export const pieceNames = (category: EquipmentCategory): [string, string] => (category === "undergarment" ? ["Shirt", "Pants"] : ["Jacket", "Pants"]);
 
 export function newCertification(): CertificationEntry {
   return { key: Math.random().toString(36).slice(2) };
@@ -1239,19 +1257,20 @@ export function evaluateCategory(
 
   const conditionNote = rule.condition ? ` Note: ${rule.condition}` : "";
 
-  // Two-piece firesuit (SFI jacket + pants sold/certified separately): both pieces must
-  // independently pass — unlike multiple stickers on one item, this is AND, not OR.
-  if (category === "firesuit" && entry.pieceType === "two_piece") {
+  // Two pieces (an SFI jacket or undergarment shirt, and pants, sold/certified separately): both
+  // must independently pass — unlike multiple stickers on one item, this is AND, not OR.
+  if (isTwoPiece(category, entry)) {
+    const [top, bottom] = pieceNames(category);
     const jacket = evaluatePieceCerts(category, rule, entry.certifications ?? [], asOf);
     const pants = evaluatePieceCerts(category, rule, entry.pantsCertifications ?? [], asOf);
     const worst = STATUS_RANK[jacket.status] >= STATUS_RANK[pants.status] ? jacket : pants;
     return {
       ...base,
       status: worst.status,
-      reason: `Jacket: ${jacket.reason} Pants: ${pants.reason}${conditionNote}`,
+      reason: `${top}: ${jacket.reason} ${bottom}: ${pants.reason}${conditionNote}`,
       pieceBreakdown: [
-        { label: "Jacket", status: jacket.status, reason: jacket.reason },
-        { label: "Pants", status: pants.status, reason: pants.reason },
+        { label: top, status: jacket.status, reason: jacket.reason },
+        { label: bottom, status: pants.status, reason: pants.reason },
       ],
       resolvedStandardIds: [...jacket.validStandardIds, ...pants.validStandardIds],
     };

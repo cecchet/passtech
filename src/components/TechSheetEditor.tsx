@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { getRuleset } from "@/data";
 import { TechSheetField } from "@/data/techSheetTypes";
-import { GarageProfile } from "@/lib/garage";
+import { GarageProfile, GearItem, loadMyGear, stableJson } from "@/lib/garage";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
 import {
   buildDeclaration,
@@ -34,7 +34,9 @@ import {
   TechSheetDraftPhoto,
   TechSheetLine,
   TechSheetLineGroup,
+  stripEntryPhotos,
   withLineGear,
+  withPickedGear,
 } from "@/lib/techSheet";
 import {
   EventEntryLookup,
@@ -51,6 +53,8 @@ import {
   uploadTechSheetPhoto,
 } from "@/lib/techSheetServer";
 import { CategoryCard } from "@/components/EquipmentForm";
+import { gearItemLabel } from "@/components/GearItems";
+import { isEntryEmpty } from "@/lib/matcher";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
 import { statusLabel, statusStyle } from "@/components/ResultRow";
 import { TechSheetSignIn } from "@/components/TechSheetSignIn";
@@ -187,6 +191,37 @@ function PhotoAdder({ onAdd }: { onAdd: (dataUrl: string) => void }) {
   );
 }
 
+/** A line that only takes OK (or N/A): no gear, nothing to tick or fill in. */
+const isSimpleLine = (line: TechSheetLine, options: string[]) => !line.item.gear && options.length === 0 && !(line.item.fields ?? []).length;
+
+/** A gear line's pieces of gear in My gear, to fill it from one (the one it has now ticked). */
+function MyGearPicker({ items, gear, onPick }: { items: GearItem[]; gear: TechSheetDraftLine["gear"]; onPick: (item: GearItem) => void }) {
+  const current = gear ? stableJson(gear) : null;
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-900 p-2">
+      <span className="text-xs text-neutral-400">From My gear:</span>
+      {items.map((item) => {
+        const on = current === stableJson(stripEntryPhotos(item.entry));
+        const photo = item.entry.photoDataUrls?.[0];
+        return (
+          <button
+            key={item.id}
+            type="button"
+            aria-pressed={on}
+            onClick={() => onPick(item)}
+            className={`flex items-center gap-2 rounded-lg border px-2 py-1 text-left text-xs ${on ? "border-emerald-500 bg-emerald-900 text-emerald-100" : "border-emerald-800 bg-emerald-950/40 text-emerald-100 hover:bg-emerald-900"}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo */}
+            {photo && <img src={photo} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />}
+            {on ? "✓ " : ""}
+            {gearItemLabel(item)}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function LineCard({
   line,
   value,
@@ -197,6 +232,7 @@ function LineCard({
   open,
   onToggle,
   onChange,
+  myGear,
 }: {
   line: TechSheetLine;
   value: TechSheetDraftLine;
@@ -211,8 +247,32 @@ function LineCard({
   open: boolean;
   onToggle: () => void;
   onChange: (next: TechSheetDraftLine) => void;
+  /** A gear line: the pieces of gear of its kind in My gear. */
+  myGear?: GearItem[];
 }) {
   const { item } = line;
+  const simple = isSimpleLine(line, options);
+  // OK / N/A: a toggle, each clearing the other.
+  const answer = (k: "ok" | "na") => {
+    const on = k === "ok" ? !!value.done : !!value.na;
+    onChange({ ...value, done: k === "ok" ? !on : false, na: k === "na" ? !on : false });
+  };
+  const answerButtons = (size: "small" | "large") =>
+    ([["ok", "OK"], ...(item.allowNA ? [["na", "N/A"]] : [])] as ["ok" | "na", string][]).map(([k, label]) => {
+      const on = k === "ok" ? !!value.done : !!value.na;
+      return (
+        <button
+          key={k}
+          type="button"
+          aria-pressed={on}
+          onClick={() => answer(k)}
+          className={`rounded-full border font-semibold ${size === "small" ? "px-2.5 py-0.5 text-xs" : "px-3 py-1 text-sm"} ${on ? (k === "ok" ? "border-green-600 bg-green-600 text-black" : "border-neutral-400 bg-neutral-400 text-black") : "border-neutral-600 text-neutral-300 hover:bg-neutral-800"}`}
+        >
+          {on ? "✓ " : ""}
+          {label}
+        </button>
+      );
+    });
   const team = item.checkedBy === "team";
   const [showPhotos, setShowPhotos] = useState(value.photos.length > 0);
   // The gear form starts open while there's something to enter or fix — and stays as the user
@@ -223,20 +283,21 @@ function LineCard({
   return (
     // N/A (not fitted): the line is greyed out, its gear form and declaration put away.
     <li id={"ts-line-" + line.key} className={`scroll-mt-4 rounded-lg border p-3 ${value.na ? "border-neutral-800 bg-neutral-900 opacity-60" : `bg-neutral-950 ${status.state === "fix" ? "border-red-700" : status.state === "missing" ? "border-amber-700" : "border-neutral-700"}`}`}>
-      <button type="button" aria-expanded={open} onClick={onToggle} className="flex w-full flex-wrap items-start justify-between gap-2 text-left">
-        <span className="flex min-w-0 items-start gap-2">
+      <div className="flex w-full flex-wrap items-start justify-between gap-2">
+        <button type="button" aria-expanded={open} onClick={onToggle} className="flex min-w-0 flex-1 items-start gap-2 text-left">
           <span className="w-3 shrink-0 text-xs text-neutral-500">{open ? "▾" : "▸"}</span>
           <span className="min-w-0">
             <span className="block text-sm font-semibold text-neutral-100">{line.label}</span>
-            {!open && status.state !== "todo" && <span className="block truncate text-xs text-neutral-400">{status.text}</span>}
+            {!open && status.state !== "todo" && !simple && <span className="block truncate text-xs text-neutral-400">{status.text}</span>}
           </span>
-        </span>
-        <span className="flex shrink-0 gap-1">
+        </button>
+        <span className="flex shrink-0 items-center gap-1">
           {team && <span className="rounded-full border border-sky-700 bg-sky-950 px-2 py-0.5 text-[11px] text-sky-300">team</span>}
           {open && item.allowNA && <span className="rounded-full border border-neutral-700 px-2 py-0.5 text-[11px] text-neutral-400">N/A ok</span>}
-          <span className={`rounded-full border px-2 py-0.5 text-[11px] ${STATE_STYLE[status.state]}`}>{STATE_LABEL[status.state]}</span>
+          {/* Folded, a simple line is answered right here (open it to read what's checked); its answer is its status. */}
+          {simple && !open ? answerButtons("small") : <span className={`rounded-full border px-2 py-0.5 text-[11px] ${STATE_STYLE[status.state]}`}>{STATE_LABEL[status.state]}</span>}
         </span>
-      </button>
+      </div>
       {open && (
         <>
           {item.accepts && <p className="mt-1 text-xs text-neutral-400">{item.accepts}</p>}
@@ -260,22 +321,13 @@ function LineCard({
           {!item.gear && (
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span className="text-xs text-neutral-400">{team ? "Checked by the team:" : "My car:"}</span>
-              {([["ok", "OK"], ...(item.allowNA ? [["na", "N/A"]] : [])] as [string, string][]).map(([k, label]) => {
-                const on = k === "ok" ? !!value.done : !!value.na;
-                return (
-                  <button
-                    key={k}
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => onChange({ ...value, done: k === "ok" ? !on : false, na: k === "na" ? !on : false })}
-                    className={`rounded-full border px-3 py-1 text-sm font-semibold ${on ? (k === "ok" ? "border-green-600 bg-green-600 text-black" : "border-neutral-400 bg-neutral-400 text-black") : "border-neutral-600 text-neutral-300 hover:bg-neutral-800"}`}
-                  >
-                    {on ? "✓ " : ""}
-                    {label}
-                  </button>
-                );
-              })}
+              {answerButtons("large")}
             </div>
+          )}
+
+          {/* A piece of gear of its kind in My gear fills the line (its own copy, with its photos). */}
+          {item.gear && !value.na && myGear && myGear.length > 0 && (
+            <MyGearPicker items={myGear} gear={value.gear} onPick={(g) => withPickedGear(line, value, g.entry).then(onChange)} />
           )}
 
           {/* The gear itself, in My gear's form (certifications with their dates, extinguishers...):
@@ -539,10 +591,19 @@ export function TechSheetEditor({
     return out;
   }, [groups, results, profile, draft.lines, ruleset, entries]);
   const answered = (st: LineStatus) => st.state === "ok" || st.state === "na" || st.state === "declared";
-  const [openLines, setOpenLines] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(Object.entries(lineInfo).map(([key, x]) => [key, !answered(x.status)]))
-  );
-  const isOpen = (key: string) => openLines[key] ?? !answered(lineInfo[key].status);
+  // A line starts open while it needs an answer -- except a simple one (OK / N/A), answered folded.
+  const lineByKey = useMemo(() => new Map(groups.flatMap((g) => g.lines.map((l) => [l.key, l] as const))), [groups]);
+  const startsOpen = (key: string) => {
+    const line = lineByKey.get(key);
+    return !answered(lineInfo[key].status) && !(line && isSimpleLine(line, lineOptions(line, ruleset)));
+  };
+  const [openLines, setOpenLines] = useState<Record<string, boolean>>(() => Object.fromEntries(Object.keys(lineInfo).map((key) => [key, startsOpen(key)])));
+  const isOpen = (key: string) => openLines[key] ?? startsOpen(key);
+  // The pieces of gear in My gear, to fill a gear line from.
+  const [myItems, setMyItems] = useState<GearItem[]>([]);
+  useEffect(() => {
+    loadMyGear().then((g) => setMyItems(g.items.filter((i) => !isEntryEmpty(i.category, i.entry))), () => {});
+  }, []);
   const openLine = (key: string) => {
     setOpenLines((o) => ({ ...o, [key]: true }));
     setTimeout(() => document.getElementById("ts-line-" + key)?.scrollIntoView({ behavior: "smooth", block: "start" }), 30);
@@ -957,6 +1018,7 @@ export function TechSheetEditor({
                 open={isOpen(line.key)}
                 onToggle={() => setOpenLines((o) => ({ ...o, [line.key]: !isOpen(line.key) }))}
                 onChange={(next) => setLine(line.key, next)}
+                myGear={line.item.gear ? myItems.filter((i) => i.category === line.item.gear) : undefined}
               />
               </div>
             ))}

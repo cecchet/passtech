@@ -11,7 +11,7 @@ import {
   TechSheetTemplate,
 } from "@/data/techSheetTypes";
 import { GarageProfile } from "@/lib/garage";
-import { bodyStyleLabel, CategoryResult, CertificationEntry, EquipmentEntry, evaluateRuleset, helmetStyle, isEntryEmpty } from "@/lib/matcher";
+import { bodyStyleLabel, CategoryResult, CertificationEntry, EquipmentEntry, ENTRY_PHOTO_KEYS, evaluateRuleset, helmetStyle, isEntryEmpty, isTwoPiece, pieceNames } from "@/lib/matcher";
 import { downscaleDataUrl } from "@/lib/imageResize";
 
 export type Occupant = "driver" | "codriver";
@@ -252,8 +252,9 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
   if (meta.presenceOnly) return "Present";
   if (meta.hybrid && entry.mode === "material_only") return "Plain material / stock (no certification)";
   let text: string;
-  if (category === "firesuit" && entry.pieceType === "two_piece") {
-    text = `Two-piece — jacket: ${describeCerts(entry.certifications) || "—"}; pants: ${describeCerts(entry.pantsCertifications) || "—"}`;
+  if (isTwoPiece(category, entry)) {
+    const [top, bottom] = pieceNames(category);
+    text = `Two-piece — ${top.toLowerCase()}: ${describeCerts(entry.certifications) || "—"}; ${bottom.toLowerCase()}: ${describeCerts(entry.pantsCertifications) || "—"}`;
   } else {
     text = describeCerts(entry.certifications);
   }
@@ -265,17 +266,23 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
   return text;
 }
 
-/** Every photo stored on a gear entry with its likely role: in the item's own photos and in each
- * unit's, the first shows the whole item and the others its tag or label (the order PassTech asks
- * for them in; the scrutineer can still change it on the sheet). */
+/** Every photo stored on a gear entry with its role: the item's (and pants') pictures and their
+ * tags' as they're filed; in each unit's, the first shows the whole item and the others its label
+ * (the order PassTech asks for them in). The scrutineer can still change it on the sheet. */
 function entryPhotoKinds(entry: EquipmentEntry): { url: string; kind: TechSheetPhotoKind }[] {
-  const groups = [
-    entry.photoDataUrls ?? [],
+  const as = (urls: string[] | undefined, kind: TechSheetPhotoKind) => (urls ?? []).map((url) => ({ url, kind }));
+  const units = [
     ...(entry.extinguisherUnits ?? []).map((u) => u.photoDataUrls ?? []),
     ...(entry.windowBreakerUnits ?? []).map((u) => u.photoDataUrls ?? []),
     ...(entry.triangleUnits ?? []).map((u) => u.photoDataUrls ?? []),
   ];
-  return groups.flatMap((urls) => urls.map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const) })));
+  return [
+    ...as(entry.photoDataUrls, "item"),
+    ...as(entry.tagPhotoDataUrls, "tag"),
+    ...as(entry.pantsPhotoDataUrls, "item"),
+    ...as(entry.pantsTagPhotoDataUrls, "tag"),
+    ...units.flatMap((urls) => urls.map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const) }))),
+  ];
 }
 
 /** The entry without its photos (its own and each unit's) — the sheet keeps those as line photos. */
@@ -286,6 +293,7 @@ export function stripEntryPhotos(entry: EquipmentEntry): EquipmentEntry {
     return copy;
   };
   const out = strip(entry);
+  ENTRY_PHOTO_KEYS.forEach((k) => delete out[k]);
   if (out.extinguisherUnits) out.extinguisherUnits = out.extinguisherUnits.map(strip);
   if (out.windowBreakerUnits) out.windowBreakerUnits = out.windowBreakerUnits.map(strip);
   if (out.triangleUnits) out.triangleUnits = out.triangleUnits.map(strip);
@@ -358,6 +366,22 @@ function prefillItemValues(item: TechSheetItem, gear: { occupant?: Occupant; ent
     }
   }
   return values;
+}
+
+/** A gear line filled from a piece of gear picked in My gear: the sheet's own copy of it (as
+ * withLineGear), and its photos in place of those the line had from gear before -- the ones added
+ * on the sheet stay. */
+export async function withPickedGear(line: TechSheetLine, value: TechSheetDraftLine, entry: EquipmentEntry): Promise<TechSheetDraftLine> {
+  const next = withLineGear(line, value, stripEntryPhotos(structuredClone(entry)));
+  const photos = value.photos.filter((p) => !p.fromGear);
+  for (const { url, kind } of entryPhotoKinds(entry)) {
+    try {
+      photos.push({ id: newPhotoId(), dataUrl: await asJpeg(url), kind, fromGear: true });
+    } catch {
+      // an unreadable stored photo is just skipped
+    }
+  }
+  return { ...next, photos };
 }
 
 /** The pre-filled line for a gear line: declared summary, values and the gear's own photos. */

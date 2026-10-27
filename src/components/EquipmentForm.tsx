@@ -10,9 +10,13 @@ import {
   EquipmentEntry,
   ExtinguisherUnit,
   TriangleUnit,
+  EntryPhotoKey,
+  TWO_PIECE_CATEGORIES,
   WindowBreakerUnit,
   helmetStyle,
   isEntryEmpty,
+  isTwoPiece,
+  pieceNames,
   mergeCertification,
   newCertification,
   newExtinguisherUnit,
@@ -106,33 +110,36 @@ function ItemPhotoThumb({
   category,
   imageDataUrl,
   canScan,
+  moveLabel,
+  onMove,
   onRemove,
   onAddCertification,
 }: {
   category: EquipmentCategory;
   imageDataUrl: string;
   canScan: boolean;
+  moveLabel: string;
+  onMove: () => void;
   onRemove: () => void;
   onAddCertification: (cert: CertificationEntry) => void;
 }) {
   const scanner = useTagScanner(category, onAddCertification);
+  const small = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50";
   return (
-    <div className="flex max-w-[220px] flex-col gap-1">
+    <div className="flex max-w-[260px] flex-col gap-1">
       <div className="flex items-start gap-2">
         <ZoomableThumb src={imageDataUrl} className="h-16 w-16 shrink-0 rounded object-cover" />
         <div className="flex flex-col gap-1">
           {canScan && (
-            <button
-              type="button"
-              onClick={() => scanner.analyze(imageDataUrl)}
-              disabled={scanner.status === "loading"}
-              className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
-            >
+            <button type="button" onClick={() => scanner.analyze(imageDataUrl)} disabled={scanner.status === "loading"} className={small}>
               {scanner.status === "loading" ? "Scanning…" : "🔍 Scan for tags"}
             </button>
           )}
-          <button type="button" onClick={onRemove} className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800">
-            🗑️ Remove photo
+          <button type="button" onClick={onRemove} className={small}>
+            🗑️ Remove
+          </button>
+          <button type="button" onClick={onMove} className={small} title="It's in the wrong group: move it">
+            {moveLabel}
           </button>
         </div>
       </div>
@@ -144,62 +151,70 @@ function ItemPhotoThumb({
   );
 }
 
-function ItemPhotos({
+/**
+ * A group of the item's photos: its own pictures, or its certification tags' (`tags`: each can be
+ * scanned for its certifications). A photo filed in the wrong group moves to the other (onMove).
+ */
+function PhotoGroup({
   category,
-  entry,
-  canScan,
+  title,
+  addLabel,
+  photos,
+  tags,
   onChange,
+  onMove,
   onAddCertification,
 }: {
   category: EquipmentCategory;
-  entry: EquipmentEntry;
-  canScan: boolean;
-  onChange: (photoDataUrls: string[]) => void;
+  title: string;
+  addLabel: string;
+  photos: string[];
+  tags: boolean;
+  onChange: (photos: string[]) => void;
+  onMove: (photo: string) => void;
   onAddCertification: (cert: CertificationEntry) => void;
 }) {
   const inputId = useId();
-  const photos = entry.photoDataUrls ?? [];
   const maxPhotos = maxPhotosFor(category);
-  const canAddMore = photos.length < maxPhotos;
-
   return (
     <div className="flex flex-col gap-2">
+      <p className="text-xs font-semibold text-neutral-300">{title}</p>
       {photos.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {photos.map((url, i) => (
             <ItemPhotoThumb
-              key={i}
+              key={url.slice(-32) + i}
               category={category}
               imageDataUrl={url}
-              canScan={canScan}
+              canScan={tags}
+              moveLabel={tags ? "Move to the item's pictures" : "Move to the tag pictures"}
+              onMove={() => onMove(url)}
               onRemove={() => onChange(photos.filter((_, idx) => idx !== i))}
               onAddCertification={onAddCertification}
             />
           ))}
         </div>
       )}
-      {canAddMore && (
-        <div className="flex flex-wrap gap-2">
-          <label
-            htmlFor={inputId}
-            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-          >
-            📷 Add a photo of this item ({photos.length}/{maxPhotos})
-            <input
-              id={inputId}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={async (e) => {
-                const file = e.target.files?.[0];
-                e.target.value = "";
-                if (!file) return;
-                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-                onChange([...photos, dataUrl]);
-              }}
-            />
-          </label>
-        </div>
+      {photos.length < maxPhotos && (
+        <label
+          htmlFor={inputId}
+          className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
+        >
+          📷 {addLabel} ({photos.length}/{maxPhotos})
+          <input
+            id={inputId}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (!file) return;
+              const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
+              onChange([...photos, dataUrl]);
+            }}
+          />
+        </label>
       )}
     </div>
   );
@@ -272,14 +287,35 @@ function CertificationRow({
 }) {
   const standards = standardsFor(category);
   const notListed = cert.standardId === NOT_LISTED;
+  // (Its first state only: React would otherwise fold it the moment a standard is picked.)
+  const [startsOpen] = useState(!cert.standardId);
 
   return (
     // A visible fill (not just a border) so each certification reads as its own box against the
     // category card's own chrome and the neighboring "Add a photo"/"Scan tag photo" controls —
     // with two or more certifications on one item, a border-only box (and, before that, a low-
     // contrast tinted one) was hard to tell apart from its neighbors.
-    <div className="rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
-      <div className="flex items-start gap-2">
+    // Folded when it opens with its standard picked (its summary says what's in it); open for a new
+    // one -- and it stays as the driver leaves it while they fill it in.
+    <details open={startsOpen} className="group rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
+      <summary className="flex cursor-pointer list-none items-center gap-2 text-sm text-neutral-100 marker:content-none [&::-webkit-details-marker]:hidden">
+        <span className="text-sky-300 transition-transform group-open:rotate-90">▸</span>
+        <span className="font-semibold">
+          {cert.standardId ? (notListed ? cert.customStandardLabel || "Not listed / other" : standardLabel(cert.standardId)) : "New certification"}
+        </span>
+        <span className="min-w-0 flex-1 truncate text-xs text-neutral-300">
+          {[
+            cert.serialNumber ? `serial ${cert.serialNumber}` : null,
+            cert.homologationNumber ? `homologation ${cert.homologationNumber}` : null,
+            cert.labelDate ? `label ${cert.labelDate}` : null,
+            cert.tagExpirationDate ? `expires ${cert.tagExpirationDate}` : null,
+            cert.nextServiceDate ? `service due ${cert.nextServiceDate}` : null,
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </span>
+      </summary>
+      <div className="mt-2 flex items-start gap-2">
         <select
           className={`${selectClass} flex-1`}
           value={cert.standardId ?? ""}
@@ -430,7 +466,7 @@ function CertificationRow({
           />
         </label>
       )}
-    </div>
+    </details>
   );
 }
 
@@ -482,10 +518,13 @@ function CertificationList({
   onChange,
   onAddFromScan,
   onReportMissing,
+  withPhotoScan = true,
 }: {
   category: EquipmentCategory;
   certifications: CertificationEntry[];
   onChange: (certifications: CertificationEntry[]) => void;
+  /** Its own "Scan tag photo" (a card that keeps photos scans its tag pictures instead). */
+  withPhotoScan?: boolean;
   /** A certification added from a tag photo: the new list, with that photo (one update, so the caller can keep the photo too). */
   onAddFromScan?: (certifications: CertificationEntry[], photoDataUrl: string) => void;
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
@@ -521,7 +560,7 @@ function CertificationList({
           + Add {certifications.length > 0 ? "another certification (e.g. dual Snell/FIA rating)" : "a certification"}
         </button>
       </div>
-      <PhotoScan category={category} onAdd={addFromScan} />
+      {withPhotoScan && <PhotoScan category={category} onAdd={addFromScan} />}
     </div>
   );
 }
@@ -1614,14 +1653,113 @@ export function CategoryCard({
   // A photo read for this item (a tag photo, the whole helmet) joins its photos -- when they're
   // shown here, there's room, and it isn't one of them already. Without the photos shown (a tech
   // sheet line keeps its own), it goes to the caller with the change instead.
-  const updateWithScan = (patch: Partial<EquipmentEntry>, dataUrl: string, kind: ScannedPhoto["kind"]) => {
+  const updateWithScan = (patch: Partial<EquipmentEntry>, dataUrl: string, kind: ScannedPhoto["kind"], key?: EntryPhotoKey) => {
     if (!showPhotoUpload) return update(patch, dataUrl ? { dataUrl, kind } : undefined);
-    const photos = entry.photoDataUrls ?? [];
+    const into: EntryPhotoKey = key ?? (kind === "tag" ? "tagPhotoDataUrls" : "photoDataUrls");
+    const photos = entry[into] ?? [];
     const unitPhotos = category === "fire_extinguisher" || category === "window_breaker" || category === "emergency_triangle";
     const add = !unitPhotos && dataUrl && !photos.includes(dataUrl) && photos.length < maxPhotosFor(category);
-    update({ ...patch, ...(add ? { photoDataUrls: [...photos, dataUrl] } : {}) });
+    update({ ...patch, ...(add ? { [into]: [...photos, dataUrl] } : {}) });
   };
   const showCertList = !meta.presenceOnly && (!meta.hybrid || entry.mode === "certified");
+  // Categories whose photos are their units' (or the cage's own fields) keep none of their own.
+  const ownPhotos = showPhotoUpload && !["fire_extinguisher", "window_breaker", "emergency_triangle"].includes(category);
+  const twoPiece = isTwoPiece(category, entry);
+  // A photo filed in the wrong group: to the other one.
+  const movePhoto = (from: EntryPhotoKey, to: EntryPhotoKey, url: string) =>
+    update({ [from]: (entry[from] ?? []).filter((u) => u !== url), [to]: [...(entry[to] ?? []), url] });
+  // What the item looks like: the helmet's style, how a seat is mounted.
+  const styleControls = (
+    <>
+      {category === "helmet" && (
+        <>
+          <HelmetStylePicker entry={entry} onPick={(helmetType, hasVisor) => update({ helmetType, hasVisor, ...(hasVisor ? {} : { visorNote: undefined }) })} />
+          {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
+          {/* (Reading the style off a photo: only where the card keeps no pictures -- otherwise the driver picks it.) */}
+          {!showPhotoUpload && <HelmetPhotoScan onApply={(patch, photo) => updateWithScan(patch, photo, "item")} />}
+        </>
+      )}
+      {category === "seat" && entry.mode && (
+        <label className="flex flex-col gap-1">
+          <span className="text-xs text-neutral-400">Fixed-mounted, or on sliders/rails?</span>
+          <select
+            className={selectClass}
+            value={entry.seatMounting ?? ""}
+            onChange={(e) => update({ seatMounting: (e.target.value || undefined) as EquipmentEntry["seatMounting"] })}
+          >
+            <option className={optionClass} value="">
+              Select…
+            </option>
+            <option className={optionClass} value="fixed">
+              Fixed-mounted
+            </option>
+            <option className={optionClass} value="rails">
+              Sliders / rails
+            </option>
+          </select>
+        </label>
+      )}
+    </>
+  );
+  // One piece (or, for two, the jacket / shirt or the pants): its pictures, then its certification
+  // tags -- their pictures, scanned for certifications, and the certifications themselves.
+  const pieceBlock = (piece: 0 | 1) => {
+    const photosKey: EntryPhotoKey = piece === 0 ? "photoDataUrls" : "pantsPhotoDataUrls";
+    const tagsKey: EntryPhotoKey = piece === 0 ? "tagPhotoDataUrls" : "pantsTagPhotoDataUrls";
+    const certsKey = piece === 0 ? "certifications" : "pantsCertifications";
+    const certs = entry[certsKey] ?? [];
+    const name = twoPiece ? pieceNames(category)[piece] : null;
+    const addCertification = (cert: CertificationEntry) =>
+      update({
+        [certsKey]: mergeCertification(certs, cert),
+        // Finding a tag on the photo means it's a certified item — flip a hybrid category (gloves,
+        // seat, etc.) out of "material only" mode automatically, rather than leaving the found
+        // certification stranded under a mode that hides the certification list.
+        ...(meta.hybrid && entry.mode !== "certified" ? { mode: "certified" as const } : {}),
+      });
+    return (
+      <div key={piece} className={name ? "flex flex-col gap-2 rounded border border-neutral-700 p-2" : "flex flex-col gap-2"}>
+        {name && <p className="text-sm font-semibold text-neutral-200">{name}</p>}
+        {ownPhotos && (
+          <PhotoGroup
+            category={category}
+            title={name ? `Pictures of the ${name.toLowerCase()}` : "Pictures of the item"}
+            addLabel="Add a picture"
+            photos={entry[photosKey] ?? []}
+            tags={false}
+            onChange={(photos) => update({ [photosKey]: photos })}
+            onMove={(url) => movePhoto(photosKey, tagsKey, url)}
+            onAddCertification={addCertification}
+          />
+        )}
+        {!name && styleControls}
+        {showCertList && (
+          <div className="flex flex-col gap-2">
+            {ownPhotos && (
+              <PhotoGroup
+                category={category}
+                title={name ? `Pictures of the ${name.toLowerCase()}${name.endsWith("s") ? "'" : "'s"} certification tags` : "Pictures of the certification tags"}
+                addLabel="Add a picture of a tag"
+                photos={entry[tagsKey] ?? []}
+                tags
+                onChange={(photos) => update({ [tagsKey]: photos })}
+                onMove={(url) => movePhoto(tagsKey, photosKey, url)}
+                onAddCertification={addCertification}
+              />
+            )}
+            <CertificationList
+              category={category}
+              certifications={certs}
+              onChange={(list) => update({ [certsKey]: list })}
+              onAddFromScan={(list, photo) => updateWithScan({ [certsKey]: list }, photo, "tag", tagsKey)}
+              onReportMissing={onReportMissing}
+              withPhotoScan={!showPhotoUpload}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
   const Icon = CATEGORY_ICONS[category];
   const detailsRef = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -1736,25 +1874,6 @@ export function CategoryCard({
       )}
 
       <div className="flex flex-col gap-2">
-          {showPhotoUpload && category !== "fire_extinguisher" && category !== "window_breaker" && category !== "emergency_triangle" && (
-            <ItemPhotos
-              category={category}
-              entry={entry}
-              canScan={!meta.presenceOnly}
-              onChange={(photoDataUrls) => update({ photoDataUrls })}
-              onAddCertification={(cert) =>
-                update({
-                  certifications: mergeCertification(entry.certifications ?? [], cert),
-                  // Finding a tag on the photo means it's a certified item — flip a hybrid
-                  // category (gloves, seat, etc.) out of "material only" mode automatically,
-                  // rather than leaving the found certification stranded under a mode that
-                  // hides the certification list.
-                  ...(meta.hybrid && entry.mode !== "certified" ? { mode: "certified" as const } : {}),
-                })
-              }
-            />
-          )}
-
           {isSimplePresenceCategory(category) && (
             <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-200">
               <input type="checkbox" checked={entry.skipped === false} onChange={(e) => update({ skipped: e.target.checked ? false : undefined })} />
@@ -1773,14 +1892,6 @@ export function CategoryCard({
                 Rear
               </label>
             </div>
-          )}
-
-          {category === "helmet" && (
-            <>
-              <HelmetStylePicker entry={entry} onPick={(helmetType, hasVisor) => update({ helmetType, hasVisor, ...(hasVisor ? {} : { visorNote: undefined }) })} />
-              {entry.visorNote && <p className="text-xs text-neutral-500">{entry.visorNote}</p>}
-              <HelmetPhotoScan onApply={(patch, photo) => updateWithScan(patch, photo, "item")} />
-            </>
           )}
 
           {category === "fire_extinguisher" &&
@@ -1867,41 +1978,22 @@ export function CategoryCard({
             </select>
           )}
 
-          {category === "seat" && entry.mode && (
-            <label className="flex flex-col gap-1">
-              <span className="text-xs text-neutral-400">Fixed-mounted, or on sliders/rails?</span>
-              <select
-                className={selectClass}
-                value={entry.seatMounting ?? ""}
-                onChange={(e) => update({ seatMounting: (e.target.value || undefined) as EquipmentEntry["seatMounting"] })}
-              >
-                <option className={optionClass} value="">
-                  Select…
-                </option>
-                <option className={optionClass} value="fixed">
-                  Fixed-mounted
-                </option>
-                <option className={optionClass} value="rails">
-                  Sliders / rails
-                </option>
-              </select>
-            </label>
-          )}
-
-          {category === "firesuit" && entry.mode === "certified" && (
+          {TWO_PIECE_CATEGORIES.includes(category) && entry.mode && (
             <select
               className={selectClass}
               value={entry.pieceType ?? "one_piece"}
               onChange={(e) => update({ pieceType: e.target.value as EquipmentEntry["pieceType"] })}
             >
               <option className={optionClass} value="one_piece">
-                One piece (FIA suits are always one-piece)
+                {category === "firesuit" ? "One piece (FIA suits are always one-piece)" : "One piece"}
               </option>
               <option className={optionClass} value="two_piece">
-                Two piece — separate jacket + pants (SFI only, not required to match)
+                {category === "firesuit" ? "Two piece — separate jacket + pants (SFI only, not required to match)" : "Two piece — separate shirt + pants"}
               </option>
             </select>
           )}
+
+          {(isTwoPiece(category, entry) ? ([0, 1] as const) : ([0] as const)).map((piece) => pieceBlock(piece))}
 
           {stickerMode && STICKER_GEAR.includes(category) && (
             <GearSticker
@@ -1912,40 +2004,6 @@ export function CategoryCard({
               onChange={(patch, photos) => onChange(category, { ...entry, category, ...patch }, photos)}
             />
           )}
-
-          {showCertList &&
-            (category === "firesuit" && entry.mode === "certified" && entry.pieceType === "two_piece" ? (
-              <div className="flex flex-col gap-3">
-                <div>
-                  <p className="mb-1 text-xs font-semibold text-neutral-300">Jacket</p>
-                  <CertificationList
-                    category={category}
-                    certifications={entry.certifications ?? []}
-                    onChange={(certifications) => update({ certifications })}
-                    onAddFromScan={(certifications, photo) => updateWithScan({ certifications }, photo, "tag")}
-                    onReportMissing={onReportMissing}
-                  />
-                </div>
-                <div>
-                  <p className="mb-1 text-xs font-semibold text-neutral-300">Pants</p>
-                  <CertificationList
-                    category={category}
-                    certifications={entry.pantsCertifications ?? []}
-                    onChange={(pantsCertifications) => update({ pantsCertifications })}
-                    onAddFromScan={(pantsCertifications, photo) => updateWithScan({ pantsCertifications }, photo, "tag")}
-                    onReportMissing={onReportMissing}
-                  />
-                </div>
-              </div>
-            ) : (
-              <CertificationList
-                category={category}
-                certifications={entry.certifications ?? []}
-                onChange={(certifications) => update({ certifications })}
-                onAddFromScan={(certifications, photo) => updateWithScan({ certifications }, photo, "tag")}
-                onReportMissing={onReportMissing}
-              />
-            ))}
         </div>
 
       {result && showResultRow && (

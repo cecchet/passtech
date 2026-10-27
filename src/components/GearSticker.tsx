@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, maxPhotosFor } from "@/data/categoryMeta";
-import { EquipmentEntry } from "@/lib/matcher";
+import { QrIcon } from "@/components/icons/QrIcon";
+import { ENTRY_PHOTO_KEYS, EquipmentEntry } from "@/lib/matcher";
 import { dataUrlToBytes, sha256Hex, stripEntryPhotos } from "@/lib/techSheet";
 import { downscaleDataUrl } from "@/lib/imageResize";
 import { downloadTechSheetPhoto, getSession, onAuthChange, uploadTechSheetPhoto } from "@/lib/techSheetServer";
@@ -28,10 +29,21 @@ import type { ScannedPhoto } from "@/components/EquipmentForm";
 
 const smallButton = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50";
 
-/** The item's photos, wherever its category keeps them (an extinguisher's are on its units). */
-function itemPhotos(category: EquipmentCategory, entry: EquipmentEntry): string[] {
-  if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).flatMap((u) => u.photoDataUrls ?? []);
-  return entry.photoDataUrls ?? [];
+/** The item's photos for an application, with their role: its pictures (and the pants') as the whole
+ * item, its tag pictures as the tag. An extinguisher's are on its units, the first of each the whole
+ * unit and the others its label -- those the driver can re-mark (`fixed` false). */
+function applicationPhotos(category: EquipmentCategory, entry: EquipmentEntry): { url: string; kind: "item" | "tag"; fixed: boolean }[] {
+  if (category === "fire_extinguisher") {
+    return (entry.extinguisherUnits ?? []).flatMap((u) => (u.photoDataUrls ?? []).map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const), fixed: false })));
+  }
+  const as = (urls: string[] | undefined, kind: "item" | "tag") => (urls ?? []).map((url) => ({ url, kind, fixed: true }));
+  return [...as(entry.photoDataUrls, "item"), ...as(entry.pantsPhotoDataUrls, "item"), ...as(entry.tagPhotoDataUrls, "tag"), ...as(entry.pantsTagPhotoDataUrls, "tag")];
+}
+
+/** Whether the item has the photos an application needs: one of the whole item, one of its tag. */
+function photosReady(category: EquipmentCategory, entry: EquipmentEntry): boolean {
+  const photos = applicationPhotos(category, entry);
+  return photos.some((p) => p.kind === "item") && photos.some((p) => p.kind === "tag");
 }
 
 /** What a sticker says about the gear, as a patch for this item (its details, not its photos). */
@@ -40,29 +52,38 @@ function detailsFrom(v: StickerView): Partial<EquipmentEntry> {
   if (!e) return {};
   const rest: Partial<EquipmentEntry> = { ...e };
   delete rest.category;
-  delete rest.photoDataUrls;
+  ENTRY_PHOTO_KEYS.forEach((k) => delete rest[k]);
   return rest;
 }
 
-/** The item's photos with the sticker's added -- the whole item first, then its tag (the order the
- * sticker application reads them in), none twice, up to the category's limit. An extinguisher's go on
- * its first unit. Returns the patch for the entry. */
+/** The item's photos with the sticker's added -- the whole item's to its pictures, the tag's to its
+ * tag pictures (an extinguisher's all to its first unit, the whole unit first), none twice, up to the
+ * category's limit. Returns the patch for the entry. */
 async function withStickerPhotos(category: EquipmentCategory, entry: EquipmentEntry, photos: ScannedPhoto[]): Promise<Partial<EquipmentEntry>> {
-  const unitWise = category === "fire_extinguisher";
   const units = entry.extinguisherUnits ?? [];
+  const unitWise = category === "fire_extinguisher";
   if (unitWise && units.length === 0) return {};
-  const current = (unitWise ? units[0].photoDataUrls : entry.photoDataUrls) ?? [];
-  const seen = new Set(await Promise.all(current.map((u) => sha256Hex(dataUrlToBytes(u)))));
-  const next = [...current];
-  for (const p of [...photos.filter((x) => x.kind !== "tag"), ...photos.filter((x) => x.kind === "tag")]) {
-    if (next.length >= maxPhotosFor(category)) break;
-    const sha = await sha256Hex(dataUrlToBytes(p.dataUrl));
-    if (seen.has(sha)) continue;
-    seen.add(sha);
-    next.push(p.dataUrl);
+  const all = unitWise ? units[0].photoDataUrls ?? [] : ENTRY_PHOTO_KEYS.flatMap((k) => entry[k] ?? []);
+  const seen = new Set(await Promise.all(all.map((u) => sha256Hex(dataUrlToBytes(u)))));
+  // The new photos among `from` added to a list.
+  const add = async (list: string[], from: ScannedPhoto[]) => {
+    const next = [...list];
+    for (const p of from) {
+      if (next.length >= maxPhotosFor(category)) break;
+      const sha = await sha256Hex(dataUrlToBytes(p.dataUrl));
+      if (seen.has(sha)) continue;
+      seen.add(sha);
+      next.push(p.dataUrl);
+    }
+    return next;
+  };
+  const items = photos.filter((x) => x.kind !== "tag");
+  const tags = photos.filter((x) => x.kind === "tag");
+  if (unitWise) {
+    const next = await add(units[0].photoDataUrls ?? [], [...items, ...tags]);
+    return { extinguisherUnits: units.map((u, i) => (i === 0 ? { ...u, photoDataUrls: next } : u)) };
   }
-  if (next.length === current.length) return {};
-  return unitWise ? { extinguisherUnits: units.map((u, i) => (i === 0 ? { ...u, photoDataUrls: next } : u)) } : { photoDataUrls: next };
+  return { photoDataUrls: await add(entry.photoDataUrls ?? [], items), tagPhotoDataUrls: await add(entry.tagPhotoDataUrls ?? [], tags) };
 }
 
 /**
@@ -90,6 +111,23 @@ export function GearSticker({
   const [scanning, setScanning] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [applying, setApplying] = useState(false);
+  // The driver's applications for this kind of gear (My gear, signed in).
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  const [mine, setMine] = useState<StickerApplication[]>([]);
+  const loadMine = () =>
+    fetchMyStickerApplications().then(
+      (list) => setMine(list.filter((a) => a.category === category)),
+      () => {}
+    );
+  useEffect(() => {
+    if (!allowApply) return;
+    getSession().then((s) => setSignedIn(!!s), () => setSignedIn(false));
+    return onAuthChange((s) => setSignedIn(!!s));
+  }, [allowApply]);
+  useEffect(() => {
+    if (allowApply && signedIn) loadMine();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allowApply, signedIn]);
 
   useEffect(() => {
     let live = true;
@@ -104,7 +142,7 @@ export function GearSticker({
   // its tag: until then, what's missing instead of the button.
   const missing = [
     hasDetails ? null : category === "fire_extinguisher" ? "the extinguisher's details" : "its certification",
-    itemPhotos(category, entry).length >= 2 ? null : "a photo of the whole item and one of its tag",
+    photosReady(category, entry) ? null : "a picture of the whole item and one of its certification tag",
   ].filter(Boolean);
   const canApply = allowApply && missing.length === 0;
   const link = async (v: StickerView, useDetails: boolean) => {
@@ -152,59 +190,106 @@ export function GearSticker({
           </>
         ) : (
           <button type="button" className={smallButton} onClick={() => setScanning(!scanning)}>
-            {scanning ? "Cancel" : "🔳 Scan its tech sticker"}
+            {scanning ? (
+              "Cancel"
+            ) : (
+              <span className="inline-flex items-center gap-1">
+                <QrIcon /> Scan its tech sticker
+              </span>
+            )}
           </button>
         )}
         {canApply && (
           <button type="button" className={smallButton} onClick={() => setApplying(!applying)}>
-            {applying ? "Close the application" : "Apply for an annual sticker"}
+            {applying ? "Close the application" : "Apply for an annual tech sticker"}
           </button>
         )}
       </div>
-      {allowApply && !code && missing.length > 0 && <p className="text-neutral-500">To apply for an annual sticker, add {missing.join(" and ")}.</p>}
+      {allowApply && !code && missing.length > 0 && <p className="text-neutral-500">To apply for an annual tech sticker, add {missing.join(" and ")}.</p>}
       {scanning && !code && <StickerScan bare title="" onScanned={(v) => link(v, !hasDetails)} />}
       {message && <p className="text-red-300">{message}</p>}
-      {applying && canApply && <ApplyForSticker category={category} entry={entry} onLink={(v) => link(v, false)} />}
+      {applying && canApply ? (
+        <ApplyForSticker category={category} entry={entry} signedIn={signedIn} mine={mine} loadMine={loadMine} onLink={(v) => link(v, false)} />
+      ) : (
+        // (The application closed, or the item no longer complete: this item's applications stay listed.)
+        allowApply && (
+          <ApplicationList
+            list={mine.filter((a) => applicationIsFor(a, entry) || (!!a.stickerCode && a.stickerCode === code))}
+            entry={entry}
+            reload={loadMine}
+            onLink={(v) => link(v, false)}
+          />
+        )
+      )}
     </div>
+  );
+}
+
+/** The driver's annual sticker applications (signed in): status, the sticker issued -- to link to the
+ * item -- and withdrawing a pending one. */
+function ApplicationList({ list, entry, reload, onLink }: { list: StickerApplication[]; entry: EquipmentEntry; reload: () => void; onLink: (v: StickerView) => void }) {
+  if (list.length === 0) return null;
+  return (
+    <ul className="flex flex-col gap-1">
+      {list.map((a) => (
+        <li key={a.id} className="flex flex-wrap items-center gap-2 text-neutral-300">
+          <span>
+            {a.bodyName ?? a.body}{a.disciplineName ? ` ${a.disciplineName}` : ""} {a.season} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
+            <span className={a.status === "issued" ? "text-emerald-300" : a.status === "declined" ? "text-red-300" : ""}>{a.status}</span>
+            {a.stickerCode ? ` · sticker ${formatStickerCode(a.stickerCode)}` : ""}
+            {a.note ? ` — ${a.note}` : ""}
+          </span>
+          {a.status === "pending" && (
+            <button type="button" className={smallButton} onClick={() => withdrawStickerApplication(a.id).then(reload, () => {})}>
+              Withdraw
+            </button>
+          )}
+          {a.status === "issued" && a.stickerCode && a.stickerCode !== entry.stickerCode && (
+            <button type="button" className={smallButton} onClick={() => fetchSticker(a.stickerCode!).then((v) => v && onLink(v), () => {})}>
+              Link sticker {formatStickerCode(a.stickerCode)} to this item
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }
 
 /** Applying for an annual sticker: the body and season, the item's details, and which of its photos
  * show the whole item and which its tag or label (the sticker needs one of each). */
-function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCategory; entry: EquipmentEntry; onLink: (v: StickerView) => void }) {
-  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+function ApplyForSticker({
+  category,
+  entry,
+  signedIn,
+  mine,
+  loadMine,
+  onLink,
+}: {
+  category: EquipmentCategory;
+  entry: EquipmentEntry;
+  signedIn: boolean | null;
+  mine: StickerApplication[];
+  loadMine: () => Promise<void>;
+  onLink: (v: StickerView) => void;
+}) {
   const [bodies, setBodies] = useState<StickerBody[]>([]);
   const [body, setBody] = useState("");
   // The body's discipline (e.g. SCCNH Autocross), when it has them.
   const [discipline, setDiscipline] = useState("");
   const [season, setSeason] = useState(new Date().getFullYear());
   const [owner, setOwner] = useState("");
-  const photos = itemPhotos(category, entry);
+  const photos = applicationPhotos(category, entry);
   // Each photo's role, keyed by the photo itself so adding or removing one never shifts the others;
   // a photo not marked yet is the whole item when it's the first, its tag otherwise.
   const [kinds, setKinds] = useState<Record<string, "item" | "tag">>({});
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [mine, setMine] = useState<StickerApplication[]>([]);
 
-  const loadMine = () =>
-    fetchMyStickerApplications().then(
-      (list) => setMine(list.filter((a) => a.category === category)),
-      () => {}
-    );
   useEffect(() => {
-    getSession().then((s) => setSignedIn(!!s), () => setSignedIn(false));
-    const off = onAuthChange((s) => setSignedIn(!!s));
     fetchStickerBodies().then(setBodies, () => {});
-    return off;
   }, []);
-  useEffect(() => {
-    // The server's list, once signed in.
-    if (signedIn) loadMine();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signedIn]);
 
-  const kindOf = (i: number) => kinds[photos[i]] ?? (i === 0 ? "item" : "tag");
+  const kindOf = (i: number) => (photos[i].fixed ? photos[i].kind : kinds[photos[i].url] ?? photos[i].kind);
   const ready = photos.some((_, i) => kindOf(i) === "item") && photos.some((_, i) => kindOf(i) === "tag");
   const disciplines = bodies.find((b) => b.id === body)?.disciplines ?? [];
   // One pending application per item, body, discipline and season: the next one waits until it's processed.
@@ -221,7 +306,8 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
       const refs: { sha256: string; kind: "item" | "tag" }[] = [];
       for (let i = 0; i < photos.length; i++) {
         setBusy(`Uploading photo ${i + 1} of ${photos.length}…`);
-        const jpeg = photos[i].startsWith("data:image/jpeg") ? photos[i] : await downscaleDataUrl(photos[i], 1600, 0.85);
+        const url = photos[i].url;
+        const jpeg = url.startsWith("data:image/jpeg") ? url : await downscaleDataUrl(url, 1600, 0.85);
         const sha256 = await sha256Hex(dataUrlToBytes(jpeg));
         await uploadTechSheetPhoto(sha256, jpeg);
         refs.push({ sha256, kind: kindOf(i) });
@@ -244,7 +330,7 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
     }
   };
 
-  if (signedIn === false) return <TechSheetSignIn intro="Sign in to apply for an annual sticker — we'll email you a one-time code." />;
+  if (signedIn === false) return <TechSheetSignIn intro="Sign in to apply for an annual tech sticker — we'll email you a one-time code." />;
   const label = CATEGORY_META[category].label.toLowerCase();
   return (
     <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
@@ -301,15 +387,19 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
           {photos.map((p, i) => (
             <div key={i} className="flex flex-col items-center gap-1">
               {/* eslint-disable-next-line @next/next/no-img-element -- a stored data URL */}
-              <img src={p} alt="" className={`h-16 w-16 rounded object-cover ${kindOf(i) === "tag" ? "ring-2 ring-sky-500" : ""}`} />
-              <select
-                value={kindOf(i)}
-                onChange={(e) => setKinds((k) => ({ ...k, [p]: e.target.value as "item" | "tag" }))}
-                className="rounded border border-neutral-600 bg-neutral-900 p-0.5 text-neutral-200"
-              >
-                <option value="item">Whole item</option>
-                <option value="tag">Tag / label</option>
-              </select>
+              <img src={p.url} alt="" className={`h-16 w-16 rounded object-cover ${kindOf(i) === "tag" ? "ring-2 ring-sky-500" : ""}`} />
+              {p.fixed ? (
+                <span className="text-neutral-400">{p.kind === "tag" ? "Tag" : "Item"}</span>
+              ) : (
+                <select
+                  value={kindOf(i)}
+                  onChange={(e) => setKinds((k) => ({ ...k, [p.url]: e.target.value as "item" | "tag" }))}
+                  className="rounded border border-neutral-600 bg-neutral-900 p-0.5 text-neutral-200"
+                >
+                  <option value="item">Whole item</option>
+                  <option value="tag">Tag / label</option>
+                </select>
+              )}
             </div>
           ))}
         </div>
@@ -332,34 +422,7 @@ function ApplyForSticker({ category, entry, onLink }: { category: EquipmentCateg
         </button>
         {busy && <span className="text-neutral-400">{busy}</span>}
       </div>
-      {mine.length > 0 && (
-        <ul className="flex flex-col gap-1">
-          {mine.map((a) => (
-            <li key={a.id} className="flex flex-wrap items-center gap-2 text-neutral-300">
-              <span>
-                {a.bodyName ?? a.body}{a.disciplineName ? ` ${a.disciplineName}` : ""} {a.season} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
-                <span className={a.status === "issued" ? "text-emerald-300" : a.status === "declined" ? "text-red-300" : ""}>{a.status}</span>
-                {a.stickerCode ? ` · sticker ${formatStickerCode(a.stickerCode)}` : ""}
-                {a.note ? ` — ${a.note}` : ""}
-              </span>
-              {a.status === "pending" && (
-                <button type="button" className={smallButton} onClick={() => withdrawStickerApplication(a.id).then(loadMine, () => {})}>
-                  Withdraw
-                </button>
-              )}
-              {a.status === "issued" && a.stickerCode && a.stickerCode !== entry.stickerCode && (
-                <button
-                  type="button"
-                  className={smallButton}
-                  onClick={() => fetchSticker(a.stickerCode!).then((v) => v && onLink(v), () => {})}
-                >
-                  Link sticker {formatStickerCode(a.stickerCode)} to this item
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      <ApplicationList list={mine} entry={entry} reload={loadMine} onLink={onLink} />
     </div>
   );
 }

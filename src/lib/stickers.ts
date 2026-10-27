@@ -1,7 +1,7 @@
 import { getSupabase } from "@/lib/techSheetServer";
 import { TECH_SHEET_PHOTO_BUCKET } from "@/lib/serverConfig";
 import { EquipmentCategory } from "@/data/types";
-import { CertificationEntry, EquipmentEntry } from "@/lib/matcher";
+import { CertificationEntry, ENTRY_PHOTO_KEYS, EquipmentEntry } from "@/lib/matcher";
 import { stableJson } from "@/lib/garage";
 
 /**
@@ -105,7 +105,9 @@ export function stickerEntry(v: StickerView): { category: EquipmentCategory; ent
   if (v.kind !== "gear" || !cat) return null;
   const g = v.snapshot.gear ?? {};
   const certifications = (g.certifications ?? []).map((c: CertificationEntry, i: number) => ({ ...c, key: c.key || `sticker-${i}` }));
-  return { category: cat, entry: { ...g, category: cat, certifications, photoDataUrls: undefined } as EquipmentEntry };
+  const entry = { ...g, category: cat, certifications } as EquipmentEntry;
+  ENTRY_PHOTO_KEYS.forEach((k) => delete entry[k]);
+  return { category: cat, entry };
 }
 
 /** The Scrutineering site's page for a sticker (what the QR code itself opens). */
@@ -157,7 +159,7 @@ export function applicationIsFor(a: StickerApplication, entry: EquipmentEntry): 
   if (serials(a.gear).some((s) => mine.includes(s))) return true;
   const plain = (g?: Partial<EquipmentEntry>) => {
     const copy: Partial<EquipmentEntry> = { ...(g ?? {}) };
-    delete copy.photoDataUrls;
+    ENTRY_PHOTO_KEYS.forEach((k) => delete copy[k]);
     delete copy.stickerCode;
     return stableJson(copy);
   };

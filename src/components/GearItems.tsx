@@ -6,6 +6,7 @@ import { CATEGORY_META } from "@/data/categoryMeta";
 import { CategoryCard, MyGearSlot, summarizeEntryCerts } from "@/components/EquipmentForm";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
+import { QrIcon } from "@/components/icons/QrIcon";
 import { computeGearExpiryWarnings, formatGearExpiryWarning } from "@/lib/gearExpiration";
 import {
   GEAR_ITEM_CATEGORIES,
@@ -67,8 +68,8 @@ function StickerBadge({ code }: { code: string }) {
   }, [code]);
   const color = view?.status === "valid" ? "border-emerald-700 text-emerald-300" : view ? "border-red-700 text-red-300" : "border-neutral-600 text-neutral-300";
   return (
-    <span className={`rounded-full border px-2 py-0.5 text-xs ${color}`}>
-      🔳 {formatStickerCode(code)}
+    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs ${color}`}>
+      <QrIcon className="h-3.5 w-3.5" /> {formatStickerCode(code)}
       {view ? ` · ${stickerStatusLine(view)}` : ""}
     </span>
   );
