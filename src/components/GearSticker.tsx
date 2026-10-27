@@ -100,6 +100,13 @@ export function GearSticker({
   }, [code]);
 
   const hasDetails = (entry.certifications ?? []).some((c) => c.standardId) || (entry.extinguisherUnits ?? []).length > 0;
+  // An annual sticker's application needs the item's details and a photo of the whole item and one of
+  // its tag: until then, what's missing instead of the button.
+  const missing = [
+    hasDetails ? null : category === "fire_extinguisher" ? "the extinguisher's details" : "its certification",
+    itemPhotos(category, entry).length >= 2 ? null : "a photo of the whole item and one of its tag",
+  ].filter(Boolean);
+  const canApply = allowApply && missing.length === 0;
   const link = async (v: StickerView, useDetails: boolean) => {
     const wrong = stickerMismatch(v, category);
     if (wrong) {
@@ -148,15 +155,16 @@ export function GearSticker({
             {scanning ? "Cancel" : "🔳 Scan its tech sticker"}
           </button>
         )}
-        {allowApply && (
+        {canApply && (
           <button type="button" className={smallButton} onClick={() => setApplying(!applying)}>
             {applying ? "Close the application" : "Apply for an annual sticker"}
           </button>
         )}
       </div>
+      {allowApply && !code && missing.length > 0 && <p className="text-neutral-500">To apply for an annual sticker, add {missing.join(" and ")}.</p>}
       {scanning && !code && <StickerScan bare title="" onScanned={(v) => link(v, !hasDetails)} />}
       {message && <p className="text-red-300">{message}</p>}
-      {applying && <ApplyForSticker category={category} entry={entry} onLink={(v) => link(v, false)} />}
+      {applying && canApply && <ApplyForSticker category={category} entry={entry} onLink={(v) => link(v, false)} />}
     </div>
   );
 }
