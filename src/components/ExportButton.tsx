@@ -79,7 +79,14 @@ export async function shrinkEntryPhotos(entry: EquipmentEntry): Promise<Equipmen
     x.photoDataUrls?.length ? { ...x, photoDataUrls: await Promise.all(x.photoDataUrls.map(shrinkPhoto)) } : x;
   const out = { ...entry };
   for (const k of ENTRY_PHOTO_KEYS) if (out[k]?.length) out[k] = await Promise.all(out[k]!.map(shrinkPhoto));
-  if (out.extinguisherUnits) out.extinguisherUnits = await Promise.all(out.extinguisherUnits.map(shrinkAll));
+  if (out.extinguisherUnits) {
+    out.extinguisherUnits = await Promise.all(
+      out.extinguisherUnits.map(async (u) => {
+        const x = await shrinkAll(u);
+        return x.tagPhotoDataUrls?.length ? { ...x, tagPhotoDataUrls: await Promise.all(x.tagPhotoDataUrls.map(shrinkPhoto)) } : x;
+      })
+    );
+  }
   if (out.windowBreakerUnits) out.windowBreakerUnits = await Promise.all(out.windowBreakerUnits.map(shrinkAll));
   if (out.triangleUnits) out.triangleUnits = await Promise.all(out.triangleUnits.map(shrinkAll));
   return out;

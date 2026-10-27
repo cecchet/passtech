@@ -193,13 +193,14 @@ const raceGear: Ruleset = {
     seat: {
       requirement: "required",
       materialOnlyAccepted: false,
+      nonHomologatedAccepted: true,
       acceptedStandards: GENERIC_SEAT_STANDARDS,
       materialNote:
         "NEGT §6E.11: 'One-piece driver seat with a rigid shell, designed specifically for auto racing is required.' A stock/OEM seat does not satisfy this — NEGT's cars are fully caged wheel-to-wheel race cars (§6E.I roll cage mandatory), and the rulebook's own construction language ('rigid shell, designed specifically for auto racing') rules out an unmodified factory seat outright, independent of any certification label. NEGT itself does not cite a specific SFI (39.1/39.2) or FIA (8855/8862) seat certification number, but a certified racing seat obviously satisfies the rigid-shell/purpose-built bar the rulebook does set — the generic seat standards list is offered on that basis, not because NEGT names those specs directly.",
       citation: { ...rulebook, section: "6E.11, 6E.13" },
       confidence: "high",
       notes:
-        "\"The seat must be securely mounted at a minimum of four points at the base. If bolting through the floor, minimum 3\" diameter washers or backing plates are required.\" (6E.11) Separately, a seat that lacks 'a current FIA rating' (or a slider) is recommended (not required) to get a seat back brace if the seat back sits more than 3\" from the cage (6E.13). Cars without a 'halo' seat are also separately recommended (not required) to install an SFI 37.1 / FIA 8863-2013 approved center net (6E.14) — a distinct item not modeled as its own category in this app.",
+        "\"The seat must be securely mounted at a minimum of four points at the base. If bolting through the floor, minimum 3\" diameter washers or backing plates are required.\" (6E.11) Separately, a seat that lacks 'a current FIA rating' (or a slider) is recommended (not required) to get a seat back brace if the seat back sits more than 3\" from the cage (6E.13). Cars without a 'halo' seat are also separately recommended (not required) to install an SFI 37.1 / FIA 8863-2013 approved center net (6E.14) — a distinct item not modeled as its own category in this app. nonHomologatedAccepted is true: §6E.11 requires a 'One-piece driver seat with a rigid shell, designed specifically for auto racing' with no SFI/FIA number, and §6E.13 contemplates seats without 'a current FIA rating' (back brace only recommended), so an uncertified or expired purpose-built racing seat passes.",
     },
     belts_harness: {
       requirement: "required",

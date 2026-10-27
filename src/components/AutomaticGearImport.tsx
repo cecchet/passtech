@@ -375,7 +375,9 @@ export function AutomaticGearImport({
     if (category === "fire_extinguisher") {
       const existingUnits = existing?.extinguisherUnits ?? [];
       const targetUnit = unitMode === "merge" ? existingUnits[existingUnits.length - 1] : undefined;
-      const currentPhotos = targetUnit?.photoDataUrls ?? [];
+      // (A close-up of its label goes with its label pictures.)
+      const photoKey = isCloseupOnly ? "tagPhotoDataUrls" : "photoDataUrls";
+      const currentPhotos = targetUnit?.[photoKey] ?? [];
       const photoAdded = currentPhotos.length < maxPhotosFor(category);
       const mergedFields = {
         ...(extinguisher?.classARating && !targetUnit?.classARating ? { classARating: extinguisher.classARating } : {}),
@@ -387,10 +389,10 @@ export function AutomaticGearImport({
       };
       let units: ExtinguisherUnit[];
       if (targetUnit) {
-        const updated: ExtinguisherUnit = { ...targetUnit, ...mergedFields, photoDataUrls: photoAdded ? [...currentPhotos, dataUrl] : currentPhotos };
+        const updated: ExtinguisherUnit = { ...targetUnit, ...mergedFields, [photoKey]: photoAdded ? [...currentPhotos, dataUrl] : currentPhotos };
         units = existingUnits.map((u) => (u.key === targetUnit.key ? updated : u));
       } else {
-        const newUnit: ExtinguisherUnit = { ...newExtinguisherUnit(), ...mergedFields, photoDataUrls: photoAdded ? [dataUrl] : [] };
+        const newUnit: ExtinguisherUnit = { ...newExtinguisherUnit(), ...mergedFields, [photoKey]: photoAdded ? [dataUrl] : [] };
         units = [...existingUnits, newUnit];
       }
       updateEntry(target, category, { extinguisherUnits: units });

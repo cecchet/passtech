@@ -119,6 +119,9 @@ interface CategoryMeta {
   presenceOnly?: boolean;
   /** Hybrid categories only: overrides the form's "no certification" dropdown option text — defaults to apparel-flavored wording ("fire-resistant / non-flammable material"), which doesn't fit e.g. a stock fuel tank. */
   materialOnlyLabel?: string;
+  /** Seat only: a third choice between stock and certified -- a purpose-built racing seat without an
+   * SFI/FIA homologation (see CategoryRule.nonHomologatedAccepted). */
+  nonHomologatedLabel?: string;
   /** Hybrid categories only: overrides the form's "certified" dropdown option text. */
   certifiedLabel?: string;
   /** Hybrid categories only: overrides the reference view's plain-material description sentence. */
@@ -273,6 +276,7 @@ export const CATEGORY_META: Record<EquipmentCategory, CategoryMeta> = {
     group: "car",
     hybrid: true,
     materialOnlyLabel: "Stock/OEM seat (no certification)",
+    nonHomologatedLabel: "Non-homologated racing seat (no SFI/FIA certification)",
     certifiedLabel: "Certified racing seat (SFI or FIA rated)",
     materialOnlyDescription: "Stock/OEM seat accepted, no certification required.",
     hint: "Many bodies allow a stock/OEM seat, especially for non-caged cars — a certified racing seat is typically only mandated once a roll cage or higher competition tier is involved. Standard printed on the seat's certification label — FIA/SFI-rated seats expire, check the date. Also confirm separately whether this body allows seat sliders/rails, or requires a fixed mount.",

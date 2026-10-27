@@ -111,6 +111,7 @@ function ItemPhotoThumb({
   imageDataUrl,
   canScan,
   moveLabel,
+  extra,
   onMove,
   onRemove,
   onAddCertification,
@@ -119,11 +120,13 @@ function ItemPhotoThumb({
   imageDataUrl: string;
   canScan: boolean;
   moveLabel: string;
+  /** Below the photo: another reader (an extinguisher's label). */
+  extra?: ReactNode;
   onMove: () => void;
   onRemove: () => void;
-  onAddCertification: (cert: CertificationEntry) => void;
+  onAddCertification?: (cert: CertificationEntry) => void;
 }) {
-  const scanner = useTagScanner(category, onAddCertification);
+  const scanner = useTagScanner(category, onAddCertification ?? (() => {}));
   const small = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50";
   return (
     <div className="flex max-w-[260px] flex-col gap-1">
@@ -143,6 +146,7 @@ function ItemPhotoThumb({
           </button>
         </div>
       </div>
+      {extra}
       {scanner.error && <p className="text-xs text-red-400">{scanner.error}</p>}
       {scanner.candidates && (
         <TagCandidateList candidates={scanner.candidates} notes={scanner.notes} added={scanner.added} onAdd={scanner.addCandidate} category={category} />
@@ -161,6 +165,7 @@ function PhotoGroup({
   addLabel,
   photos,
   tags,
+  extraFor,
   onChange,
   onMove,
   onAddCertification,
@@ -170,9 +175,11 @@ function PhotoGroup({
   addLabel: string;
   photos: string[];
   tags: boolean;
+  /** Each photo's own reader instead of the certification one (an extinguisher's label). */
+  extraFor?: (photo: string) => ReactNode;
   onChange: (photos: string[]) => void;
   onMove: (photo: string) => void;
-  onAddCertification: (cert: CertificationEntry) => void;
+  onAddCertification?: (cert: CertificationEntry) => void;
 }) {
   const inputId = useId();
   const maxPhotos = maxPhotosFor(category);
@@ -186,8 +193,9 @@ function PhotoGroup({
               key={url.slice(-32) + i}
               category={category}
               imageDataUrl={url}
-              canScan={tags}
+              canScan={tags && !extraFor}
               moveLabel={tags ? "Move to the item's pictures" : "Move to the tag pictures"}
+              extra={extraFor?.(url)}
               onMove={() => onMove(url)}
               onRemove={() => onChange(photos.filter((_, idx) => idx !== i))}
               onAddCertification={onAddCertification}
@@ -570,10 +578,13 @@ const numberInputClass = "rounded border border-neutral-500 bg-neutral-900 p-1.5
 function ExtinguisherUnitRow({
   unit,
   missingFields,
+  single,
   onChange,
   onRemove,
 }: {
   unit: ExtinguisherUnit;
+  /** The only one (a piece of gear in My gear is one extinguisher): it isn't removed on its own. */
+  single?: boolean;
   /** Which fields the active ruleset's mounting requirement is still waiting on for this unit — see CategoryResult.missingExtinguisherMountFields. Highlighted red so the driver can see exactly what's blocking the verdict, not just read it in the reason text. */
   missingFields?: ("hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs")[];
   onChange: (patch: Partial<ExtinguisherUnit>) => void;
@@ -581,11 +592,8 @@ function ExtinguisherUnitRow({
 }) {
   const numeric = (raw: string): number | undefined => (raw === "" ? undefined : Number(raw));
   const photos = unit.photoDataUrls ?? [];
-  const maxPhotos = maxPhotosFor("fire_extinguisher");
-  const canAddMore = photos.length < maxPhotos;
-  const inputId = useId();
+  const tagPhotos = unit.tagPhotoDataUrls ?? [];
   const [confirmRemove, setConfirmRemove] = useState(false);
-  const removePhoto = (i: number) => onChange({ photoDataUrls: photos.filter((_, idx) => idx !== i) });
   const isMissing = (field: "hasMetalBracket" | "metalStrapCount" | "hasAntiTorpedoTabs" | "weightLbs") => !!missingFields?.includes(field);
   const missingRing = "border-red-500 ring-1 ring-red-500";
 
@@ -594,48 +602,25 @@ function ExtinguisherUnitRow({
     // several of these units (extinguishers, window breakers, triangles), and a border-only box
     // was just as hard to tell apart from its neighbors as an uncertified certification row was.
     <div className="flex flex-col gap-2 rounded-lg border-2 border-sky-400 bg-sky-900/80 p-2">
-      {photos.length > 0 && (
-        <div className="flex flex-wrap gap-3">
-          {photos.map((p, i) => (
-            <div key={i} className="flex flex-col gap-1" style={{ width: 220, maxWidth: 220 }}>
-              <div className="flex items-start gap-2">
-                <ZoomableThumb src={p} className="h-16 w-16 shrink-0 rounded object-cover" />
-                <button
-                  type="button"
-                  onClick={() => removePhoto(i)}
-                  className="rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-                >
-                  🗑️ Remove photo
-                </button>
-              </div>
-              <ExtinguisherLabelScan imageDataUrl={p} onApply={(patch) => onChange(patch)} />
-            </div>
-          ))}
-        </div>
-      )}
-      {canAddMore && (
-        <div className="flex flex-wrap gap-2">
-          <label
-            htmlFor={inputId}
-            className="flex w-fit cursor-pointer items-center gap-1 rounded border border-dashed border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800"
-          >
-            📷 Add a photo of this item ({photos.length}/{maxPhotos})
-            <input
-              id={inputId}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={async (e) => {
-                const file = e.target.files?.[0];
-                e.target.value = "";
-                if (!file) return;
-                const dataUrl = await resizeImageToDataUrl(file, 1600, 0.85);
-                onChange({ photoDataUrls: [...photos, dataUrl] });
-              }}
-            />
-          </label>
-        </div>
-      )}
+      <PhotoGroup
+        category="fire_extinguisher"
+        title="Pictures of the extinguisher"
+        addLabel="Add a picture"
+        photos={photos}
+        tags={false}
+        onChange={(photoDataUrls) => onChange({ photoDataUrls })}
+        onMove={(url) => onChange({ photoDataUrls: photos.filter((u) => u !== url), tagPhotoDataUrls: [...tagPhotos, url] })}
+      />
+      <PhotoGroup
+        category="fire_extinguisher"
+        title="Pictures of its label"
+        addLabel="Add a picture of the label"
+        photos={tagPhotos}
+        tags
+        extraFor={(url) => <ExtinguisherLabelScan imageDataUrl={url} onApply={(patch) => onChange(patch)} />}
+        onChange={(tagPhotoDataUrls) => onChange({ tagPhotoDataUrls })}
+        onMove={(url) => onChange({ tagPhotoDataUrls: tagPhotos.filter((u) => u !== url), photoDataUrls: [...photos, url] })}
+      />
       <div className="flex flex-wrap items-end gap-2">
       <label className="flex flex-col gap-1 text-xs text-neutral-400">
         Class A rating (if any)
@@ -748,6 +733,7 @@ function ExtinguisherUnitRow({
         </div>
       </div>
       </div>
+      {!single && (
       <div className="flex flex-wrap items-center gap-2">
       {!confirmRemove ? (
         <button
@@ -764,7 +750,7 @@ function ExtinguisherUnitRow({
             onClick={onRemove}
             className="rounded border border-red-500 bg-red-900 px-2 py-1.5 text-xs font-semibold text-red-100 hover:bg-red-800"
           >
-            🗑️ Confirm delete{photos.length > 0 ? ` (removes ${photos.length} photo${photos.length === 1 ? "" : "s"} too)` : ""}?
+            🗑️ Take it out{photos.length + tagPhotos.length > 0 ? ` (with its ${photos.length + tagPhotos.length} photo${photos.length + tagPhotos.length === 1 ? "" : "s"})` : ""}?
           </button>
           <button type="button" onClick={() => setConfirmRemove(false)} className="rounded border border-neutral-600 px-2 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800">
             Cancel
@@ -772,6 +758,7 @@ function ExtinguisherUnitRow({
         </>
       )}
       </div>
+      )}
     </div>
   );
 }
@@ -1398,6 +1385,9 @@ export function summarizeEntryCerts(category: EquipmentCategory, entry: Equipmen
     const label = meta.materialOnlyLabel ?? "Material only";
     return [{ key: "material", label, colorClass: result ? CERT_BADGE_COLOR[result.status] : "text-neutral-400" }];
   }
+  if (entry.mode === "non_homologated") {
+    return [{ key: "material", label: meta.nonHomologatedLabel ?? "Not homologated", colorClass: result ? CERT_BADGE_COLOR[result.status] : "text-neutral-400" }];
+  }
 
   const certs = entry.certifications ?? [];
   // Two-piece firesuit doesn't expose a flat certBreakdown for the jacket's own certs — fall back
@@ -1607,6 +1597,7 @@ export function CategoryCard({
   stickerMode,
   onReportMissing,
   myGear,
+  singleUnit,
 }: {
   category: EquipmentCategory;
   entry: EquipmentEntry;
@@ -1647,8 +1638,12 @@ export function CategoryCard({
   stickerMode?: "garage" | "sheet";
   onReportMissing?: (category: EquipmentCategory, label: string) => void;
   myGear?: MyGearSlot;
+  /** A piece of gear in My gear: one fire extinguisher (a gear set can carry several). */
+  singleUnit?: boolean;
 }) {
   const meta = CATEGORY_META[category];
+  // (My gear's extinguisher before anything's entered: a blank one to fill in.)
+  const [blankUnit] = useState(() => newExtinguisherUnit());
   const update = (patch: Partial<EquipmentEntry>, scanned?: ScannedPhoto) => onChange(category, { ...entry, category, ...patch }, scanned);
   // A photo read for this item (a tag photo, the whole helmet) joins its photos -- when they're
   // shown here, there's room, and it isn't one of them already. Without the photos shown (a tech
@@ -1909,6 +1904,18 @@ export function CategoryCard({
                   : baseUnits.length > 0
                     ? baseUnits.map((u, i) => (i === 0 ? { ...u, photoDataUrls: [...(u.photoDataUrls ?? []), ...strayPhotos] } : u))
                     : [{ ...newExtinguisherUnit(), photoDataUrls: strayPhotos }];
+              if (singleUnit) {
+                const unit = units[0] ?? blankUnit;
+                return (
+                  <ExtinguisherUnitRow
+                    unit={unit}
+                    single
+                    missingFields={result?.missingExtinguisherMountFields?.find((m) => m.key === unit.key)?.fields}
+                    onChange={(patch) => update({ extinguisherUnits: [{ ...unit, ...patch }], photoDataUrls: [] })}
+                    onRemove={() => {}}
+                  />
+                );
+              }
               return (
                 <ExtinguisherUnitList
                   units={units}
@@ -1972,6 +1979,11 @@ export function CategoryCard({
               <option className={optionClass} value="material_only">
                 {meta.materialOnlyLabel ?? "No certification (fire-resistant / non-flammable material)"}
               </option>
+              {meta.nonHomologatedLabel && (
+                <option className={optionClass} value="non_homologated">
+                  {meta.nonHomologatedLabel}
+                </option>
+              )}
               <option className={optionClass} value="certified">
                 {meta.certifiedLabel ?? "Certified (SFI or FIA rated)"}
               </option>
@@ -1995,7 +2007,8 @@ export function CategoryCard({
 
           {(isTwoPiece(category, entry) ? ([0, 1] as const) : ([0] as const)).map((piece) => pieceBlock(piece))}
 
-          {stickerMode && STICKER_GEAR.includes(category) && (
+          {/* (A set's extinguishers each have their own sticker, in My gear: not the set's card.) */}
+          {stickerMode && STICKER_GEAR.includes(category) && !(category === "fire_extinguisher" && stickerMode === "garage" && !singleUnit) && (
             <GearSticker
               category={category}
               entry={entry}

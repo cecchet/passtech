@@ -30,13 +30,18 @@ import type { ScannedPhoto } from "@/components/EquipmentForm";
 const smallButton = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800 disabled:opacity-50";
 
 /** The item's photos for an application, with their role: its pictures (and the pants') as the whole
- * item, its tag pictures as the tag. An extinguisher's are on its units, the first of each the whole
- * unit and the others its label -- those the driver can re-mark (`fixed` false). */
+ * item, its tag pictures as the tag -- an extinguisher's, its own and its label's. A photo from
+ * before the tag pictures existed (an extinguisher's first is the whole unit, the others its label)
+ * can be re-marked (`fixed` false). */
 function applicationPhotos(category: EquipmentCategory, entry: EquipmentEntry): { url: string; kind: "item" | "tag"; fixed: boolean }[] {
-  if (category === "fire_extinguisher") {
-    return (entry.extinguisherUnits ?? []).flatMap((u) => (u.photoDataUrls ?? []).map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const), fixed: false })));
-  }
   const as = (urls: string[] | undefined, kind: "item" | "tag") => (urls ?? []).map((url) => ({ url, kind, fixed: true }));
+  if (category === "fire_extinguisher") {
+    return (entry.extinguisherUnits ?? []).flatMap((u) =>
+      u.tagPhotoDataUrls?.length
+        ? [...as(u.photoDataUrls, "item"), ...as(u.tagPhotoDataUrls, "tag")]
+        : (u.photoDataUrls ?? []).map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const), fixed: false }))
+    );
+  }
   return [...as(entry.photoDataUrls, "item"), ...as(entry.pantsPhotoDataUrls, "item"), ...as(entry.tagPhotoDataUrls, "tag"), ...as(entry.pantsTagPhotoDataUrls, "tag")];
 }
 
@@ -63,7 +68,7 @@ async function withStickerPhotos(category: EquipmentCategory, entry: EquipmentEn
   const units = entry.extinguisherUnits ?? [];
   const unitWise = category === "fire_extinguisher";
   if (unitWise && units.length === 0) return {};
-  const all = unitWise ? units[0].photoDataUrls ?? [] : ENTRY_PHOTO_KEYS.flatMap((k) => entry[k] ?? []);
+  const all = unitWise ? [...(units[0].photoDataUrls ?? []), ...(units[0].tagPhotoDataUrls ?? [])] : ENTRY_PHOTO_KEYS.flatMap((k) => entry[k] ?? []);
   const seen = new Set(await Promise.all(all.map((u) => sha256Hex(dataUrlToBytes(u)))));
   // The new photos among `from` added to a list.
   const add = async (list: string[], from: ScannedPhoto[]) => {
@@ -80,8 +85,9 @@ async function withStickerPhotos(category: EquipmentCategory, entry: EquipmentEn
   const items = photos.filter((x) => x.kind !== "tag");
   const tags = photos.filter((x) => x.kind === "tag");
   if (unitWise) {
-    const next = await add(units[0].photoDataUrls ?? [], [...items, ...tags]);
-    return { extinguisherUnits: units.map((u, i) => (i === 0 ? { ...u, photoDataUrls: next } : u)) };
+    const u0 = units[0];
+    const next = { ...u0, photoDataUrls: await add(u0.photoDataUrls ?? [], items), tagPhotoDataUrls: await add(u0.tagPhotoDataUrls ?? [], tags) };
+    return { extinguisherUnits: units.map((u, i) => (i === 0 ? next : u)) };
   }
   return { photoDataUrls: await add(entry.photoDataUrls ?? [], items), tagPhotoDataUrls: await add(entry.tagPhotoDataUrls ?? [], tags) };
 }
@@ -137,7 +143,8 @@ export function GearSticker({
     };
   }, [code]);
 
-  const hasDetails = (entry.certifications ?? []).some((c) => c.standardId) || (entry.extinguisherUnits ?? []).length > 0;
+  // (A non-homologated racing seat has no certification to show: what it is is its details.)
+  const hasDetails = (entry.certifications ?? []).some((c) => c.standardId) || (entry.extinguisherUnits ?? []).length > 0 || entry.mode === "non_homologated";
   // An annual sticker's application needs the item's details and a photo of the whole item and one of
   // its tag: until then, what's missing instead of the button.
   const missing = [

@@ -1,6 +1,6 @@
 import { DisciplineGroup, EquipmentCategory, Ruleset } from "@/data/types";
 import { PER_OCCUPANT_CATEGORIES } from "@/data/categoryMeta";
-import { EquipmentEntry, isEntryEmpty } from "@/lib/matcher";
+import { EquipmentEntry, ExtinguisherUnit, isEntryEmpty, isUnitEmpty } from "@/lib/matcher";
 
 type Entries = Partial<Record<EquipmentCategory, EquipmentEntry>>;
 type ItemIds = Partial<Record<EquipmentCategory, string>>;
@@ -20,6 +20,9 @@ export interface GarageProfile {
   itemIds?: ItemIds;
   /** Rally only: the codriver's pieces of gear, same as itemIds. */
   codriverItemIds?: ItemIds;
+  /** Its fire extinguishers: a set can carry several, each a piece of gear of its own in My Gear
+   * (one extinguisher per item), in order. Resolved, they're its fire_extinguisher entry's units. */
+  extinguisherItemIds?: string[];
   /** Rally only: whether this gear set includes a codriver's own gear (see codriverEntries). */
   hasCodriver?: boolean;
   /** Rally only: the codriver's own gear — same shape as entries, populated when hasCodriver is true. */
@@ -174,11 +177,34 @@ export function resolveProfile(p: GarageProfile, items: GearItem[] | Map<string,
     }
     return out;
   };
+  const entries = fill(p.entries, p.itemIds);
+  const units = (p.extinguisherItemIds ?? []).flatMap((id): ExtinguisherUnit[] => {
+    const item = byId.get(id);
+    const unit = item?.entry.extinguisherUnits?.[0];
+    return unit ? [{ ...unit, itemId: id, stickerCode: item.entry.stickerCode }] : [];
+  });
+  if (units.length) entries.fire_extinguisher = { category: "fire_extinguisher", extinguisherUnits: units };
   return {
     ...p,
-    entries: fill(p.entries, p.itemIds),
+    entries,
     codriverEntries: p.codriverEntries || p.codriverItemIds ? fill(p.codriverEntries, p.codriverItemIds) : undefined,
   };
+}
+
+/** A fire extinguisher as a piece of gear of its own: one unit (its item link and sticker on the item). */
+function extinguisherEntry(u: ExtinguisherUnit): EquipmentEntry {
+  const unit = { ...u };
+  delete unit.itemId;
+  delete unit.stickerCode;
+  return { category: "fire_extinguisher", extinguisherUnits: [unit], ...(u.stickerCode ? { stickerCode: u.stickerCode } : {}) };
+}
+
+/** A resolved set without its links to this browser's items (an export, an import): its gear stands alone. */
+export function withoutItemLinks(p: GarageProfile): GarageProfile {
+  const out: GarageProfile = { ...p, itemIds: undefined, codriverItemIds: undefined, extinguisherItemIds: undefined };
+  const fe = p.entries.fire_extinguisher;
+  if (fe?.extinguisherUnits) out.entries = { ...p.entries, fire_extinguisher: { ...fe, extinguisherUnits: fe.extinguisherUnits.map((u) => ({ ...u, itemId: undefined })) } };
+  return out;
 }
 
 /**
@@ -210,11 +236,14 @@ export function absorb(resolved: GarageProfile[], items: GearItem[], opts: { ded
     after.set(item.id, item);
     return item.id;
   };
+  // A set's fire extinguishers: each one to its item (the one it came from, else a new one).
+  const takeExtinguishers = (e: EquipmentEntry | undefined): string[] =>
+    (e?.extinguisherUnits ?? []).map((u) => take("fire_extinguisher", extinguisherEntry(u), u.itemId)).filter((id): id is string => !!id);
   const split = (entries: Entries | undefined, ids: ItemIds | undefined) => {
     const rest: Entries = {};
     const outIds: ItemIds = {};
     for (const [c, e] of Object.entries(entries ?? {}) as [EquipmentCategory, EquipmentEntry | undefined][]) {
-      if (!e) continue;
+      if (!e || c === "fire_extinguisher") continue;
       if (!isGearItemCategory(c)) {
         rest[c] = e;
         continue;
@@ -226,7 +255,7 @@ export function absorb(resolved: GarageProfile[], items: GearItem[], opts: { ded
   };
   const profiles = resolved.map((p) => {
     const driver = split(p.entries, p.itemIds);
-    const out: GarageProfile = { ...p, entries: driver.rest, itemIds: driver.ids };
+    const out: GarageProfile = { ...p, entries: driver.rest, itemIds: driver.ids, extinguisherItemIds: takeExtinguishers(p.entries.fire_extinguisher) };
     if (p.codriverEntries) {
       const codriver = split(p.codriverEntries, p.codriverItemIds);
       out.codriverEntries = codriver.rest;
@@ -242,22 +271,80 @@ export function absorb(resolved: GarageProfile[], items: GearItem[], opts: { ded
 /** Drops the items with nothing entered (a piece of gear started and left empty, or emptied in a
  * set's editor), and every set's link to them. */
 export function pruneEmptyItems(gear: MyGear): MyGear {
-  const empty = new Set(gear.items.filter((i) => isEntryEmpty(i.category, i.entry)).map((i) => i.id));
+  // (A fire extinguisher with nothing entered, in no set, is empty too: one added to a set and taken out blank.)
+  const inASet = new Set(gear.profiles.flatMap((p) => p.extinguisherItemIds ?? []));
+  const blank = (i: GearItem) => i.category === "fire_extinguisher" && !inASet.has(i.id) && (i.entry.extinguisherUnits ?? []).every(isUnitEmpty) && !i.entry.stickerCode;
+  const empty = new Set(gear.items.filter((i) => isEntryEmpty(i.category, i.entry) || blank(i)).map((i) => i.id));
   if (empty.size === 0) return gear;
   const keep = (ids: ItemIds | undefined) =>
     ids && (Object.fromEntries(Object.entries(ids).filter(([, id]) => !empty.has(id as string))) as ItemIds);
   return {
     items: gear.items.filter((i) => !empty.has(i.id)),
-    profiles: gear.profiles.map((p) => ({ ...p, itemIds: keep(p.itemIds), codriverItemIds: keep(p.codriverItemIds) })),
+    profiles: gear.profiles.map((p) => ({
+      ...p,
+      itemIds: keep(p.itemIds),
+      codriverItemIds: keep(p.codriverItemIds),
+      extinguisherItemIds: p.extinguisherItemIds?.filter((id) => !empty.has(id)),
+    })),
   };
+}
+
+/** Every piece of gear a stored set uses. */
+export function profileItemIds(p: GarageProfile): string[] {
+  return [...Object.values(p.itemIds ?? {}), ...Object.values(p.codriverItemIds ?? {}), ...(p.extinguisherItemIds ?? [])].filter((id): id is string => !!id);
+}
+
+/**
+ * One extinguisher per piece of gear (before, an item could hold several): an item with several
+ * becomes one item each (the first keeps its id, its name and sticker), empty ones dropped, and the
+ * sets that used it list them all. Returns null when there's nothing to change.
+ */
+export function splitExtinguishers(gear: MyGear): MyGear | null {
+  const multi = gear.items.filter((i) => i.category === "fire_extinguisher" && (i.entry.extinguisherUnits ?? []).length > 1);
+  const legacyLinks = gear.profiles.some((p) => p.itemIds?.fire_extinguisher);
+  if (!multi.length && !legacyLinks) return null;
+  const now = new Date().toISOString();
+  const becomes = new Map<string, string[]>();
+  const items: GearItem[] = [];
+  for (const item of gear.items) {
+    if (!multi.includes(item)) {
+      items.push(item);
+      becomes.set(item.id, [item.id]);
+      continue;
+    }
+    const units = (item.entry.extinguisherUnits ?? []).filter((u) => !isUnitEmpty(u));
+    const ids: string[] = [];
+    units.forEach((u, i) => {
+      const entry: EquipmentEntry = { category: "fire_extinguisher", extinguisherUnits: [u], ...(i === 0 && item.entry.stickerCode ? { stickerCode: item.entry.stickerCode } : {}) };
+      const next: GearItem = i === 0 ? { ...item, entry, updatedAt: now } : { ...newGearItem("fire_extinguisher", entry), name: item.name ? `${item.name} #${i + 1}` : undefined };
+      items.push(next);
+      ids.push(next.id);
+    });
+    becomes.set(item.id, ids);
+  }
+  const profiles = gear.profiles.map((p) => {
+    const old = p.itemIds?.fire_extinguisher;
+    const list = [...(p.extinguisherItemIds ?? []).flatMap((id) => becomes.get(id) ?? [id]), ...(old ? becomes.get(old) ?? [old] : [])];
+    if (!old && list.length === (p.extinguisherItemIds ?? []).length) return p;
+    const itemIds = { ...(p.itemIds ?? {}) };
+    delete itemIds.fire_extinguisher;
+    return { ...p, itemIds, extinguisherItemIds: [...new Set(list)] };
+  });
+  return { profiles, items };
 }
 
 /** Takes an item out of every set that uses it (the item itself stays in My Gear). */
 export function unlinkItem(profiles: GarageProfile[], itemId: string): GarageProfile[] {
   const drop = (ids: ItemIds | undefined) => ids && (Object.fromEntries(Object.entries(ids).filter(([, id]) => id !== itemId)) as ItemIds);
   return profiles.map((p) =>
-    Object.values(p.itemIds ?? {}).includes(itemId) || Object.values(p.codriverItemIds ?? {}).includes(itemId)
-      ? { ...p, itemIds: drop(p.itemIds), codriverItemIds: drop(p.codriverItemIds), updatedAt: new Date().toISOString() }
+    Object.values(p.itemIds ?? {}).includes(itemId) || Object.values(p.codriverItemIds ?? {}).includes(itemId) || p.extinguisherItemIds?.includes(itemId)
+      ? {
+          ...p,
+          itemIds: drop(p.itemIds),
+          codriverItemIds: drop(p.codriverItemIds),
+          extinguisherItemIds: p.extinguisherItemIds?.filter((id) => id !== itemId),
+          updatedAt: new Date().toISOString(),
+        }
       : p
   );
 }
@@ -284,7 +371,11 @@ export async function loadMyGear(): Promise<MyGear> {
     return { profiles: [], items: [] };
   }
   const legacy = profiles ? null : readLegacyLocalStorage();
-  if (items && profiles) return pruneEmptyItems({ profiles, items });
+  if (items && profiles) {
+    const split = splitExtinguishers({ profiles, items });
+    if (split) await saveMyGear(split);
+    return pruneEmptyItems(split ?? { profiles, items });
+  }
 
   const moved = absorb(profiles ?? legacy ?? [], items ?? [], { dedupe: true });
   if ((await saveMyGear(moved)) && legacy?.length) window.localStorage.removeItem(LEGACY_LOCALSTORAGE_KEY);

@@ -50,6 +50,8 @@ for (const id of CATEGORY_ORDER) {
     perOccupant: PER_OCCUPANT_CATEGORIES.includes(id),
     // Hybrid categories can be met without a certification: what that choice is called on a sheet.
     noCertLabel: meta.hybrid ? meta.materialOnlyLabel ?? "Fire-resistant material (no certification)" : undefined,
+    // A seat's third choice: a racing seat without a homologation.
+    nonHomologatedLabel: meta.nonHomologatedLabel,
     icon: iconFile,
     standards: standardsFor(id).map((s) => ({ id: s.id, label: s.label })),
   });
@@ -62,6 +64,7 @@ const rule = (r) => {
   if (r.citation?.section) out.section = r.citation.section;
   if (r.condition) out.condition = r.condition;
   if (r.materialOnlyAccepted) out.materialOnly = true;
+  if (r.nonHomologatedAccepted ?? r.materialOnlyAccepted) out.nonHomologated = true;
   if (r.materialNote) out.materialNote = r.materialNote;
   if (r.acceptedStandards?.length) {
     out.accepted = r.acceptedStandards.map((a) => {

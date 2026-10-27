@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EquipmentCategory, Occupant } from "@/data/types";
-import { CATEGORY_META } from "@/data/categoryMeta";
+import { CATEGORY_META, isPerOccupantCategory } from "@/data/categoryMeta";
 import { CategoryCard, MyGearSlot, summarizeEntryCerts } from "@/components/EquipmentForm";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { ZoomableThumb } from "@/components/ZoomableThumb";
@@ -48,7 +48,7 @@ async function exportItem(item: GearItem, includeHighRes: boolean) {
 /** The sets using an item, and in which seat. */
 function usedIn(item: GearItem, profiles: GarageProfile[]): { profile: GarageProfile; occupant: Occupant }[] {
   return profiles.flatMap((p) => [
-    ...(p.itemIds?.[item.category] === item.id ? [{ profile: p, occupant: "driver" as const }] : []),
+    ...(p.itemIds?.[item.category] === item.id || p.extinguisherItemIds?.includes(item.id) ? [{ profile: p, occupant: "driver" as const }] : []),
     ...(p.codriverItemIds?.[item.category] === item.id ? [{ profile: p, occupant: "codriver" as const }] : []),
   ]);
 }
@@ -262,6 +262,7 @@ export function GearItems({
                             defaultOpen
                             showPhotoUpload
                             stickerMode="garage"
+                            singleUnit
                             onChange={(_, entry) => onChange({ ...item, entry, updatedAt: new Date().toISOString() })}
                           />
                           <div className="flex flex-wrap items-center gap-2">
@@ -277,15 +278,28 @@ export function GearItems({
                                 <option value="">Use it in a gear set…</option>
                                 {profiles.flatMap((p) =>
                                   (["driver", "codriver"] as const)
-                                    .filter((o) => o === "driver" || p.hasCodriver)
+                                    // (The car's gear -- an extinguisher -- has no seat.)
+                                    .filter((o) => o === "driver" || (p.hasCodriver && isPerOccupantCategory(item.category)))
                                     .map((o) => {
+                                      const seats = p.hasCodriver && isPerOccupantCategory(item.category);
+                                      // A set carries several extinguishers: this one joins them.
+                                      if (item.category === "fire_extinguisher") {
+                                        const already = (p.extinguisherItemIds ?? []).includes(item.id);
+                                        const others = (p.extinguisherItemIds ?? []).length;
+                                        return (
+                                          <option key={`${p.id}|${o}`} value={`${p.id}|${o}`} disabled={already}>
+                                            {p.name}
+                                            {already ? " (already)" : others ? ` (adds to its ${others} extinguisher${others === 1 ? "" : "s"})` : ""}
+                                          </option>
+                                        );
+                                      }
                                       const ids = o === "driver" ? p.itemIds : p.codriverItemIds;
                                       const current = ids?.[item.category];
                                       const replaced = current && current !== item.id ? items.find((i) => i.id === current) : undefined;
                                       return (
                                         <option key={`${p.id}|${o}`} value={`${p.id}|${o}`} disabled={current === item.id}>
                                           {p.name}
-                                          {p.hasCodriver ? ` — ${o}` : ""}
+                                          {seats ? ` — ${o}` : ""}
                                           {current === item.id ? " (already)" : replaced ? ` (replaces current ${categoryNoun(item.category)})` : ""}
                                         </option>
                                       );
@@ -377,6 +391,35 @@ export function myGearSlot({
   onSet: (itemId: string | undefined) => void;
 }): MyGearSlot | undefined {
   if (!GEAR_ITEM_CATEGORIES.includes(category)) return undefined;
+  if (category === "fire_extinguisher") {
+    // Several per set: the ones in My Gear not in it yet, to add (taken out by removing them below).
+    const inSet = profile.extinguisherItemIds ?? [];
+    const addable = items.filter((i) => i.category === category && !inSet.includes(i.id) && !isEntryEmpty(i.category, i.entry));
+    if (!addable.length) return undefined;
+    return {
+      badge: <span className="shrink-0 rounded-full border border-emerald-800 px-2 py-0.5 text-xs text-emerald-300">{addable.length} more in My Gear</span>,
+      picker: (
+        <div className="mt-2 rounded-lg border border-emerald-900 p-2">
+          <p className="mb-1.5 text-xs text-neutral-300">Add one from My Gear:</p>
+          <div className="flex flex-wrap gap-2">
+            {addable.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onSet(item.id)}
+                className="flex items-center gap-2 rounded-lg border border-emerald-800 bg-emerald-950/40 px-2 py-1 text-left text-xs text-emerald-100 hover:bg-emerald-900"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- user-provided photo, not a static bundled asset */}
+                {firstPhoto(item) && <img src={firstPhoto(item)} alt="" className="h-8 w-8 shrink-0 rounded object-cover" />}
+                {gearItemLabel(item)}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1.5 text-xs text-neutral-500">Or add a new one below &mdash; it joins My Gear too. Removing one takes it out of this set; it stays in My Gear.</p>
+        </div>
+      ),
+    };
+  }
   const linkedId = ((occupant === "driver" ? profile.itemIds : profile.codriverItemIds) ?? {})[category];
   const linked = linkedId ? items.find((i) => i.id === linkedId) : undefined;
   const others = items.filter((i) => i.category === category && i.id !== linkedId && !isEntryEmpty(i.category, i.entry));

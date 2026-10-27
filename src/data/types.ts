@@ -165,6 +165,14 @@ export interface CategoryRule {
    * net, or else a racing net that must be FIA 8863-2013 specifically).
    */
   certifiedListExclusive?: boolean;
+  /**
+   * Seat only: whether a purpose-built racing seat without an SFI/FIA homologation (or with an
+   * expired one) is accepted. Unset: as materialOnlyAccepted (a body that takes a stock seat takes
+   * an uncertified racing seat). Set it true where OEM seats are banned but a racing seat needn't
+   * be certified (e.g. NEGT's "one-piece seat with a rigid shell, designed for auto racing"), false
+   * where a stock seat is fine but an aftermarket one must be certified.
+   */
+  nonHomologatedAccepted?: boolean;
   /** Describes the material/condition requirement, shown regardless of whether materialOnlyAccepted or a standard is chosen. */
   materialNote?: string;
   /** Helmet only: whether a full-face (integrated chin bar) helmet specifically is required, separate from the base helmet requirement above. "required" blocks an open-face helmet outright; "conditional" only applies in some cars (see fullFaceCondition) and is shown as a caveat rather than a hard block. */

@@ -140,6 +140,7 @@ function summarizeEntryCerts(category: EquipmentCategory, entry: EquipmentEntry,
     const label = meta.materialOnlyLabel ?? "Material only";
     return [{ label, color: result ? CERT_BADGE_COLOR[result.status] : COLOR.faint }];
   }
+  if (entry.mode === "non_homologated") return [{ label: meta.nonHomologatedLabel ?? "Not homologated", color: result ? CERT_BADGE_COLOR[result.status] : COLOR.faint }];
 
   const certs = entry.certifications ?? [];
   // Two-piece firesuit doesn't expose a flat certBreakdown for the jacket's own certs — fall back

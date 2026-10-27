@@ -18,6 +18,8 @@ import {
   UserPreferences,
   absorb,
   addImportedItems,
+  profileItemIds,
+  withoutItemLinks,
   countFilledCategories,
   exportGarageToJson,
   freshGarageId,
@@ -226,12 +228,17 @@ export function GarageManager({
   const setSelectedCodriverEntry = (category: EquipmentCategory, entry: EquipmentEntry) =>
     updateSelectedGear((current) => ({ codriverEntries: { ...(current.codriverEntries ?? {}), [category]: entry } }));
 
-  /** Puts a piece of gear from My Gear in a set's seat (or, itemId undefined, takes it out). */
+  /** Puts a piece of gear from My Gear in a set's seat (or, itemId undefined, takes it out). A fire
+   * extinguisher joins the set's others instead. */
   const linkItem = (profileId: string, occupant: Occupant, category: EquipmentCategory, itemId: string | undefined) => {
     const key = occupant === "driver" ? "itemIds" : "codriverItemIds";
     setProfiles((prev) =>
       prev.map((p) => {
         if (p.id !== profileId) return p;
+        if (category === "fire_extinguisher") {
+          const list = p.extinguisherItemIds ?? [];
+          return itemId && !list.includes(itemId) ? { ...p, extinguisherItemIds: [...list, itemId], updatedAt: new Date().toISOString() } : p;
+        }
         const ids = { ...(p[key] ?? {}) };
         if (itemId) ids[category] = itemId;
         else delete ids[category];
@@ -352,7 +359,7 @@ export function GarageManager({
     setGear((g) => {
       const profiles = g.profiles.filter((p) => p.id !== id);
       if (!withGear) return { ...g, profiles };
-      const ids = (p: GarageProfile | undefined) => [...Object.values(p?.itemIds ?? {}), ...Object.values(p?.codriverItemIds ?? {})];
+      const ids = (p: GarageProfile | undefined) => (p ? profileItemIds(p) : []);
       const stillUsed = new Set(profiles.flatMap(ids));
       const gone = new Set(ids(g.profiles.find((p) => p.id === id)).filter((i) => i && !stillUsed.has(i)));
       return { ...g, profiles, items: g.items.filter((i) => !gone.has(i.id)) };
@@ -363,7 +370,7 @@ export function GarageManager({
 
   /** Exports the resolved set (self-contained: its gear in it), without its links to this browser's items. */
   const handleExportProfile = async (resolvedProfile: GarageProfile, includeHighRes: boolean) => {
-    const profile = { ...resolvedProfile, itemIds: undefined, codriverItemIds: undefined };
+    const profile = withoutItemLinks(resolvedProfile);
     const exportProfile = includeHighRes ? profile : await shrinkProfilePhotos(profile);
     downloadJson(exportGarageToJson([exportProfile]), garageExportFilename(profile.name));
   };
@@ -392,7 +399,7 @@ export function GarageManager({
       // one that happens to share an id (e.g. re-importing a file you already have saved).
       // Its gear joins My Gear, reusing an identical item already there (re-importing your own
       // export doesn't double every helmet).
-      const asNew = imported.map((p) => ({ ...p, id: freshGarageId(), itemIds: undefined, codriverItemIds: undefined }));
+      const asNew = imported.map((p) => ({ ...withoutItemLinks(p), id: freshGarageId() }));
       setGear((g) => {
         const out = absorb(asNew, g.items, { dedupe: true });
         return { items: out.items, profiles: [...g.profiles, ...out.profiles] };

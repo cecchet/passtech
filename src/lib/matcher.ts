@@ -63,8 +63,14 @@ export interface ExtinguisherUnit {
   certificationDate?: string;
   /** Explicit "service due by" date printed on the tag, if any — takes priority over a manufacture/certification-date-based freshness check when present. */
   certificationDueDate?: string;
-  /** This unit's own photos (overview + label close-ups) — kept per-unit rather than on the shared EquipmentEntry.photoDataUrls, since a gear set can carry several extinguishers and a scrutineer needs to see which photo documents which physical unit. */
+  /** This unit's own photos of the whole extinguisher — kept per-unit rather than on the shared EquipmentEntry.photoDataUrls, since a gear set can carry several extinguishers and a scrutineer needs to see which photo documents which physical unit. */
   photoDataUrls?: string[];
+  /** Close-ups of its label (ratings, dates): its tag pictures. */
+  tagPhotoDataUrls?: string[];
+  /** In a gear set (resolved): the piece of gear in My gear this extinguisher is, and its tech
+   * sticker -- each extinguisher is an item of its own there (see GarageProfile.extinguisherItemIds). */
+  itemId?: string;
+  stickerCode?: string;
   /** Mounting: is this extinguisher secured with a metal bracket (as opposed to a plastic clip, velcro, or zip ties)? Undefined means not yet answered — distinct from `false`. */
   hasMetalBracket?: boolean;
   /** Mounting: how many metal straps/fastenings secure this extinguisher in its bracket. */
@@ -100,7 +106,7 @@ export interface TriangleUnit {
 export interface EquipmentEntry {
   category: EquipmentCategory;
   /** For hybrid categories (firesuit/gloves/shoes/undergarment/arm_restraint/belts_harness/fuel_cell): whether the user is entering plain material/stock equipment or certification(s). */
-  mode?: "material_only" | "certified";
+  mode?: "material_only" | "non_homologated" | "certified";
   /** Firesuit and undergarment (TWO_PIECE_CATEGORIES): one piece, or two -- a jacket (or shirt) and
    * pants. FIA suits are always one-piece; SFI suits can be a separate jacket + pants (not required to match). */
   pieceType?: "one_piece" | "two_piece";
@@ -1121,6 +1127,14 @@ export function helmetStyle(entry: EquipmentEntry): { type: "open_face" | "full_
   return { type: entry.helmetType ?? "open_face", visor: entry.hasVisor ?? false };
 }
 
+/** An extinguisher with nothing entered (no rating, date, mounting answer or photo). */
+export function isUnitEmpty(u: ExtinguisherUnit): boolean {
+  const rest: Partial<ExtinguisherUnit> = { ...u };
+  delete rest.key;
+  delete rest.itemId;
+  return Object.values(rest).every((v) => v === undefined || v === "" || (Array.isArray(v) && v.length === 0));
+}
+
 export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry | undefined): boolean {
   if (!entry) return true;
   if (category === "fire_extinguisher") return (entry.extinguisherUnits ?? []).length === 0;
@@ -1132,7 +1146,7 @@ export function isEntryEmpty(category: EquipmentCategory, entry: EquipmentEntry 
   if (meta.presenceOnly) return entry.skipped !== false;
   if (meta.hybrid) {
     if (!entry.mode) return true;
-    if (entry.mode === "material_only") return false;
+    if (entry.mode === "material_only" || entry.mode === "non_homologated") return false;
     return (entry.certifications ?? []).length === 0 && (entry.pantsCertifications ?? []).length === 0;
   }
   return (entry.certifications ?? []).length === 0;
@@ -1240,6 +1254,19 @@ export function evaluateCategory(
   if (hybrid) {
     if (!entry.mode) {
       return { ...base, status: "needs_info", reason: "Choose whether this item is plain material or carries a certification." };
+    }
+    // A racing seat without a homologation: accepted where the body says so, else wherever a stock seat is.
+    if (entry.mode === "non_homologated") {
+      if (rule.nonHomologatedAccepted ?? rule.materialOnlyAccepted) {
+        const status: ItemStatus = rule.requirement === "recommended" ? "recommended_only" : "ok";
+        const result = { ...base, status, reason: `A purpose-built racing seat without an SFI/FIA certification is accepted.${rule.materialNote ? ` ${rule.materialNote}` : ""}` };
+        return applySeatMountingCheck(rule, entry, result);
+      }
+      return {
+        ...base,
+        status: rule.requirement === "recommended" ? "recommended_only" : "rejected",
+        reason: "This body requires a certified racing seat (SFI or FIA) — a non-homologated one doesn't qualify.",
+      };
     }
     if (entry.mode === "material_only") {
       if (rule.materialOnlyAccepted) {

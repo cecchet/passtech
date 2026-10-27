@@ -251,6 +251,7 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
   }
   if (meta.presenceOnly) return "Present";
   if (meta.hybrid && entry.mode === "material_only") return "Plain material / stock (no certification)";
+  if (entry.mode === "non_homologated") return meta.nonHomologatedLabel ?? "Not homologated (no certification)";
   let text: string;
   if (isTwoPiece(category, entry)) {
     const [top, bottom] = pieceNames(category);
@@ -267,12 +268,12 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
 }
 
 /** Every photo stored on a gear entry with its role: the item's (and pants') pictures and their
- * tags' as they're filed; in each unit's, the first shows the whole item and the others its label
- * (the order PassTech asks for them in). The scrutineer can still change it on the sheet. */
+ * tags' as they're filed, an extinguisher's and its label's too; in the other units' (window
+ * breakers, triangles), the first shows the whole item and the others its label (the order PassTech
+ * asks for them in). The scrutineer can still change it on the sheet. */
 function entryPhotoKinds(entry: EquipmentEntry): { url: string; kind: TechSheetPhotoKind }[] {
   const as = (urls: string[] | undefined, kind: TechSheetPhotoKind) => (urls ?? []).map((url) => ({ url, kind }));
   const units = [
-    ...(entry.extinguisherUnits ?? []).map((u) => u.photoDataUrls ?? []),
     ...(entry.windowBreakerUnits ?? []).map((u) => u.photoDataUrls ?? []),
     ...(entry.triangleUnits ?? []).map((u) => u.photoDataUrls ?? []),
   ];
@@ -281,6 +282,7 @@ function entryPhotoKinds(entry: EquipmentEntry): { url: string; kind: TechSheetP
     ...as(entry.tagPhotoDataUrls, "tag"),
     ...as(entry.pantsPhotoDataUrls, "item"),
     ...as(entry.pantsTagPhotoDataUrls, "tag"),
+    ...(entry.extinguisherUnits ?? []).flatMap((u) => [...as(u.photoDataUrls, "item"), ...as(u.tagPhotoDataUrls, "tag")]),
     ...units.flatMap((urls) => urls.map((url, i) => ({ url, kind: i === 0 ? ("item" as const) : ("tag" as const) }))),
   ];
 }
@@ -294,7 +296,8 @@ export function stripEntryPhotos(entry: EquipmentEntry): EquipmentEntry {
   };
   const out = strip(entry);
   ENTRY_PHOTO_KEYS.forEach((k) => delete out[k]);
-  if (out.extinguisherUnits) out.extinguisherUnits = out.extinguisherUnits.map(strip);
+  // (An extinguisher's label photos and its link to My gear too.)
+  if (out.extinguisherUnits) out.extinguisherUnits = out.extinguisherUnits.map((u) => ({ ...strip(u), tagPhotoDataUrls: undefined, itemId: undefined }));
   if (out.windowBreakerUnits) out.windowBreakerUnits = out.windowBreakerUnits.map(strip);
   if (out.triangleUnits) out.triangleUnits = out.triangleUnits.map(strip);
   return out;
@@ -311,6 +314,7 @@ export function hasSheetGear(value: TechSheetDraftLine | undefined): boolean {
 export function optionsFromEntry(category: EquipmentCategory, entry: EquipmentEntry | undefined): string[] {
   if (!entry || isEntryEmpty(category, entry)) return [];
   if (CATEGORY_META[category].hybrid && entry.mode === "material_only") return [noCertLabel(category)!];
+  if (entry.mode === "non_homologated" && CATEGORY_META[category].nonHomologatedLabel) return [CATEGORY_META[category].nonHomologatedLabel!];
   const cert = (entry.certifications ?? []).find((c) => c.standardId);
   if (!cert?.standardId) return [];
   return [cert.standardId === NOT_LISTED ? cert.customStandardLabel || "Unlisted certification" : standardLabel(cert.standardId)];
@@ -628,6 +632,9 @@ export function lineOptions(line: TechSheetLine, ruleset: Ruleset | undefined): 
   const label = noCertLabel(item.gear);
   const rule = item.gear && ruleset ? ruleset.categories[item.gear] : undefined;
   if (label && (item.noCert || rule?.materialOnlyAccepted) && !options.includes(label)) options.push(label);
+  // A seat: the non-homologated racing seat, when the sheet or the ruleset accepts it.
+  const nonHom = item.gear ? CATEGORY_META[item.gear].nonHomologatedLabel : undefined;
+  if (nonHom && (item.nonHomologated || (rule && (rule.nonHomologatedAccepted ?? rule.materialOnlyAccepted))) && !options.includes(nonHom)) options.push(nonHom);
   return options;
 }
 

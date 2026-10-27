@@ -62,6 +62,8 @@ export interface TechSheetItem {
   standards?: string[];
   /** Gear lines: also accepted without certification (stock/OEM belts, plain fire-resistant socks). */
   noCert?: boolean;
+  /** A seat line: a racing seat without an SFI/FIA homologation is accepted too (its own tick-list choice). */
+  nonHomologated?: boolean;
 }
 
 /** The car and crew photos sent with a sheet (each photo by its SHA-256, as items' photos are). */
