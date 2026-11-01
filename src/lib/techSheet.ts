@@ -234,7 +234,8 @@ function summarizeGear(category: EquipmentCategory, entry: EquipmentEntry): stri
       if (entry.cageTubeOuterDiameterIn && entry.cageTubeWallThicknessIn) parts.push(`tube ${entry.cageTubeOuterDiameterIn}" x ${entry.cageTubeWallThicknessIn}"`);
       if (entry.cageLogbookBody && entry.cageLogbookBody !== "none") {
         const body = entry.cageLogbookBody === NOT_LISTED ? entry.cageLogbookBodyCustom || "other" : logbookBodyLabel(entry.cageLogbookBody);
-        parts.push(`logbook: ${body}${entry.cageLogbookYear ? ` (${entry.cageLogbookYear})` : ""}`);
+        const number = [entry.cageLogbookNumber, entry.cageDigitalLogbook].filter(Boolean).join(" / ");
+        parts.push(`logbook: ${body}${number ? ` ${number}` : ""}${entry.cageLogbookYear ? ` (${entry.cageLogbookYear})` : ""}`);
       } else if (entry.cageLogbookYear) parts.push(`built ${entry.cageLogbookYear}`);
       if (entry.cagePaddingPresent !== undefined) {
         const std = entry.cagePaddingStandardId
@@ -367,6 +368,10 @@ function prefillItemValues(item: TechSheetItem, gear: { occupant?: Occupant; ent
     } else if (field.prefill === "logbook_body") {
       const cage = gear.find((g) => g.entry.cageLogbookBody)?.entry;
       if (cage?.cageLogbookBody && cage.cageLogbookBody !== "none") values[field.id] = cage.cageLogbookBody === NOT_LISTED ? cage.cageLogbookBodyCustom ?? "" : logbookBodyLabel(cage.cageLogbookBody);
+    } else if (field.prefill === "logbook_number") {
+      const cage = gear.find((g) => g.entry.cageLogbookNumber || g.entry.cageDigitalLogbook)?.entry;
+      const number = cage && (cage.cageLogbookNumber || cage.cageDigitalLogbook);
+      if (number) values[field.id] = number;
     }
   }
   return values;
@@ -440,6 +445,7 @@ export async function createDraft(opts: {
   }
   const cage = profile?.entries.rollover_protection;
   const carNoteHead = profile?.carNote?.split(/[,;\n]/)[0]?.trim();
+  const car = cage?.cageCar;
   for (const field of template.header) {
     let value: string | string[] | undefined;
     switch (field.prefill) {
@@ -453,9 +459,23 @@ export async function createDraft(opts: {
       case "class":
         if (opts.classLabel && (field.type !== "choice" || field.options?.includes(opts.classLabel))) value = opts.classLabel;
         break;
+      case "logbook_number":
+        value = cage?.cageLogbookNumber || cage?.cageDigitalLogbook || undefined;
+        break;
+      // The car, as an imported rollcage file describes it (see lib/rollcageImport.ts); else the gear set's note.
+      // A sheet with no model field gets make and model together.
       case "make":
+        if (!car?.make) value = carNoteHead || undefined;
+        else value = template.header.some((f) => f.prefill === "model") ? car.make : [car.make, car.model].filter(Boolean).join(" ");
+        break;
       case "model":
-        value = carNoteHead || undefined;
+        value = car?.make ? car.model : carNoteHead || undefined;
+        break;
+      case "year":
+        value = car?.year;
+        break;
+      case "vin":
+        value = car?.vin;
         break;
     }
     if (value === undefined && !field.prefill && /make|model/i.test(field.id)) value = carNoteHead || undefined;

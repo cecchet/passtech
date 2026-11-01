@@ -150,6 +150,14 @@ export interface EquipmentEntry {
   cageLogbookBody?: string;
   /** Rollover protection only: free-text issuer name when cageLogbookBody is NOT_LISTED. */
   cageLogbookBodyCustom?: string;
+  /** Rollover protection only: the logbook's number, as its sanctioning body issued it. */
+  cageLogbookNumber?: string;
+  /** Rollover protection only: the cage's digital logbook number (Digital logbooks, e.g. FL-7KQ2-M9XD). */
+  cageDigitalLogbook?: string;
+  /** Rollover protection only: the car the cage is in, as a rollcage file describes it (see lib/rollcageImport.ts) -- fills a tech sheet's make, model, year and VIN. */
+  cageCar?: { make?: string; model?: string; year?: string; vin?: string };
+  /** Rollover protection only: the rollcage file it was last filled from. */
+  cageImport?: { from: string; name?: string; importedAt: string };
   /** Seat only: fixed-mounted, or on sliders/rails? Several bodies forbid seat rails outright. */
   seatMounting?: "fixed" | "rails";
   /** Rollover protection only: the car's weight as raced (lbs), for bodies whose tubing spec is tiered by weight. */

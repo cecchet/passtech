@@ -24,6 +24,7 @@ import {
   newWindowBreakerUnit,
 } from "@/lib/matcher";
 import { resizeImageToDataUrl } from "@/lib/imageResize";
+import { importRollcageFile } from "@/lib/rollcageImport";
 import { fiaListsForStandard } from "@/data/fiaHomologation";
 import { lookupHomologation } from "@/lib/fiaHomologation";
 import { useTagScanner } from "@/lib/useTagScanner";
@@ -999,6 +1000,80 @@ const BODY_STYLE_OPTIONS: { value: NonNullable<EquipmentEntry["bodyStyle"]>; lab
   { value: "open_wheel", label: "Open-wheel (formula / sports racer)" },
 ];
 
+/** Fills the cage from a rollcage file (Rollcage assessment tool or Digital logbooks export). */
+function RollcageFileImport({ entry, onChange }: { entry: EquipmentEntry; onChange: (patch: Partial<EquipmentEntry>) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [found, setFound] = useState<string[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  async function handleFile(file: File) {
+    setBusy(true);
+    setError(null);
+    setFound(null);
+    try {
+      const { patch, found } = await importRollcageFile(await file.text(), entry);
+      onChange(patch);
+      setFound(found);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          disabled={busy}
+          className="rounded border border-sky-700 bg-sky-950 px-2 py-1 text-xs text-sky-200 hover:bg-sky-900 disabled:opacity-50"
+          onClick={() => inputRef.current?.click()}
+        >
+          {busy ? "Reading…" : "Import a rollcage file"}
+        </button>
+        <span className="text-xs text-neutral-400">
+          Exported from the{" "}
+          <a href="https://rollcage.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline">
+            Rollcage assessment tool
+          </a>{" "}
+          or{" "}
+          <a href="https://logbook.frogracing.us" target="_blank" rel="noopener noreferrer" className="underline">
+            Digital logbooks
+          </a>{" "}
+          (Export to a file), with or without a logbook.
+        </span>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="application/json,.json"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            e.target.value = "";
+            if (f) handleFile(f);
+          }}
+        />
+      </div>
+      {entry.cageImport && !found && (
+        <p className="text-xs text-neutral-500">
+          Filled from {entry.cageImport.name ? `"${entry.cageImport.name}", ` : ""}a {entry.cageImport.from} file, on {new Date(entry.cageImport.importedAt).toLocaleDateString()}.
+        </p>
+      )}
+      {found && (
+        <div className="text-xs text-emerald-300">
+          {found.length ? "Filled in from the file. Check each answer below:" : "The file had nothing to fill in yet."}
+          <ul className="ml-4 list-disc text-neutral-300">
+            {found.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {error && <p className="text-xs text-red-400">{error}</p>}
+    </div>
+  );
+}
+
 function RolloverProtectionFields({
   category,
   entry,
@@ -1012,6 +1087,7 @@ function RolloverProtectionFields({
 }) {
   return (
     <div className="flex flex-col gap-2">
+      <RollcageFileImport entry={entry} onChange={onChange} />
       <label className="flex flex-col gap-1">
         <span className="text-xs text-neutral-400">Car body style</span>
         <select
@@ -1178,6 +1254,28 @@ function RolloverProtectionFields({
               </option>
             </select>
           </label>
+        )}
+
+        {!entry.fiaHomologated && entry.cageLogbookBody && entry.cageLogbookBody !== "none" && (
+          <div className="flex flex-wrap items-end gap-3">
+            <label className="flex flex-col gap-1 text-xs text-neutral-400">
+              Logbook number
+              <input
+                type="text"
+                className={`${numberInputClass} w-40`}
+                value={entry.cageLogbookNumber ?? ""}
+                onChange={(e) => onChange({ cageLogbookNumber: e.target.value || undefined })}
+              />
+            </label>
+            {entry.cageDigitalLogbook && (
+              <span className="pb-2 text-xs text-neutral-400">
+                Digital logbook{" "}
+                <a href="https://logbook.frogracing.us" target="_blank" rel="noopener noreferrer" className="font-mono text-neutral-200 underline">
+                  {entry.cageDigitalLogbook}
+                </a>
+              </span>
+            )}
+          </div>
         )}
 
         <div className="flex flex-wrap items-end gap-3">
