@@ -470,6 +470,8 @@ const nhraSportsmanET: Ruleset = {
         rolloverProtectionRequiresFullCage: true,
         rolloverProtectionRequiresPadding: true,
         rolloverProtectionPaddingCertRequired: true,
+        // 1-5/8" O.D.: .118" wall in mild steel, .083" in 4130 chromoly (an NHRA-certified cage).
+        rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.625, wallThicknessIn: 0.118, material: "mild_steel" }, { outerDiameterIn: 1.625, wallThicknessIn: 0.083, material: "chromoly" }] }],
         condition: "This entire band (7.50-9.99 sec) is at or past the 10.99-sec roll-cage and 9.99-sec padding thresholds — full multi-point cage and SFI 45.1 padding are both unconditionally mandatory here, not just conditionally.",
         citation: { ...s5a, section: "Section 5A, FRAME (ROLL CAGE / ROLL-CAGE PADDING)" },
         confidence: "high",
@@ -493,6 +495,8 @@ const nhraSportsmanET: Ruleset = {
         rolloverProtectionRequiresFullCage: true,
         rolloverProtectionRequiresPadding: true,
         rolloverProtectionPaddingCertRequired: true,
+        // 1-5/8" O.D.: .118" wall in mild steel, .083" in 4130 chromoly (an NHRA-certified cage).
+        rolloverProtectionTubingSpec: [{ minSizes: [{ outerDiameterIn: 1.625, wallThicknessIn: 0.118, material: "mild_steel" }, { outerDiameterIn: 1.625, wallThicknessIn: 0.083, material: "chromoly" }] }],
         condition:
           "On top of the SFI 45.1 padding and full-cage requirements carried over from Section 5A, Section 5B additionally requires the cage itself to carry a specific SFI certification by vehicle type: full-bodied cars need SFI 25.1, 25.2, or 25.3; Funny Cars and open-bodied altereds need SFI 10.1 or 10.2; front-engine dragsters need SFI 2.2 or 2.4; rear-engine dragsters need SFI 2.1 or 2.5. This app doesn't yet capture a named cage-certification number (only tube dimensions) — confirm your cage's specific SFI cert against your vehicle type at tech.",
         citation: { ...s5b, section: "Section 5B, FRAME (ROLL CAGE / ROLL-CAGE PADDING)" },

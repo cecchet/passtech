@@ -44,6 +44,11 @@ export type CarBodyStyle = "closed_roof" | "convertible" | "open_no_windshield" 
 export interface RolloverTubingSize {
   outerDiameterIn: number;
   wallThicknessIn: number;
+  /** The material this size is for, when the body sizes materials differently (e.g. NHRA: a thinner
+   * wall in 4130 chromoly than in mild steel); absent = any. PassTech doesn't ask the tube's
+   * material, so it accepts a size whatever its material (the Rollcage assessment tool, which asks
+   * it, holds each tube to its own material's sizes). */
+  material?: "mild_steel" | "chromoly";
 }
 
 /** Rollover protection only: one weight bracket's minimum tube spec. List brackets lightest first. */

@@ -1,4 +1,4 @@
-import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, RequirementLevel, RolloverTubingTier, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
+import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, ExtinguisherOption, RequirementLevel, RolloverTubingSize, RolloverTubingTier, Ruleset, StandardAcceptance, StandardDef } from "@/data/types";
 import { equivalentStandardId, KARTING_STANDARD_IDS, logbookBodyLabel, NOT_LISTED, ROLLOVER_PADDING_STANDARDS, standardFamily, standardLabel, standardsFor } from "@/data/standards";
 import { CATEGORY_META } from "@/data/categoryMeta";
 
@@ -905,6 +905,11 @@ export function bodyStyleLabel(style: CarBodyStyle): string {
  * rollover protection"; body style and the fields below refine what kind, and whether that kind
  * satisfies this specific body's rule.
  */
+/** A tube size as the rules state it: 1.625"×0.083" (4130 chromoly). */
+export function tubeSizeLabel(s: RolloverTubingSize): string {
+  return `${s.outerDiameterIn}"×${s.wallThicknessIn}"` + (s.material ? ` (${s.material === "chromoly" ? "4130 chromoly" : "mild steel"})` : "");
+}
+
 /** Rollover protection only: the lightest tier whose `underWeightLbs` the car's weight is still under, or the last (heaviest, "and up") tier if none apply. Tiers are sorted by weight regardless of input order. */
 function matchTubingTier(tiers: RolloverTubingTier[], weightLbs: number): RolloverTubingTier {
   const sorted = [...tiers].sort((a, b) => (a.underWeightLbs ?? Infinity) - (b.underWeightLbs ?? Infinity));
@@ -1026,7 +1031,7 @@ function evaluateRolloverProtection(rule: CategoryRule, entry: EquipmentEntry, b
     const tier = matchTubingTier(rule.rolloverProtectionTubingSpec, entry.carWeightLbs);
     const clears = tier.minSizes.some((s) => entry.cageTubeOuterDiameterIn! >= s.outerDiameterIn && entry.cageTubeWallThicknessIn! >= s.wallThicknessIn);
     if (!clears) {
-      const sizes = tier.minSizes.map((s) => `${s.outerDiameterIn}"×${s.wallThicknessIn}"`).join(" or ");
+      const sizes = tier.minSizes.map(tubeSizeLabel).join(" or ");
       return {
         ...base,
         status: "rejected",

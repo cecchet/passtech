@@ -334,12 +334,11 @@ const hpdeCaged: Ruleset = {
     hood_pins: notAddressedHoodPins,
     spill_kit: notAddressedSpillKit,
     rollover_protection: {
-      requirement: "required",
-      rolloverProtectionRequiresFullCage: true,
+      requirement: "not_addressed",
       citation: { ...techForm, section: "Item 13" },
       confidence: "medium",
       notes:
-        "This ruleset's own definition is a car that is 'fully caged, track prepped, or [a] racecar' (tech form item 13: 'Track prepped car means: Vehicle in which the cockpit has been altered or modified in any way so that any part of the chassis or any firewall has been exposed'), so a cage/rollover structure is present by definition of qualifying for this tier — a street-prepared car with an intact interior falls under the other SCDA ruleset instead. The tech form doesn't itself give a construction/tubing spec for the cage (unlike the street ruleset's convertible-specific 'broomstick test' clearance check) — confidence is medium since this is inferred from the class definition rather than a standalone cage-construction rule.",
+        "Item 13 defines this tier as a car that is 'fully caged, track prepped, or [a] racecar' -- a full roll cage is accepted, but not required: a track-prepped car ('Vehicle in which the cockpit has been altered or modified in any way so that any part of the chassis or any firewall has been exposed') qualifies with no cage, or just a roll bar. The tech form gives no construction or tubing spec for a cage or roll bar. Convertibles still fall under the convertible policy (tech form item 4, the street ruleset's broomstick test).",
     },
   },
 };

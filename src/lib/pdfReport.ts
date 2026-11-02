@@ -13,6 +13,7 @@ import {
   findAcceptance,
   isPendingConditional,
   isViolation,
+  tubeSizeLabel,
 } from "@/lib/matcher";
 import { CATEGORY_ICON_SPEC } from "@/components/icons/CategoryIcons";
 import { DISCIPLINE_ICON_SRC } from "@/components/icons/DisciplineIcons";
@@ -628,7 +629,7 @@ function writeReferenceCategory(w: PdfReportWriter, category: EquipmentCategory,
     }
     if (rule.rolloverProtectionTubingSpec && rule.rolloverProtectionTubingSpec.length > 0) {
       rule.rolloverProtectionTubingSpec.forEach((tier) => {
-        const sizes = tier.minSizes.map((s) => `${s.outerDiameterIn}"×${s.wallThicknessIn}"`).join(" or ");
+        const sizes = tier.minSizes.map(tubeSizeLabel).join(" or ");
         const label = tier.underWeightLbs ? `Under ${tier.underWeightLbs} lbs` : "At and above the heaviest bracket";
         w.bullet(`${label}: ${sizes}${tier.materialNote ? ` (${tier.materialNote})` : ""}`, { size: 9 });
       });

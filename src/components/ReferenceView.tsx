@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { CATEGORY_META, CATEGORY_ORDER, GROUP_COLORS, GROUP_LABELS, filterCategoriesByGroups } from "@/data/categoryMeta";
 import { logbookBodyLabel, standardLabel, standardsFor, withEquivalents } from "@/data/standards";
 import { CarBodyStyle, CategoryGroup, CategoryRule, EquipmentCategory, RequirementLevel, Ruleset, SourceDocument, StandardAcceptance } from "@/data/types";
-import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories, findAcceptance } from "@/lib/matcher";
+import { bodyStyleLabel, describeExtinguisherOptions, effectiveCategories, findAcceptance, tubeSizeLabel } from "@/lib/matcher";
 import { CATEGORY_ICONS } from "@/components/icons/CategoryIcons";
 import { CategoryMediaLinks } from "@/components/CategoryMediaLinks";
 import { CitationLine } from "@/components/CitationLine";
@@ -183,7 +183,7 @@ function CategoryReferenceCard({ category, rule, sourceDocuments }: { category: 
                 {rule.rolloverProtectionTubingSpec.map((tier, i) => (
                   <li key={i}>
                     • {tier.underWeightLbs ? `Under ${tier.underWeightLbs} lbs` : "At and above the heaviest bracket"}:{" "}
-                    {tier.minSizes.map((s) => `${s.outerDiameterIn}"×${s.wallThicknessIn}"`).join(" or ")}
+                    {tier.minSizes.map(tubeSizeLabel).join(" or ")}
                     {tier.materialNote ? ` (${tier.materialNote})` : ""}
                   </li>
                 ))}
