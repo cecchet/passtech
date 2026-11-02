@@ -423,6 +423,42 @@ export async function prefillLine(profile: GarageProfile | undefined, line: Tech
 
 /** A fresh draft for this template — gear lines pre-filled from the gear set, header from the
  * event and gear set (and the last draft's crew/car details, which rarely change). */
+/** A header field filled from the car's rollover protection: its logbook, and the car as an
+ * imported rollcage file describes it (see lib/rollcageImport.ts) -- else, for make and model, the
+ * gear set's note. A sheet with no model field gets make and model together. */
+export function cageHeaderValue(template: TechSheetTemplate, field: TechSheetField, cage: EquipmentEntry | undefined, carNoteHead?: string): string | undefined {
+  const car = cage?.cageCar;
+  switch (field.prefill) {
+    case "logbook_body":
+      if (!cage?.cageLogbookBody || cage.cageLogbookBody === "none") return undefined;
+      return cage.cageLogbookBody === NOT_LISTED ? cage.cageLogbookBodyCustom : logbookBodyLabel(cage.cageLogbookBody);
+    case "logbook_number":
+      return cage?.cageLogbookNumber || cage?.cageDigitalLogbook || undefined;
+    case "make":
+      if (!car?.make) return carNoteHead || undefined;
+      return template.header.some((f) => f.prefill === "model") ? car.make : [car.make, car.model].filter(Boolean).join(" ");
+    case "model":
+      return car?.make ? car.model : carNoteHead || undefined;
+    case "year":
+      return car?.year;
+    case "vin":
+      return car?.vin;
+  }
+  return undefined;
+}
+
+/** A sheet's header with its empty fields filled from a cage picked on its roll cage line. */
+export function headerWithCage(draft: TechSheetDraft, cage: EquipmentEntry): Record<string, string | string[]> {
+  const header = { ...draft.header };
+  for (const field of draft.template.header) {
+    const cur = header[field.id];
+    if (cur !== undefined && cur !== "") continue;
+    const value = cageHeaderValue(draft.template, field, cage);
+    if (value && (field.type !== "choice" || field.options?.includes(value))) header[field.id] = value;
+  }
+  return header;
+}
+
 export async function createDraft(opts: {
   template: TechSheetTemplate;
   templateVersion?: number;
@@ -445,37 +481,14 @@ export async function createDraft(opts: {
   }
   const cage = profile?.entries.rollover_protection;
   const carNoteHead = profile?.carNote?.split(/[,;\n]/)[0]?.trim();
-  const car = cage?.cageCar;
   for (const field of template.header) {
-    let value: string | string[] | undefined;
+    let value: string | string[] | undefined = cageHeaderValue(template, field, cage, carNoteHead);
     switch (field.prefill) {
       case "event":
         value = opts.event?.name;
         break;
-      case "logbook_body":
-        if (cage?.cageLogbookBody && cage.cageLogbookBody !== "none")
-          value = cage.cageLogbookBody === NOT_LISTED ? cage.cageLogbookBodyCustom : logbookBodyLabel(cage.cageLogbookBody);
-        break;
       case "class":
         if (opts.classLabel && (field.type !== "choice" || field.options?.includes(opts.classLabel))) value = opts.classLabel;
-        break;
-      case "logbook_number":
-        value = cage?.cageLogbookNumber || cage?.cageDigitalLogbook || undefined;
-        break;
-      // The car, as an imported rollcage file describes it (see lib/rollcageImport.ts); else the gear set's note.
-      // A sheet with no model field gets make and model together.
-      case "make":
-        if (!car?.make) value = carNoteHead || undefined;
-        else value = template.header.some((f) => f.prefill === "model") ? car.make : [car.make, car.model].filter(Boolean).join(" ");
-        break;
-      case "model":
-        value = car?.make ? car.model : carNoteHead || undefined;
-        break;
-      case "year":
-        value = car?.year;
-        break;
-      case "vin":
-        value = car?.vin;
         break;
     }
     if (value === undefined && !field.prefill && /make|model/i.test(field.id)) value = carNoteHead || undefined;

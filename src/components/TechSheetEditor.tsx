@@ -37,6 +37,7 @@ import {
   stripEntryPhotos,
   withLineGear,
   withPickedGear,
+  headerWithCage,
 } from "@/lib/techSheet";
 import {
   EventEntryLookup,
@@ -574,7 +575,11 @@ export function TechSheetEditor({
 
   const missing = missingRequiredHeader(draft);
   const update = (patch: Partial<TechSheetDraft>) => onChange(patch);
-  const setLine = (key: string, line: TechSheetDraftLine) => update({ lines: { ...draft.lines, [key]: line } });
+  // A cage picked (or imported) on the roll cage line also fills the sheet's empty car and logbook fields.
+  const setLine = (key: string, line: TechSheetDraftLine) => {
+    const cage = line.gear?.category === "rollover_protection" && line.gear !== draft.lines[key]?.gear ? line.gear : undefined;
+    update({ lines: { ...draft.lines, [key]: line }, ...(cage ? { header: headerWithCage(draft, cage) } : {}) });
+  };
 
   // Each line's PassTech check and status, for the summary and the line itself.
   const lineInfo = useMemo(() => {

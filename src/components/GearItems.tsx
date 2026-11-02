@@ -30,6 +30,8 @@ const firstPhoto = (item: GearItem) => item.entry.photoDataUrls?.[0] ?? item.ent
 /** What tells two items of a category apart: the driver's name for it, else its certifications. */
 export function gearItemLabel(item: GearItem): string {
   if (item.name?.trim()) return item.name.trim();
+  const car = item.entry.cageCar;
+  if (item.category === "rollover_protection" && car) return [car.year, car.make, car.model].filter(Boolean).join(" ") + " rollcage";
   const certs = summarizeEntryCerts(item.category, item.entry, undefined).map((b) => b.label);
   return certs.length ? certs.join(", ") : CATEGORY_META[item.category].label;
 }

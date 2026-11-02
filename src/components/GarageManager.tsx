@@ -27,6 +27,7 @@ import {
   garageExportFilename,
   loadMyGear,
   newGarageProfile,
+  newGearItem,
   parseGarageImport,
   parseGearItemsImport,
   pruneEmptyItems,
@@ -379,18 +380,16 @@ export function GarageManager({
   const handleImportFile = async (file: File) => {
     try {
       const text = await file.text();
-      // A rollcage file (Rollcage assessment tool or Digital logbooks): a new gear set for its car,
-      // with the cage as its rollover protection.
+      // A rollcage file (Rollcage assessment tool or Digital logbooks): its cage joins My Gear as
+      // a piece of rollover protection, ready to pick in a gear set or on a tech sheet.
       if (isRollcageFile(text)) {
-        const { patch, carPhotoDataUrl, found } = await importRollcageFile(text);
+        const { patch, found } = await importRollcageFile(text);
         const car = patch.cageCar;
         const carName = [car?.year, car?.make, car?.model].filter(Boolean).join(" ");
-        const profile = newGarageProfile(carName || patch.cageImport?.name || "Rollcage");
-        profile.entries = { rollover_protection: { category: "rollover_protection", ...patch } };
-        if (carName) profile.carNote = carName;
-        if (carPhotoDataUrl) profile.carPhotoDataUrl = carPhotoDataUrl;
-        setGear((g) => ({ ...g, profiles: [...g.profiles, profile] }));
-        setImportStatus(`Imported the rollcage as a new gear set, "${profile.name}", under Rollover protection: ${found.join("; ")}. Check it, and add the rest of the car's gear.`);
+        const item = newGearItem("rollover_protection", { category: "rollover_protection", ...patch });
+        item.name = `${carName || patch.cageImport?.name || "Imported"} rollcage`;
+        setGear((g) => ({ ...g, items: [...g.items, item] }));
+        setImportStatus(`Imported "${item.name}" into My Gear, under Rollover protection: ${found.join("; ")}. Check it, then pick it in a gear set or on a tech sheet.`);
         return;
       }
       const imported = parseGarageImport(text);

@@ -140,9 +140,10 @@ export interface GearItem {
 }
 
 /** The categories that are pieces of gear of their own: the driver's personal gear, seat, harness
- * and window net (per occupant), and the fire extinguisher and suppression system (they get tech
- * stickers). The rest (fuel cell, kill switch, cage...) belongs to the car, so stays in its set. */
-export const GEAR_ITEM_CATEGORIES: EquipmentCategory[] = [...PER_OCCUPANT_CATEGORIES, "fire_extinguisher", "fire_suppression"];
+ * and window net (per occupant), the fire extinguisher and suppression system (they get tech
+ * stickers), and the rollcage (imported from a rollcage file, see lib/rollcageImport.ts). The rest
+ * (fuel cell, kill switch...) belongs to the car, so stays in its set. */
+export const GEAR_ITEM_CATEGORIES: EquipmentCategory[] = [...PER_OCCUPANT_CATEGORIES, "fire_extinguisher", "fire_suppression", "rollover_protection"];
 export const isGearItemCategory = (c: EquipmentCategory) => GEAR_ITEM_CATEGORIES.includes(c);
 
 export function newGearItem(category: EquipmentCategory, entry: EquipmentEntry = { category }): GearItem {
