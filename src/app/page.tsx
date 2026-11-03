@@ -568,7 +568,18 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="flex shrink-0 gap-2">
+          <div className="flex shrink-0 items-center gap-2">
+            <a
+              href="https://youtu.be/VSg-Xk5ujWg"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="PassTech highlight video"
+              aria-label="PassTech highlight video"
+              className="block h-[30px] shrink-0 overflow-hidden rounded border border-neutral-600 bg-white hover:border-neutral-400"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+              <img src="/frog-racing-video.jpg" alt="" className="block h-full w-auto" />
+            </a>
             {hasTour(mode) && (
               <button
                 type="button"
