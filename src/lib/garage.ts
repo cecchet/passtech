@@ -1,6 +1,6 @@
 import { DisciplineGroup, EquipmentCategory, Ruleset } from "@/data/types";
 import { PER_OCCUPANT_CATEGORIES } from "@/data/categoryMeta";
-import { EquipmentEntry, ExtinguisherUnit, isEntryEmpty, isUnitEmpty } from "@/lib/matcher";
+import { EquipmentEntry, ExtinguisherUnit, entryStickerCodes, formatCode, isEntryEmpty, isUnitEmpty, stickerCodesPatch } from "@/lib/matcher";
 
 type Entries = Partial<Record<EquipmentCategory, EquipmentEntry>>;
 type ItemIds = Partial<Record<EquipmentCategory, string>>;
@@ -182,7 +182,7 @@ export function resolveProfile(p: GarageProfile, items: GearItem[] | Map<string,
   const units = (p.extinguisherItemIds ?? []).flatMap((id): ExtinguisherUnit[] => {
     const item = byId.get(id);
     const unit = item?.entry.extinguisherUnits?.[0];
-    return unit ? [{ ...unit, itemId: id, stickerCode: item.entry.stickerCode }] : [];
+    return unit ? [{ ...unit, itemId: id, ...stickerCodesPatch(entryStickerCodes(item.entry)) }] : [];
   });
   if (units.length) entries.fire_extinguisher = { category: "fire_extinguisher", extinguisherUnits: units };
   return {
@@ -197,7 +197,9 @@ function extinguisherEntry(u: ExtinguisherUnit): EquipmentEntry {
   const unit = { ...u };
   delete unit.itemId;
   delete unit.stickerCode;
-  return { category: "fire_extinguisher", extinguisherUnits: [unit], ...(u.stickerCode ? { stickerCode: u.stickerCode } : {}) };
+  delete unit.stickerCodes;
+  const codes = entryStickerCodes(u);
+  return { category: "fire_extinguisher", extinguisherUnits: [unit], ...(codes.length ? { stickerCodes: codes } : {}) };
 }
 
 /** A resolved set without its links to this browser's items (an export, an import): its gear stands alone. */
@@ -274,7 +276,7 @@ export function absorb(resolved: GarageProfile[], items: GearItem[], opts: { ded
 export function pruneEmptyItems(gear: MyGear): MyGear {
   // (A fire extinguisher with nothing entered, in no set, is empty too: one added to a set and taken out blank.)
   const inASet = new Set(gear.profiles.flatMap((p) => p.extinguisherItemIds ?? []));
-  const blank = (i: GearItem) => i.category === "fire_extinguisher" && !inASet.has(i.id) && (i.entry.extinguisherUnits ?? []).every(isUnitEmpty) && !i.entry.stickerCode;
+  const blank = (i: GearItem) => i.category === "fire_extinguisher" && !inASet.has(i.id) && (i.entry.extinguisherUnits ?? []).every(isUnitEmpty) && entryStickerCodes(i.entry).length === 0;
   const empty = new Set(gear.items.filter((i) => isEntryEmpty(i.category, i.entry) || blank(i)).map((i) => i.id));
   if (empty.size === 0) return gear;
   const keep = (ids: ItemIds | undefined) =>
@@ -316,7 +318,8 @@ export function splitExtinguishers(gear: MyGear): MyGear | null {
     const units = (item.entry.extinguisherUnits ?? []).filter((u) => !isUnitEmpty(u));
     const ids: string[] = [];
     units.forEach((u, i) => {
-      const entry: EquipmentEntry = { category: "fire_extinguisher", extinguisherUnits: [u], ...(i === 0 && item.entry.stickerCode ? { stickerCode: item.entry.stickerCode } : {}) };
+      const codes = i === 0 ? entryStickerCodes(item.entry) : [];
+      const entry: EquipmentEntry = { category: "fire_extinguisher", extinguisherUnits: [u], ...(codes.length ? { stickerCodes: codes } : {}) };
       const next: GearItem = i === 0 ? { ...item, entry, updatedAt: now } : { ...newGearItem("fire_extinguisher", entry), name: item.name ? `${item.name} #${i + 1}` : undefined };
       items.push(next);
       ids.push(next.id);
@@ -474,9 +477,10 @@ export function addImportedItems(items: GearItem[], imported: GearItem[]): { ite
   return { items: out, added };
 }
 
-/** A piece of gear's export filename, from its name. */
-export function gearItemExportFilename(label: string): string {
-  return `passtech-gear-item-${slugify(label)}-${new Date().toISOString().slice(0, 10)}.json`;
+/** A piece of gear's export filename, from its name and its tech stickers' codes (as printed, e.g. F822-8KRP). */
+export function gearItemExportFilename(label: string, stickerCodes: string[] = []): string {
+  const stickers = stickerCodes.map((c) => `-${formatCode(c)}`).join("");
+  return `passtech-gear-item-${slugify(label)}${stickers}-${new Date().toISOString().slice(0, 10)}.json`;
 }
 
 function slugify(name: string): string {

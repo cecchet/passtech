@@ -70,6 +70,8 @@ export interface ExtinguisherUnit {
   /** In a gear set (resolved): the piece of gear in My gear this extinguisher is, and its tech
    * sticker -- each extinguisher is an item of its own there (see GarageProfile.extinguisherItemIds). */
   itemId?: string;
+  /** Its tech stickers (see EquipmentEntry.stickerCodes); stickerCode: one, from before. */
+  stickerCodes?: string[];
   stickerCode?: string;
   /** Mounting: is this extinguisher secured with a metal bracket (as opposed to a plastic clip, velcro, or zip ties)? Undefined means not yet answered — distinct from `false`. */
   hasMetalBracket?: boolean;
@@ -187,8 +189,12 @@ export interface EquipmentEntry {
   towHookFront?: boolean;
   /** Tow hook only: whether a rear tow hook/point is present. */
   towHookRear?: boolean;
-  /** Helmet, HANS, seat, extinguisher, suppression: the tech sticker on the item (its 8-character
-   * code, read off its QR code) -- a season sticker from a sanctioning body (see lib/stickers.ts). */
+  /** Helmet, HANS, seat, extinguisher, suppression: the tech stickers on the item (their 8-character
+   * codes, read off their QR codes) -- season stickers, one per sanctioning body and discipline (a
+   * body's Autocross sticker isn't good for its Rally events; see lib/stickers.ts). Read them with
+   * entryStickerCodes. */
+  stickerCodes?: string[];
+  /** One tech sticker, from before an item could have several: read as stickerCodes. */
   stickerCode?: string;
   /** Garage only: reference photos of the actual physical item (distinct from the tag-scan flow, which reads a photo but doesn't keep it) — up to 3 for most categories, up to 5 for rollover_protection (see EquipmentForm's MAX_ITEM_PHOTOS_BY_CATEGORY). Compressed client-side before storage — see resizeImageToDataUrl. Any of these can also be run back through the tag scanner. */
   photoDataUrls?: string[];
@@ -201,6 +207,21 @@ export interface EquipmentEntry {
 }
 
 /** Every list of photos an entry keeps itself (units keep theirs): the item's, its tags', and the pants' two. */
+/** An item's (or extinguisher unit's) tech sticker codes: its list, and the single one from before. */
+export function entryStickerCodes(e: { stickerCodes?: string[]; stickerCode?: string } | undefined): string[] {
+  const all = [...(e?.stickerCodes ?? []), ...(e?.stickerCode ? [e.stickerCode] : [])];
+  return all.filter((c, i) => c && all.indexOf(c) === i);
+}
+
+/** The patch that sets an item's tech stickers (none: the field goes). */
+export const stickerCodesPatch = (codes: string[]): { stickerCodes?: string[]; stickerCode?: undefined } => ({
+  stickerCodes: codes.length ? codes : undefined,
+  stickerCode: undefined,
+});
+
+/** "F822-8KRP" */
+export const formatCode = (c: string) => `${c.slice(0, 4)}-${c.slice(4)}`;
+
 export const ENTRY_PHOTO_KEYS = ["photoDataUrls", "tagPhotoDataUrls", "pantsPhotoDataUrls", "pantsTagPhotoDataUrls"] as const;
 export type EntryPhotoKey = (typeof ENTRY_PHOTO_KEYS)[number];
 

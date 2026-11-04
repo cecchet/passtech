@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { EquipmentCategory } from "@/data/types";
 import { CATEGORY_META, maxPhotosFor } from "@/data/categoryMeta";
 import { QrIcon } from "@/components/icons/QrIcon";
-import { ENTRY_PHOTO_KEYS, EquipmentEntry } from "@/lib/matcher";
+import { ENTRY_PHOTO_KEYS, EquipmentEntry, entryStickerCodes, stickerCodesPatch } from "@/lib/matcher";
 import { dataUrlToBytes, sha256Hex, stripEntryPhotos } from "@/lib/techSheet";
 import { downscaleDataUrl } from "@/lib/imageResize";
 import { downloadTechSheetPhoto, getSession, onAuthChange, uploadTechSheetPhoto } from "@/lib/techSheetServer";
@@ -92,10 +92,14 @@ async function withStickerPhotos(category: EquipmentCategory, entry: EquipmentEn
   return { photoDataUrls: await add(entry.photoDataUrls ?? [], items), tagPhotoDataUrls: await add(entry.tagPhotoDataUrls ?? [], tags) };
 }
 
+/** Which body and discipline a sticker is for: a newer one for the same takes its place on an item. */
+const stickerScope = (v: StickerView) => `${v.body ?? ""}|${v.discipline ?? ""}`;
+
 /**
- * An item's tech sticker (a season sticker from a sanctioning body, see lib/stickers.ts): link one
- * by scanning its QR code -- an empty item takes its details from it -- and, in My gear, apply
- * for an annual sticker with the item's details and photos.
+ * An item's tech stickers -- season stickers from sanctioning bodies (see lib/stickers.ts), one per
+ * body and discipline: a body's Autocross sticker isn't good for its Rally events. Link one by
+ * scanning its QR code -- an empty item takes its details from it -- and, in My gear, apply for an
+ * annual sticker with the item's details and photos.
  *   onChange(patch, photos): the patch for the entry; photos (scanPhotos only): the sticker's own
  *   photos, for a tech sheet line to keep.
  */
@@ -112,8 +116,10 @@ export function GearSticker({
   allowApply?: boolean;
   scanPhotos?: boolean;
 }) {
-  const code = entry.stickerCode;
-  const [view, setView] = useState<StickerView | null>(null);
+  const codes = entryStickerCodes(entry);
+  const codesKey = codes.join(",");
+  // Each linked sticker as read from the server (null: not found or not readable).
+  const [views, setViews] = useState<Record<string, StickerView | null>>({});
   const [scanning, setScanning] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [applying, setApplying] = useState(false);
@@ -137,11 +143,16 @@ export function GearSticker({
 
   useEffect(() => {
     let live = true;
-    if (code) fetchSticker(code).then((v) => live && setView(v), () => live && setView(null));
+    for (const c of codesKey ? codesKey.split(",") : []) {
+      fetchSticker(c).then(
+        (v) => live && setViews((m) => ({ ...m, [c]: v })),
+        () => live && setViews((m) => ({ ...m, [c]: null }))
+      );
+    }
     return () => {
       live = false;
     };
-  }, [code]);
+  }, [codesKey]);
 
   // (A non-homologated racing seat has no certification to show: what it is is its details.)
   const hasDetails = (entry.certifications ?? []).some((c) => c.standardId) || (entry.extinguisherUnits ?? []).length > 0 || entry.mode === "non_homologated";
@@ -160,7 +171,7 @@ export function GearSticker({
     }
     setScanning(false);
     setMessage(null);
-    setView(v);
+    setViews((m) => ({ ...m, [v.code]: v }));
     let photos: ScannedPhoto[] | undefined;
     if (scanPhotos || useDetails) {
       photos = [];
@@ -169,51 +180,67 @@ export function GearSticker({
         if (dataUrl) photos.push({ dataUrl, kind: p.kind === "tag" ? "tag" : "item" });
       }
     }
-    const patch: Partial<EquipmentEntry> = { ...(useDetails ? detailsFrom(v) : {}), stickerCode: v.code };
+    // It joins the item's stickers, in place of one for the same body and discipline from the same
+    // or an earlier season (a replacement, last year's).
+    const kept = codes.filter((c) => {
+      const o = views[c];
+      return c !== v.code && !(o && stickerScope(o) === stickerScope(v) && (o.season ?? 0) <= (v.season ?? 0));
+    });
+    const patch: Partial<EquipmentEntry> = { ...(useDetails ? detailsFrom(v) : {}), ...stickerCodesPatch([...kept, v.code]) };
     // Using its details in My gear: the sticker's photos come onto the item too (a tech sheet line
     // keeps them as the line's own -- scanPhotos).
     if (useDetails && !scanPhotos && photos?.length) Object.assign(patch, await withStickerPhotos(category, { ...entry, ...patch }, photos));
     onChange(patch, scanPhotos ? photos : undefined);
   };
+  const unlink = (code: string) => onChange(stickerCodesPatch(codes.filter((c) => c !== code)));
 
   return (
     <div className="flex flex-col gap-2 rounded border border-dashed border-neutral-600 p-2 text-xs">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="font-medium text-neutral-300">Tech sticker:</span>
-        {code ? (
-          <>
-            <span className={`rounded-full border px-2 py-0.5 ${view?.status === "valid" ? "border-emerald-700 text-emerald-300" : view ? "border-red-700 text-red-300" : "border-neutral-600 text-neutral-300"}`}>
-              {formatStickerCode(code)}
-              {view ? ` · ${stickerStatusLine(view)}` : ""}
-            </span>
-            {view && hasDetails && (
-              <button type="button" className={smallButton} onClick={() => link(view, true)} title="Replace this item's details with the sticker's, and add its photos">
-                Use its details
-              </button>
-            )}
-            <button type="button" className={smallButton} onClick={() => onChange({ stickerCode: undefined })}>
-              Unlink
-            </button>
-          </>
-        ) : (
-          <button type="button" className={smallButton} onClick={() => setScanning(!scanning)}>
-            {scanning ? (
-              "Cancel"
-            ) : (
-              <span className="inline-flex items-center gap-1">
-                <QrIcon /> Scan its tech sticker
+      <div className="flex flex-col gap-1">
+        <span className="font-medium text-neutral-300">
+          Tech stickers{codes.length ? "" : ": none yet"}
+          <span className="font-normal text-neutral-500"> -- one per sanctioning body and discipline: each is good only for its own discipline&apos;s events</span>
+        </span>
+        {codes.map((c) => {
+          const view = views[c];
+          return (
+            <div key={c} className="flex flex-wrap items-center gap-2">
+              <span
+                className={`rounded-full border px-2 py-0.5 ${view?.status === "valid" ? "border-emerald-700 text-emerald-300" : view ? "border-red-700 text-red-300" : "border-neutral-600 text-neutral-300"}`}
+              >
+                {formatStickerCode(c)}
+                {view ? ` · ${stickerStatusLine(view)}` : ""}
               </span>
-            )}
-          </button>
-        )}
+              {view && hasDetails && (
+                <button type="button" className={smallButton} onClick={() => link(view, true)} title="Replace this item's details with the sticker's, and add its photos">
+                  Use its details
+                </button>
+              )}
+              <button type="button" className={smallButton} onClick={() => unlink(c)}>
+                Unlink
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" className={smallButton} onClick={() => setScanning(!scanning)}>
+          {scanning ? (
+            "Cancel"
+          ) : (
+            <span className="inline-flex items-center gap-1">
+              <QrIcon /> {codes.length ? "Scan another tech sticker" : "Scan its tech sticker"}
+            </span>
+          )}
+        </button>
         {canApply && (
           <button type="button" className={smallButton} onClick={() => setApplying(!applying)}>
             {applying ? "Close the application" : "Apply for an annual tech sticker"}
           </button>
         )}
       </div>
-      {allowApply && !code && missing.length > 0 && <p className="text-neutral-500">To apply for an annual tech sticker, add {missing.join(" and ")}.</p>}
-      {scanning && !code && <StickerScan bare title="" onScanned={(v) => link(v, !hasDetails)} />}
+      {allowApply && codes.length === 0 && missing.length > 0 && <p className="text-neutral-500">To apply for an annual tech sticker, add {missing.join(" and ")}.</p>}
+      {scanning && <StickerScan bare title="" onScanned={(v) => link(v, !hasDetails)} />}
       {message && <p className="text-red-300">{message}</p>}
       {applying && canApply ? (
         <ApplyForSticker category={category} entry={entry} signedIn={signedIn} mine={mine} loadMine={loadMine} onLink={(v) => link(v, false)} />
@@ -221,7 +248,7 @@ export function GearSticker({
         // (The application closed, or the item no longer complete: this item's applications stay listed.)
         allowApply && (
           <ApplicationList
-            list={mine.filter((a) => applicationIsFor(a, entry) || (!!a.stickerCode && a.stickerCode === code))}
+            list={mine.filter((a) => applicationIsFor(a, entry) || (!!a.stickerCode && codes.includes(a.stickerCode)))}
             entry={entry}
             reload={loadMine}
             onLink={(v) => link(v, false)}
@@ -236,6 +263,7 @@ export function GearSticker({
  * item -- and withdrawing a pending one. */
 function ApplicationList({ list, entry, reload, onLink }: { list: StickerApplication[]; entry: EquipmentEntry; reload: () => void; onLink: (v: StickerView) => void }) {
   if (list.length === 0) return null;
+  const codes = entryStickerCodes(entry);
   return (
     <ul className="flex flex-col gap-1">
       {list.map((a) => (
@@ -244,6 +272,7 @@ function ApplicationList({ list, entry, reload, onLink }: { list: StickerApplica
             {a.bodyName ?? a.body}{a.disciplineName ? ` ${a.disciplineName}` : ""} {a.season} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
             <span className={a.status === "issued" ? "text-emerald-300" : a.status === "declined" ? "text-red-300" : ""}>{a.status}</span>
             {a.stickerCode ? ` · sticker ${formatStickerCode(a.stickerCode)}` : ""}
+            {a.stickerCode && codes.includes(a.stickerCode) ? " (linked)" : ""}
             {a.note ? ` — ${a.note}` : ""}
           </span>
           {a.status === "pending" && (
@@ -251,7 +280,7 @@ function ApplicationList({ list, entry, reload, onLink }: { list: StickerApplica
               Withdraw
             </button>
           )}
-          {a.status === "issued" && a.stickerCode && a.stickerCode !== entry.stickerCode && (
+          {a.status === "issued" && a.stickerCode && !codes.includes(a.stickerCode) && (
             <button type="button" className={smallButton} onClick={() => fetchSticker(a.stickerCode!).then((v) => v && onLink(v), () => {})}>
               Link sticker {formatStickerCode(a.stickerCode)} to this item
             </button>

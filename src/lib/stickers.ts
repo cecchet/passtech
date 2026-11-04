@@ -1,7 +1,7 @@
 import { getSupabase } from "@/lib/techSheetServer";
 import { TECH_SHEET_PHOTO_BUCKET } from "@/lib/serverConfig";
 import { EquipmentCategory } from "@/data/types";
-import { CertificationEntry, ENTRY_PHOTO_KEYS, EquipmentEntry } from "@/lib/matcher";
+import { CertificationEntry, ENTRY_PHOTO_KEYS, EquipmentEntry, formatCode } from "@/lib/matcher";
 import { stableJson } from "@/lib/garage";
 
 /**
@@ -77,7 +77,7 @@ function normalize(s: string): string | null {
   return /^[2-9A-Z]{8}$/.test(c) ? c : null;
 }
 
-export const formatStickerCode = (c: string) => `${c.slice(0, 4)}-${c.slice(4)}`;
+export const formatStickerCode = formatCode;
 
 export async function fetchSticker(code: string): Promise<StickerView | null> {
   const { data, error } = await getSupabase().rpc("sticker_view", { p_code: code });
@@ -161,6 +161,7 @@ export function applicationIsFor(a: StickerApplication, entry: EquipmentEntry): 
     const copy: Partial<EquipmentEntry> = { ...(g ?? {}) };
     ENTRY_PHOTO_KEYS.forEach((k) => delete copy[k]);
     delete copy.stickerCode;
+    delete copy.stickerCodes;
     return stableJson(copy);
   };
   return plain(a.gear) === plain(entry);

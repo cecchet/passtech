@@ -19,7 +19,7 @@ import {
   newGearItem,
 } from "@/lib/garage";
 import { ExportButton, downloadJson, shrinkEntryPhotos } from "@/components/ExportButton";
-import { isEntryEmpty } from "@/lib/matcher";
+import { entryStickerCodes, isEntryEmpty } from "@/lib/matcher";
 import { StickerView, fetchSticker, formatStickerCode, stickerStatusLine } from "@/lib/stickers";
 
 const buttonClass = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800";
@@ -44,7 +44,7 @@ function categoryNoun(category: EquipmentCategory): string {
 /** One piece of gear to a file (import it from My Gear's "Import from a file"). */
 async function exportItem(item: GearItem, includeHighRes: boolean) {
   const out = includeHighRes ? item : { ...item, entry: await shrinkEntryPhotos(item.entry) };
-  downloadJson(exportGearItemsToJson([out]), gearItemExportFilename(gearItemLabel(item)));
+  downloadJson(exportGearItemsToJson([out]), gearItemExportFilename(gearItemLabel(item), entryStickerCodes(item.entry)));
 }
 
 /** The sets using an item, and in which seat. */
@@ -213,7 +213,9 @@ export function GearItems({
                             <p className="truncate font-semibold">{item.name?.trim() || (certs.length ? certs.map((b) => b.label).join(", ") : `New ${label}`)}</p>
                             {item.name?.trim() && certs.length > 0 && <p className="truncate text-xs text-neutral-400">{certs.map((b) => b.label).join(", ")}</p>}
                             <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-neutral-500">
-                              {item.entry.stickerCode && <StickerBadge code={item.entry.stickerCode} />}
+                              {entryStickerCodes(item.entry).map((c) => (
+                                <StickerBadge key={c} code={c} />
+                              ))}
                               <span>{sets.length ? `In ${sets.map((s) => s.profile.name + (s.occupant === "codriver" ? " (codriver)" : "")).join(", ")}` : "Not in a gear set"}</span>
                             </div>
                           </div>

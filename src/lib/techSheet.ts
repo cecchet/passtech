@@ -11,7 +11,7 @@ import {
   TechSheetTemplate,
 } from "@/data/techSheetTypes";
 import { GarageProfile } from "@/lib/garage";
-import { bodyStyleLabel, CategoryResult, CertificationEntry, EquipmentEntry, ENTRY_PHOTO_KEYS, evaluateRuleset, helmetStyle, isEntryEmpty, isTwoPiece, pieceNames } from "@/lib/matcher";
+import { bodyStyleLabel, CategoryResult, CertificationEntry, EquipmentEntry, ENTRY_PHOTO_KEYS, entryStickerCodes, evaluateRuleset, formatCode, helmetStyle, isEntryEmpty, isTwoPiece, pieceNames } from "@/lib/matcher";
 import { downscaleDataUrl } from "@/lib/imageResize";
 
 export type Occupant = "driver" | "codriver";
@@ -191,7 +191,8 @@ function describeCerts(certs: CertificationEntry[] | undefined): string {
  * sticker when it has one. */
 export function summarizeEntry(category: EquipmentCategory, entry: EquipmentEntry): string {
   const text = summarizeGear(category, entry);
-  const sticker = entry.stickerCode ? `tech sticker ${entry.stickerCode.slice(0, 4)}-${entry.stickerCode.slice(4)}` : "";
+  const codes = entryStickerCodes(entry);
+  const sticker = codes.length ? `tech sticker${codes.length > 1 ? "s" : ""} ${codes.map(formatCode).join(", ")}` : "";
   return [text, sticker].filter(Boolean).join(", ");
 }
 
