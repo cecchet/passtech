@@ -130,8 +130,50 @@ export const stickerStatusLine = (v: StickerView) =>
 export interface StickerBody {
   id: string;
   name: string;
-  /** Its disciplines (none: the body works as one) -- an application names one. */
-  disciplines?: { id: string; name: string }[];
+  /** The gear it gives annual stickers for (a body without disciplines); missing: a server from
+   * before bodies chose (every kind). */
+  gear?: string[];
+  /** Its annual car inspection sheet (a body without disciplines): null, none -- no annual car stickers. */
+  carTemplate?: AnnualCarTemplate | null;
+  /** Its disciplines (none: the body works as one) -- an application names one -- each with the
+   * gear it gives annual stickers for, and its annual car inspection sheet. */
+  disciplines?: { id: string; name: string; gear?: string[]; carTemplate?: AnnualCarTemplate | null }[];
+}
+
+/** A body's annual car inspection sheet: the tech sheet a car's annual inspection is filled on. */
+export interface AnnualCarTemplate {
+  id: string;
+  title: string;
+  version?: number;
+  definition: import("@/data/techSheetTypes").TechSheetTemplate;
+}
+
+/** Where a car can get an annual inspection (and sticker): each body, or discipline, with an annual car sheet. */
+export function annualCarChoices(bodies: StickerBody[]): { key: string; body: string; bodyName: string; discipline?: string; disciplineName?: string; template: AnnualCarTemplate }[] {
+  const out: { key: string; body: string; bodyName: string; discipline?: string; disciplineName?: string; template: AnnualCarTemplate }[] = [];
+  for (const b of bodies) {
+    if (b.disciplines?.length) {
+      for (const d of b.disciplines) if (d.carTemplate) out.push({ key: `${b.id}/${d.id}`, body: b.id, bodyName: b.name, discipline: d.id, disciplineName: d.name, template: d.carTemplate });
+    } else if (b.carTemplate) out.push({ key: b.id, body: b.id, bodyName: b.name, template: b.carTemplate });
+  }
+  return out;
+}
+
+/** Whether a body (or one of its disciplines) gives annual stickers for this kind of gear. */
+export function acceptsGear(gear: string[] | undefined, category: string): boolean {
+  return gear === undefined || gear.includes(category);
+}
+
+/** The bodies that give annual stickers for this kind of gear, each with only the disciplines that do. */
+export function stickerBodiesFor(bodies: StickerBody[], category: string): StickerBody[] {
+  const out: StickerBody[] = [];
+  for (const b of bodies) {
+    if (b.disciplines?.length) {
+      const disciplines = b.disciplines.filter((d) => acceptsGear(d.gear, category));
+      if (disciplines.length) out.push({ ...b, disciplines });
+    } else if (acceptsGear(b.gear, category)) out.push(b);
+  }
+  return out;
 }
 
 export interface StickerApplication {

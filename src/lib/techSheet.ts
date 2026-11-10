@@ -51,6 +51,9 @@ export interface TechSheetDraft {
    * sheet is filed under the event's sheet the competitor filled (an event can have several). */
   templateId?: string;
   event?: { id: string; name: string };
+  /** An annual car inspection for a sanctioning body (no event): the car it's for, and once
+   * submitted its sheet id. */
+  annual?: AnnualDraft;
   variant: string | null;
   /** The PassTech ruleset the gear lines are checked against. */
   rulesetId?: string;
@@ -460,11 +463,24 @@ export function headerWithCage(draft: TechSheetDraft, cage: EquipmentEntry): Rec
   return header;
 }
 
+/** An annual car inspection draft's body, season and car. */
+export interface AnnualDraft {
+  body: string;
+  bodyName: string;
+  discipline?: string;
+  disciplineName?: string;
+  season: number;
+  car: { vin: string; make?: string; model?: string; year?: string; owner?: string };
+  logbookNumber?: string;
+  sheetId?: string;
+}
+
 export async function createDraft(opts: {
   template: TechSheetTemplate;
   templateVersion?: number;
   templateId?: string;
   event?: { id: string; name: string };
+  annual?: AnnualDraft;
   variant: string | null;
   rulesetId?: string;
   profile?: GarageProfile;
@@ -516,6 +532,8 @@ export async function createDraft(opts: {
     templateVersion: opts.templateVersion,
     ...(opts.templateId ? { templateId: opts.templateId } : {}),
     event: opts.event,
+    // The car's details from the header the gear set filled in (make, model, year, VIN).
+    ...(opts.annual ? { annual: { ...opts.annual, car: { ...annualCarFromHeader(template, header), ...opts.annual.car } } } : {}),
     variant: opts.variant,
     rulesetId: opts.rulesetId,
     gearProfileId: profile?.id,
@@ -523,6 +541,16 @@ export async function createDraft(opts: {
     header,
     lines,
   };
+}
+
+/** The car's make, model, year and VIN, from the header fields filled from them. */
+export function annualCarFromHeader(template: TechSheetTemplate, header: Record<string, string | string[]>): { vin: string; make?: string; model?: string; year?: string } {
+  const by = (prefill: string) => {
+    const f = template.header.find((x) => x.prefill === prefill);
+    const v = f ? header[f.id] : undefined;
+    return typeof v === "string" && v.trim() ? v.trim() : undefined;
+  };
+  return { vin: by("vin") ?? "", ...(by("make") ? { make: by("make") } : {}), ...(by("model") ? { model: by("model") } : {}), ...(by("year") ? { year: by("year") } : {}) };
 }
 
 /** A draft rebuilt from a sheet the team submitted (on a device that doesn't have its draft): its

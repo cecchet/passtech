@@ -9,6 +9,7 @@ import { downloadTechSheetPhoto, eventTemplates, fetchPublicTechSheets, fetchTec
 import { TechSheetEditor } from "@/components/TechSheetEditor";
 import { TechSheetSignIn } from "@/components/TechSheetSignIn";
 import { TechSheetSubmitted } from "@/components/TechSheetSubmitted";
+import { annualCarChoices, fetchStickerBodies, StickerBody } from "@/lib/stickers";
 
 const inputClass = "w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-base text-neutral-100 sm:text-sm";
 const primaryButtonClass = "rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-black hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50";
@@ -43,7 +44,10 @@ function NewSheetSetup({
   const [events, setEvents] = useState<TechSheetEvent[] | null>(null);
   const [eventsError, setEventsError] = useState<string | null>(null);
   // An event's sheet, or a body's Public one (its generic sheet, no event: exported as a file).
-  const [source, setSource] = useState<"event" | "public">("event");
+  const [source, setSource] = useState<"event" | "public" | "annual">("event");
+  // Annual car inspections: the bodies (disciplines) with an annual car sheet.
+  const [stickerBodies, setStickerBodies] = useState<StickerBody[] | null>(null);
+  const [annualKey, setAnnualKey] = useState("");
   const [eventId, setEventId] = useState("");
   const [sheetId, setSheetId] = useState("");
   const [publicSheets, setPublicSheets] = useState<PublicTechSheet[] | null>(null);
@@ -67,6 +71,13 @@ function NewSheetSetup({
         setEventsError(e instanceof Error ? e.message : String(e));
         setSource("public");
       });
+    fetchStickerBodies()
+      .then((list) => {
+        if (!cancelled) setStickerBodies(list);
+      })
+      .catch(() => {
+        if (!cancelled) setStickerBodies([]);
+      });
     fetchPublicTechSheets()
       .then((list) => {
         if (!cancelled) setPublicSheets(list);
@@ -87,7 +98,9 @@ function NewSheetSetup({
   const preferredClassLabel = getRuleset(preferences.preferredRulesetId ?? "")?.classes?.find((c) => c.id === preferences.preferredClassId)?.label;
   const sheet = sheets.find((t) => t.id === sheetId) ?? templateForClass(sheets, preferredClassLabel) ?? sheets[0];
   const publicSheet = (publicSheets ?? []).find((t) => t.id === publicId) ?? preferredPublicSheet(publicSheets ?? [], preferences);
-  const template: TechSheetTemplate | undefined = source === "event" ? sheet?.definition : publicSheet?.definition;
+  const annualChoices = annualCarChoices(stickerBodies ?? []);
+  const annualChoice = annualChoices.find((c) => c.key === annualKey) ?? annualChoices[0];
+  const template: TechSheetTemplate | undefined = source === "event" ? sheet?.definition : source === "annual" ? annualChoice?.template.definition : publicSheet?.definition;
   const variants = template?.variants ?? [];
   const activeVariant = variants.length === 0 ? null : variants.some((v) => v.id === variant) ? variant : variants[0].id;
   const profile = profiles.find((p) => p.id === profileId);
@@ -101,9 +114,20 @@ function NewSheetSetup({
       const classLabel = rs?.classes?.find((c) => c.id === preferences.preferredClassId)?.label;
       const draft = await createDraft({
         template,
-        templateVersion: event ? sheet?.version : publicSheet?.version,
-        templateId: event ? sheet?.id : undefined,
+        templateVersion: event ? sheet?.version : source === "annual" ? annualChoice?.template.version : publicSheet?.version,
+        templateId: event ? sheet?.id : source === "annual" ? annualChoice?.template.id : undefined,
         event: event ? { id: event.id, name: event.name } : undefined,
+        annual:
+          source === "annual" && annualChoice
+            ? {
+                body: annualChoice.body,
+                bodyName: annualChoice.bodyName,
+                discipline: annualChoice.discipline,
+                disciplineName: annualChoice.disciplineName,
+                season: new Date().getFullYear(),
+                car: { vin: "" },
+              }
+            : undefined,
         variant: activeVariant,
         rulesetId,
         profile,
@@ -178,6 +202,38 @@ function NewSheetSetup({
               )}
             </span>
           </label>
+          <label className="flex items-start gap-2 text-sm text-neutral-200">
+            <input
+              type="radio"
+              name="ts-source"
+              checked={source === "annual"}
+              onChange={() => setSource("annual")}
+              disabled={stickerBodies !== null && annualChoices.length === 0}
+              className="mt-0.5 h-4 w-4 accent-amber-500"
+            />
+            <span>
+              An annual car inspection (a season tech sticker for the car)
+              {stickerBodies === null && <span className="ml-2 text-xs text-neutral-500">loading…</span>}
+              {stickerBodies !== null && annualChoices.length === 0 && (
+                <span className="ml-2 block text-xs text-neutral-500">No sanctioning body gives annual car stickers yet.</span>
+              )}
+            </span>
+          </label>
+          {source === "annual" && annualChoice && (
+            <>
+              <select value={annualChoice.key} onChange={(e) => setAnnualKey(e.target.value)} className={inputClass}>
+                {annualChoices.map((c) => (
+                  <option key={c.key} value={c.key}>
+                    {c.bodyName}
+                    {c.disciplineName ? ` — ${c.disciplineName}` : ""} — {c.template.title}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-neutral-500">
+                Pre-fill the {new Date().getFullYear()} annual inspection: the body&apos;s scrutineers inspect the car and, once it passes, give it a season sticker good for their events.
+              </p>
+            </>
+          )}
           {source === "public" && publicSheet && (
             <select value={publicSheet.id} onChange={(e) => setPublicId(e.target.value)} className={inputClass}>
               {(publicSheets ?? []).map((t) => (
@@ -370,7 +426,7 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
           saveError={saveError}
           onChange={(patch) => patchDraft(active.id, patch)}
           onSubmitted={() => {
-            setSubmittedNotice(`Submitted to ${active.event?.name ?? "the event"}${typeof active.header.car_number === "string" && active.header.car_number ? ` — car #${active.header.car_number}` : ""}.`);
+            setSubmittedNotice(`Submitted to ${active.annual ? `${active.annual.bodyName} (annual inspection)` : active.event?.name ?? "the event"}${typeof active.header.car_number === "string" && active.header.car_number ? ` — car #${active.header.car_number}` : ""}.`);
             setView({ kind: "home" });
           }}
           onDelete={async () => {
@@ -420,11 +476,11 @@ export function TechSheetMode({ preferences, onOpenGarage }: { preferences: User
                   className="w-full rounded-lg border border-neutral-700 p-3 text-left hover:border-neutral-400 hover:bg-neutral-900"
                 >
                   <span className="block text-sm font-semibold text-neutral-100">
-                    {d.event?.name ?? d.template.title}
+                    {d.annual ? `${d.annual.bodyName} annual inspection ${d.annual.season}` : d.event?.name ?? d.template.title}
                     {car}
                   </span>
                   <span className="block text-xs text-neutral-500">
-                    {d.event ? d.template.title : "No event (export)"}
+                    {d.event || d.annual ? d.template.title : "No event (export)"}
                     {d.gearProfileName ? ` · ${d.gearProfileName}` : ""} · edited {new Date(d.updatedAt).toLocaleDateString()}
                     {d.submittedAt ? " · submitted" : ""}
                   </span>

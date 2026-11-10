@@ -48,6 +48,7 @@ import {
   MyTechSheet,
   resubmitState,
   submitTechSheet,
+  submitAnnualTechSheet,
   TechSheetEventTemplate,
   templateChoiceLabel,
   templateForClass,
@@ -631,7 +632,50 @@ export function TechSheetEditor({
     }
   };
 
+  // An annual car inspection: sent to the body (no event), for its scrutineers to inspect.
+  const handleSubmitAnnual = async () => {
+    const annual = draft.annual;
+    if (!annual) return;
+    if (!signedInEmail) {
+      setShowSignIn(true);
+      return;
+    }
+    if (!annual.car.vin.trim() && !(annual.logbookNumber ?? "").trim()) {
+      setActionError("Enter the car's VIN (or its logbook number) first.");
+      return;
+    }
+    setActionError(null);
+    try {
+      setBusy("Preparing…");
+      const { items, images, pictures } = await buildDeclaration(draft);
+      const hashes = Object.keys(images);
+      for (let i = 0; i < hashes.length; i++) {
+        setBusy(`Uploading photo ${i + 1} of ${hashes.length}…`);
+        await uploadTechSheetPhoto(hashes[i], images[hashes[i]]);
+      }
+      setBusy("Submitting…");
+      const id = await submitAnnualTechSheet({
+        id: annual.sheetId,
+        body: annual.body,
+        discipline: annual.discipline,
+        season: annual.season,
+        header: cleanHeader(draft),
+        variant: draft.variant,
+        competitor: { items, ...(pictures ? { pictures } : {}) },
+        car: annual.car,
+        logbookNumber: annual.logbookNumber,
+      });
+      update({ annual: { ...annual, sheetId: id }, submittedSheetId: id, submittedAt: new Date().toISOString() });
+      onSubmitted?.();
+    } catch (e) {
+      setActionError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(null);
+    }
+  };
+
   const handleSubmit = async () => {
+    if (draft.annual) return handleSubmitAnnual();
     if (!draft.event) return;
     if (!signedInEmail) {
       setShowSignIn(true);
@@ -821,10 +865,45 @@ export function TechSheetEditor({
           {draft.template.revision ? <span className="font-normal text-neutral-500"> · rev. {draft.template.revision}</span> : null}
         </p>
         <p className="text-xs text-neutral-400">
-          {draft.event ? `Event: ${draft.event.name}` : "No event — export the file and hand it to the scrutineer"}
+          {draft.annual
+            ? `Annual inspection: ${draft.annual.bodyName}${draft.annual.disciplineName ? ` — ${draft.annual.disciplineName}` : ""} · ${draft.annual.season}`
+            : draft.event
+              ? `Event: ${draft.event.name}`
+              : "No event — export the file and hand it to the scrutineer"}
           {variantLabel ? ` · ${variantLabel}` : ""}
           {draft.gearProfileName ? ` · gear set "${draft.gearProfileName}"` : " · no gear set"}
         </p>
+        {draft.annual && (
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {(
+              [
+                ["vin", "VIN"],
+                ["year", "Year"],
+                ["make", "Make"],
+                ["model", "Model"],
+                ["owner", "Owner"],
+              ] as const
+            ).map(([key, label]) => (
+              <label key={key} className="block">
+                <span className="mb-1 block text-xs font-medium text-neutral-300">{label}</span>
+                <input
+                  value={draft.annual?.car[key] ?? ""}
+                  onChange={(e) => draft.annual && update({ annual: { ...draft.annual, car: { ...draft.annual.car, [key]: e.target.value } } })}
+                  className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
+                />
+              </label>
+            ))}
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-neutral-300">Logbook number (if it has one)</span>
+              <input
+                value={draft.annual.logbookNumber ?? ""}
+                onChange={(e) => draft.annual && update({ annual: { ...draft.annual, logbookNumber: e.target.value } })}
+                placeholder="FL-…"
+                className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100"
+              />
+            </label>
+          </div>
+        )}
         {sheets.length > 1 && (
           <label className="mt-2 block">
             <span className="mb-1 block text-xs font-medium text-neutral-300">Tech sheet (the event uses one per group of classes)</span>
@@ -1044,17 +1123,29 @@ export function TechSheetEditor({
               {serverState === "failed" ? "Re-submit the failed lines" : draft.submittedSheetId ? "Re-submit to the event" : "Submit to the event"}
             </button>
           )}
+          {draft.annual && (
+            <button type="button" onClick={handleSubmit} disabled={!!busy} className={primaryButtonClass}>
+              {draft.annual.sheetId ? "Re-submit the annual inspection" : `Send to ${draft.annual.bodyName} for its annual inspection`}
+            </button>
+          )}
         </div>
-        {draft.event && !signedInEmail && !showSignIn && <p className="mt-2 text-xs text-neutral-500">Submitting needs a quick sign-in with your email.</p>}
+        {(draft.event || draft.annual) && !signedInEmail && !showSignIn && <p className="mt-2 text-xs text-neutral-500">Submitting needs a quick sign-in with your email.</p>}
       </section>
 
-      {draft.event && showSignIn && !signedInEmail && (
+      {(draft.event || draft.annual) && showSignIn && !signedInEmail && (
         <div className="mt-4">
           <TechSheetSignIn intro="Sign in to submit this sheet to the event — we'll email you a one-time code." onSignedIn={() => setShowSignIn(false)} />
         </div>
       )}
 
-      {draft.submittedSheetId && (
+      {draft.annual?.sheetId && (
+        <div className="mt-4 rounded-lg border border-emerald-700 bg-emerald-950 p-3 text-sm text-emerald-200">
+          Sent to {draft.annual.bodyName} for its {draft.annual.season} annual inspection
+          {draft.submittedAt ? ` on ${new Date(draft.submittedAt).toLocaleString()}` : ""}. Bring the car to one of its scrutineers: once it passes, they give
+          it the season&apos;s annual car sticker. You can change it and re-submit until then.
+        </div>
+      )}
+      {draft.submittedSheetId && !draft.annual && (
         <div className="mt-4 rounded-lg border border-emerald-700 bg-emerald-950 p-3 text-sm text-emerald-200">
           Submitted to {draft.event?.name}
           {draft.submittedAt ? ` on ${new Date(draft.submittedAt).toLocaleString()}` : ""}.{" "}

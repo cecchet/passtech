@@ -16,6 +16,7 @@ import {
   fetchMyStickerApplications,
   fetchSticker,
   fetchStickerBodies,
+  stickerBodiesFor,
   formatStickerCode,
   stickerEntry,
   stickerMismatch,
@@ -308,7 +309,9 @@ function ApplyForSticker({
   loadMine: () => Promise<void>;
   onLink: (v: StickerView) => void;
 }) {
-  const [bodies, setBodies] = useState<StickerBody[]>([]);
+  const [allBodies, setBodies] = useState<StickerBody[] | null>(null);
+  // Only the bodies (and disciplines) that give annual stickers for this kind of gear.
+  const bodies = stickerBodiesFor(allBodies ?? [], category);
   const [body, setBody] = useState("");
   // The body's discipline (e.g. SCCNH Autocross), when it has them.
   const [discipline, setDiscipline] = useState("");
@@ -368,6 +371,8 @@ function ApplyForSticker({
 
   if (signedIn === false) return <TechSheetSignIn intro="Sign in to apply for an annual tech sticker — we'll email you a one-time code." />;
   const label = CATEGORY_META[category].label.toLowerCase();
+  if (allBodies && bodies.length === 0)
+    return <p className="text-neutral-400">No sanctioning body gives annual tech stickers for a {label} yet.</p>;
   return (
     <div className="flex flex-col gap-2 rounded border border-neutral-700 p-2">
       <p className="text-neutral-400">

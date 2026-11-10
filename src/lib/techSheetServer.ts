@@ -222,6 +222,41 @@ export async function fetchPublicTechSheets(): Promise<PublicTechSheet[]> {
   return Array.isArray(data) ? (data as PublicTechSheet[]) : [];
 }
 
+/** A car's annual inspection, pre-filled for a sanctioning body (no event): the body's scrutineers
+ * inspect it and, once it passes, issue the car's annual sticker. Returns the sheet id. */
+export async function submitAnnualTechSheet(p: {
+  id?: string;
+  body: string;
+  discipline?: string;
+  season: number;
+  header: Record<string, string | string[]>;
+  variant: string | null;
+  competitor: unknown;
+  car: { vin?: string; make?: string; model?: string; year?: string; owner?: string };
+  logbookNumber?: string;
+}): Promise<string> {
+  const { data, error } = await getSupabase().rpc("submit_annual_tech_sheet", { p });
+  if (error) throw new Error(messageOf(error));
+  return String(data);
+}
+
+/** The signed-in user's annual inspections, with their status and sticker. */
+export interface MyAnnualTechSheet {
+  id: string;
+  status: TechSheetStatus;
+  season: number;
+  bodyName?: string;
+  disciplineName?: string | null;
+  car?: { vin?: string; make?: string; model?: string; year?: string };
+  sticker?: { code: string } | null;
+  inspection?: { items?: Record<string, { result?: string; note?: string }>; corrections?: string } | null;
+}
+export async function fetchMyAnnualTechSheets(): Promise<MyAnnualTechSheet[]> {
+  const { data, error } = await getSupabase().rpc("my_annual_tech_sheets");
+  if (error) throw new Error(messageOf(error));
+  return (data as MyAnnualTechSheet[]) ?? [];
+}
+
 /** Submits (or, until inspection starts, replaces) the car's declaration. Returns the sheet id. */
 export async function submitTechSheet(submission: TechSheetSubmission): Promise<string> {
   const { data, error } = await getSupabase().rpc("submit_tech_sheet", { p: submission });
