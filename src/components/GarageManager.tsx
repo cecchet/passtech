@@ -102,6 +102,7 @@ function collectProfilePhotos(p: GarageProfile): string[] {
 
 export function GarageManager({
   onLoadProfile,
+  onCheckItem,
   onBlockNavChange,
   initialActionMenuId,
   onInitialActionMenuConsumed,
@@ -110,6 +111,8 @@ export function GarageManager({
 }: {
   /** target: "body-first" loads into Option 2 (check against one body); "equipment-first" loads into Option 3 (check against every body at once). */
   onLoadProfile: (profile: GarageProfile, target: "body-first" | "equipment-first") => void;
+  /** The same two checks for one piece of gear on its own, no gear set needed. */
+  onCheckItem?: (item: GearItem, target: "body-first" | "equipment-first") => void;
   /** Reports whether My Gear is currently mid-way through creating a new gear set (mode choice or Automatic mode), so the page-level "Back to main menu" can be disabled — Cancel/Save to My Gear are meant to be the only two ways out of that flow. */
   onBlockNavChange?: (blocked: boolean) => void;
   /** A gear set to reopen (action menu expanded) as soon as this mounts — set by the page right before navigating back here from body-first/equipment-first, so returning to My Gear lands back on the same gear set instead of a blank list. */
@@ -144,6 +147,8 @@ export function GarageManager({
   const [storageError, setStorageError] = useState(false);
   /** Which saved profile's action menu (Edit/pass-tech/race-check/export/delete) is currently expanded in the list, if any — collapsed by default so the list just shows a photo preview + name per gear set. Seeded from initialActionMenuId so returning from body-first/equipment-first reopens the same gear set. */
   const [actionMenuId, setActionMenuId] = useState<string | null>(initialActionMenuId ?? null);
+  /** The same, for a piece of gear checked on its own: kept, since My Gear's items show only once loaded (after the page has cleared initialActionMenuId). */
+  const [initialOpenItemId] = useState<string | null>(initialActionMenuId ?? null);
   /** A snapshot of the profile as it was right when "Edit this gear set" was clicked — edits still write straight through live (same as everywhere else in this app), but Cancel restores this snapshot over whatever was changed, so it actually discards the edit session instead of just closing the view on top of already-committed changes. Unset for a brand-new profile (that flow's own Cancel just deletes the profile outright — see cancelNewProfile). */
   const [editSnapshot, setEditSnapshot] = useState<{ profile: GarageProfile | null; items: GearItem[] } | null>(null);
   /** True once the user has clicked Cancel on an edit session that actually has unsaved changes — arms the "discard changes?" two-step confirmation instead of cancelling immediately. */
@@ -512,6 +517,8 @@ export function GarageManager({
             onDelete={(id) => setGear((g) => ({ items: g.items.filter((i) => i.id !== id), profiles: unlinkItem(g.profiles, id) }))}
             onLink={linkItem}
             onClose={() => setGear((g) => pruneEmptyItems(g))}
+            onCheck={onCheckItem}
+            initialOpenId={initialOpenItemId}
           />
           <SanctioningBodyPreferences preferences={preferences} onChange={onPreferencesChange} />
           {profiles.length > 0 && (

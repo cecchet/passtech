@@ -85,6 +85,8 @@ interface Props {
   hideNotRequired?: boolean;
   /** Equipment-first only: hide any category with nothing entered — mirrors "Only check the equipment I have" so the form only shows what's actually being evaluated. */
   hideEmpty?: boolean;
+  /** One piece of gear checked on its own (from My Gear): only its category, whatever the groups. */
+  onlyCategory?: EquipmentCategory;
   /**
    * Options 2/3 only: show each category's video/product logos (see CategoryMediaLinks) — in the
    * collapsed summary while the item still needs attention (required or conditional and not yet
@@ -1561,6 +1563,7 @@ export function EquipmentForm({
   sourceDocuments,
   stickers,
   myGear,
+  onlyCategory,
 }: Props) {
   const groupOf = (c: EquipmentCategory): CategoryGroup =>
     occupant === "driver" && perOccupantAsDriverGroup && isPerOccupantCategory(c) ? "driver" : CATEGORY_META[c].group;
@@ -1570,7 +1573,7 @@ export function EquipmentForm({
   // would miss seat/belts/window net even though they're displaying as "driver" group right now.
   const visibleCategories = CATEGORY_ORDER.filter(
     (c) =>
-      activeGroups.has(groupOf(c)) &&
+      (onlyCategory ? c === onlyCategory : activeGroups.has(groupOf(c))) &&
       (occupant === "driver" || isPerOccupantCategory(c)) &&
       (!hideNotRequired || results?.[c]?.requirement === "required" || results?.[c]?.requirement === "conditional") &&
       (!hideEmpty || !isEntryEmpty(c, entries[c]))

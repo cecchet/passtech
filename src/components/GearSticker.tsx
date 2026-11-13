@@ -315,7 +315,8 @@ function ApplyForSticker({
   const [body, setBody] = useState("");
   // The body's discipline (e.g. SCCNH Autocross), when it has them.
   const [discipline, setDiscipline] = useState("");
-  const [season, setSeason] = useState(new Date().getFullYear());
+  // Annual stickers are only applied for for the season under way.
+  const season = new Date().getFullYear();
   const [owner, setOwner] = useState("");
   const photos = applicationPhotos(category, entry);
   // Each photo's role, keyed by the photo itself so adding or removing one never shifts the others;
@@ -406,13 +407,9 @@ function ApplyForSticker({
             ))}
           </select>
         )}
-        <input
-          type="number"
-          value={season}
-          onChange={(e) => setSeason(Number(e.target.value) || new Date().getFullYear())}
-          className="w-24 rounded border border-neutral-500 bg-neutral-900 p-1 text-neutral-100"
-          title="Season"
-        />
+        <span className="text-neutral-300" title="Annual stickers are for the current season only">
+          {season} season
+        </span>
         <input
           type="text"
           value={owner}

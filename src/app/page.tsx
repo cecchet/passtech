@@ -24,9 +24,13 @@ import {
   isViolation,
   overallEligibility,
 } from "@/lib/matcher";
+import { gearItemLabel } from "@/components/GearItems";
 import {
   GarageProfile,
+  GearItem,
   UserPreferences,
+  loadMyGear,
+  saveMyGear,
   newGarageProfile,
   loadGarage,
   saveGarage,
@@ -102,6 +106,9 @@ export default function Home() {
     hasCodriver: boolean;
     carPhotoDataUrl?: string;
     carNote?: string;
+    /** Set when one piece of gear was loaded on its own (not a gear set): its id and category. */
+    itemId?: string;
+    category?: EquipmentCategory;
   } | null>(null);
   /** Arms the Discard/Save/Cancel choice on Back to My Gear once there are unsaved changes — mirrors the pattern in GarageManager's own Cancel button. */
   const [confirmingBackNav, setConfirmingBackNav] = useState(false);
@@ -261,7 +268,7 @@ export default function Home() {
 
   const handleCodriverReportMissing = (category: EquipmentCategory, label: string) => handleReportMissing(category, `Codriver — ${label}`);
 
-  const handleLoadGarageProfile = (profile: GarageProfile, target: "body-first" | "equipment-first") => {
+  const handleLoadGarageProfile = (profile: GarageProfile, target: "body-first" | "equipment-first", item?: GearItem) => {
     setEntries({ ...profile.entries });
     setCodriverEntries({ ...(profile.codriverEntries ?? {}) });
     setHasCodriver(!!profile.hasCodriver);
@@ -275,6 +282,8 @@ export default function Home() {
       hasCodriver: !!profile.hasCodriver,
       carPhotoDataUrl: profile.carPhotoDataUrl,
       carNote: profile.carNote,
+      itemId: item?.id,
+      category: item?.category,
     });
     setConfirmingBackNav(false);
     setBackNavSaveError(null);
@@ -287,6 +296,10 @@ export default function Home() {
     }
     setMode(target);
   };
+
+  // One piece of gear from My Gear checked on its own: a workspace holding just it.
+  const handleCheckGarageItem = (item: GearItem, target: "body-first" | "equipment-first") =>
+    handleLoadGarageProfile({ ...newGarageProfile(gearItemLabel(item)), id: item.id, entries: { [item.category]: item.entry } }, target, item);
 
   const handleSaveToGarage = async (name: string): Promise<boolean> => {
     const profile = {
@@ -305,6 +318,15 @@ export default function Home() {
   // does in body-first/equipment-first mode once the user has actually changed something.
   const handleUpdateLoadedProfile = async (): Promise<boolean> => {
     if (!loadedGarageProfile) return false;
+    if (loadedGarageProfile.itemId && loadedGarageProfile.category) {
+      // One piece of gear: its entry goes back on the item (every set using it sees the change).
+      const { itemId, category } = loadedGarageProfile;
+      const entry = entries[category] ?? { category };
+      const gear = await loadMyGear();
+      const ok = await saveMyGear({ ...gear, items: gear.items.map((i) => (i.id === itemId ? { ...i, entry, updatedAt: new Date().toISOString() } : i)) });
+      if (ok) setLoadedGarageProfile((prev) => (prev ? { ...prev, entries: { ...entries } } : prev));
+      return ok;
+    }
     const all = await loadGarage();
     const patch = { entries: { ...entries }, hasCodriver, codriverEntries: { ...codriverEntries }, carPhotoDataUrl, carNote };
     const updated = all.map((p) => (p.id === loadedGarageProfile.id ? { ...p, ...patch, updatedAt: new Date().toISOString() } : p));
@@ -347,9 +369,16 @@ export default function Home() {
   // Ignore a stale classId left over from a different ruleset (e.g. after switching bodies, or
   // loading an older saved session) rather than silently applying another body's class overrides.
   const activeClassId = ruleset?.classes?.some((c) => c.id === classId) ? classId : undefined;
+  // One piece of gear checked on its own (from My Gear): only its category counts, whatever the groups.
+  const onlyCategory = (mode === "body-first" || mode === "equipment-first") && loadedGarageProfile?.category ? loadedGarageProfile.category : undefined;
+  const scopeResults = (results: CategoryResults): CategoryResults => {
+    if (!onlyCategory) return filterResultsByGroups(results, activeGroups);
+    return results[onlyCategory] ? { [onlyCategory]: results[onlyCategory] } : {};
+  };
   const resultsForSelected = useMemo(
-    () => (ruleset ? filterResultsByGroups(evaluateRuleset(ruleset, entries, undefined, activeClassId), activeGroups) : undefined),
-    [ruleset, entries, activeGroups, activeClassId]
+    () => (ruleset ? scopeResults(evaluateRuleset(ruleset, entries, undefined, activeClassId)) : undefined),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- scopeResults reads onlyCategory/activeGroups
+    [ruleset, entries, activeGroups, activeClassId, onlyCategory]
   );
   const showCodriver = !!ruleset?.supportsCodriver;
   const codriverResultsForSelected = useMemo(() => {
@@ -368,7 +397,7 @@ export default function Home() {
 
   const allResults = useMemo(
     () => ALL_RULESETS.map((rs) => {
-      const results = filterResultsByGroups(evaluateRuleset(rs, entries), activeGroups);
+      const results = scopeResults(evaluateRuleset(rs, entries));
 
       // Codriver gear only matters for rulesets that actually have a codriver — everywhere else
       // it's simply not part of that body's tech inspection, so it can't affect eligibility there.
@@ -414,7 +443,8 @@ export default function Home() {
       }
       return { rs, results, codriverResults, status, needsMoreGear: anyMissingRequired && status !== "not_eligible" };
     }),
-    [entries, codriverEntries, hasCodriver, activeGroups, onlyHaveEquipment]
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- scopeResults reads onlyCategory/activeGroups
+    [entries, codriverEntries, hasCodriver, activeGroups, onlyHaveEquipment, onlyCategory]
   );
 
   // The preferred-bodies list (My Gear) replaces the coarse discipline checkboxes when active — it's
@@ -709,7 +739,7 @@ export default function Home() {
         </div>
       )}
 
-      {(mode === "reference" || isGarageCheckMode) && (
+      {(mode === "reference" || (isGarageCheckMode && !onlyCategory)) && (
         <GroupFilter
           active={activeGroups}
           onChange={setActiveGroups}
@@ -788,14 +818,14 @@ export default function Home() {
           <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
             {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
             <img src="/frog-option2.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
-            Will my equipment pass tech?
+            Will my {onlyCategory ? CATEGORY_META[onlyCategory].label.toLowerCase() : "equipment"} pass tech?
           </h2>
 
           <RulesetPicker value={rulesetId} onChange={handleRulesetChange} />
 
           {ruleset?.classes && <ClassPicker classes={ruleset.classes} value={activeClassId} onChange={setClassId} />}
 
-          {showCodriver && (
+          {showCodriver && !onlyCategory && (
             <label className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
               <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
               {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
@@ -846,6 +876,7 @@ export default function Home() {
           {showCodriver ? (
             <>
               <EquipmentForm
+                onlyCategory={onlyCategory}
                 entries={entries}
                 onChange={handleChange}
                 onReportMissing={handleReportMissing}
@@ -854,7 +885,7 @@ export default function Home() {
                 orderResetKey={rulesetId}
                 perOccupantAsDriverGroup={hasCodriver}
                 showPhotoUpload
-                hideNotRequired={hideNotRequired}
+                hideNotRequired={hideNotRequired && !onlyCategory}
                 showMediaLinks
                 sourceDocuments={ruleset?.sourceDocuments}
               />
@@ -866,12 +897,13 @@ export default function Home() {
                   results={codriverResultsForSelected}
                   activeGroups={activeGroups}
                   orderResetKey={rulesetId}
-                  hideNotRequired={hideNotRequired}
+                  hideNotRequired={hideNotRequired && !onlyCategory}
                   showMediaLinks
                   sourceDocuments={ruleset?.sourceDocuments}
                 />
               )}
               <EquipmentForm
+                onlyCategory={onlyCategory}
                 entries={entries}
                 onChange={handleChange}
                 onReportMissing={handleReportMissing}
@@ -880,13 +912,14 @@ export default function Home() {
                 orderResetKey={rulesetId}
                 perOccupantAsDriverGroup={hasCodriver}
                 showPhotoUpload
-                hideNotRequired={hideNotRequired}
+                hideNotRequired={hideNotRequired && !onlyCategory}
                 showMediaLinks
                 sourceDocuments={ruleset?.sourceDocuments}
               />
             </>
           ) : (
             <EquipmentForm
+              onlyCategory={onlyCategory}
               entries={entries}
               onChange={handleChange}
               onReportMissing={handleReportMissing}
@@ -894,7 +927,7 @@ export default function Home() {
               activeGroups={activeGroups}
               orderResetKey={rulesetId}
               showPhotoUpload
-              hideNotRequired={hideNotRequired}
+              hideNotRequired={hideNotRequired && !onlyCategory}
               showMediaLinks
               sourceDocuments={ruleset?.sourceDocuments}
             />
@@ -907,15 +940,17 @@ export default function Home() {
           <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold text-amber-400">
             {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
             <img src="/frog-option3.jpg" alt="" className="h-12 w-12 shrink-0 rounded-lg bg-neutral-800 object-cover" />
-            Where can my equipment race?
+            Where can my {onlyCategory ? CATEGORY_META[onlyCategory].label.toLowerCase() : "equipment"} race?
           </h2>
 
+          {!onlyCategory && (
           <label id="tutorial-codriver-toggle" className="mb-4 flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
             <input type="checkbox" checked={hasCodriver} onChange={(e) => setHasCodriver(e.target.checked)} />
             {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
             <img src="/frog-codriver.jpg" alt="" className="h-12 w-auto shrink-0 rounded-lg bg-neutral-800 object-contain" />
             Add codriver gear (only affects rally bodies that require one)
           </label>
+          )}
 
           <div id="tutorial-discipline-filter" className="mb-4 rounded-lg border border-neutral-700 p-3">
             {hasPreferredBodies && (
@@ -1000,6 +1035,7 @@ export default function Home() {
           {hasCodriver ? (
             <>
               <EquipmentForm
+                onlyCategory={onlyCategory}
                 entries={entries}
                 onChange={handleChange}
                 onReportMissing={handleReportMissing}
@@ -1018,6 +1054,7 @@ export default function Home() {
                 showMediaLinks
               />
               <EquipmentForm
+                onlyCategory={onlyCategory}
                 entries={entries}
                 onChange={handleChange}
                 onReportMissing={handleReportMissing}
@@ -1030,6 +1067,7 @@ export default function Home() {
             </>
           ) : (
             <EquipmentForm
+              onlyCategory={onlyCategory}
               entries={entries}
               onChange={handleChange}
               onReportMissing={handleReportMissing}
@@ -1049,7 +1087,7 @@ export default function Home() {
               items={eligible}
               accent="border-emerald-700"
               titleColor="text-emerald-400"
-              hideNotRequired={hideNotRequired}
+              hideNotRequired={hideNotRequired && !onlyCategory}
               onlyHaveEquipment={onlyHaveEquipment}
               entries={entries}
               codriverEntries={codriverEntries}
@@ -1059,7 +1097,7 @@ export default function Home() {
               items={eligibleConditional}
               accent="border-yellow-700"
               titleColor="text-yellow-400"
-              hideNotRequired={hideNotRequired}
+              hideNotRequired={hideNotRequired && !onlyCategory}
               onlyHaveEquipment={onlyHaveEquipment}
               entries={entries}
               codriverEntries={codriverEntries}
@@ -1069,7 +1107,7 @@ export default function Home() {
               items={notEligible}
               accent="border-red-700"
               titleColor="text-red-400"
-              hideNotRequired={hideNotRequired}
+              hideNotRequired={hideNotRequired && !onlyCategory}
               onlyHaveEquipment={onlyHaveEquipment}
               entries={entries}
               codriverEntries={codriverEntries}
@@ -1087,6 +1125,7 @@ export default function Home() {
           </h2>
           <GarageManager
             onLoadProfile={handleLoadGarageProfile}
+            onCheckItem={handleCheckGarageItem}
             onBlockNavChange={setBlockMainMenuNav}
             initialActionMenuId={reopenGarageProfileId}
             onInitialActionMenuConsumed={() => setReopenGarageProfileId(null)}

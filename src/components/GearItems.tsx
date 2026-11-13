@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EquipmentCategory, Occupant } from "@/data/types";
 import { CATEGORY_META, isPerOccupantCategory } from "@/data/categoryMeta";
 import { CategoryCard, MyGearSlot, summarizeEntryCerts } from "@/components/EquipmentForm";
@@ -21,6 +21,7 @@ import {
 import { ExportButton, downloadJson, shrinkEntryPhotos } from "@/components/ExportButton";
 import { entryStickerCodes, isEntryEmpty } from "@/lib/matcher";
 import { StickerView, fetchSticker, formatStickerCode, stickerStatusLine } from "@/lib/stickers";
+import { lookupHomologation } from "@/lib/fiaHomologation";
 
 const buttonClass = "rounded border border-neutral-600 px-2 py-1 text-xs text-neutral-300 hover:bg-neutral-800";
 
@@ -59,6 +60,19 @@ function expiryWarnings(item: GearItem, preferences: UserPreferences) {
   return computeGearExpiryWarnings({ ...newGarageProfile(""), entries: { [item.category]: item.entry } }, preferences);
 }
 
+/** The name an FIA Technical List gives this piece of gear (manufacturer and model), from the first
+ * certification whose homologation number is found on one, with the list's number. */
+function fiaListName(item: GearItem): { name: string; listNumber?: number } | undefined {
+  for (const c of [...(item.entry.certifications ?? []), ...(item.entry.pantsCertifications ?? [])]) {
+    const number = c.homologationNumber?.trim();
+    if (!number || !c.standardId) continue;
+    const found = lookupHomologation(c.standardId, number, item.category);
+    const e = found.entry;
+    if (e?.manufacturer) return { name: [e.manufacturer, e.model].filter(Boolean).join(" "), listNumber: found.listNumber };
+  }
+  return undefined;
+}
+
 function StickerBadge({ code }: { code: string }) {
   const [view, setView] = useState<StickerView | null>(null);
   useEffect(() => {
@@ -94,7 +108,13 @@ export function GearItems({
   onClose,
   picking,
   setPicking,
+  onCheck,
+  initialOpenId,
 }: {
+  /** Checks this one piece of gear on its own: "body-first" (Will it pass tech?) or "equipment-first" (Where can it race?). */
+  onCheck?: (item: GearItem, target: "body-first" | "equipment-first") => void;
+  /** A piece of gear to show open as soon as this mounts (back from checking it). */
+  initialOpenId?: string | null;
   /** Whether the "what piece of gear?" picker is showing (its button is the caller's). */
   picking: boolean;
   setPicking: (v: boolean) => void;
@@ -110,7 +130,7 @@ export function GearItems({
   /** An item's editor closed: drop it if nothing was entered. */
   onClose: () => void;
 }) {
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(initialOpenId ?? null);
   /** The item just added, still open: Cancel discards it. */
   const [newId, setNewId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -119,6 +139,16 @@ export function GearItems({
   useEffect(() => {
     if (newId) document.getElementById(`gear-item-${newId}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [newId]);
+  // Back from checking a piece of gear: it's open again, brought into view once My Gear has loaded.
+  const scrolledToInitial = useRef(false);
+  useEffect(() => {
+    if (scrolledToInitial.current || !initialOpenId) return;
+    const node = document.getElementById(`gear-item-${initialOpenId}`);
+    if (node) {
+      node.scrollIntoView({ block: "start" });
+      scrolledToInitial.current = true;
+    }
+  }, [items, initialOpenId]);
 
   const close = () => {
     setOpenId(null);
@@ -248,16 +278,60 @@ export function GearItems({
                               {w.severity === "rejected" ? "✋" : "⚠️"} {formatGearExpiryWarning(w)}
                             </p>
                           ))}
+                          {onCheck && newId !== item.id && !isEntryEmpty(item.category, item.entry) && (
+                            // This piece of gear checked on its own, no gear set needed.
+                            <div className="grid gap-2 sm:grid-cols-2">
+                              {(
+                                [
+                                  ["body-first", "/frog-option2.jpg", "Will it pass tech?", `Check this ${label} against one sanctioning body's rules.`],
+                                  ["equipment-first", "/frog-option3.jpg", "Where can it race?", `See which sanctioning bodies accept this ${label}.`],
+                                ] as const
+                              ).map(([target, icon, title, text]) => (
+                                <button
+                                  key={target}
+                                  type="button"
+                                  onClick={() => onCheck(item, target)}
+                                  className="flex items-center gap-3 rounded-lg border border-emerald-700 bg-emerald-950 p-2 text-left hover:bg-emerald-900"
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element -- small static bundled icon, see CategoryIcons.tsx for why plain <img> */}
+                                  <img src={icon} alt="" className="h-10 w-10 shrink-0 rounded-lg bg-neutral-800 object-cover" />
+                                  <span className="flex flex-col">
+                                    <span className="text-sm font-semibold text-emerald-200">{title}</span>
+                                    <span className="text-xs text-emerald-300/80">{text}</span>
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                           <label className="block">
                             <span className="mb-1 block text-xs text-neutral-400">Name (optional, to tell your {label}s apart)</span>
                             <input
                               type="text"
                               value={item.name ?? ""}
-                              placeholder={`e.g. White ${label}`}
+                              placeholder={fiaListName(item)?.name ?? `e.g. White ${label}`}
                               onChange={(e) => onChange({ ...item, name: e.target.value || undefined, updatedAt: new Date().toISOString() })}
                               className="w-full rounded border border-neutral-500 bg-neutral-900 p-2 text-sm text-neutral-100 placeholder:text-neutral-500"
                             />
                           </label>
+                          {(() => {
+                            // Its name on an FIA Technical List, offered as its name.
+                            const fia = fiaListName(item);
+                            if (!fia || item.name?.trim() === fia.name) return null;
+                            return (
+                              <p className="-mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-400">
+                                <span>
+                                  Named <b className="text-neutral-200">{fia.name}</b> on FIA Technical List{fia.listNumber ? ` ${fia.listNumber}` : ""}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => onChange({ ...item, name: fia.name, updatedAt: new Date().toISOString() })}
+                                  className={buttonClass}
+                                >
+                                  Use it as its name
+                                </button>
+                              </p>
+                            );
+                          })()}
                           <CategoryCard
                             category={item.category}
                             entry={item.entry}
