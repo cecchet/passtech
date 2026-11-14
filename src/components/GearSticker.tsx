@@ -444,12 +444,14 @@ function ApplyForSticker({
       )}
       {error && <p className="text-red-300">{error}</p>}
       {pending && (
-        <p className="text-amber-300">
-          This {label} already has an application pending with {pending.bodyName ?? pending.body}{pending.disciplineName ? ` ${pending.disciplineName}` : ""} for {pending.season}: wait until it&apos;s processed, or withdraw it to
-          send a new one.
+        // Sent (just now or earlier): it waits for the scrutineers' review.
+        <p className="rounded border border-emerald-800 bg-emerald-950/40 px-2 py-1 text-emerald-300">
+          ✓ Application sent to {pending.bodyName ?? pending.body}
+          {pending.disciplineName ? ` ${pending.disciplineName}` : ""} for {pending.season} on {new Date(pending.submittedAt).toLocaleDateString()}: it&apos;s pending
+          review by its scrutineers. To change it, withdraw it below and send a new one.
         </p>
       )}
-      <div className="flex items-center gap-2">
+      <div className={pending ? "hidden" : "flex items-center gap-2"}>
         <button
           type="button"
           disabled={!!busy || signedIn === null || !!pending}
