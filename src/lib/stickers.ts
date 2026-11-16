@@ -23,6 +23,10 @@ export interface StickerView {
   status: "valid" | "void" | "expired";
   /** Gear stickers: the season (calendar year) it's good for. */
   season?: number | null;
+  /** A body whose gear stickers have no season (e.g. PassTech's): the sticker only records the
+   * certifications on the gear's tags, never expires, and whoever scans it judges them against
+   * their own body's rules. */
+  seasonless?: boolean;
   /** The body's discipline it's for (e.g. SCCNH Autocross), when the body has them. */
   discipline?: string | null;
   disciplineName?: string | null;
@@ -121,15 +125,24 @@ export function stickerMismatch(v: StickerView, category: EquipmentCategory): st
   return null;
 }
 
-/** "ARA 2026 season · valid" */
+/** "ARA 2026 season · valid" / "PassTech by Frog Racing · valid" (no season). */
 export const stickerStatusLine = (v: StickerView) =>
-  [v.kind === "gear" && v.season ? `${[v.bodyName || (v.body ?? "").toUpperCase(), v.disciplineName].filter(Boolean).join(" ")} ${v.season} season` : v.bodyName, v.status].filter(Boolean).join(" · ");
+  [
+    v.kind === "gear" && v.season && !v.seasonless
+      ? `${[v.bodyName || (v.body ?? "").toUpperCase(), v.disciplineName].filter(Boolean).join(" ")} ${v.season} season`
+      : [v.bodyName, v.kind === "gear" ? v.disciplineName : null].filter(Boolean).join(" "),
+    v.status,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
 // ---- Applying for an annual sticker ----------------------------------------------------------
 
 export interface StickerBody {
   id: string;
   name: string;
+  /** Its gear stickers have no season (see StickerView.seasonless). */
+  seasonless?: boolean;
   /** The gear it gives annual stickers for (a body without disciplines); missing: a server from
    * before bodies chose (every kind). */
   gear?: string[];
@@ -183,6 +196,8 @@ export interface StickerApplication {
   discipline?: string | null;
   disciplineName?: string | null;
   season: number;
+  /** For a body whose stickers have no season (see StickerView.seasonless). */
+  seasonless?: boolean;
   category: EquipmentCategory;
   owner?: string | null;
   submittedAt: string;

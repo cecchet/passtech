@@ -185,7 +185,7 @@ export function GearSticker({
     // or an earlier season (a replacement, last year's).
     const kept = codes.filter((c) => {
       const o = views[c];
-      return c !== v.code && !(o && stickerScope(o) === stickerScope(v) && (o.season ?? 0) <= (v.season ?? 0));
+      return c !== v.code && !(o && stickerScope(o) === stickerScope(v) && (v.seasonless || (o.season ?? 0) <= (v.season ?? 0)));
     });
     const patch: Partial<EquipmentEntry> = { ...(useDetails ? detailsFrom(v) : {}), ...stickerCodesPatch([...kept, v.code]) };
     // Using its details in My gear: the sticker's photos come onto the item too (a tech sheet line
@@ -270,7 +270,7 @@ function ApplicationList({ list, entry, reload, onLink }: { list: StickerApplica
       {list.map((a) => (
         <li key={a.id} className="flex flex-wrap items-center gap-2 text-neutral-300">
           <span>
-            {a.bodyName ?? a.body}{a.disciplineName ? ` ${a.disciplineName}` : ""} {a.season} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
+            {a.bodyName ?? a.body}{a.disciplineName ? ` ${a.disciplineName}` : ""}{a.seasonless ? "" : ` ${a.season}`} · sent {new Date(a.submittedAt).toLocaleDateString()} ·{" "}
             <span className={a.status === "issued" ? "text-emerald-300" : a.status === "declined" ? "text-red-300" : ""}>{a.status}</span>
             {a.stickerCode ? ` · sticker ${formatStickerCode(a.stickerCode)}` : ""}
             {a.stickerCode && codes.includes(a.stickerCode) ? " (linked)" : ""}
@@ -407,9 +407,15 @@ function ApplyForSticker({
             ))}
           </select>
         )}
-        <span className="text-neutral-300" title="Annual stickers are for the current season only">
-          {season} season
-        </span>
+        {bodies.find((b) => b.id === body)?.seasonless ? (
+          <span className="text-neutral-300" title="This body's stickers record the certifications on the tags, and don't expire">
+            no season
+          </span>
+        ) : (
+          <span className="text-neutral-300" title="Annual stickers are for the current season only">
+            {season} season
+          </span>
+        )}
         <input
           type="text"
           value={owner}
@@ -447,7 +453,8 @@ function ApplyForSticker({
         // Sent (just now or earlier): it waits for the scrutineers' review.
         <p className="rounded border border-emerald-800 bg-emerald-950/40 px-2 py-1 text-emerald-300">
           ✓ Application sent to {pending.bodyName ?? pending.body}
-          {pending.disciplineName ? ` ${pending.disciplineName}` : ""} for {pending.season} on {new Date(pending.submittedAt).toLocaleDateString()}: it&apos;s pending
+          {pending.disciplineName ? ` ${pending.disciplineName}` : ""}
+          {pending.seasonless ? "" : ` for ${pending.season}`} on {new Date(pending.submittedAt).toLocaleDateString()}: it&apos;s pending
           review by its scrutineers. To change it, withdraw it below and send a new one.
         </p>
       )}
